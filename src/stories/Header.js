@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 const headerStyles = {
   height: 40,
@@ -6,18 +7,16 @@ const headerStyles = {
 };
 
 const Header = ({ children }) => (
-  <div style={headerStyles}>
-    <div  className='row'>
-      <div className='two columns'>
+  <Grid style={headerStyles}>
+    <Row>
+      <Col md={10}>
         <img src='/Users/vao/Desktop/logo.png'/>
-      </div>
-      <div className='eight columns'>
-      </div>
-      <div className='two columns'>
+      </Col>
+      <Col md={2}>
         <img src='/Users/vao/Desktop/alpha_logo.png'/>
-      </div>
-    </div>
-  </div>
+      </Col>
+    </Row>
+  </Grid>
 )
 
 Header.propTypes = {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 
 const buttonStyles = {
   border: '13px solid #70CFFE',
@@ -7,7 +8,7 @@ const buttonStyles = {
   color: '#FFFFFF',
   cursor: 'pointer',
   fontSize: 10,
-  padding: '3px 10px',
+  margin: 10,
 };
 
 const buttonCompleteStyles = {
@@ -17,26 +18,19 @@ const buttonCompleteStyles = {
   color: '#FFFFFF',
   cursor: 'pointer',
   fontSize: 10,
-  padding: '3px 10px',
   margin: 10,
 };
 
 const TaskButton = ({ children, onClick, complete }) => {
   if (complete) {
     return (
-      <button
-        style={buttonCompleteStyles}
-        onClick={onClick}
-      >
+      <button style={buttonCompleteStyles} onClick={onClick}>
         {children}
       </button>
     );
   } else {
     return (
-      <button
-        style={buttonStyles}
-        onClick={onClick}
-      >
+      <button style={buttonStyles} onClick={onClick}>
         {children}
       </button>
     );

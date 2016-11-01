@@ -1,6 +1,7 @@
 import React from 'react';
 import ExerciseTitle from './ExerciseTitle';
 import TaskButton from '../TaskButton';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 const headerStyles = {
   height: 70,
@@ -13,18 +14,16 @@ const hairLineStyles = {
 };
 
 const Header = ({ children, onClick }) => (
-  <div className='row' style={headerStyles}>
-    <div className='row' style={hairLineStyles}/>
-    <div className='six columns'>
+  <Row style={headerStyles} className="show-grid">
+    <div style={hairLineStyles}/>
+    <Col md={9}>
       <ExerciseTitle number='1'>{children}</ExerciseTitle>
-    </div>
-    <div className='three columns'>
-    </div>
-    <div className='three columns'>
+    </Col>
+    <Col md={3}>
       <TaskButton onClick={onClick}>ВЫПОЛНИТЬ 😀</TaskButton>
-    </div>
-  </div>
-)
+    </Col>
+  </Row>
+);
 
 Header.propTypes = {
   children: React.PropTypes.string.isRequired,
