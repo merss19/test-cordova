@@ -421,7 +421,7 @@ node_modules/fbjs/lib/Deferred.js.flow:60
      ^ Promise. See lib: /private/tmp/flow/flowlib_34952d31/core.js:495
 
 node_modules/fbjs/lib/shallowEqual.js.flow:29
- 29:     return x !== 0 || 1 / (x: $FlowIssue) === 1 / (y: $FlowIssue);
+ 29:     return x !== 0 || 1 / (x: $FlowIssue) ==== 1 / (y: $FlowIssue);
                                    ^^^^^^^^^^ identifier `$FlowIssue`. Could not resolve name
 ```
 

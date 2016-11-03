@@ -63,7 +63,7 @@ const indicatorCell = {
 }
 
 const Calendar = ({ children, onClick, number, complete }) => {
-  if (complete == 'complete') {
+  if (complete === 'complete') {
     return (
       <table style={buttonStyles} onClick={onClick}>
         <tr>
@@ -75,7 +75,7 @@ const Calendar = ({ children, onClick, number, complete }) => {
         </tr>
       </table>
     );
-  } else if (complete == 'failed') {
+  } else if (complete === 'failed') {
     return (
       <table style={buttonStyles} onClick={onClick}>
         <tr>
