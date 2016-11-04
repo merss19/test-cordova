@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import TodayTask from '../components/TodayTask';
+import TodayTask from './TodayTask';
 import CreateProfile from '../containers/CreateProfile'
 
 const App = () => (
