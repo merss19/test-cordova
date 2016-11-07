@@ -3,12 +3,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
 
-const CreateProfile = ({ children }) => (
+const ProfileCreate = { children } => (
   <div></div>
 );
 
-CreateProfile.propTypes = {
+ProfileCreate.propTypes = {
   children: PropTypes.object.isRequired
 };
 
-export default CreateProfile;
+export default ProfileCreate;

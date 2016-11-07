@@ -1,9 +1,11 @@
 import React from 'react'
 import { Grid } from 'react-bootstrap';
 import { Field, reduxForm } from 'redux-form'
-import CustomInput from './CustomInput';
+import { Link } from 'react-router'
 
-const SubmitValidationForm = (props) => {
+import CustomInput from '../componentKit/CustomInput';
+
+const SubmitValidationForm = props => {
   const { error, handleSubmit, pristine, reset, submitting } = props;
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
@@ -27,6 +29,9 @@ const SubmitValidationForm = (props) => {
         <button type='submit'>
           Сохранить
         </button>
+
+        <Link to="/task">Кабинет</Link>
+
       </Grid>
     </form>
   );

@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import TodayTask from './TodayTask';
-import CreateProfile from '../containers/CreateProfile'
+import ProfileLogin from '../containers/ProfileLogin'
 
 const App = () => (
-  <div>
-    <CreateProfile />
-    {/* <TodayTask>{this.state.user}</TodayTask> */}
-  </div>
+  <ProfileLogin />
 );
 
 export default App;

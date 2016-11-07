@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { createProfile } from '../actions'
 import { SubmissionError } from 'redux-form'
 import $ from 'jquery';
-import SubmitValidationForm from '../components/SubmitValidationForm';
+import SubmitValidationForm from '../components/profile/SubmitValidationForm';
 
-let CreateProfile = (dispatch) => {
+let ProfileCreate = dispatch => {
   return (
-    <SubmitValidationForm onSubmit={(data) => {
+    <SubmitValidationForm onSubmit={data => {
       console.log(data);
       return data => new Promise(data => {
         $.ajax({
@@ -15,14 +15,14 @@ let CreateProfile = (dispatch) => {
           type: 'POST',
           dataType: 'json',
           data: data,
-          success: (user) => {
+          success: user => {
             console.log('<=========|===0')
             console.log(user)
             return user;
           }
         })
       })
-      .then((user) => {
+      .then(user => {
         console.log(user)
         if (!user.data || !user.data.authToken) {
           console.log('err')
@@ -35,6 +35,6 @@ let CreateProfile = (dispatch) => {
   )
 }
 
-CreateProfile = connect()(CreateProfile)
+ProfileCreate = connect()(ProfileCreate)
 
-export default CreateProfile
+export default ProfileCreate
