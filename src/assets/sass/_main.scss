@@ -1,0 +1,368 @@
+/* ===========================
+   App main styles
+   =========================== */
+
+.svg-icon {
+  display: inline-block;
+  width: 1em;  height: 1em;
+  flex-shrink: 0;
+}
+
+#svg-inject-me {
+  width: 0; height: 0;
+  opacity: 0;
+  position: absolute;
+  left: 1000px; top: 1000px;
+}
+
+.lock-screen {
+  overflow: hidden;
+  height: 100%;
+}
+
+// .test-bg {
+//   position: absolute;
+//   left: 0; right: 0; bottom: 0; top: 0;
+//   background-color: rgba(0,0,0,.8);
+//   color: #fff;
+//   z-index: 888;
+//   overflow: auto;
+// }
+
+// Placeholders
+
+%msg-box {
+  border-radius: $baseRadius;
+  // background-color: $c-gray-5;
+  // box-shadow: $boxShadowMsg;
+  padding: 8px 15px 8px 15px;
+}
+
+%stage-box {
+  border-radius: $baseRadius;
+  background-color: #fff;
+  box-shadow: $baseShadow;
+  margin-bottom: $baseMargin;
+}
+
+%point-circle {
+  cursor: pointer;
+  width: 28px; height: 28px;
+  // background-color: $c-point-1;
+  color: #fff;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+// -------
+
+.h1 {
+  text-align: center;
+  font-size: $fz-h1;
+  line-height: 1.3;
+  margin-bottom: $baseMargin;
+}
+
+.h2 {
+  text-align: center;
+  font-size: $fz-h2;
+  line-height: 1.3;
+  margin-bottom: $baseMargin;
+}
+
+.h3 {
+  text-align: center;
+  font-size: $fz-h3;
+  line-height: 1.3;
+  margin-bottom: $baseMargin;
+}
+
+.main-message {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+// -------
+
+.description {
+  
+}
+
+%paddings {
+  @include av-mq(portable) {
+    padding: $baseMargin 60px $baseMargin 40px;
+    box-shadow: none;
+  }
+  @include av-mq(desk) {
+    padding: $baseMargin 60px $baseMargin 60px;
+  }
+}
+
+.stage-box {
+  border-radius: $baseRadius;
+  background-color: #fff;
+  box-shadow: $baseShadow;
+  margin-bottom: $baseMargin;
+
+  &--big-padding {
+    @include av-mq(portable) {
+      padding: $baseMargin 60px $baseMargin 40px;
+      box-shadow: none;
+    }
+    @include av-mq(desk) {
+      padding: $baseMargin 60px $baseMargin 60px;
+    }
+  }
+
+  &--small-padding {
+    padding: $baseMargin;
+    @include av-mq(portable) {
+      padding: $baseMargin $baseMargin/2 $baseMargin;
+    }
+  }
+
+  &--no-padding {
+    padding: $baseMargin 0 0 0;
+  }
+}
+
+.num-list {
+
+  &--paddings {
+    @include av-mq(portable) {
+     margin-left: 35px;
+    }
+    @include av-mq(desk) {
+     margin-left: 45px;
+    }
+  }
+
+  &__item {
+    position: relative;
+    margin-bottom: 25px;
+  }
+  &__number {
+    position: absolute;
+    left: -35px; top: -5px;
+    font-size: $fz-big;
+    color: $c-m-gray;
+    line-height: 1;
+    @include av-mq(portable) {
+      font-size: $fz-h1;
+      top: 0; left: -25px;
+    }
+  }
+  &__title {
+    font-size: $fz-h3;
+    margin-bottom: 15px;
+    line-height: 1.1;
+  }
+  &__description {
+
+  }
+}
+
+.text-list {
+
+  &--paddings {
+    @include av-mq(portable) {
+     margin-left: 35px;
+    }
+    @include av-mq(desk) {
+     margin-left: 45px;
+    }
+  }
+
+  &__item {
+    position: relative;
+    margin-bottom: 25px;
+  }
+  &__number {
+    position: absolute;
+    left: -35px; top: -5px;
+    font-size: $fz-big;
+    color: $c-m-gray;
+    line-height: 1;
+    @include av-mq(portable) {
+      font-size: $fz-h1;
+      top: 0; left: -25px;
+    }
+  }
+  &__title {
+    font-size: $fz-h3;
+    margin-bottom: 15px;
+    line-height: 1.1;
+  }
+  &__description {
+
+  }
+}
+
+.base-table {
+  width: 100%;
+  margin-bottom: $baseMargin;
+
+  @include av-mq(pocket) {
+    margin-bottom: $baseMargin;
+  }
+
+  th {
+    text-align: left;
+    padding: 12px 12px;
+  }
+
+  tr {
+    &:nth-child(2n+2) {
+      background-color: $c-l-gray;
+    }
+  }
+  td {
+    padding: 12px 12px;
+  }
+
+  &__cell-center {
+    text-align: center;
+  }
+}
+
+.base-list {
+  margin-bottom: 25px;
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 6px;
+    }
+  }
+}
+
+.attention-box {
+  background-color: $c-l-gray;
+  padding: 20px;
+  border-radius: $baseRadius;
+  margin-bottom: 25px;
+  color: $c-s-yellow;
+  background-color: $c-l-yellow;
+}
+
+
+.question-form {
+  background-color: $c-secondary;
+  color: #fff;
+  box-shadow: $baseShadow;
+  margin-bottom: $baseMargin;
+  padding: 40px;
+  background-image: url(#{$bgImgPath + '/bg-logo.svg'});
+  background-position: left bottom;
+  background-repeat: no-repeat;
+
+  @include av-mq(desk) {
+    border-radius: $baseRadius;
+  }
+
+  &__title {
+    position: relative;
+    margin-bottom: 60px;
+    &:before {
+      content: '';
+      display: block;
+      width: 74px; height: 1px;
+      background-color: rgba(255,255,255, .3);
+      position: absolute;
+      bottom: -30px; left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  &__options {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+  }
+  &__option {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    border-radius: $baseRadius;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    &.is-active {
+      border: 1px solid rgba(255,255,255, 1);
+    }
+  }
+  &__own-version {
+    margin: 0 auto;
+    max-width: 360px;
+    .input__field {
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+    }
+  }
+}
+
+
+.fill-report {
+
+  &__video-report {
+    margin: 0 auto;
+    max-width: 440px;
+  }
+
+  &--input-info {
+    margin: 0 auto $baseMargin;
+    max-width: 310px;
+  }
+}
+
+.your-condition {
+  max-width: 326px;
+  margin: $baseMargin auto;
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80px; height: 90px;
+    border-radius: $baseRadius;
+    border: 1px solid transparent;
+    cursor: pointer;
+    
+    &--active {
+      border: 1px solid $c-green;
+    }
+
+    .no-touchevents & {
+      &:not(.your-condition__item--active) {
+        &:hover {
+          border: 1px solid $c-border;
+        }
+      }
+    }
+  }
+  &__ico {
+    margin-bottom: 5px;
+  }
+  &__title {
+    text-align: center;
+    font-size: $fz-middle;
+    color: $c-s-gray;
+  }
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+$c-vk: #5B7AA8;
+$c-odn: #F28522;
+$c-fb: #3B5998;
+
+.btn-social {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  &__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    width: 152px; height: 36px;
+    border-radius: $baseRadius;
+    flex-shrink: 0;
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
+    @include av-mq(portable) {
+      margin-bottom: 15px;
+    }
+  }
+  &__title {
+    font-size: $fz-middle;
+    font-family: $f-exo2;
+    text-transform: uppercase;
+  }
+
+  .svg-icon {
+    fill: #fff;
+    margin-right: 8px;
+  }
+}
+
+
+.social-signin {
+  display: flex;
+  justify-content: center;
+
+  &__item {
+    width: 40px; height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+}
+
+.btn-social, .social-signin {
+  &__item {
+    cursor: pointer;
+    
+    &--vk {
+      background-color: $c-vk;
+      .no-touchevents & {
+        &:hover {
+          background-color: lighten($c-vk, 6%);
+        }
+        &:active {
+          // background-color: darken($c-vk, 3%);
+        }
+      }
+    }
+    &--odnoklassniki {
+      background-color: $c-odn;
+      .no-touchevents & {
+        &:hover {
+          background-color: lighten($c-odn, 6%);
+        }
+        &:active {
+          // background-color: darken($c-odn, 3%);
+        }
+      }
+    }
+    &--fb {
+      background-color: $c-fb;
+      .no-touchevents & {
+        &:hover {
+          background-color: lighten($c-fb, 6%);
+        }
+        &:active {
+          // background-color: darken($c-fb, 3%);
+        }
+      }
+    }
+  }
+}

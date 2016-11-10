@@ -1,0 +1,68 @@
+/* ===========================
+   App layout
+   =========================== */
+
+.layout {
+  height: 100%;
+
+  &--login {
+    .header__logo {
+      text-align: center;
+    }
+    // @include av-mq(portable) {
+    //   .header__right-side {
+    //     display: block;
+    //   }
+    // }
+  }
+
+  &--registration {
+    .header__inner {
+      justify-content: center;
+    }
+    @include av-mq(desk) {
+      .header__logo {
+        text-align: center;
+      }
+      .header__right-side {
+        display: none;
+      }
+    }
+    @include av-mq(portable) {
+      .header__logo {
+        text-align: left;
+      }
+      .header__right-side {
+        display: inline-block;
+      }
+    }
+  }
+
+  &__inner {
+    margin: 0 auto;
+    max-width: $maxContentWidth;
+    padding: 20px 20px 0;
+    @include av-mq(portable) {
+      padding: 0 0 $mobMenuHeight 0;
+    }
+  }
+
+  &__menu {
+
+    @include av-mq(portable) {
+      display: none;
+    }
+  }
+
+  &__menu-inner {
+    &.is-fixed {
+      z-index: 10;
+      position: fixed;
+      top: 20px;
+    }
+  }
+
+  &__content {
+    
+  }
+}

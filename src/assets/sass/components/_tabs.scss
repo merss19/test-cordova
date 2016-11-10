@@ -1,0 +1,30 @@
+.tabs {
+  &__nav {
+    display: flex;
+    justify-content: center;
+    background-color: $c-l-gray;
+  }
+
+  &__nav-item {
+    text-align: center;
+    flex: 1;
+    padding: 14px;
+    font-family: $f-exo2;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      &:not(.tabs__nav-item--active) {
+        border-bottom: 2px solid $c-secondary;
+      }
+    }
+
+    &--active {
+      border-bottom: 2px solid $c-secondary;
+    }
+  }
+
+  &__content {
+    padding-top: $baseMargin;
+  }
+}

@@ -1,0 +1,85 @@
+.header {
+  background-color: $c-primary;
+
+  &__inner {
+    margin: 0 auto;
+    max-width: $maxContentWidth;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: $headerHeight;
+
+    @include av-mq(portable) {
+      justify-content: center;
+    }
+  }
+
+  &__logo {
+    font-size: 0;
+    color: transparent;
+    position: relative;
+    top: -2px;
+    @include av-mq(portable) {
+      text-align: center;
+    }
+  }
+
+  &__burger {
+    @include av-mq(portable) {
+     padding-left: 0;
+    }
+    @include av-mq(desk) {
+     display: none;
+    }
+  }
+
+  &__ico-burger {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: $headerHeight; width: $headerHeight;
+  }
+
+  &__right-side {
+    text-align: right;
+  }
+
+  &__banner {
+    display: inline-block;
+    width: 106px;
+    flex-shrink: 0;
+    margin-right: 20px;
+
+    @include av-mq(portable) {
+      display: none;
+    }
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  &__link {
+    font-size: $fz-h3;
+    font-family: $f-exo2;
+    color: #fff;
+    margin-right: 20px;
+  }
+
+  &__banner-link {
+    display: inline-block;
+    height: $headerHeight;
+    font-size: 0;
+    &:before {
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      height: 100%;
+    }
+    img {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
