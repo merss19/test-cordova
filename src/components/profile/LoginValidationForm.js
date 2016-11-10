@@ -11,7 +11,7 @@ const LoginValidationForm = props => {
     <form onSubmit={handleSubmit(props.onSubmit)}>
       <br/>
       <Grid>
-        <Field name='phone' title='Ваш email' component={CustomInput} />
+        <Field name='email' title='Ваш email' component={CustomInput} />
         <Field name='password' title='Ваш пароль' component={CustomInput} type='password' />
         {error && <strong>{error}</strong>}
 

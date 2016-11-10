@@ -29,7 +29,7 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
 import { action } from '@kadira/storybook';
 
-const MainComponent = children => (
+const MainComponent = taskDay => (
   <div style={{backgroundColor: '#FCFDFD'}}>
     <Grid>
       <Header>Header</Header>
@@ -59,18 +59,19 @@ const MainComponent = children => (
           <Calendar onClick={action('clicked')} number='10'>Ср</Calendar>
         </Col>
 
+        {console.log(taskDay)}
         <Col md={9} style={{backgroundColor: '#FFFFFF'}}>
           <b>
-            <TaskTitle>Привет! Сегодня для тебя подготовлены задания. Выполняй - получай призы и бонусы</TaskTitle>
+            <TaskTitle>{taskDay.taskDay.description}</TaskTitle>
           </b>
 
           <hr/>
           <RemainTimeTitle>Осталось 3 дня до зачета.</RemainTimeTitle>
-          <TextDarkBlue center={true}>Поторопись выполнить пропущенные дни, иначе немало шансов вылететь насовсем!</TextDarkBlue>
+          <TextDarkBlue center={true}>{taskDay.taskDay.task.description}</TextDarkBlue>
           <br/>
-          <ExerciseHeader onClick={action('clicked')}>Первый круг</ExerciseHeader>
+          <ExerciseHeader onClick={action('clicked')}>{taskDay.taskDay.task.name}</ExerciseHeader>
           <br/>
-          <ExerciseHowTitle>Как правильно выполнять</ExerciseHowTitle>
+          <ExerciseHowTitle>{taskDay.taskDay.task.description}</ExerciseHowTitle>
           <br/>
           <TextExercise number='1'>Test test test test test test test test test.</TextExercise>
           <TextExercise number='2'>Test test test test test test test test test.</TextExercise>
@@ -125,7 +126,9 @@ const MainComponent = children => (
             <Col md={2}></Col>
           </Row>
           <br/>
-          <Poll>Какие кросовки ты носишь?</Poll>
+          <Poll fields={taskDay.taskDay.task.poll.fields}>
+            {taskDay.taskDay.task.poll.description}
+          </Poll>
         </Col>
       </Row>
     </Grid>
@@ -133,7 +136,7 @@ const MainComponent = children => (
 );
 
 MainComponent.propTypes = {
-  children: PropTypes.object.isRequired
+  taskDay: PropTypes.object.isRequired
 };
 
 export default MainComponent;

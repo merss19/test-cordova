@@ -22,19 +22,16 @@ function select(children) {
   console.log(children)
 }
 
-const Poll = ({ children }) => {
+const Poll = ({ children, fields }) => {
   return (
     <div style={modalViewStyles}>
       <form action={sendPoll}>
         <br/>
         <TextPoll>{children}</TextPoll>
         <hr/>
-        <div style={buttonsStyles}>
-          <ButtonPoll onClick={select}>Nike</ButtonPoll>
-          <ButtonPoll onClick={select}>Adidas</ButtonPoll>
-          <ButtonPoll onClick={select}>Reebok</ButtonPoll>
-          <ButtonPoll onClick={select}>Asics</ButtonPoll>
-        </div>
+        {fields.map((field, index) => (
+          <ButtonPoll onClick={select} key={index}>{field.name}</ButtonPoll>
+        ))}
         <br/>
         <div style={buttonsStyles}>
           <input type={'text'} placeholder={'Другая'}/>
