@@ -15,6 +15,8 @@
   // --  inject svg sprite
   SVGInjector(document.getElementById('svg-inject-me'));
 
+  // -- http://github.hubspot.com/offline/
+
   // --  Sticky Menu
   function stickyMenu() {
     var stickEl = document.querySelector('.layout__menu-inner'),

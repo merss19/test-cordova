@@ -89,10 +89,6 @@
 
 // -------
 
-.description {
-  
-}
-
 %paddings {
   @include av-mq(portable) {
     padding: $baseMargin 60px $baseMargin 40px;
@@ -238,6 +234,48 @@
     }
   }
 }
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 3em;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+.loader,
+.loader:before,
+.loader:after {
+    animation: 1s infinite ease-in-out;
+}
+.loader:before,
+.loader:after {
+  width: 100%; 
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.loader--main:before,
+.loader--main:after {
+  content: '';
+  background-color: $c-primary;
+  transform: scale(0);
+  animation: mainLoader 1.5s infinite ease-in-out;
+}
+.loader--main:after { animation-delay: 0.75s; }
+
+  @keyframes mainLoader {
+    0%   { transform: translateX(-100%) scale(0); }
+    50%  { transform: translateX(0%)    scale(1); }
+    100% { transform: translateX(100%)  scale(0); }
+  }
+
+
+// -------
 
 .attention-box {
   background-color: $c-l-gray;

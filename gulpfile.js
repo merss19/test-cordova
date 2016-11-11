@@ -49,7 +49,8 @@ gulp.task('build:js:libs', function () {
   .pipe(order([
       'modernizr.js',
       'svg-injector.min.js',
-      'tingle.js'
+      'tingle.js',
+      'offline.min.js'
     ]))
   .pipe(concat('libs.js'))
   .pipe(gulp.dest(path.dest.js))
