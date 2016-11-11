@@ -5,6 +5,7 @@ import * as actions from '../actions'
 import LoginValidationForm from '../components/profile/LoginValidationForm'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
+import cookie from 'react-cookie';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -12,7 +13,7 @@ let ProfileLogin = ({ profile, showError, setToken }) => {
   return (
     <div>
       <LoginValidationForm onSubmit={ data => {
-        fetch('http://sport.muhanov.net/api/user/authenticate', {
+        return fetch('http://sport.muhanov.net/api/user/authenticate', {
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
@@ -23,15 +24,16 @@ let ProfileLogin = ({ profile, showError, setToken }) => {
           .then(response => response.json())
           .then(json => {
             if (json.data && json.data.authToken) {
+              cookie.save('token', json.data.authToken, { path: '/' });
+              console.log('token')
+              console.log(cookie.load('token'))
               setToken(json.data.authToken)
               browserHistory.push('/task')
             } else {
-              showError('Неправильный логин или пароль, попробуйте снова.')
               throw new SubmissionError({ password: '', _error: 'Login failed!' })
             }
           })
       }}/>
-      <div>{profile.text}</div>
     </div>
   )
 }

@@ -123,10 +123,10 @@ gulp.task('server', ['build'], function() {
   gulp.watch(path.src.sass + '/**/*.scss', ['build:sass']);
   gulp.watch(path.src.js + '/**/*.js', ['build:js']).on('change', browserSync.reload);
   gulp.watch('**/*.html').on('change', browserSync.reload);
-  
+
   // for layout
   // browserSync.init({ server: "./" });
-  
+
   // Proxy
   browserSync.init({
     notify: false,

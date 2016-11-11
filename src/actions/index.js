@@ -1,3 +1,5 @@
+import cookie from 'react-cookie';
+
 export const REQUEST_TASKDAY = 'REQUEST_TASKDAY'
 export const RECEIVE_TASKDAY = 'RECEIVE_TASKDAY'
 export const SELECT_TASKDAY = 'SELECT_TASKDAY'
@@ -44,7 +46,7 @@ export const receiveTaskDay = (taskDay, json) => {
 const fetchTaskDay = partialState => dispatch => {
   dispatch(requestTaskDay(taskDay))
   const { token, taskDay } = partialState;
-  const payload = { authToken: token }
+  const payload = { authToken: token ? token : cookie.load('token') }
 
   let data = new FormData()
   data.append( "json", JSON.stringify( payload ) )

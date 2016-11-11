@@ -45,7 +45,6 @@ class TodayTask extends Component {
     console.log('MMMMMMMM===(')
     console.log(taskDay)
     const isEmpty = taskDay === undefined || taskDay.data === undefined
-    console.log(isEmpty)
     return (
       <div>
         {isEmpty

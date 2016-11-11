@@ -3,16 +3,6 @@ import ButtonPoll from './ButtonPoll';
 import ButtonPollSend from './ButtonPollSend';
 import TextPoll from './TextPoll';
 
-const modalViewStyles = {
-  backgroundColor: '#1F447B',
-};
-
-const buttonsStyles = {
-  margin: 'auto',
-  width: '50%',
-};
-const problemStyles = {};
-
 function sendPoll(e) {
   e.preventDefault();
   console.log('send')
@@ -24,20 +14,20 @@ function select(children) {
 
 const Poll = ({ children, fields }) => {
   return (
-    <div style={modalViewStyles}>
-      <form action={sendPoll}>
-        <br/>
-        <TextPoll>{children}</TextPoll>
-        <hr/>
+    <div className="question-form">
+      <h4 className="h1 question-form__title">{children}</h4>
+      <ul className="question-form__options">
         {fields.map((field, index) => (
           <ButtonPoll onClick={select} key={index}>{field.name}</ButtonPoll>
         ))}
-        <br/>
-        <div style={buttonsStyles}>
-          <input type={'text'} placeholder={'Другая'}/>
-          <ButtonPollSend onClick={sendPoll}>ОТПРАВИТЬ</ButtonPollSend>
+        <li className="question-form__option is-active">другая</li>
+      </ul>
+      <div className="question-form__own-version">
+        <div className="input input--box input--btn">
+          <input type="text" className="input__field"/>
+          <div className="btn btn--secondary disabled">Отправить</div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
