@@ -14,22 +14,23 @@ $c-fb: #3B5998;
     width: 152px; height: 36px;
     border-radius: $baseRadius;
     flex-shrink: 0;
-    &:not(:last-child) {
-      margin-right: 15px;
-    }
+    // &:not(:last-child) {
+    //   margin-right: 15px;
+    // }
+    margin: 0 7px;
     @include av-mq(portable) {
       margin-bottom: 15px;
+    }
+
+    .svg-icon {
+      fill: #fff;
+      margin-right: 8px;
     }
   }
   &__title {
     font-size: $fz-middle;
     font-family: $f-exo2;
     text-transform: uppercase;
-  }
-
-  .svg-icon {
-    fill: #fff;
-    margin-right: 8px;
   }
 }
 

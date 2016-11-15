@@ -397,8 +397,60 @@
   }
 }
 
+.avatar {
+  position: relative;
+  width: 100px; height: 100px;
 
+  &--profile {
+    margin-bottom: $baseMargin;
+  }
+  
+  &__img-wrap {
+    overflow: hidden;
+    border-radius: 50%;
+  }
+  &__img {
+    border-radius: 50%;
+    max-width: 100%;
+  }
+  &--upload {
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    position: absolute;
+  }
+}
 
+.gender {
+  display: flex;
+  margin-left: 6%;
+
+  @include av-mq(pocket) {
+    flex-direction: column;
+  }
+
+  @include av-mq(desk) {
+    flex-direction: column;
+  }
+
+  @include av-mq(desk) {
+    flex-direction: column;
+  }
+
+  &__title {
+    margin-right: 20px;
+    margin-bottom: 5px;
+  }
+
+  .radio__ph {
+    margin-right: 5px;
+  }
+
+  .radio {
+    margin-right: 20px;
+    margin-bottom: 8px;
+  }
+
+}
 
 
 
