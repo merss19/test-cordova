@@ -58,7 +58,7 @@
     }
 
     @include av-mq(desk) {
-      max-width: 1120px;
+      max-width: $bcMaxWidth;
       padding: 0 20px;
       border-radius: 0;
       .entry__box {
@@ -94,7 +94,7 @@
 
 // bread-crumbs
 
-$bcMaxWidth: 1120px;
+$bcMaxWidth: 960px;
 
 .entry-bc {
   position: relative;
@@ -106,6 +106,7 @@ $bcMaxWidth: 1120px;
   font-family: $f-exo2;
   color: $c-l-blue;
   font-size: $fz-h3;
+  transition: 0.1s;
 
   @include av-mq(portable) {
     margin: #{$baseMargin/2} auto #{$baseMargin/2};
@@ -128,22 +129,17 @@ $bcMaxWidth: 1120px;
 
     &--step-1 {
       .entry-bc {
-
+        left: 0;
       }
     }
     &--step-2 {
       .entry-bc {
-        left: -#{$bcMaxWidth/4};
+        left: -#{$bcMaxWidth/3};
       }
     }
     &--step-3 {
       .entry-bc {
-        left: -#{$bcMaxWidth/2};
-      }
-    }
-    &--step-4 {
-      .entry-bc {
-        left: -#{$bcMaxWidth - ($bcMaxWidth/4) };
+        left: -#{$bcMaxWidth - ($bcMaxWidth/3) };
       }
     }
 
@@ -161,37 +157,64 @@ $bcMaxWidth: 1120px;
   }
 
   &__item {
+    position: relative;
     display: flex;
     align-items: center;
     text-align: center;
     padding-right: 4%;
-    width: #{$bcMaxWidth/4};
+    width: #{$bcMaxWidth/3};
     flex-shrink: 0;
 
     &--active {
 
-      .entry-bc__num {
+      .entry-bc__step-num {
         background-color: transparent;
         color: $c-l-blue;
         border: 2px solid $c-l-blue;
       }
     }
 
+    &--done {
+
+      .entry-bc__step-num {
+        background-color: $c-secondary;
+      }
+      .entry-bc__title {
+        color: $c-secondary;
+      }
+      .ico-done {
+        display: block !important;
+      }
+    }
   }
-  &__num {
+
+  &__step {
+    position: relative;
+    margin-right: 15px;
+  }
+
+  &__step-num {
+    display: block;
     flex-shrink: 0;
     color: #fff;
     width: 32px; height: 32px;
     border-radius: 50%;
     border: 2px solid transparent;
     background-color: $c-l-blue;
-    margin-right: 15px;
   }
 
   &__title {
     line-height: 1.1;
     text-align: left;
   }
+
+  .ico-done {
+    position: absolute;
+    display: none;
+    right: -6px; top: -6px;
+  }
+
+
 }
 
 .entry-form {
