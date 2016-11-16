@@ -75,7 +75,10 @@
       }
     }
     &:disabled {
+      -webkit-text-fill-color: $c-m-gray;
+      -webkit-opacity: 1;
       color: $c-m-gray;
+      background-color: $c-l-gray;
     }
   }
   &.float-label {
@@ -147,10 +150,10 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    width: 30px; height: 30px;
+    width: 22px; height: 22px;
     border-radius: 50%;
-    border: 2px solid $c-secondary;
-    margin-left: 10px;
+    border: 1px solid $c-primary;
+    margin: 0 10px;
     .btn-taks & {
       border-color: #fff;
     }
@@ -167,7 +170,7 @@
         }
       }
       .ico-tick {
-        fill: $c-secondary;
+        fill: $c-primary;
       }
     }
   }
@@ -177,6 +180,7 @@
 }
 
 .radio {
+  margin-right: 8px;
   &__label {
 
   }

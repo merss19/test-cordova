@@ -93,6 +93,11 @@
   width: 100%;
   background-color: $c-primary;
   height: 45px;
+  .checkbox__ph {
+    width: 30px; height: 30px;
+    border-width: 2px;
+    margin: 0;
+  }
   .ico-tick {
     fill: transparent;
   }

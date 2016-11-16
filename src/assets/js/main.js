@@ -10,10 +10,22 @@
       mobMenu          = document.querySelector('.menu-mob-left'),
       layout           = document.querySelector('.layout'),
       btnCloseMobMenu  = document.querySelector('.menu-mob-left__ico-close'),
-      stickyWrap       = document.querySelector('.layout__menu');
+      stickyWrap       = document.querySelector('.layout__menu'),
+      dateInput        = document.querySelectorAll('.input__field--date');
 
   // --  inject svg sprite
   SVGInjector(document.getElementById('svg-inject-me'));
+
+  // -- http://nosir.github.io/cleave.js/
+
+  if (!(dateInput === null)) {
+    dateInput.forEach(function(el, i){
+      new Cleave(el, {
+          date: true,
+          datePattern: ['d', 'm', 'Y']
+      });
+    });
+  }
 
   // -- http://github.hubspot.com/offline/
 

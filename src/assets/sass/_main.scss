@@ -107,7 +107,7 @@
 
   &--big-padding {
     @include av-mq(portable) {
-      padding: $baseMargin 60px $baseMargin 40px;
+      padding: $baseMargin 30px $baseMargin 40px;
       box-shadow: none;
     }
     @include av-mq(desk) {
@@ -314,26 +314,6 @@
       transform: translateX(-50%);
     }
   }
-  &__options {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 60px;
-  }
-  &__option {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    border-radius: $baseRadius;
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
-
-    &.is-active {
-      border: 1px solid rgba(255,255,255, 1);
-    }
-  }
   &__own-version {
     margin: 0 auto;
     max-width: 360px;
@@ -401,10 +381,31 @@
   position: relative;
   width: 100px; height: 100px;
 
-  &--profile {
-    margin-bottom: $baseMargin;
+  &:before {
+    display: none;
+    content: 'Загрузить Аватар';
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba($c-primary, 0.68);
+    border-radius: 50%;
+    color: #fff;
+    font-size: $fz-middle;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
   }
-  
+
+  &:hover {
+    &:before {
+      display: flex;
+    }
+  }
+
+  &--profile {
+    display: inline-block;
+  }
+
   &__img-wrap {
     overflow: hidden;
     border-radius: 50%;
@@ -422,19 +423,7 @@
 
 .gender {
   display: flex;
-  margin-left: 6%;
-
-  @include av-mq(pocket) {
-    flex-direction: column;
-  }
-
-  @include av-mq(desk) {
-    flex-direction: column;
-  }
-
-  @include av-mq(desk) {
-    flex-direction: column;
-  }
+  justify-content: center;
 
   &__title {
     margin-right: 20px;
@@ -446,10 +435,53 @@
   }
 
   .radio {
-    margin-right: 20px;
-    margin-bottom: 8px;
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
   }
 
+}
+
+.checkboxes {
+
+  &__item {
+    // margin-right: 8px;
+    margin-bottom: 6px;
+  }
+}
+
+.timer {
+  position: relative;
+  margin: $baseMargin auto;
+  font-family: $f-exo2;
+  font-size: $fz-big;
+  display: flex;
+  max-width: 140px;
+  border: 1px solid $c-border;
+  border-radius: $baseRadius;
+
+  &__min, &__sec {
+    width: 50%;
+    text-align: center;
+    color: $c-text;
+    border: none;
+    background-color: transparent;
+    height: 60px;
+
+    &:focus {
+      outline: none;
+    }
+
+  }
+
+  &:before {
+    content: ':';
+    display: block;
+    position: absolute;
+    left: 50%; top: 44%;
+    transform: translate(-50%, -50%);
+    line-height: 0;
+  }
 }
 
 
