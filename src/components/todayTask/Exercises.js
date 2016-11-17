@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
-import tingle from 'tingle.js'
 
-const Exercises = props => {
+const Exercises = () => {
   return (
     <div className="stage-box stage-box--big-padding">
 
