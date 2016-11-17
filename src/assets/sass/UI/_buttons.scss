@@ -1,0 +1,113 @@
+.btn {
+  user-select: none;
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  align-self: baseline;
+  border: 0;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: $baseRadius;
+  text-transform: uppercase;
+  font-size: $fz-middle;
+  font-weight: 600;
+  font-family: $f-exo2;
+  padding: 17px 20px 17px;
+
+  &--primary {
+    color: #fff;
+    background-color: $c-green;
+    .no-touchevents & {
+      &:not(.disabled) {
+        &:hover {
+          background-color: lighten($c-green, 6%);
+        }
+        &:active {
+          // background-color: darken($c-green, 3%);
+        }
+      }
+    }
+  }
+
+  &--secondary {
+    color: #fff;
+    background-color: $btn-secondary;
+    .no-touchevents & {
+      &:not(.disabled) {
+        &:hover {
+          background-color: lighten($btn-secondary, 6%);
+        }
+        &:active {
+          // background-color: darken($btn-secondary, 3%);
+        }
+      }
+    }
+  }
+
+  &--action {
+    color: #fff;
+    background-color: $btn-action;
+    .no-touchevents & {
+      &:not(.disabled) {
+        &:hover {
+          background-color: lighten($btn-action, 6%);
+        }
+        &:active {
+          // background-color: darken($btn-action, 3%);
+        }
+      }
+    }
+  }
+
+  &--big {
+    padding: 17px 12px 15px;
+  }
+
+  &--icon {
+    padding: 0;
+    display: flex;
+  }
+
+  &.disabled {
+    cursor: default;
+    color: $c-m-gray;
+    background-color: $c-l-gray;
+  }
+  &:disabled {
+    // border: 1px solid $c-gborder;
+    // color: $c-otext;
+    background-color: #fff;
+  }
+
+}
+
+
+.btn-taks {
+  cursor: pointer;
+  border-radius: $baseRadius;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: $f-exo2;
+  font-size: 12px;
+  max-width: 158px;
+  width: 100%;
+  background-color: $c-primary;
+  height: 45px;
+  .checkbox__ph {
+    width: 30px; height: 30px;
+    border-width: 2px;
+    margin: 0;
+  }
+  .ico-tick {
+    fill: transparent;
+  }
+  .no-touchevents & {
+    &:hover {
+      background-color: lighten($c-primary, 6%);
+    }
+    &:active {
+      // background-color: darken($c-primary, 3%);
+    }
+  }
+}
+

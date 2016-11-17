@@ -1,0 +1,246 @@
+.input, .select, .textarea {
+  &__field {
+    width: 100%;
+    -webkit-appearance: none;
+    color: $c-text;
+    outline: none;
+    background-color: transparent;
+  }
+}
+
+%float-label {
+  top: -10px;
+  font-size: $fz-base;
+  padding: 0 2px 0 0;
+  font-size: $fz-middle;
+}
+
+.input {
+  position: relative;
+  margin-bottom: 10px;
+
+  &--box {
+    .input__field {
+      border: 1px solid $c-border;
+      border-radius: $baseRadius;
+      padding: 8px 12px;
+    }
+  }
+
+  &--line {
+    .input__field {
+      border-top: 1px solid transparent;
+      border-left: 1px solid transparent;
+      border-right: 1px solid transparent;
+      border-bottom: 1px solid $c-border;
+      padding: 8px 0px;
+      margin-bottom: 15px;
+      border-radius: 0px;
+      &:focus {
+        border-bottom: 1px solid $c-secondary;
+      }
+    }
+  }
+
+  &--btn {
+    display: flex;
+    
+    .input__field {
+      position: relative;
+      right: -5px; bottom: -1px;
+      border-radius: 4px 0 0 4px;
+      border-top: 1px solid $c-border;
+      border-left: 1px solid $c-border;
+      border-bottom: 1px solid $c-border;
+      border-right: 1px solid transparent;
+    }
+    .btn {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+  }
+
+  &--big {
+    .input__field {
+      padding: 12px 12px;
+    }
+  }
+  &__field {
+    height: 44px;
+    &:focus {
+      transition: border-color 0.2s;
+      // border: 1px solid $c-darkblue-4;
+      & + .input__label {
+        @extend %float-label;
+      }
+    }
+    &:disabled {
+      -webkit-text-fill-color: $c-m-gray;
+      -webkit-opacity: 1;
+      color: $c-m-gray;
+      background-color: $c-l-gray;
+    }
+  }
+  &.float-label {
+    .input__label {
+      @extend %float-label;
+    }
+  }
+  &__label {
+    cursor: text;
+    padding: 0 2px 0 0;
+    position: absolute;
+    left: 0px; top: 14px;
+    transition: .1s;
+    // color: $c-darkblue-4;
+  }
+}
+
+.select {
+  &__field {
+
+  }
+}
+
+.textarea {
+
+  &--box {
+    .textarea__field {
+      border-radius: $baseRadius;
+      border: 1px solid $c-border;
+      padding: 12px 12px;
+    }
+  }
+
+  &--line {
+    .textarea__field {
+      border-top: 1px solid transparent;
+      border-left: 1px solid transparent;
+      border-right: 1px solid transparent;
+      border-bottom: 1px solid $c-border;
+      padding: 12px 0;
+      &:focus {
+        border-bottom: 1px solid $c-secondary;
+      }
+    }
+  }
+
+  &__field {
+    resize: none;
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  &__label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    .btn-taks & {
+      padding: 0 15px;
+      width: 100%; height: 45px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &__ph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1px solid $c-primary;
+    margin: 0 10px;
+    .btn-taks & {
+      border-color: #fff;
+    }
+  }
+  &__title {
+
+  }
+  &__field {
+    display: none;
+    &:checked + .checkbox__ph {
+      .btn-taks & {
+        .ico-tick {
+          fill: #fff;
+        }
+      }
+      .ico-tick {
+        fill: $c-primary;
+      }
+    }
+  }
+  .ico-tick {
+    fill: transparent;
+  }
+}
+
+.radio {
+  margin-right: 8px;
+  &__label {
+
+  }
+  &__field {
+    display: none;
+    &:checked ~ .radio__ph {
+      &:before {
+        background-color: $c-primary;
+      }
+    }
+  }
+  &__ph {
+    position: relative;
+    border-radius: 50%;
+    border: 1px solid $c-primary;
+    display: inline-block;
+    vertical-align: middle;
+    width: 22px; height: 22px;
+    &:before {
+      content: '';
+      display: block;
+      width: 12px; height: 12px;
+      left: 4px; top: 4px;
+      background-color: #fff;
+      border-radius: 50%;
+      position: absolute;
+    }
+  }
+}
+
+.select {
+  position: relative;
+  margin-bottom: 10px;
+  &__field {
+    border: 1px solid $c-border;
+    border-radius: $baseRadius;
+    padding: 8px 12px;
+    height: 44px;
+  }
+  .ico-arrow-accordion {
+    width: 15px; height: 8px;
+    position: absolute;
+    bottom: 17px; right: 15px;
+  }
+  &:before {
+    content: '';
+    display: block;
+    width: 1px; height: 44px;
+    background-color: $c-border;
+    position: absolute;
+    bottom: 0; right: 44px;
+  }
+}
+
+.upload-file {
+  cursor: pointer;
+
+  &__input {
+    display: none;
+  }
+}
+
+

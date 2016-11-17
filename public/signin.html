@@ -1,0 +1,85 @@
+<!DOCTYPE>
+<html class="no-js">
+  <head>
+    <title> iToday </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0">
+    <link rel="stylesheet" href="assets/css/styles.css">
+  <body>
+
+    <!-- inline svg -->
+    <img id="svg-inject-me" class="injected-svg" src="assets/img/symbol-sprite.svg">
+
+    <div class="layout layout--login">
+        
+      <div class="header">
+        <div class="grid header__inner">
+          <h1 class="grid__cell header__logo">
+            Ясегодня
+            <img src="assets/img/ys_logo.svg" alt="Ясегодня">
+          </h1>
+        </div>
+      </div>
+
+      <div class="entry entry--sign-in">
+
+        <div class="entry__inner">
+          <div class="entry__box">
+            
+            <div class="entry-form">
+              <div class="entry-form__header">
+                <a href="#">Регистрация</a>
+              </div>
+
+              <hr>
+              
+              <h2 class="h2">Вход в Личный кабинет </h2>
+
+              <div class="grid grid--middle">
+                <div class="1/2--desk grid__cell entry-form__email">
+                  <div class="input input--line">
+                    <input id="login[1]" type="text" class="input__field">
+                    <label class="input__label" for="login[1]">Ваш e-mail</label>
+                  </div>
+                  <div class="input input--line">
+                    <input id="login[2]" type="password" class="input__field">
+                    <label class="input__label" for="login[2]">Ваш пароль</label>
+                  </div>
+                  <div class="btn btn--primary">Войти</div>
+                  <a href="#">Забыли пароль?</a>
+                </div>
+                <div class="1/2--desk grid__cell entry-form__social">
+                  <p class="entry-form__social-title">Войти через социальные сети</p>
+                  <ul class="social-signin">
+                    <li class="social-signin__item social-signin__item--vk">
+                      <svg class="svg-icon ico-vk">
+                        <use xlink:href="#vk"></use>
+                      </svg>
+                    </li>
+                    <li class="social-signin__item social-signin__item--odnoklassniki">
+                      <svg class="svg-icon ico-odnoklassniki">
+                        <use xlink:href="#odnoklassniki"></use>
+                      </svg>
+                    </li>
+                    <li class="social-signin__item social-signin__item--fb">
+                      <svg class="svg-icon ico-fb">
+                        <use xlink:href="#fb"></use>
+                      </svg>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    
+    <script src="assets/js/libs.js"></script>
+    <script src="assets/js/main.js"></script>
+
+  </body>
+</html>
