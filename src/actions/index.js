@@ -6,14 +6,23 @@ export const SELECT_TASKDAY = 'SELECT_TASKDAY'
 export const INVALIDATE_TASKDAY = 'INVALIDATE_TASKDAY'
 export const CREATE_PROFILE     = 'CREATE_PROFILE'
 export const SET_TOKEN          = 'SET_TOKEN'
+export const SIGNUP             = 'SIGNUP'
 
 export const createProfile = text => ({
-  type: 'CREATE_PROFILE',
+  type: CREATE_PROFILE,
   text
 })
 
+export const signup = ({program, email, password}) => {
+  return ({
+    type: SIGNUP,
+    program,
+    email,
+    password
+})}
+
 export const setToken = token => ({
-  type: 'SET_TOKEN',
+  type: SET_TOKEN,
   token
 })
 

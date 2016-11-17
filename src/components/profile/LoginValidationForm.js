@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import CustomInput from '../componentKit/CustomInput';
 
 const LoginValidationForm = props => {
-  const { error, handleSubmit, pristine, reset, submitting } = props;
+  const { error, handleSubmit, pristine, reset, submitting } = props
   return (
     <div className="layout layout--login">
 

@@ -1,45 +1,34 @@
 import React, { Component, PropTypes } from 'react'
-import TaskButton from '../../stories/TaskButton'
-import Welcome from '../../stories/Welcome'
-import ExerciseTitle from '../../stories/task/ExerciseTitle'
-import TaskTitle from '../../stories/task/TaskTitle'
-import Calendar from '../../stories/task/Calendar'
-import Profile from '../../stories/Profile'
-import TextDarkBlue from '../../stories/TextDarkBlue'
-import TextExercise from '../../stories/task/TextExercise'
-import ChatTab from '../../stories/chat/ChatTab'
 import Chat from '../../stories/chat/Chat'
-import CalendarDayModal from '../../stories/task/CalendarDayModal'
-import CalendarFinal from '../../stories/task/CalendarFinal'
-import TasksAccordion from '../../stories/TasksAccordion'
-import ModalReport from '../../stories/task/ModalReport'
-import TasksAccordionHeader from '../../stories/TasksAccordionHeader'
-import TasksAccordionContent from '../../stories/TasksAccordionContent'
-import ButtonPoll from '../../stories/poll/ButtonPoll'
-import ButtonPollSend from '../../stories/poll/ButtonPollSend'
-import TextPoll from '../../stories/poll/TextPoll'
 import Poll from '../../stories/poll/Poll'
 import Header from '../../stories/Header'
-import RemainTimeTitle from '../../stories/task/RemainTimeTitle'
-import ExerciseHeader from '../../stories/task/ExerciseHeader'
-import ExerciseHowTitle from '../../stories/task/ExerciseHowTitle'
 import CalendarList from './CalendarList'
 import TaskIntro from './TaskIntro'
 import Menu from './Menu'
 import Exercises from './Exercises'
-import SendReportModal from './SendReportModal'
 import Modal from 'boron/DropModal'
+import SendReportModal from './SendReportModal'
 import { connect } from 'react-redux'
+import { SubmissionError } from 'redux-form'
+import cookie from 'react-cookie';
 
 import { action } from '@kadira/storybook'
 
 class MainComponent extends Component {
   render() {
+    const contentStyle = {
+      borderRadius: '18px',
+      padding: '30px'
+    }
+
+    const { taskDay, token } = this.props
+
+    console.log('<=======*==0')
+    console.log(taskDay)
+    console.log(token)
+
     return (
       <div className="layout">
-        {console.log('<=======*==0')}
-        {console.log(this.props.taskDay)}
-
         <Header/>
         <div className="layout__inner">
           <div className="grid">
@@ -73,62 +62,43 @@ class MainComponent extends Component {
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-              <TaskIntro>Test</TaskIntro>
+              <TaskIntro/>
               <Exercises sendReport={() => {
                 this.refs.sendReportModal.show()
               }}/>
 
-              <Modal ref='sendReportModal'>
-                <div className='base-popup tingle-modal-box__content tingle-modal-box'>
-                  <h3 className="h1">Отчет миньону</h3>
-                  <hr/>
-                  <p className="sub-title">Напиши сообщение миньону о том, что тренировка отработана! Если ты и правда все сделал :)</p>
-                  <div className="input input--box fill-report--input-info">
-                    <input className="input__field" type="text" placeholder="Выполнено, сделал, справился..."/>
-                  </div>
-                  <p className="text-center">Как ты себя чувствовал во время выполнения заданий?</p>
-                  <ul className="your-condition">
-                    <li className="your-condition__item your-condition__item--active">
-                      <span className="your-condition__ico">
-                        <svg className="svg-icon ico-your-condition-1">
-                          <use xlinkHref="#ico-your-condition-1"></use>
-                        </svg>
-                      </span>
-                      <p className="your-condition__title">отлично</p>
-                    </li>
-                    <li className="your-condition__item">
-                      <span className="your-condition__ico">
-                        <svg className="svg-icon ico-your-condition-2">
-                          <use xlinkHref="#ico-your-condition-2"></use>
-                        </svg>
-                      </span>
-                      <p className="your-condition__title">так себе</p>
-                    </li>
-                    <li className="your-condition__item">
-                      <span className="your-condition__ico">
-                        <svg className="svg-icon ico-your-condition-3">
-                          <use xlinkHref="#ico-your-condition-3"></use>
-                        </svg>
-                      </span>
-                      <p className="your-condition__title">не очень</p>
-                    </li>
-                  </ul>
-
-                  <p className="text-center mb30">Прикрепите файл или вставьте ссылку с видео выполнения заданий</p>
-
-                  <div className="fill-report__video-report">
-                    <div className="input input--box input--btn">
-                      <input type="text" className="input__field" placeholder="http://youtube.com"/>
-                      <div className="btn btn--secondary">Прикрепить файл</div>
-                    </div>
-                  </div>
-
-                  <hr/>
-
-                  <div className="text-center">
-                    <div className="btn btn--primary js-fill-report-2">Отправить отчет</div>
-                  </div>
-                </div>
+              <Modal ref='sendReportModal' modalStyle={contentStyle}>
+                <SendReportModal onSubmit={(data) => {
+                  return fetch('http://sport.muhanov.net/api/user/userTask-create', {
+                      headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      },
+                      method: 'POST',
+                      body: JSON.stringify({
+                        authToken: token ? token : cookie.load('token'),
+                        data: {
+                          ...data,
+                          health: 'good',
+                          day: taskDay.id,//day
+                          user: '23',//user
+                          status: 'waiting',
+                          admin: 1,//admin
+                          adminAnswer: '',//admin
+                        }
+                      })
+                    })
+                    .then(response => response.json())
+                    .then(json => {
+                      console.log('<=--------=--------')
+                      console.log(json.data)
+                      if (json.data) {
+                        console.log('success')
+                      } else {
+                        throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
+                      }
+                    })
+                }}/>
               </Modal>
 
 

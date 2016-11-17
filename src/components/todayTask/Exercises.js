@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 
-const Exercises = () => {
+const Exercises = props => {
   return (
     <div className="stage-box stage-box--big-padding">
 

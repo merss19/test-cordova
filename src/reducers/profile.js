@@ -3,8 +3,14 @@ export function profile(state = 'DO_NOT_CREATE', action) {
     case 'CREATE_PROFILE':
       return {
         text: action.text,
-      };
+      }
+    case 'SIGNUP':
+      return {
+        email: action.email,
+        password: action.password,
+        program: action.program,
+      }
     default:
-      return state;
+      return state
   }
 }

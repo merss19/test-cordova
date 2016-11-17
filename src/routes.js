@@ -18,6 +18,7 @@ export default (
     <Route path='signup'>
       <IndexRoute component={ProfileSignup} />
       <Route path='pay' component={ProfilePay} />
+      <Route path='pay/:status' component={ProfilePay} />
     </Route>
     <Route path='signup/:program' component={ProfileSignup} />
   </Route>

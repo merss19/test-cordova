@@ -71,8 +71,4 @@ const TaskIntro = () => (
   </div>
 )
 
-TaskIntro.propTypes = {
-  children: PropTypes.string.isRequired
-}
-
 export default TaskIntro

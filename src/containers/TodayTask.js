@@ -41,16 +41,14 @@ class TodayTask extends Component {
   }
 
   render() {
-    const { selectedTaskDay, taskDay, isFetching, lastUpdated } = this.props
-    console.log('MMMMMMMM===(')
-    console.log(taskDay)
+    const { selectedTaskDay, taskDay, token, isFetching, lastUpdated } = this.props
     const isEmpty = taskDay === undefined || taskDay.data === undefined
     return (
       <div>
         {isEmpty
           ? (isFetching ? <h2>Загружается...</h2> : <h2>Ничего не найдено</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <MainComponent taskDay={taskDay.data[0]} />
+              <MainComponent token={token} taskDay={taskDay.data[0]} />
             </div>
         }
       </div>

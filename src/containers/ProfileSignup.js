@@ -6,24 +6,32 @@ import LoginValidationForm from '../components/profile/LoginValidationForm'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie';
+import { Field, reduxForm } from 'redux-form'
+import CustomInput from '../components/componentKit/CustomInput';
+import SignupValidationForm from '../components/profile/SignupValidationForm'
 
 let ProfileSignup = props => {
-  const program = props.params.program
+  console.log(props)
+  const programParam = props.params.program
+  const { error, handleSubmit, pristine, reset, submitting, signup } = props;
   let programInfo
+  let program
 
-  switch (program) {
+  switch (programParam) {
     case 'mommy':
-      programInfo = <div className="entry-info__title">#МАМА МОЖЕТ</div>
+      program = '#МАМА МОЖЕТ'
       break
     case 'extremeways':
-      programInfo = <div className="entry-info__title">#ЭКСТРИМАЛЬНАЯ СУШКА</div>
+      program = '#ЭКСТРИМАЛЬНАЯ СУШКА'
       break
     case 'tommorowman':
-      programInfo = <div className="entry-info__title">#Я ЗАВТРА</div>
+      program = '#Я ЗАВТРА'
       break
     default:
-      programInfo = <div className="entry-info__title">#Я ГЕРОЙ</div>
+      program = '#Я ГЕРОЙ'
   }
+
+  programInfo = <div className="entry-info__title">{program}</div>
 
   return (
     <div className="layout layout--registration">
@@ -97,18 +105,12 @@ let ProfileSignup = props => {
               <hr/>
 
               <div className="grid grid--middle">
-                <div className="1/2--desk grid__cell entry-form__email">
-                  <div className="input input--line">
-                    <input id="login[1]" type="text" className="input__field"/>
-                    <label className="input__label" htmlFor="login[1]">Ваш e-mail</label>
-                  </div>
-                  <div className="input input--line">
-                    <input id="login[2]" type="password" className="input__field"/>
-                    <label className="input__label" htmlFor="login[2]">Ваш пароль</label>
-                  </div>
-                  <div className="btn btn--action js-pay-pupup">Войти/Зарегистрироваться</div>
-                  <a href="#">Забыли пароль?</a>
-                </div>
+                <SignupValidationForm onSubmit={(data) => {
+                  console.log(data)
+                  const { email, password } = data
+                  signup({program, email, password})
+                  browserHistory.push('/signup/pay')
+                }}/>
                 <div className="1/2--desk grid__cell entry-form__social">
                   <p className="entry-form__social-title">Войти через социальные сети</p>
                   <ul className="social-signin">
@@ -154,5 +156,20 @@ let ProfileSignup = props => {
     </div>
   )
 }
+
+const mapStateToProps = state => ({
+  program: state.profile,
+  email: state.profile,
+  password: state.profile,
+ })
+
+const mapDispatchToProps = dispatch => ({
+  signup: bindActionCreators(actions.signup, dispatch)
+})
+
+ProfileSignup = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileSignup)
 
 export default ProfileSignup
