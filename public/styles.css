@@ -800,8 +800,7 @@ hr {
    App layout
    =========================== */
 .layout {
-  height: 100%;
-  background-color: #F9FBFC; }
+  height: 100%; }
   .layout--login .header__logo {
     text-align: center; }
   .layout--registration .header__inner {
@@ -1283,6 +1282,7 @@ hr {
     color: #696D7D; }
 
 .entry__inner {
+  height: 100%;
   position: relative;
   text-align: center;
   margin: 0 auto; }
@@ -2569,3 +2569,6 @@ code {
   padding: 10% 0; }
 
 /*# sourceMappingURL=map/styles.css.map */
+#root {
+  height: 100%;
+}

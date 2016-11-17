@@ -26,9 +26,6 @@ import Header from './Header';
 import RemainTimeTitle from './task/RemainTimeTitle';
 import ExerciseHeader from './task/ExerciseHeader';
 import ExerciseHowTitle from './task/ExerciseHowTitle';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
-import { Grid, Row, Col, Button } from 'react-bootstrap';
 
 storiesOf('Task', module)
   .add('TaskButton complete', () => (

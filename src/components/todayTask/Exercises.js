@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
+import tingle from 'tingle.js'
 
-const Exercises = () => {
+const Exercises = props => {
   return (
     <div className="stage-box stage-box--big-padding">
 
@@ -17,9 +18,9 @@ const Exercises = () => {
             </div>
             <div className="btn-taks">
               <span className="checkbox">
-                <label className="checkbox__label" for="task[1]">
+                <label className="checkbox__label" htmlFor="task[1]">
                   <span className="checkbox__title">Готово!</span>
-                  <input className="checkbox__field checkbox__field--btn-taks" id="task[1]" type="checkbox" checked/>
+                  <input className="checkbox__field checkbox__field--btn-taks" id="task[1]" type="checkbox" defaultChecked/>
                   <span className="checkbox__ph">
                     <svg className="svg-icon ico-tick">
                       <use xlinkHref="#ico-tick"></use>
@@ -110,7 +111,7 @@ const Exercises = () => {
             </div>
             <div className="btn-taks">
               <span className="checkbox">
-                <label className="checkbox__label" for="task[2]">
+                <label className="checkbox__label" htmlFor="task[2]">
                   <span className="checkbox__title">Выполнил</span>
                   <input className="checkbox__field checkbox__field--btn-taks" id="task[2]" type="checkbox"/>
                   <span className="checkbox__ph">
@@ -150,7 +151,9 @@ const Exercises = () => {
         <h2 className="h1 tasks-results__title">Подведем итоги?</h2>
         <p className="tasks-results__desc">Молодец! На сегодня программа выполнена! Это конечно не максимум того, что мы могли бы сделать всметсе, но у нас еще есть немного времени впереди</p>
         <div className="text-center">
-          <div className="btn btn--primary js-fill-report-1">Заполнить отчет!</div>
+          <div className="btn btn--primary js-fill-report-1" onClick={props.sendReport}>
+            Заполнить отчет!
+          </div>
         </div>
 
       </div>

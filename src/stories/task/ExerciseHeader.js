@@ -1,7 +1,6 @@
 import React from 'react';
 import ExerciseTitle from './ExerciseTitle';
 import TaskButton from '../TaskButton';
-import { Grid, Row, Col } from 'react-bootstrap';
 
 const headerStyles = {
   height: 70,

@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import * as actions from '../actions'
 
-import MainComponent from '../components/todayTask/MainComponent';
+import MainComponent from '../components/todayTask/MainComponent'
 
 class TodayTask extends Component {
   static propTypes = {
