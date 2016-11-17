@@ -1,0 +1,35 @@
+.guide {
+  max-width: 700px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+
+  &__title {
+    font-size: $fz-big;
+    padding-top: 20px;
+    margin-bottom: 50px;
+  }
+  &__block {
+    margin-bottom: 40px;
+  }
+  p {
+    margin-bottom: 10px;
+  }
+  h2, h3 {
+    text-align: left;
+  }
+
+  &__buttions {
+    .btn {
+      margin-bottom: 10px;
+    }
+    .input, .textarea {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+code {
+  background-color: $c-secondary;
+  color: #fff;
+  padding: 4px 6px;
+}

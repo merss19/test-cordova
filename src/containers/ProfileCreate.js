@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { createProfile } from '../actions'
 import { SubmissionError } from 'redux-form'
-import $ from 'jquery';
+// import $ from 'jquery';
 import SubmitValidationForm from '../components/profile/SubmitValidationForm';
 
 let ProfileCreate = dispatch => {
