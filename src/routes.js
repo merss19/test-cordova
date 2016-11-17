@@ -6,11 +6,15 @@ import TodayTask from './containers/TodayTask'
 import ProfileCreate from './containers/ProfileCreate'
 import ProfileSignup from './containers/ProfileSignup'
 import ProfilePay from './containers/ProfilePay'
+import Faq from './components/Faq'
+import Food from './components/food/MainComponent'
 
 export default (
   <Route path='/'>
     <IndexRoute component={App} />
     <Route path='task' component={TodayTask} />
+    <Route path='faq' component={Faq} />
+    <Route path='food' component={Food} />
     <Route path='profile'>
       <IndexRoute component={App} />
       <Route path='create' component={ProfileCreate} />

@@ -1,20 +1,29 @@
 import React, { PropTypes } from 'react'
 import MenuButton from '../../stories/MenuButton'
+import { browserHistory } from 'react-router'
 
 const Menu = () => (
   <div className="2/3 grid__cell">
     <ul className="main-nav">
-      <li className="main-nav__item main-nav__item--active">
-        <MenuButton href="/index.html" icon="ico-m-tasks">Задания</MenuButton>
+      <li className="main-nav__item">
+        <MenuButton onClick={() => {
+          browserHistory.push('/task')
+        }} icon="ico-m-tasks">Задания</MenuButton>
       </li>
       <li className="main-nav__item">
-        <MenuButton href="/reports.html" icon="ico-m-book">Зачетка</MenuButton>
+        <MenuButton onClick={() => {
+          browserHistory.push('/task')//reports
+        }} icon="ico-m-book">Зачетка</MenuButton>
       </li>
       <li className="main-nav__item">
-        <MenuButton href="/food.html" icon="ico-m-food">Питание</MenuButton>
+        <MenuButton onClick={() => {
+          browserHistory.push('/food')//food
+        }} icon="ico-m-food">Питание</MenuButton>
       </li>
       <li className="main-nav__item">
-        <MenuButton href="/faq.html" icon="ico-m-faq">ЧАВО</MenuButton>
+        <MenuButton onClick={() => {
+          browserHistory.push('/faq')
+        }} icon="ico-m-faq">ЧАВО</MenuButton>
       </li>
     </ul>
     <hr/>

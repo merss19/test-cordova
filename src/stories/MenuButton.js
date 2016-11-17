@@ -1,17 +1,8 @@
 import React from 'react'
 
-const buttonStyles = {
-  fontFamily: 'Helvetica',
-  color: '#1F447B',
-  cursor: 'pointer',
-  fontSize: 12,
-  padding: '3px 10px',
-  margin: 10,
-}
-
-const MenuButton = ({ children, href, icon }) => (
+const MenuButton = ({ children, onClick, icon }) => (
   // <div></div>
-  <a href={href} className="main-nav__item-inner">
+  <a href="#" onClick={onClick} className="main-nav__item-inner">
     <svg className={"svg-icon " + icon}>
       <use xlinkHref={"#" + icon }/>
     </svg>

@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import LoginValidationForm from '../components/profile/LoginValidationForm'
-import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 

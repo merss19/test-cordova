@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 
 const TaskIntro = () => (
   <div className="stage-box stage-box--big-padding">
