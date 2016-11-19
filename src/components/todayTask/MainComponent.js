@@ -29,7 +29,9 @@ class MainComponent extends Component {
 
     return (
       <div className="layout">
-        <Header/>
+        <Header closeMobMenu={() => {
+
+        }}/>
         <div className="layout__inner">
           <div className="grid">
             <div className="1/4--desk grid__cell layout__menu">

@@ -14,7 +14,7 @@ class ProfilePay extends Component {
     const data = JSON.stringify({
         parent_id: "iframe_parent",
         api_key: "57d156d0-dacf-464d-bcd3-c7f01b0c1a35",
-        tx_id: "125",
+        tx_id: "126",
         description: "Тестовый платеж",
         amount: 1000,
         signature: "",

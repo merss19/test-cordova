@@ -13,6 +13,11 @@ export const createProfile = text => ({
   text
 })
 
+// export const togleMenuMobLeft = visible => ({
+//   type: CREATE_PROFILE,
+//   text
+// })
+
 export const signup = ({program, email, password}) => {
   return ({
     type: SIGNUP,

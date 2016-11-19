@@ -5,7 +5,7 @@ import * as actions from '../actions'
 import LoginValidationForm from '../components/profile/LoginValidationForm'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
-import cookie from 'react-cookie';
+import cookie from 'react-cookie'
 
 let ProfileLogin = ({ profile, showError, setToken }) => {
   return (

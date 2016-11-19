@@ -12,12 +12,12 @@ const Menu = () => (
       </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {
-          browserHistory.push('/task')//reports
+          browserHistory.push('/reports')
         }} icon="ico-m-book">Зачетка</MenuButton>
       </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {
-          browserHistory.push('/food')//food
+          browserHistory.push('/food')
         }} icon="ico-m-food">Питание</MenuButton>
       </li>
       <li className="main-nav__item">
