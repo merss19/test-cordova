@@ -1,5 +1,4 @@
 import React from 'react'
-import { Grid } from 'react-bootstrap';
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
 
@@ -10,7 +9,6 @@ const LoginValidationForm = props => {
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
       <br/>
-      <Grid>
         <Field name='email' title='Ваш email' component={CustomInput} />
         <Field name='password' title='Ваш пароль' component={CustomInput} type='password' />
         {error && <strong>{error}</strong>}
@@ -23,7 +21,6 @@ const LoginValidationForm = props => {
         <br/>
         <Link to="/profile/create">Зарегистрироваться</Link>
 
-      </Grid>
     </form>
   );
 }

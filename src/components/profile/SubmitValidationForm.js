@@ -1,5 +1,4 @@
 import React from 'react'
-import { Grid } from 'react-bootstrap';
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
 
@@ -10,7 +9,6 @@ const SubmitValidationForm = props => {
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
       <br/>
-      <Grid>
         <Field name='firstName' title='Имя' component={CustomInput} />
         <Field name='lastName' title='Фамилия' component={CustomInput} />
         <Field name='gender' title='Пол' component={CustomInput} />
@@ -32,7 +30,6 @@ const SubmitValidationForm = props => {
 
         <Link to="/task">Кабинет</Link>
 
-      </Grid>
     </form>
   );
 }

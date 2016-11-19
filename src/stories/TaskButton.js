@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 
 const buttonStyles = {
   border: '13px solid #70CFFE',
