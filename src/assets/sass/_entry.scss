@@ -1,4 +1,4 @@
-
+$bcMaxWidth: 960px;
 .entry {
 
   &__inner {
@@ -93,8 +93,6 @@
 }
 
 // bread-crumbs
-
-$bcMaxWidth: 960px;
 
 .entry-bc {
   position: relative;
@@ -300,7 +298,7 @@ $bcMaxWidth: 960px;
 
   }
   &__packet-item {
-    
+
   }
 
 }
@@ -323,7 +321,3 @@ $bcMaxWidth: 960px;
     font-family: $f-exo2;
   }
 }
-
-
-
-

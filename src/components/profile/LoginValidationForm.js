@@ -13,7 +13,7 @@ const LoginValidationForm = props => {
         <div className="grid header__inner">
           <h1 className="grid__cell header__logo">
             Ясегодня
-            <img src="assets/img/ys_logo.svg" alt="Ясегодня"/>
+            <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
           </h1>
         </div>
       </div>

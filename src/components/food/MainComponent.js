@@ -55,7 +55,7 @@ const MainComponent = () => (
                 <div className="grid">
                   <div className="1/1--pocket 1/2--lap 1/2--desk grid__cell">
                     <div className="img-wrap">
-                      <img src="tmp/food-pic.png" alt=""/>
+                      <img src="/tmp/food-pic.png" alt=""/>
                     </div>
                   </div>
                   <div className="1/1--pocket 1/2--lap 1/2--desk grid__cell">

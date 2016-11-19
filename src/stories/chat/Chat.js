@@ -18,7 +18,7 @@ const Chat = ({ children, messages }) => (
     <div className="chat-info">
       <div className="chat-info__inner">
         <div className="chat-info__ava">
-          <img src="tmp/ava-small.png" alt=""/>
+          <img src="/tmp/ava-small.png" alt=""/>
           <span className="chat-info__ava-status"></span>
         </div>
         <div className="chat-info__user">
@@ -32,7 +32,7 @@ const Chat = ({ children, messages }) => (
 
       <li className="chat-msg chat-msg--someone">
         <div className="chat-msg__ava">
-          <img src="assets/img/png/user-placeholder.png" alt=""/>
+          <img src="/assets/img/png/user-placeholder.png" alt=""/>
         </div>
         <div className="chat-msg__content">
           <p className="chat-msg__name">Олег Алексеев</p>
@@ -45,7 +45,7 @@ const Chat = ({ children, messages }) => (
           <div className="chat-msg__text">Да, я прочла все, но не поняла как правильно расположить локти?</div>
         </div>
         <div className="chat-msg__ava">
-          <img src="tmp/ava-you.png" alt=""/>
+          <img src="/tmp/ava-you.png" alt=""/>
         </div>
       </li>
 
@@ -56,13 +56,13 @@ const Chat = ({ children, messages }) => (
           <div className="chat-msg__text">Добрый день, Олег! Я не уверена, что выполняла сегодня правильно 2 задание</div>
         </div>
         <div className="chat-msg__ava">
-          <img src="tmp/ava-you.png" alt=""/>
+          <img src="/tmp/ava-you.png" alt=""/>
         </div>
       </li>
 
       <li className="chat-msg chat-msg--someone">
         <div className="chat-msg__ava">
-          <img src="tmp/ava-t-big.png" alt=""/>
+          <img src="/tmp/ava-t-big.png" alt=""/>
         </div>
         <div className="chat-msg__content">
           <p className="chat-msg__name">Олег Алексеев</p>

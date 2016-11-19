@@ -79,12 +79,12 @@ class Reports extends Component {
                             <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
                           </div>
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-you.png" alt=""/>
+                            <img src="/tmp/ava-you.png" alt=""/>
                           </div>
                         </li>
                         <li className="chat-msg chat-msg--someone">
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-t-big.png" alt=""/>
+                            <img src="/tmp/ava-t-big.png" alt=""/>
                           </div>
                           <div className="chat-msg__content">
                             <p className="chat-msg__name">Олег Алексеев</p>
@@ -119,12 +119,12 @@ class Reports extends Component {
                             <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
                           </div>
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-you.png" alt=""/>
+                            <img src="/tmp/ava-you.png" alt=""/>
                           </div>
                         </li>
                         <li className="chat-msg chat-msg--someone">
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-t-big.png" alt=""/>
+                            <img src="/tmp/ava-t-big.png" alt=""/>
                           </div>
                           <div className="chat-msg__content">
                             <p className="chat-msg__name">Олег Алексеев</p>
@@ -159,12 +159,12 @@ class Reports extends Component {
                             <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
                           </div>
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-you.png" alt=""/>
+                            <img src="/tmp/ava-you.png" alt=""/>
                           </div>
                         </li>
                         <li className="chat-msg chat-msg--someone">
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-t-big.png" alt=""/>
+                            <img src="/tmp/ava-t-big.png" alt=""/>
                           </div>
                           <div className="chat-msg__content">
                             <p className="chat-msg__name">Олег Алексеев</p>
@@ -199,12 +199,12 @@ class Reports extends Component {
                             <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
                           </div>
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-you.png" alt=""/>
+                            <img src="/tmp/ava-you.png" alt=""/>
                           </div>
                         </li>
                         <li className="chat-msg chat-msg--someone">
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-t-big.png" alt=""/>
+                            <img src="/tmp/ava-t-big.png" alt=""/>
                           </div>
                           <div className="chat-msg__content">
                             <p className="chat-msg__name">Олег Алексеев</p>
@@ -239,12 +239,12 @@ class Reports extends Component {
                             <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
                           </div>
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-you.png" alt=""/>
+                            <img src="/tmp/ava-you.png" alt=""/>
                           </div>
                         </li>
                         <li className="chat-msg chat-msg--someone">
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-t-big.png" alt=""/>
+                            <img src="/tmp/ava-t-big.png" alt=""/>
                           </div>
                           <div className="chat-msg__content">
                             <p className="chat-msg__name">Олег Алексеев</p>
@@ -279,12 +279,12 @@ class Reports extends Component {
                             <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
                           </div>
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-you.png" alt=""/>
+                            <img src="/tmp/ava-you.png" alt=""/>
                           </div>
                         </li>
                         <li className="chat-msg chat-msg--someone">
                           <div className="chat-msg__ava">
-                            <img src="tmp/ava-t-big.png" alt=""/>
+                            <img src="/tmp/ava-t-big.png" alt=""/>
                           </div>
                           <div className="chat-msg__content">
                             <p className="chat-msg__name">Олег Алексеев</p>
@@ -402,7 +402,7 @@ class Reports extends Component {
               <li className="banner-ls__item">
                 <a href="#">
                   <div className="banner-ls__img">
-                    <img src="tmp/banner-2.png" alt=""/>
+                    <img src="/tmp/banner-2.png" alt=""/>
                   </div>
                   <p className="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
                 </a>
@@ -410,7 +410,7 @@ class Reports extends Component {
               <li className="banner-ls__item">
                 <a href="#">
                   <div className="banner-ls__img">
-                    <img src="tmp/banner-1.png" alt=""/>
+                    <img src="/tmp/banner-1.png" alt=""/>
                   </div>
                 </a>
               </li>

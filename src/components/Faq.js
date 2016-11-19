@@ -229,7 +229,7 @@ const Faq = () => (
           <li className="banner-ls__item">
             <a href="#">
               <div className="banner-ls__img">
-                <img src="tmp/banner-2.png" alt=""/>
+                <img src="/tmp/banner-2.png" alt=""/>
               </div>
               <p className="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
             </a>
@@ -237,7 +237,7 @@ const Faq = () => (
           <li className="banner-ls__item">
             <a href="#">
               <div className="banner-ls__img">
-                <img src="tmp/banner-1.png" alt=""/>
+                <img src="/tmp/banner-1.png" alt=""/>
               </div>
             </a>
           </li>

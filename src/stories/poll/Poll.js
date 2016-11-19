@@ -16,16 +16,16 @@ const Poll = ({ children, fields }) => {
   return (
     <div className="question-form">
       <h4 className="h1 question-form__title">{children}</h4>
-      <ul className="question-form__options">
+      <ul className="options options--black mb60">
         {fields.map((field, index) => (
           <ButtonPoll onClick={select} key={index}>{field.name}</ButtonPoll>
         ))}
-        <li className="question-form__option is-active">другая</li>
+        <li className="options__item is-active">другая</li>
       </ul>
       <div className="question-form__own-version">
         <div className="input input--box input--btn">
           <input type="text" className="input__field"/>
-          <div className="btn btn--secondary disabled">Отправить</div>
+          <div className="btn btn--secondary">Отправить</div>
         </div>
       </div>
     </div>

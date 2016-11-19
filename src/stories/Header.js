@@ -12,12 +12,12 @@ const Header = () => (
       </div>
       <h1 className="2/4--portable 1/2-desk grid__cell header__logo">
         Ясегодня
-        <img src="assets/img/ys_logo.svg" alt="Ясегодня"/>
+        <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
       </h1>
       <div className="1/4--portable grid__cell header__right-side">
         <div className="header__banner">
           <a href="#" className="header__banner-link">
-            <img src="tmp/banner-1.png" alt=""/>
+            <img src="/tmp/banner-1.png" alt=""/>
           </a>
         </div>
       </div>

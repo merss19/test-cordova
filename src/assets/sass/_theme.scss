@@ -1,0 +1,71 @@
+/* ===========================
+   App theme
+   =========================== */
+
+@charset "UTF-8";
+
+
+// Global Vars
+
+$bgImgPath: '../img';
+
+$headerHeight: 54px;
+$mobMenuHeight: 50px;
+$maxContentWidth: 1200px;
+$baseMargin: 30px;
+
+$baseShadow: 0 6px 10px rgba(31, 68, 123, 0.03);
+$middleShadow: 0 12px 44px rgba(31, 68, 123, 0.13);
+$baseRadius: 5px;
+$bigRadius: 18px;
+
+
+// -- Typography
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Exo+2:700&subset=cyrillic');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic');
+
+$f-exo2: 'Exo 2', Arial, Tahoma, sans-serif;
+$f-roboto: 'Roboto', Arial, Tahoma, sans-serif;
+
+// Headers
+$fz-big: 3.0rem;
+$fz-h1: 2.2rem;
+$fz-h2: 2.0rem;
+$fz-h3: 1.8rem;
+
+// Base fonts
+$fz-base: 1.5rem;
+$fz-middle: 1.2rem;
+$fz-small: 1.1rem;
+
+
+// -- Colors
+
+// Font color
+$c-text: #1F447B;
+$c-text-gray: #C8C9CF;
+
+// Main color
+$c-primary: #70CFFE;
+$c-secondary: #1F447B;
+$c-border: #E4E7F4;
+
+// Button colors
+$btn-primary: #56DAA1;
+$btn-secondary: #70CFFE;
+$btn-action: #FF8858;
+
+// Other Colors
+$c-green: #56DAA1;
+$c-red: #F97B7C;
+$c-orange: #FF8858;
+$c-l-blue: #869BB8;
+$c-l-yellow: #FFFBE0;
+$c-s-yellow: #CCB73C;
+
+// Gray colors
+$c-gray: #F9FBFC;
+$c-l-gray: #F3F6F8;
+$c-m-gray: #b3b9bd;
+$c-s-gray: #696D7D;

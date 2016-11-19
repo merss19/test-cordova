@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ButtonPoll = ({ children, onClick }) => (
-  <li className="question-form__option" onClick={onClick}>{children}</li>
+  <li className="options__item" onClick={onClick}>{children}</li>
 );
 
 ButtonPoll.propTypes = {

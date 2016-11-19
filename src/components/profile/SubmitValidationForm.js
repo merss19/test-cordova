@@ -55,7 +55,7 @@ const SubmitValidationForm = props => {
                 <input id="ava[1]" type="file" className="upload-file__input"/>
               </label>
               <div className="avatar__img-wrap">
-                <img className="avatar__img" src="assets/img/png/ava-ph-big.png" alt=""/>
+                <img className="avatar__img" src="/assets/img/png/ava-ph-big.png" alt=""/>
               </div>
             </div>
           </div>
@@ -376,7 +376,7 @@ const SubmitValidationForm = props => {
             <li className="banner-ls__item">
               <a href="#">
                 <div className="banner-ls__img">
-                  <img src="tmp/banner-2.png" alt=""/>
+                  <img src="/tmp/banner-2.png" alt=""/>
                 </div>
                 <p className="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
               </a>
@@ -384,7 +384,7 @@ const SubmitValidationForm = props => {
             <li className="banner-ls__item">
               <a href="#">
                 <div className="banner-ls__img">
-                  <img src="tmp/banner-1.png" alt=""/>
+                  <img src="/tmp/banner-1.png" alt=""/>
                 </div>
               </a>
             </li>

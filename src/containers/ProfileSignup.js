@@ -40,7 +40,7 @@ let ProfileSignup = props => {
         <div className="grid header__inner">
           <h1 className="1/2--portable 1/1--desk grid__cell header__logo">
             Ясегодня
-            <img src="assets/img/ys_logo.svg" alt="Ясегодня"/>
+            <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
           </h1>
           <div className="1/2--portable grid__cell header__right-side">
             <a href="#" className="header__link js-popup-ya-geroy">#Я герой</a>
