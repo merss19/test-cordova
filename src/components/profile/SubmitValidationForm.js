@@ -75,15 +75,15 @@ const SubmitValidationForm = props => {
 
           <p className="base-parag">Дата рождения</p>
           <div className="input input--box mb30">
-            <input type="text" className="input__field input__field--date" placeholder="д/М/гггг" value=""/>
+            <input type="text" className="input__field input__field--date" placeholder="д/М/гггг" defaultValue=""/>
           </div>
 
           <h3 className="h3">Контактные данные</h3>
 
           <div className="select">
             <select className="select__field">
-              <option value="02">Россия</option>
-              <option value="01">Украина</option>
+              <option defaultValue="02">Россия</option>
+              <option defaultValue="01">Украина</option>
             </select>
             <svg className="svg-icon ico-arrow-accordion">
               <use xlinkHref="#ico-arrow-accordion"></use>
@@ -92,8 +92,8 @@ const SubmitValidationForm = props => {
 
           <div className="select">
             <select className="select__field">
-              <option value="02">Москва</option>
-              <option value="01">Одесса</option>
+              <option defaultValue="02">Москва</option>
+              <option defaultValue="01">Одесса</option>
             </select>
             <svg className="svg-icon ico-arrow-accordion">
               <use xlinkHref="#ico-arrow-accordion"></use>
@@ -101,12 +101,12 @@ const SubmitValidationForm = props => {
           </div>
 
           <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХ ХХ" component={InputProfile} />
-          <Field disabled name="email" type="tel" placeholder="Почта" value="anna@gmail.com" component={InputProfile} />
+          <Field disabled name="email" type="tel" placeholder="Почта" defaultValue="anna@gmail.com" component={InputProfile} />
 
           <div className="select mb30">
             <select className="select__field">
-              <option value="02">Часовой пояс Минкс+1</option>
-              <option value="01">Часовой пояс Минкс+1</option>
+              <option defaultValue="02">Часовой пояс Минкс+1</option>
+              <option defaultValue="01">Часовой пояс Минкс+1</option>
             </select>
             <svg className="svg-icon ico-arrow-accordion">
               <use xlinkHref="#ico-arrow-accordion"></use>
@@ -258,8 +258,8 @@ const SubmitValidationForm = props => {
           <p className="base-rapag text-center">Вот тебе таймер обратного отсчета. Запускай и начинай приседать</p>
 
           <div className="timer">
-            <input type="text" className="timer__min" value="1"/>
-            <input type="text" className="timer__sec" value="20"/>
+            <input type="text" className="timer__min" defaultValue="1"/>
+            <input type="text" className="timer__sec" defaultValue="20"/>
           </div>
 
           <div className="text-center mb30">
