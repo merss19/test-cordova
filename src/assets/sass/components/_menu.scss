@@ -45,8 +45,17 @@
     font-size: $fz-base;
     font-weight: 700;
   }
-  &__sub-text {
+  &__nav {
+    margin-top: 4px;
+    display: flex;
+  }
+  &__nav-item {
     font-size: $fz-middle;
+    &:not(:last-child) {
+      margin-right: 8px;
+      padding-right: 8px;
+      border-right: 1px solid $c-border;
+    }
   }
 }
 
