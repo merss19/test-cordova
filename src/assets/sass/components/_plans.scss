@@ -27,17 +27,31 @@
   &__plan-title {
     font-size: $fz-big;
     font-family: $f-exo2;
-    margin-bottom: $baseMargin;
   }
 
+  &__plan-sub-title {
+    font-family: $f-exo2;
+    font-size: $fz-h3;
+    margin-bottom: $baseMargin;
+    padding-bottom: $baseMargin;
+    border-bottom: 1px solid $c-border;
+  }
+
+
   &__text {
-    min-height: 100px;
+    @include av-mq(desk) {
+      min-height: 80px;
+    }
   }
 
   &__plan-price {
     font-size: $fz-big;
     font-family: $f-exo2;
     margin-bottom: $baseMargin;
+  }
+
+  &__plan-currency {
+    font-size: $fz-h3;
   }
 
 }
