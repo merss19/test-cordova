@@ -1,0 +1,43 @@
+.plans {
+  display: flex;
+
+  @include av-mq(portable) {
+    flex-direction: column;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  &__plan {
+    @include av-mq(desk) {
+      padding: 0 4%;
+      width: 33.33%;
+      &:not(:last-child) {
+        border-right: 1px solid $c-border;
+      }
+    }
+    @include av-mq(portable) {
+      padding: 4% 0;
+      width: 100%;
+      &:not(:last-child) {
+        border-bottom: 1px solid $c-border;
+      }
+    }
+  }
+
+  &__plan-title {
+    font-size: $fz-big;
+    font-family: $f-exo2;
+    margin-bottom: $baseMargin;
+  }
+
+  &__text {
+    min-height: 100px;
+  }
+
+  &__plan-price {
+    font-size: $fz-big;
+    font-family: $f-exo2;
+    margin-bottom: $baseMargin;
+  }
+
+}

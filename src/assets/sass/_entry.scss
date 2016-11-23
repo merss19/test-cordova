@@ -1,4 +1,4 @@
-$bcMaxWidth: 960px;
+$bcMaxWidth: 1280px;
 
 
 .entry {
@@ -7,6 +7,14 @@ $bcMaxWidth: 960px;
     position: relative;
     text-align: center;
     margin: 0 auto;
+
+    &--no-plan {
+      .entry__box {
+        &:before {
+          display: none !important;
+        }
+      }
+    }
   }
 
   &--sign-in {
@@ -134,12 +142,17 @@ $bcMaxWidth: 960px;
     }
     &--step-2 {
       .entry-bc {
-        left: -#{$bcMaxWidth/3};
+        left: -#{$bcMaxWidth/4};
       }
     }
     &--step-3 {
       .entry-bc {
-        left: -#{$bcMaxWidth - ($bcMaxWidth/3) };
+        left: -#{$bcMaxWidth/2};
+      }
+    }
+    &--step-4 {
+      .entry-bc {
+        left: -#{$bcMaxWidth - ($bcMaxWidth/4) };
       }
     }
 
@@ -162,7 +175,7 @@ $bcMaxWidth: 960px;
     align-items: center;
     text-align: center;
     padding-right: 4%;
-    width: #{$bcMaxWidth/3};
+    width: #{$bcMaxWidth/4};
     flex-shrink: 0;
 
     &--active {
@@ -213,7 +226,6 @@ $bcMaxWidth: 960px;
     display: none;
     right: -6px; top: -6px;
   }
-
 
 }
 
