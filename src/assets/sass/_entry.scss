@@ -114,6 +114,8 @@ $bcMaxWidth: 1280px;
   color: $c-l-blue;
   font-size: $fz-h3;
   border-bottom: 1px solid $c-border;
+  max-width: $maxContentWidth;
+  margin: 0 auto;
 
   @include av-mq(desk) {
     margin-bottom: #{$baseMargin+20};
