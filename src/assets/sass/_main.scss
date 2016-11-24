@@ -199,17 +199,22 @@
   }
 }
 
+.base-table-scroll {
+  overflow: auto;
+  margin-bottom: $baseMargin;
+
+  .base-table {
+    min-width: 480px;
+  }
+}
+
 .base-table {
   width: 100%;
   margin-bottom: $baseMargin;
 
-  @include av-mq(pocket) {
-    margin-bottom: $baseMargin;
-  }
-
   th {
     text-align: left;
-    padding: 12px 12px;
+    padding: 2% 2%;
   }
 
   tr {
@@ -224,6 +229,12 @@
   &__cell-center {
     text-align: center;
   }
+  &__input {
+    text-align: center;
+    padding: 4px;
+    max-width: 40px;
+  }
+
 }
 
 .base-list {
@@ -233,6 +244,48 @@
       margin-bottom: 6px;
     }
   }
+}
+
+.flex-table {
+  width: 100%;
+  display: flex;
+
+  @include av-mq(pocket) {
+    flex-wrap: wrap;
+  }
+
+  &__column {
+    display: flex;
+    flex: 1;
+
+    @include av-mq(pocket) {
+      flex: auto;
+      width: 50%;
+    }
+
+    @include av-mq(portable) {
+      flex-direction: column;
+    }
+
+    @include av-mq(desk) {
+      flex: 1;
+      flex-direction: column;
+    }
+  }
+
+  &__cell {
+    padding: 4px;
+
+    &--title {
+      font-weight: 700;
+    }
+
+    @include av-mq(pocket) {
+      width: 100%;
+    }
+
+  }
+
 }
 
 .loader {

@@ -17,7 +17,7 @@
 
 .input {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 
   &--box {
     .input__field {
@@ -93,12 +93,6 @@
     left: 0px; top: 14px;
     transition: .1s;
     // color: $c-darkblue-4;
-  }
-}
-
-.select {
-  &__field {
-
   }
 }
 
@@ -213,7 +207,7 @@
 
 .select {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   &__field {
     border: 1px solid $c-border;
     border-radius: $baseRadius;
@@ -240,6 +234,13 @@
 
   &__input {
     display: none;
+  }
+}
+
+.label {
+  margin-bottom: 4px;
+  & + .input {
+    margin-bottom: 20px;
   }
 }
 
