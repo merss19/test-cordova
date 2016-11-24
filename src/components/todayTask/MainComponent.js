@@ -264,5 +264,3 @@ const mapStateToProps = state => ({ todayTask: state.todayTask })
 MainComponent= connect(
   mapStateToProps
 )(MainComponent)
-
-export default MainComponent

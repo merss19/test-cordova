@@ -77,47 +77,65 @@
 
           <hr>
 
-          <div class="input input--box">
-            <input type="text" class="input__field" placeholder="Имя" value="Анна"/>
+          <div class="grid">
+            <div class="1/2--desk 1/1--pocket grid__cell">
+              <div class="input input--box">
+                <input type="text" class="input__field" placeholder="Имя" value="Анна"/>
+              </div>
+            </div>
+            <div class="1/2--desk 1/1--pocket grid__cell">
+              <div class="input input--box">
+                <input type="text" class="input__field" placeholder="Фамилия" value="Попова"/>
+              </div>
+            </div>
           </div>
 
-          <div class="input input--box">
-            <input type="text" class="input__field" placeholder="Фамилия" value="Попова"/>
-          </div>
-          <p class="base-parag">Дата рождения</p>
+          <p class="label">Дата рождения</p>
           <div class="input input--box mb30">
             <input type="text" class="input__field input__field--date" placeholder="д/М/гггг" value=""/>
           </div>
 
           <h3 class="h3">Контактные данные</h3>
 
-          <div class="select">
-            <select class="select__field">
-              <option value="02">Россия</option>
-              <option value="01">Украина</option>
-            </select>
-            <svg class="svg-icon ico-arrow-accordion">
-              <use xlink:href="#ico-arrow-accordion"></use>
-            </svg>
+          <div class="grid">
+            <div class="1/2--desk 1/1-portable grid__cell">
+              <div class="select">
+                <select class="select__field">
+                  <option value="02">Россия</option>
+                  <option value="01">Украина</option>
+                </select>
+                <svg class="svg-icon ico-arrow-accordion">
+                  <use xlink:href="#ico-arrow-accordion"></use>
+                </svg>
+              </div>
+            </div>
+            <div class="1/2--desk 1/1-portable grid__cell">
+              <div class="select">
+                <select class="select__field">
+                  <option value="02">Москва</option>
+                  <option value="01">Одесса</option>
+                </select>
+                <svg class="svg-icon ico-arrow-accordion">
+                  <use xlink:href="#ico-arrow-accordion"></use>
+                </svg>
+              </div>
+            </div>
           </div>
 
-          <div class="select">
-            <select class="select__field">
-              <option value="02">Москва</option>
-              <option value="01">Одесса</option>
-            </select>
-            <svg class="svg-icon ico-arrow-accordion">
-              <use xlink:href="#ico-arrow-accordion"></use>
-            </svg>
+          <div class="grid">
+            <div class="1/2--desk 1/1--portable grid__cell">
+              <div class="input input--box">
+                <input type="tel" class="input__field input__field--tel" placeholder="+7 ХХХ ХХХ ХХ ХХ" value=""/>
+              </div>
+            </div>
+            <div class="1/2--desk 1/1--portable grid__cell">
+              <div class="input input--box">
+                <input disabled type="tel" class="input__field" placeholder="Почта" value="anna@gmail.com"/>
+              </div>
+            </div>
           </div>
 
-          <div class="input input--box">
-            <input type="tel" class="input__field input__field--tel" placeholder="+7 ХХХ ХХХ ХХ ХХ" value=""/>
-          </div>
 
-          <div class="input input--box">
-            <input disabled type="tel" class="input__field" placeholder="Почта" value="anna@gmail.com"/>
-          </div>
 
           <div class="select mb30">
             <select class="select__field">
@@ -131,6 +149,51 @@
 
           <div class="text-center">
             <div class="btn btn--primary">Сохранить изменения</div>
+          </div>
+
+          <hr>
+
+          <h3 class="h3">Ваши параметры</h3>
+
+          <div class="base-table-scroll">
+            <table class="base-table">
+              <tr>
+                <th>Дата</th>
+                <th>Вес, кг</th>
+                <th>Грудь, см</th>
+                <th>Талия, см</th>
+                <th>Бедра, см</th>
+                <th>Обхват бедра, см</th>
+              </tr>
+              <tr>
+                <td>2016-09-19 12:23:07</td>
+                <td>78</td>
+                <td>55</td>
+                <td>97</td>
+                <td>78</td>
+                <td>90</td>
+              </tr>
+              <tr>
+                <td>2016-09-19 12:23:07</td>
+                <td>78</td>
+                <td>55</td>
+                <td>97</td>
+                <td>78</td>
+                <td>90</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><input type="text" class="base-table__input"></td>
+                <td><input type="text" class="base-table__input"></td>
+                <td><input type="text" class="base-table__input"></td>
+                <td><input type="text" class="base-table__input"></td>
+                <td><input type="text" class="base-table__input"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="text-center">
+            <div class="btn btn--primary">Добавить</div>
           </div>
 
           <hr>
@@ -167,13 +230,13 @@
 
           <div class="grid mb30">
             <div class="1/2--desk 1/1-pocket grid__cell">
-              <p class="base-parag">Дата рождения последнего ребёнка</p>
+              <p class="label">Дата рождения последнего ребёнка</p>
               <div class="input input--box">
                 <input type="text" class="input__field input__field--date" placeholder="д/М/гггг" value=""/>
               </div>
             </div>
             <div class="1/2--desk 1/1-pocket grid__cell">
-              <p class="base-parag">Месяц когда перестали кормить грудью</p>
+              <p class="label">Месяц когда перестали кормить грудью</p>
               <div class="input input--box">
                 <input type="text" class="input__field input__field--date" placeholder="д/М/гггг" value=""/>
               </div>
@@ -185,9 +248,67 @@
           <h3 class="h3">Страховка</h3>
           <p class="sub-title">Обеспечь свою безопасность. Это займет всего 2 минуты</p>
 
-          <div class="text-center mb30">
+          <div class="grid">
+            <div class="2/3--desk 1/1--pocket grid__cell">
+              <p class="label">ФИО</p>
+              <div class="input input--box">
+                <input type="text" class="input__field" placeholder="" value="Бубнович Анна Владимировна">
+              </div>
+            </div>
+            <div class="1/3--desk 1/1--pocket grid__cell">
+              <p class="label">Дата рождения</p>
+              <div class="input input--box">
+                <input type="text" class="input__field input__field--date" placeholder="д/М/гггг" value="">
+              </div>
+            </div>
+          </div>
+
+          <p class="label">Профессия/Должность</p>
+          <div class="input input--box">
+            <input type="text" class="input__field" placeholder="" value="">
+          </div>
+
+          <p class="label">Паспортные данные</p>
+          <div class="input input--box">
+            <input type="text" class="input__field" placeholder="" value="">
+          </div>
+
+          <p class="label">Адрес Регистрации</p>
+          <div class="input input--box">
+            <input type="text" class="input__field" placeholder="" value="">
+          </div>
+
+          <p class="label mb10">Срок страхования</p>
+          <div class="grid">
+            <div class="1/2 grid__cell">
+              <p class="label">Дата начала</p>
+              <div class="input input--box">
+                <input disabled type="text" class="input__field input__field--date" placeholder="д/М/гггг" value="12/10/2016">
+              </div>
+            </div>
+            <div class="1/2 grid__cell">
+              <p class="label">Дата окончания</p>
+              <div class="input input--box">
+                <input disabled type="text" class="input__field input__field--date" placeholder="д/М/гггг" value="12/10/2017">
+              </div>
+            </div>
+          </div>
+
+          <p class="label">Индивидуальная страховая сумма по рискам, указанным в п.п. ___. - ___. Договора руб.</p>
+          <div class="input input--box">
+            <input disabled type="text" class="input__field" placeholder="" value="100 000">
+          </div>
+
+          <p class="label">Индивидуальная страховая премия, руб.</p>
+          <div class="input input--box">
+            <input type="text" class="input__field" placeholder="" value="">
+          </div>
+
+          <div class="text-center mtb30">
             <div class="btn btn--secondary">Активировать страховку</div>
           </div>
+
+          <hr>
 
           <p class="sub-title">Для того, чтобы добиться быстрых и качественных результатов тренеру важно знать некоторые особенности твоего организма. Это поможет ему правильно распределить нагрузку на мышцы и организовать последовательность тренировок, не навредив твоему организму</p>
 
