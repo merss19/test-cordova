@@ -21,13 +21,16 @@ let ProfileLogin = ({ profile, showError, setToken }) => {
         .then(response => response.json())
         .then(json => {
           if (json.data && json.data.authToken) {
-            cookie.save('token', json.data.authToken, { path: '/' });
+            cookie.save('token', json.data.authToken, { path: '/' })
             console.log('token')
             console.log(cookie.load('token'))
             setToken(json.data.authToken)
             browserHistory.push('/task')
           } else {
-            throw new SubmissionError({ password: '', _error: 'Неправильное имя или пароль!' })
+            throw new SubmissionError({
+              password: '',
+              _error: 'Неправильное имя или пароль!'
+            })
           }
         })
     }}/>

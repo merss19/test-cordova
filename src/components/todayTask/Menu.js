@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import MenuButton from '../../stories/MenuButton'
 import { browserHistory } from 'react-router'
+import { Link } from 'react-router'
 
 const Menu = () => (
   <div className="2/3 grid__cell">
@@ -28,10 +29,10 @@ const Menu = () => (
     </ul>
     <hr/>
     <div className="profile">
-      <a href="#">
+      <Link to="/profile/create">
         <p className="profile__name">Анна Иванова</p>
         <p className="profile__sub-text">Профиль</p>
-      </a>
+      </Link>
     </div>
     <hr/>
     <ul className="banner-ls">

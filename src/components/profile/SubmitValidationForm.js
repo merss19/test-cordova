@@ -2,14 +2,59 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
 import Header from '../../stories/Header'
-import RadioProfile from '../componentKit/RadioProfile'
 
+import RadioProfile from '../componentKit/RadioProfile'
 import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
 import CheckboxProfile from '../componentKit/CheckboxProfile'
+import SelectProfile from '../componentKit/SelectProfile'
+import InputProfileBirthday from '../componentKit/InputProfileBirthday'
+
+let injuries = []
+let diseases = []
 
 const SubmitValidationForm = props => {
   const { error, handleSubmit, pristine, reset, submitting } = props
+
+  const sports = [
+    'Сложно',
+    'Нормально',
+    'Хорошо',
+    'Отлично'
+  ]
+
+  const sportsPast = [
+    { text: 'Да', val: true },
+    { text: 'Нет', val: false }
+  ]
+
+  const injuriesExist = [
+    { text: 'Есть', val: true },
+    { text: 'Нет', val: false }
+  ]
+
+  const injuriesList = [
+    'Шея/Плечи',
+    'Руки',
+    'Спина/Поясница',
+    'Колени',
+    'Другое'
+  ]
+
+  const diseasesList = [
+    'Диабет',
+    'Сердце',
+    'Почки',
+    'Поджелудочная',
+    'Другое'
+  ]
+
+  const pressure = [
+    'Пониженное',
+    'Нормальное',
+    'Повышенное'
+  ]
+
   return (
     // <form onSubmit={handleSubmit(props.onSubmit)}>
     //   <br/>
@@ -64,54 +109,27 @@ const SubmitValidationForm = props => {
 
           <div className="gender">
             <p className="gender__title">Пол</p>
-            <Field name='gender' title='Мужчина' id="gender[1]" component={RadioProfile} />
-            <Field name='gender' title='Женщина' id="gender[2]" component={RadioProfile} />
+            <Field name="gender" val="male" title="Мужчина" id="gender[1]" component={RadioProfile} />
+            <Field name="gender" val="female" title="Женщина" id="gender[2]" component={RadioProfile} />
           </div>
 
           <hr/>
 
           <Field name="firstName" placeholder="Имя" component={InputProfile} />
-          <Field name="secondName" placeholder="Фамилия" component={InputProfile} />
+          <Field name="lastName" placeholder="Фамилия" component={InputProfile} />
 
           <p className="base-parag">Дата рождения</p>
-          <div className="input input--box mb30">
-            <input type="text" className="input__field input__field--date" placeholder="д/М/гггг" defaultValue=""/>
-          </div>
+          <Field name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} />
 
           <h3 className="h3">Контактные данные</h3>
 
-          <div className="select">
-            <select className="select__field">
-              <option defaultValue="02">Россия</option>
-              <option defaultValue="01">Украина</option>
-            </select>
-            <svg className="svg-icon ico-arrow-accordion">
-              <use xlinkHref="#ico-arrow-accordion"></use>
-            </svg>
-          </div>
-
-          <div className="select">
-            <select className="select__field">
-              <option defaultValue="02">Москва</option>
-              <option defaultValue="01">Одесса</option>
-            </select>
-            <svg className="svg-icon ico-arrow-accordion">
-              <use xlinkHref="#ico-arrow-accordion"></use>
-            </svg>
-          </div>
+          <Field name="country" options={['Россия', 'Украина']} component={SelectProfile} />
+          <Field name="city" options={['Москва', 'Одесса']} component={SelectProfile} />
 
           <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХ ХХ" component={InputProfile} />
           <Field disabled name="email" type="tel" placeholder="Почта" defaultValue="anna@gmail.com" component={InputProfile} />
 
-          <div className="select mb30">
-            <select className="select__field">
-              <option defaultValue="02">Часовой пояс Минкс+1</option>
-              <option defaultValue="01">Часовой пояс Минкс+1</option>
-            </select>
-            <svg className="svg-icon ico-arrow-accordion">
-              <use xlinkHref="#ico-arrow-accordion"></use>
-            </svg>
-          </div>
+          <Field name="timezone" options={['Часовой пояс Минкс+1', 'Часовой пояс Москва+3']} component={SelectProfile} />
 
           <div className="text-center">
             <div className="btn btn--primary">Сохранить изменения</div>
@@ -174,22 +192,46 @@ const SubmitValidationForm = props => {
           <p className="base-parag text-center">Как у тебя со спортом? Выбери свой уровень</p>
 
           <ul className="options options--white mtb30">
-            <li className="options__item">Сложно</li>
-            <li className="options__item is-active">Нормально</li>
-            <li className="options__item">Хорошо</li>
-            <li className="options__item">Отлично</li>
+            {sports.map((val, index) => (
+              <label key={index}>
+                <li name="sports" className="options__item" id={`sports[${index}]`} onClick={e => {
+                  document.getElementById(`sports[${index}]`).className += ' is-active'
+                  sports.map((v, i) => {
+                    if (index !== i)
+                      document.getElementById(`sports[${i}]`).className = "options__item"
+                  })
+                }}>
+                  <Field component='input' type='radio' name="sports" style={{visibility: 'hidden', margin: -5}} value={val}/>
+                  {val}
+                </li>
+                <span/>
+              </label>
+            ))}
           </ul>
 
           <p className="base-parag text-center">Занимался спортом раньше?</p>
 
           <ul className="options options--white mtb30">
-            <li className="options__item">Да</li>
-            <li className="options__item is-active">Нет</li>
+            {sportsPast.map((val, index) => (
+              <label key={index}>
+                <li name="sports" className="options__item" id={`sportsPast[${index}]`} onClick={e => {
+                  document.getElementById(`sportsPast[${index}]`).className += ' is-active'
+                  sportsPast.map((v, i) => {
+                    if (index !== i)
+                      document.getElementById(`sportsPast[${i}]`).className = "options__item"
+                  })
+                }}>
+                  <Field component='input' type='radio' name="sportsPast" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                  {val.text}
+                </li>
+                <span/>
+              </label>
+            ))}
           </ul>
 
           <div className="text-center">
-            <Field name='insurance' title='Я любитель' id="insurance[1]" component={RadioProfile} />
-            <Field name='insurance' title='Я профи' id="insurance[2]" component={RadioProfile} />
+            <Field name='insurance' val='Я любитель' title='Я любитель' id="insurance[1]" component={RadioProfile} />
+            <Field name='insurance' val='Я профи' title='Я профи' id="insurance[2]" component={RadioProfile} />
           </div>
 
           <hr/>
@@ -197,16 +239,29 @@ const SubmitValidationForm = props => {
           <p className="base-parag text-center ">Есть травмы или проблемные зоны?</p>
 
           <ul className="options options--white mtb30">
-            <li className="options__item">Есть</li>
-            <li className="options__item is-active">Нет</li>
+            {injuriesExist.map((val, index) => (
+              <label key={index}>
+                <li name="sports" className="options__item" id={`injuriesExist[${index}]`} onClick={e => {
+                  document.getElementById(`injuriesExist[${index}]`).className += ' is-active'
+                  injuriesExist.map((v, i) => {
+                    if (index !== i)
+                      document.getElementById(`injuriesExist[${i}]`).className = "options__item"
+                  })
+                }}>
+                  <Field component='input' type='radio' name="injuriesExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                  {val.text}
+                </li>
+                <span/>
+              </label>
+            ))}
           </ul>
 
           <ul className="checkboxes">
-            <Field name='injuries' title='Шея/Плечи' id='insurance[3]' component={CheckboxProfile} />
-            <Field name='injuries' title='Руки' id='insurance[4]' component={CheckboxProfile} />
-            <Field name='injuries' title='Спина/Поясница' id='insurance[5]' component={CheckboxProfile} />
-            <Field name='injuries' title='Колени' id='insurance[6]' component={CheckboxProfile} />
-            <Field name='injuries' title='Другое' id='insurance[7]' component={CheckboxProfile} />
+            {injuriesList.map((val, index) => (
+              <Field key={index} name={`injuries[${index}]`} title={val} id={`injuries[${index}]`} component={CheckboxProfile} onChange={e =>
+                e.target.checked ? injuries.push(val) : injuries.splice(injuries.indexOf(val), 1)
+              }/>
+            ))}
           </ul>
 
           <hr/>
@@ -214,35 +269,73 @@ const SubmitValidationForm = props => {
           <p className="base-parag text-center">А хронические заболевания?</p>
 
           <ul className="options options--white mtb30">
-            <li className="options__item">Есть</li>
-            <li className="options__item is-active">Нет</li>
+            {injuriesExist.map((val, index) => (
+              <label key={index}>
+                <li name="sports" className="options__item" id={`diseasesExist[${index}]`} onClick={e => {
+                  document.getElementById(`diseasesExist[${index}]`).className += ' is-active'
+                  injuriesExist.map((v, i) => {
+                    if (index !== i)
+                      document.getElementById(`diseasesExist[${i}]`).className = "options__item"
+                  })
+                }}>
+                  <Field component='input' type='radio' name="diseasesExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                  {val.text}
+                </li>
+                <span/>
+              </label>
+            ))}
           </ul>
 
           <ul className="checkboxes mb20">
-            <Field name='diseases' title='Диабет' id='insurance[8]' component={CheckboxProfile} />
-            <Field name='diseases' title='Сердце' id='insurance[9]' component={CheckboxProfile} />
-            <Field name='diseases' title='Почки' id='insurance[10]' component={CheckboxProfile} />
-            <Field name='diseases' title='Поджелудочная' id='insurance[11]' component={CheckboxProfile} />
-            <Field name='diseases' title='Другое' id='insurance[12]' component={CheckboxProfile} />
+            {diseasesList.map((val, index) => (
+              <Field key={index} name={`diseases[${index}]`} title={val} id={`diseases[${index}]`} component={CheckboxProfile} onChange={e =>
+                e.target.checked ? diseases.push(val) : diseases.splice(diseases.indexOf(val), 1)
+              }/>
+            ))}
           </ul>
 
-          <Field name="diseases" placeholder="Другое" component={InputProfile} />
+          <Field name="diseasesAnother" placeholder="Другое" component={InputProfile} />
 
           <hr/>
 
           <p className="base-parag text-center">Какое у тебя давление?</p>
 
           <ul className="options options--white mtb30">
-            <li className="options__item">Пониженное</li>
-            <li className="options__item is-active">Нормальное</li>
-            <li className="options__item">Повышенное</li>
+            {pressure.map((val, index) => (
+              <label key={index}>
+                <li name="pressure" className="options__item" id={`pressure[${index}]`} onClick={e => {
+                  document.getElementById(`pressure[${index}]`).className += ' is-active'
+                  pressure.map((v, i) => {
+                    if (index !== i)
+                      document.getElementById(`pressure[${i}]`).className = "options__item"
+                  })
+                }}>
+                  <Field component='input' type='radio' name="pressure" style={{visibility: 'hidden', margin: -5}} value={val}/>
+                  {val}
+                </li>
+                <span/>
+              </label>
+            ))}
           </ul>
 
           <p className="base-parag text-center">Что со вредными привычками?</p>
 
           <ul className="options options--white mtb30">
-            <li className="options__item">Есть</li>
-            <li className="options__item is-active">Нет</li>
+            {injuriesExist.map((val, index) => (
+              <label key={index}>
+                <li name="sports" className="options__item" id={`badHannitsExist[${index}]`} onClick={e => {
+                  document.getElementById(`badHannitsExist[${index}]`).className += ' is-active'
+                  injuriesExist.map((v, i) => {
+                    if (index !== i)
+                      document.getElementById(`badHannitsExist[${i}]`).className = "options__item"
+                  })
+                }}>
+                  <Field component='input' type='radio' name="badHannitsExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                  {val.text}
+                </li>
+                <span/>
+              </label>
+            ))}
           </ul>
 
           <hr/>
@@ -269,7 +362,7 @@ const SubmitValidationForm = props => {
           <hr/>
 
           <div className="text-center">
-            <div className="btn btn--primary">Отправить анкеру</div>
+            <div className="btn btn--primary">Отправить анкету</div>
           </div>
 
         </div>
@@ -401,12 +494,39 @@ const SubmitValidationForm = props => {
 const validate = data => {
   const errors = {}
 
-  if (!data.firstName) {
-    errors.firstName = 'Имя должно быть заполнено'
+  data.injuries = injuries
+  data.diseases = diseases
+
+  console.log(data)
+
+  switch (true) {
+    case !data.firstName:
+      errors.firstName = 'Имя должно быть заполнено'
+      break
+    case data.firstName.length < 3:
+      errors.firstName = 'Имя должно быть длиннее 3 символов'
+      break
+    case data.firstName.length > 20:
+      errors.firstName = 'Имя должно быть короче 20 символов'
+      break
+    case !/^[A-Za-z0-9А-Яа-я]{3,20}$/.test(data.firstName):
+      errors.firstName = 'Имя может содержать только буквы английского/русского алфавитов и цифры'
+      break
   }
 
-  if (!data.lastName) {
-    errors.lastName = 'Фамилия должна быть заполнена'
+  switch (true) {
+    case !data.lastName:
+      errors.lastName = 'Фамилия должна быть заполнена'
+      break
+    case data.lastName.length < 3:
+      errors.lastName = 'Фамилия должна быть длиннее 3 символов'
+      break
+    case data.lastName.length > 20:
+      errors.lastName = 'Фамилия должна быть короче 20 символов'
+      break
+    case !/^[A-Za-z0-9А-Яа-я]{3,20}$/.test(data.lastName):
+      errors.lastName = 'Фамилия может содержать только буквы английского/русского алфавитов и цифры'
+      break
   }
 
   if (!data.gender) {
@@ -421,16 +541,28 @@ const validate = data => {
     errors.city = 'Город должнен быть заполнен'
   }
 
-  if (!data.phone) {
-    errors.phone = 'Поле телефона должно быть заполнено'
+  switch (true) {
+    case !data.phone:
+      errors.phone = 'Поле телефона должно быть заполнено'
+      break
+    case data.phone.length < 6:
+      errors.phone = 'Поле телефона должно быть длиннее 3 символов'
+      break
+    case data.phone.length > 20:
+      errors.phone = 'Поле телефона должно быть короче 20 символов'
+      break
+    case !/^[+0-9]{3,20}$/.test(data.phone):
+      errors.phone = 'Поле телефона может содержать только цифры и знак +'
+      break
   }
 
-  if (!data.email) {
-    errors.email = 'Email должен быть заполнен'
-  }
-
-  if (!data.password) {
-    errors.password = 'Поле пароля должно быть заполнено'
+  switch (true) {
+    case !data.email:
+      errors.email = 'Email должен быть заполнен'
+      break
+    case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.email):
+      errors.email = 'Email заполнен неправильно, проверьте его еще раз'
+      break
   }
 
   if (!data.birthday) {

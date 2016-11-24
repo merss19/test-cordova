@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router'
+import { Route, IndexRoute, browserHistory } from 'react-router'
 
 import App from './components/App'
 import TodayTask from './containers/TodayTask'
@@ -11,12 +11,9 @@ import Faq from './components/Faq'
 import Food from './components/food/MainComponent'
 import cookie from 'react-cookie'
 
-const requireAuth = ({nextState, replace}) => {
+const requireAuth = () => {
   if (!cookie.load('token')) {
-    replace({
-      pathname: '/',
-      state: { nextPathname: nextState.location.pathname }
-    })
+    browserHistory.push('/')
   }
 }
 
@@ -27,9 +24,9 @@ export default (
     <Route path='faq' component={Faq} onEnter={requireAuth}/>
     <Route path='food' component={Food} onEnter={requireAuth}/>
     <Route path='reports' component={Reports} onEnter={requireAuth}/>
-    <Route path='profile' onEnter={requireAuth}>
+    <Route path='profile'>
       <IndexRoute component={App} />
-      <Route path='create' component={ProfileCreate} />
+      <Route path='create' component={ProfileCreate} onEnter={requireAuth}/>
     </Route>
     <Route path='signup'>
       <IndexRoute component={ProfileSignup} />

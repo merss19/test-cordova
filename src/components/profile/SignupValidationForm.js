@@ -1,5 +1,6 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
+import { Link } from 'react-router'
 
 import CustomInput from '../componentKit/CustomInput';
 
@@ -10,10 +11,14 @@ const SignupValidationForm = props => {
       <div className="input input--line">
         <Field name='email' id='login[1]' title='Ваш e-mail' component={CustomInput} />
         <Field name='password' id='login[2]' title='Ваш пароль' type='password' component={CustomInput} />
+        <Field name='passwordAgain' id='login[3]' title='Пароль повторно' type='password' component={CustomInput} />
       </div>
+      {error && <strong>{error}</strong>}
       <button type='submit' className="btn btn--action">
-        Войти/Зарегистрироваться
+        Зарегистрироваться
       </button>
+      <Link to="/profile">Войти</Link>
+      <br/>
       <a href="#">Забыли пароль?</a>
     </form>
   );
@@ -22,11 +27,32 @@ const SignupValidationForm = props => {
 const validate = data => {
   const errors = {};
 
-  if (!data.email)
-    errors.email = 'Email должен быть заполнен';
+  switch (true) {
+    case !data.email:
+      errors.email = 'Email должен быть заполнен'
+      break
+    case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.email):
+      errors.email = 'Email заполнен неправильно, проверьте его еще раз'
+      break
+  }
 
-  if (!data.password)
-    errors.password = 'Поле пароля должно быть заполнено';
+  switch (true) {
+    case !data.password:
+      errors.password = 'Поле пароля должно быть заполнено'
+      break
+    case data.password.length < 6:
+      errors.password = 'Поле пароля должно быть длиннее 6 символов'
+      break
+    case data.password.length > 20:
+      errors.password = 'Поле пароля должно быть короче 20 символов'
+      break
+    case !/^[A-Za-z0-9!@#$%^&*()_]{6,20}$/.test(data.password):
+      errors.password = 'Поле пароля может содержать только буквы английского алфавита, цифры и какой-нибудь из знаков !@#$%^&*()_'
+      break
+  }
+
+  if (data.password !== data.passwordAgain)
+    errors.passwordAgain = 'Пароли должны совпадать'
 
   return errors;
 }

@@ -6,9 +6,9 @@ export function profile(state = 'DO_NOT_CREATE', action) {
       }
     case 'SIGNUP':
       return {
-        email: action.email,
-        password: action.password,
         program: action.program,
+        amount: action.amount,
+        packageType: action.packageType
       }
     default:
       return state

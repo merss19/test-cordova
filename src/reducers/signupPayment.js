@@ -1,40 +1,40 @@
 import {
-  SELECT_TASKDAY, INVALIDATE_TASKDAY,
-  REQUEST_TASKDAY, RECEIVE_TASKDAY
+  SELECT_PAYMENT, INVALIDATE_PAYMENT,
+  REQUEST_PAYMENT, RECEIVE_PAYMENT
 } from '../actions'
 
-export const selectedTaskDay = (state = 'reactjs', action) => {
+export const selectedPayment = (state = 'reactjs', action) => {
   switch (action.type) {
-    case SELECT_TASKDAY:
-      return action.taskDay
+    case SELECT_PAYMENT:
+      return action.payment
     default:
       return state
   }
 }
 
-const taskDay = (state = {
+const payment = (state = {
   isFetching: false,
   didInvalidate: false,
-  taskDay: {}
+  payment: {}
 }, action) => {
   switch (action.type) {
-    case INVALIDATE_TASKDAY:
+    case INVALIDATE_PAYMENT:
       return {
         ...state,
         didInvalidate: true
       }
-    case REQUEST_TASKDAY:
+    case REQUEST_PAYMENT:
       return {
         ...state,
         isFetching: true,
         didInvalidate: false
       }
-    case RECEIVE_TASKDAY:
+    case RECEIVE_PAYMENT:
       return {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        taskDay: action.json,
+        payment: action.json,
         lastUpdated: action.receivedAt
       }
     default:
@@ -42,14 +42,14 @@ const taskDay = (state = {
   }
 }
 
-export const recivedTaskDay = (state = {}, action) => {
+export const recivedPayment = (state = {}, action) => {
   switch (action.type) {
-    case INVALIDATE_TASKDAY:
-    case RECEIVE_TASKDAY:
-    case REQUEST_TASKDAY:
+    case INVALIDATE_PAYMENT:
+    case RECEIVE_PAYMENT:
+    case REQUEST_PAYMENT:
       return {
         ...state,
-        [action.taskDay]: taskDay(state[action.taskDay], action)
+        [action.payment]: payment(state[action.payment], action)
       }
     default:
       return state

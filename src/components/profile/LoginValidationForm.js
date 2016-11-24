@@ -25,7 +25,7 @@ const LoginValidationForm = props => {
 
             <form onSubmit={handleSubmit(props.onSubmit)} className="entry-form">
               <div className="entry-form__header">
-                <Link to="/profile/create">Регистрация</Link>
+                <Link to="/signup">Регистрация</Link>
               </div>
 
               <hr/>

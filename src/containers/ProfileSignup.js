@@ -5,16 +5,16 @@ import * as actions from '../actions'
 import LoginValidationForm from '../components/profile/LoginValidationForm'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
-import cookie from 'react-cookie';
+import cookie from 'react-cookie'
 import { Field, reduxForm } from 'redux-form'
-import CustomInput from '../components/componentKit/CustomInput';
+import CustomInput from '../components/componentKit/CustomInput'
 import SignupValidationForm from '../components/profile/SignupValidationForm'
 
 let ProfileSignup = props => {
-  console.log(props)
   const programParam = props.params.program
-  const { error, handleSubmit, pristine, reset, submitting, signup } = props;
-  let programInfo
+  const { amount, type } = props.location.query
+  const packageType = type
+  const { error, handleSubmit, pristine, reset, setToken, submitting, signup } = props
   let program
 
   switch (programParam) {
@@ -31,8 +31,6 @@ let ProfileSignup = props => {
       program = '#Я ГЕРОЙ'
   }
 
-  programInfo = <div className="entry-info__title">{program}</div>
-
   return (
     <div className="layout layout--registration">
 
@@ -43,7 +41,7 @@ let ProfileSignup = props => {
             <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
           </h1>
           <div className="1/2--portable grid__cell header__right-side">
-            <a href="#" className="header__link js-popup-ya-geroy">#Я герой</a>
+            <a href="#" className="header__link js-popup-ya-geroy">{program}</a>
           </div>
         </div>
       </div>
@@ -78,17 +76,17 @@ let ProfileSignup = props => {
                 <p>Информация о пакете</p>
                 <hr/>
               </div>
-              {programInfo}
+              <div className="entry-info__title">{program}</div>
               <p className="entry-info__sub-title">Оформление на участие в проекте</p>
 
               <ul className="packet-info">
                 <li className="packet-info__item">
                   <span className="packet-info__name-title">Пакет</span>
-                  <span className="packet-info__name">Бонус +</span>
+                  <span className="packet-info__name">{packageType}</span>
                 </li>
                 <li className="packet-info__item">
                   <span className="packet-info__name-title">Цена</span>
-                  <span className="packet-info__name">3 000 руб.</span>
+                  <span className="packet-info__name">{amount} руб.</span>
                 </li>
               </ul>
 
@@ -106,10 +104,42 @@ let ProfileSignup = props => {
 
               <div className="grid grid--middle">
                 <SignupValidationForm onSubmit={(data) => {
-                  console.log(data)
                   const { email, password } = data
-                  signup({program, email, password})
-                  browserHistory.push('/signup/pay')
+                  switch(program) {
+                    case '#МАМА МОЖЕТ':
+                      program = 2
+                      break
+                    case '#ЭКСТРИМАЛЬНАЯ СУШКА':
+                      program = 3
+                      break
+                    case '#Я ЗАВТРА':
+                      program = 4
+                      break
+                    default:
+                      program = 1
+                  }
+
+                  const payload = { program, email, password }
+
+                  return fetch('http://sport.muhanov.net/api/user/user-create', {
+                      headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      },
+                      method: 'POST',
+                      body: JSON.stringify(payload)
+                    })
+                    .then(response => response.json())
+                    .then(json => {
+                      if (json.data && json.data.authToken) {
+                        cookie.save('token', json.data.authToken, { path: '/' })
+                        signup({ program, amount, packageType })
+                        setToken(json.data.authToken)
+                        browserHistory.push('/signup/pay')
+                      } else {
+                        throw new SubmissionError({ passwordAa: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
+                      }
+                    })
                 }}/>
                 <div className="1/2--desk grid__cell entry-form__social">
                   <p className="entry-form__social-title">Войти через социальные сети</p>
@@ -161,10 +191,11 @@ const mapStateToProps = state => ({
   program: state.profile,
   email: state.profile,
   password: state.profile,
- })
+})
 
 const mapDispatchToProps = dispatch => ({
-  signup: bindActionCreators(actions.signup, dispatch)
+  signup: bindActionCreators(actions.signup, dispatch),
+  setToken: bindActionCreators(actions.setToken, dispatch)
 })
 
 ProfileSignup = connect(
