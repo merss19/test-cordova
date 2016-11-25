@@ -14,13 +14,13 @@ import cookie from 'react-cookie';
 
 import { action } from '@kadira/storybook'
 
+const contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
+
 class MainComponent extends Component {
   render() {
-    const contentStyle = {
-      borderRadius: '18px',
-      padding: '30px'
-    }
-
     const { taskDay, token } = this.props
 
     console.log('<=======*==0')
@@ -264,3 +264,5 @@ const mapStateToProps = state => ({ todayTask: state.todayTask })
 MainComponent= connect(
   mapStateToProps
 )(MainComponent)
+
+export default MainComponent

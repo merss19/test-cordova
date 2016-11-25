@@ -6,6 +6,7 @@ import TodayTask from './containers/TodayTask'
 import Reports from './containers/Reports'
 import ProfileCreate from './containers/ProfileCreate'
 import ProfileSignup from './containers/ProfileSignup'
+import ProfilePasswordForget from './containers/ProfilePasswordForget'
 import ProfilePay from './containers/ProfilePay'
 import Faq from './components/Faq'
 import Food from './components/food/MainComponent'
@@ -34,5 +35,6 @@ export default (
       <Route path='pay/:status' component={ProfilePay} />
     </Route>
     <Route path='signup/:program' component={ProfileSignup} />
+    <Route path='restore' component={ProfilePasswordForget} />
   </Route>
 );

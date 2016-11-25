@@ -37,7 +37,7 @@ const fetchTaskDay = partialState => dispatch => {
   const payload = { authToken: token ? token : cookie.load('token') }
 
   let data = new FormData()
-  data.append( "json", JSON.stringify( payload ) )
+  data.append("json", JSON.stringify(payload))
 
   return fetch('http://sport.muhanov.net/api/data/day-get-info', {
       headers: {
@@ -45,7 +45,7 @@ const fetchTaskDay = partialState => dispatch => {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify( payload )
+      body: JSON.stringify(payload)
     })
     .then(response => response.json())
     .then(json => dispatch(receiveTaskDay(taskDay, json)))

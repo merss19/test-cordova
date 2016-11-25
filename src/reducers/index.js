@@ -1,5 +1,6 @@
-export { profile } from './profile'
+export { profile, bodyParams, selectedProfile, recivedProfile } from './profile'
 export { menuMobLeft } from './menuMobLeft'
 export { userToken } from './userToken'
 export { selectedTaskDay, recivedTaskDay } from './taskDay'
 export { selectedPayment, recivedPayment } from './signupPayment'
+export { timer } from './timer'

@@ -3,8 +3,8 @@ export function userToken(state = 'RETURN_ERROR', action) {
     case 'SET_TOKEN':
       return {
         token: action.token,
-      };
+      }
     default:
-      return state;
+      return state
   }
 }

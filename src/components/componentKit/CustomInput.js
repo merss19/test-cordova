@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const CustomInput = ({ input, title, id, type, meta: { touched, error } }) => (
   <div className="input input--line">
@@ -6,6 +6,6 @@ const CustomInput = ({ input, title, id, type, meta: { touched, error } }) => (
     <label className="input__label" htmlFor={id}>{title}</label>
     {touched && error && <span>{error}</span>}
   </div>
-);
+)
 
-export default CustomInput;
+export default CustomInput

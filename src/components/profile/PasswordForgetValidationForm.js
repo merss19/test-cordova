@@ -4,22 +4,23 @@ import { Link } from 'react-router'
 
 import CustomInput from '../componentKit/CustomInput';
 
-const SignupValidationForm = props => {
+const PasswordForgetValidationForm = props => {
   const { error, handleSubmit, pristine, reset, submitting, signup, onSubmit } = props
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="1/2--desk grid__cell entry-form__email">
       <div className="input input--line">
         <Field name='email' id='login[1]' title='Ваш e-mail' component={CustomInput} />
-        <Field name='password' id='login[2]' title='Ваш пароль' type='password' component={CustomInput} />
-        <Field name='passwordAgain' id='login[3]' title='Пароль повторно' type='password' component={CustomInput} />
       </div>
+      <br/>
+      <br/>
+      <br/>
       {error && <strong>{error}</strong>}
       <button type='submit' className="btn btn--action">
-        Зарегистрироваться
+        Изменить пароль
       </button>
       <Link to="/profile">Войти</Link>
       <br/>
-      <Link to="/restore">Забыли пароль?</Link>
+      <Link to="/signup">Регистрация</Link>
     </form>
   );
 }
@@ -60,4 +61,4 @@ const validate = data => {
 export default reduxForm({
   form: 'signupValidation',
   validate
-})(SignupValidationForm)
+})(PasswordForgetValidationForm)

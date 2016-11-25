@@ -55,7 +55,7 @@ class TodayTask extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   console.log('--------------------)==')
   console.log(state)
   const { selectedTaskDay, recivedTaskDay, userToken } = state
