@@ -1185,6 +1185,27 @@ hr {
     left: 0px;
     top: 14px;
     transition: .1s; }
+  .input__text {
+    padding: 0 12px;
+    border-left: 1px solid #E4E7F4;
+    border-top: 1px solid #E4E7F4;
+    border-bottom: 1px solid #E4E7F4;
+    border-right: none;
+    line-height: 2.8;
+    border-radius: 5px 0 0 5px;
+    height: 46px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; }
+  .input #file-upload {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    color: transparent;
+    text-indent: -9999px; }
 
 .textarea--box .textarea__field {
   border-radius: 5px;
@@ -1542,11 +1563,46 @@ a.btn {
     text-align: center;
     padding: 4px;
     max-width: 40px; }
+  .base-table__btn-del {
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 30px;
+    height: 30px; }
+    .base-table__btn-del:hover {
+      background-color: #F9FBFC; }
 
 .base-list {
   margin-bottom: 25px; }
   .base-list__item:not(:last-child) {
     margin-bottom: 6px; }
+
+.upload-list__item {
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 6px 10px;
+  background-color: #F3F6F8;
+  border-radius: 5px; }
+  .upload-list__item:not(:last-child) {
+    margin-bottom: 2px; }
+    
+.upload-list__btn-del {
+  cursor: pointer;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 8px; }
 
 .flex-table {
   width: 100%;
@@ -2140,6 +2196,10 @@ a.btn {
   width: 16px;
   height: 16px; }
 
+.ico-trash {
+  width: 15px;
+  height: 20px; }
+
 .ico-your-condition-1,
 .ico-your-condition-2,
 .ico-your-condition-3 {
@@ -2640,6 +2700,13 @@ code {
   justify-content: center;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap; }
+  .btn-social--profile {
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-align: center;
+    align-items: center; }
+    .btn-social--profile .btn-social__item:not(:last-child) {
+      margin-bottom: 4px; }
   .btn-social__item {
     display: -ms-flexbox;
     display: flex;
