@@ -234,6 +234,16 @@
     padding: 4px;
     max-width: 40px;
   }
+  &__btn-del {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px; height: 30px;
+    &:hover {
+      background-color: $c-gray;
+    }
+  }
 
 }
 
@@ -243,6 +253,28 @@
     &:not(:last-child) {
       margin-bottom: 6px;
     }
+  }
+}
+
+.upload-list {
+
+  &__item {
+    justify-content: space-between;
+    display: flex;
+    padding: 6px 10px;
+    background-color: $c-l-gray;
+    border-radius: $baseRadius;
+    &:not(:last-child) {
+      margin-bottom: 2px;
+    }
+  }
+  &__btn-del {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px; height: 24px;
+    margin-left: 8px;
   }
 }
 
