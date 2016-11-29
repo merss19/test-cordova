@@ -10,6 +10,7 @@ const SelectProfile = ({ input, options, type, meta: { touched, error } }) => (
     <svg className="svg-icon ico-arrow-accordion">
       <use xlinkHref="#ico-arrow-accordion"></use>
     </svg>
+    {touched && error && <span>{error}</span>}
   </div>
 )
 

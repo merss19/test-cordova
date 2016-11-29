@@ -21,13 +21,29 @@ export const requestProfile = profileData => ({
 })
 
 export const receiveProfile = (profileData, json) => {
-  console.log('^================0')
-  console.log(json)
+  let profile = {
+    profileData,
+    receivedAt: Date.now()
+  }
+  json.map(j => {
+    switch (true) {
+      case !j && !j.data && !j.data[0]:
+        return
+      case !!j.data[0].email:
+        profile = { ...profile, profile: j.data[0] }
+        break
+      case !!j.data[0].chest:
+        profile = { ...profile, bodyParams: j.data }
+        break
+      case !!j.data[0].passport:
+        profile = { ...profile, insurance: j.data }
+        break
+    }
+  })
+
   return ({
     type: RECEIVE_PROFILE,
-    profileData,
-    json,
-    receivedAt: Date.now()
+    ...profile
   })
 }
 
@@ -39,21 +55,25 @@ const fetchProfile = partialState => dispatch => {
     data: {}
   }
 
-  console.log(payload)
+  const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
 
-  let data = new FormData()
-  data.append("json", JSON.stringify(payload))
+  const method = 'POST'
+  const urls = [
+    'http://sport.muhanov.net/api/user/user-get',
+    'http://sport.muhanov.net/api/user/bodymeasure-get',
+    'http://sport.muhanov.net/api/user/insurance-get'
+  ]
 
-  return fetch('http://sport.muhanov.net/api/user/user-get', {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
+  return Promise.all(urls.map(url =>
+    fetch(url, {
+      headers,
+      method,
       body: JSON.stringify(payload)
-    })
-    .then(response => response.json())
-    .then(json => dispatch(receiveProfile(profileData, json)))
+    }).then(response => response.json())
+  )).then(json => dispatch(receiveProfile(profileData, json)))
 }
 
 const shouldFetchProfile = (state, profileData) => {

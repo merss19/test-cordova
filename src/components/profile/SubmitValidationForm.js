@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Header from '../../stories/Header'
 
 import RadioProfile from '../componentKit/RadioProfile'
+import RadioCustom from '../componentKit/RadioCustom'
 import Timer from '../componentKit/Timer'
 import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
@@ -12,15 +13,33 @@ import CheckboxProfile from '../componentKit/CheckboxProfile'
 import SelectProfile from '../componentKit/SelectProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
 import InputProfileDate from '../componentKit/InputProfileDate'
+import InsuranceValidationForm from '../profile/InsuranceValidationForm'
+import { SubmissionError } from 'redux-form'
+import cookie from 'react-cookie'
+import moment from 'moment'
+import Modal from 'boron/DropModal'
 
 let injuries = []
 let diseases = []
 let bodyParameters = []
 
+const contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
+
 class SubmitValidationForm extends Component {
+  componentWillMount() {
+    const { bodyMeasure, dispatch } = this.props
+    dispatch({
+      type: 'SAVE_BODY_PARAMS',
+      bodyMeasure
+    })
+  }
+
   render() {
     const { error, handleSubmit, pristine, reset, bodyParams,
-      dispatch, submitting, onSubmit } = this.props
+      dispatch, submitting, onSubmit, insurance, initialValues } = this.props
 
     bodyParameters = bodyParams
     const sports = [
@@ -79,10 +98,21 @@ class SubmitValidationForm extends Component {
             <div className="text-center">
               <div className="avatar avatar--profile">
                 <label className="upload-file avatar--upload" htmlFor="ava[1]">
-                  <input id="ava[1]" type="file" className="upload-file__input"/>
+                  <input id="ava[1]" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                    const { target } = input
+                    if (target.files && target.files[0]) {
+                      var reader = new FileReader()
+
+                      reader.onload = e => {
+                        this.refs.avatar.src = e.target.result
+                      }
+
+                      reader.readAsDataURL(target.files[0])
+                    }
+                  }}/>
                 </label>
                 <div className="avatar__img-wrap">
-                  <img className="avatar__img" src="/assets/img/png/ava-ph-big.png" alt=""/>
+                  <img ref="avatar" className="avatar__img" src="/assets/img/png/ava-ph-big.png" alt=""/>
                 </div>
               </div>
             </div>
@@ -161,8 +191,8 @@ class SubmitValidationForm extends Component {
                     <td>{param.weight}</td>
                     <td>{param.chest}</td>
                     <td>{param.waist}</td>
-                    <td>{param.hip}</td>
-                    <td>{param.hipGirth}</td>
+                    <td>{param.hips}</td>
+                    <td>{param.thigh}</td>
                   </tr>
                 ))}
                 <tr>
@@ -170,23 +200,52 @@ class SubmitValidationForm extends Component {
                   <td><input ref="weight" type="text" className="base-table__input"/></td>
                   <td><input ref="chest" type="text" className="base-table__input"/></td>
                   <td><input ref="waist" type="text" className="base-table__input"/></td>
-                  <td><input ref="hip" type="text" className="base-table__input"/></td>
-                  <td><input ref="hipGirth" type="text" className="base-table__input"/></td>
+                  <td><input ref="hips" type="text" className="base-table__input"/></td>
+                  <td><input ref="thigh" type="text" className="base-table__input"/></td>
                 </tr>
               </table>
               <div className="text-center">
                 <button onClick={() => {
-                  dispatch({
-                    type: 'ADD_BODY_PARAM',
+                  const data = {
+                    date: moment().format('YYYY-DD-MM, HH:mm:ss'),
                     weight: this.refs.weight.value,
                     chest: this.refs.chest.value,
                     waist: this.refs.waist.value,
-                    hip: this.refs.hip.value,
-                    hipGirth: this.refs.hipGirth.value
-                  })
+                    hips: this.refs.hips.value,
+                    thigh: this.refs.thigh.value
+                  }
+
+                  const payload = {
+                    authToken: cookie.load('token'),
+                    data
+                  }
+
+                  return fetch('http://sport.muhanov.net/api/user/bodymeasure-create', {
+                      headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      },
+                      method: 'POST',
+                      body: JSON.stringify(payload)
+                    })
+                    .then(response => response.json())
+                    .then(json => {
+                      if (json.errorCode === 1 && json.data) {
+                        dispatch({ ...data, type: 'ADD_BODY_PARAM' })
+                        this.refs.successModal.show()
+                      } else {
+                        this.refs.failModal.show()
+                      }
+                    })
                 }} className="btn btn--primary">
                   Добавить
                 </button>
+                <Modal ref='failModal' modalStyle={contentStyle}>
+                  <h2>Что-то пошло не так, поробуйте чуть позже</h2>
+                </Modal>
+                <Modal ref='successModal' modalStyle={contentStyle}>
+                  <h2>Данные добавлены!</h2>
+                </Modal>
               </div>
             </div>
 
@@ -242,62 +301,23 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            <h3 className="h3">Для программы "Мама может"</h3>
-
-            <div className="grid mb30">
-              <div className="1/2--desk 1/1-pocket grid__cell">
-                <p className="base-parag">Дата рождения последнего ребёнка</p>
-                <Field name="babyBirthday" placeholder="д/М/гггг" component={InputProfile} />
+            {initialValues.program === 2 &&
+              <div>
+                <h3 className="h3">Для программы "Мама может"</h3>
+                <div className="grid mb30">
+                  <div className="1/2--desk 1/1-pocket grid__cell">
+                    <p className="base-parag">Дата рождения последнего ребёнка</p>
+                    <Field name="babyBirthday" placeholder="д/М/гггг" component={InputProfile} />
+                  </div>
+                  <div className="1/2--desk 1/1-pocket grid__cell">
+                    <p className="base-parag">Месяц когда перестали кормить грудью</p>
+                    <Field name="lastBabyFeedMonth" placeholder="д/М/гггг" component={InputProfile} />
+                  </div>
+                </div>
               </div>
-              <div className="1/2--desk 1/1-pocket grid__cell">
-                <p className="base-parag">Месяц когда перестали кормить грудью</p>
-                <Field name="lastBabyFeedMonth" placeholder="д/М/гггг" component={InputProfile} />
-              </div>
-            </div>
+            }
 
-            <h3 className="h3">Страховка</h3>
-            <p className="sub-title">Обеспечь свою безопасность. Это займет всего 2 минуты</p>
-
-            <div className="grid">
-              <div className="2/3--desk 1/1--pocket grid__cell">
-                <p className="label">ФИО</p>
-                <Field name="insuranceName" placeholder="" component={InputProfile} />
-              </div>
-              <div className="1/3--desk 1/1--pocket grid__cell">
-                <p className="label">Дата рождения</p>
-                <Field name="insuranceBirthday" placeholder="д/М/гггг" component={InputProfileBirthday} />
-              </div>
-            </div>
-
-            <p className="label">Профессия/Должность</p>
-            <Field name="insuranceJob" placeholder="" component={InputProfile} />
-
-            <p className="label">Паспортные данные</p>
-            <Field name="insurancePasport" placeholder="" component={InputProfile} />
-
-            <p className="label">Адрес Регистрации</p>
-            <Field name="insuranceAddress" placeholder="" component={InputProfile} />
-
-            <p className="label mb10">Срок страхования</p>
-            <div className="grid">
-              <div className="1/2 grid__cell">
-                <p className="label">Дата начала</p>
-                <Field disabled={true} name="insuranceStartDate" placeholder="д/М/гггг" val="12/10/2016" component={InputProfileDate} />
-              </div>
-              <div className="1/2 grid__cell">
-                <p className="label">Дата окончания</p>
-                <Field disabled={true} name="insuranceEndDate" placeholder="д/М/гггг" val="12/10/2016" component={InputProfileDate} />
-              </div>
-            </div>
-
-            <p className="label">Индивидуальная страховая сумма по рискам, указанным в п.п. ___. - ___. Договора руб.</p>
-            <div className="input input--box">
-              <input disabled type="text" className="input__field" placeholder="" value="100 000"/>
-            </div>
-
-            <div className="text-center mb30">
-              <div className="btn btn--secondary">Активировать страховку</div>
-            </div>
+            <InsuranceValidationForm insurance={insurance} />
 
             <p className="sub-title">Для того, чтобы добиться быстрых и качественных результатов тренеру важно знать некоторые особенности твоего организма. Это поможет ему правильно распределить нагрузку на мышцы и организовать последовательность тренировок, не навредив твоему организму</p>
 
@@ -350,7 +370,7 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            <p className="base-parag text-center ">Есть травмы или проблемные зоны?</p>
+            <p className="base-parag text-center">Есть травмы или проблемные зоны?</p>
 
             <ul className="options options--white mtb30">
               {injuriesExist.map((val, index) => (
@@ -362,7 +382,8 @@ class SubmitValidationForm extends Component {
                         document.getElementById(`injuriesExist[${i}]`).className = "options__item"
                     })
                   }}>
-                    <Field component='input' type='radio' name="injuriesExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                    <Field component={RadioCustom} name="injuriesExist" val={val.val}/>
+                    {/* <Field component='input' type='radio' name="injuriesExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/> */}
                     {val.text}
                   </li>
                   <span/>
@@ -377,6 +398,8 @@ class SubmitValidationForm extends Component {
                 }/>
               ))}
             </ul>
+
+            <Field name="injuriesAnother" placeholder="Другое" component={InputProfile} />
 
             <hr/>
 
@@ -437,14 +460,14 @@ class SubmitValidationForm extends Component {
             <ul className="options options--white mtb30">
               {injuriesExist.map((val, index) => (
                 <label key={index}>
-                  <li name="sports" className="options__item" id={`badHannitsExist[${index}]`} onClick={e => {
-                    document.getElementById(`badHannitsExist[${index}]`).className += ' is-active'
+                  <li name="sports" className="options__item" id={`badHabbitsExist[${index}]`} onClick={e => {
+                    document.getElementById(`badHabbitsExist[${index}]`).className += ' is-active'
                     injuriesExist.map((v, i) => {
                       if (index !== i)
-                        document.getElementById(`badHannitsExist[${i}]`).className = "options__item"
+                        document.getElementById(`badHabbitsExist[${i}]`).className = "options__item"
                     })
                   }}>
-                    <Field component='input' type='radio' name="badHannitsExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                    <Field component='input' type='radio' name="badHabbitsExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
                     {val.text}
                   </li>
                   <span/>
@@ -488,7 +511,7 @@ const validate = data => {
 
   data.injuries = injuries.join()
   data.diseases = diseases.join()
-  data.bodyParams = bodyParameters
+  // data.bodyParams = bodyParameters
 
   console.log('validation')
   console.log(data)
@@ -559,20 +582,41 @@ const validate = data => {
       break
   }
 
-  if (!data.birthday) {
-    errors.birthday = 'День Рождения должен быть заполнен'
-  }
-
-  if (!data.height) {
-    errors.height = 'Рост должен быть заполнен'
-  }
-
-  if (!data.weight) {
-    errors.weight = 'Вес должен быть заполнен'
+  switch (true) {
+    case !data.birthday:
+      errors.birthday = 'День Рождения должен быть заполнен'
+      break
+    case !/^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$/.test(data.birthday):
+      errors.birthday = 'Поле День Рождения не соответствует формату 02/01/2017'
+      break
   }
 
   if (!data.squatsCount) {
     errors.squatsCount = 'Количество приседаний должно быть заполнено'
+  }
+
+  if (!data.sportsPast) {
+    errors.sportsPast = 'Поле спорт должно быть отмечено'
+  }
+
+  if (!data.injuriesExist) {
+    errors.injuriesExist = 'Поле травмы должно быть отмечено'
+  } else if (data.injuriesExist && data.injuries.length === 0 && !data.injuriesAnother) {
+    errors.diseases = 'Выберите травмы'
+  }
+
+  if (!data.diseasesExist) {
+    errors.diseasesExist = 'Поле хронические заболевания должно быть отмечено'
+  } else if (data.diseasesExist && data.diseases.length === 0 && !data.diseasesAnother) {
+    errors.diseases = 'Выберите хронические заболевания'
+  }
+
+  if (!data.pressure) {
+    errors.pressure = 'Поле давление должно быть отмечено'
+  }
+
+  if (!data.badHabbitsExist) {
+    errors.badHabbitsExist = 'Поле вредные привычки должно быть отмечено'
   }
 
   return errors

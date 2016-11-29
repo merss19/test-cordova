@@ -17,25 +17,7 @@ const contentStyle = {
 
 class ProfilePasswordForget extends Component {
   render() {
-    const programParam = this.props.params.program
-    const { amount, type } = this.props.location.query
-    const packageType = type
-    const { error, handleSubmit, pristine, reset, setToken, submitting, signup } = this.props
-    let program
-
-    switch (programParam) {
-      case 'mommy':
-        program = '#МАМА МОЖЕТ'
-        break
-      case 'extremeways':
-        program = '#ЭКСТРИМАЛЬНАЯ СУШКА'
-        break
-      case 'tommorowman':
-        program = '#Я ЗАВТРА'
-        break
-      default:
-        program = '#Я ГЕРОЙ'
-    }
+    const { error, handleSubmit, pristine, reset, amount, packageType, program, submitting } = this.props
 
     return (
       <div className="layout layout--registration">
@@ -148,7 +130,9 @@ class ProfilePasswordForget extends Component {
 }
 
 const mapStateToProps = state => ({
-  email: state.profile,
+  program: state.profile.program,
+  amount: state.profile.amount,
+  packageType: state.profile.packageType,
 })
 
 ProfilePasswordForget = connect(

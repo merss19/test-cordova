@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 import {
   SELECT_PROFILE, INVALIDATE_PROFILE,
   REQUEST_PROFILE, RECEIVE_PROFILE
@@ -9,12 +7,12 @@ const bodyParam = (state, action) => {
   switch (action.type) {
     case 'ADD_BODY_PARAM':
       return {
-        date: moment().format('YYYY-DD-MM, hh:mm:ss'),
+        date: action.date,
         weight: action.weight,
         chest: action.chest,
         waist: action.waist,
-        hip: action.hip,
-        hipGirth: action.hipGirth
+        hips: action.hips,
+        thigh: action.thigh
       }
     default:
       return state
@@ -28,17 +26,21 @@ export const bodyParams = (state = [], action) => {
         ...state,
         bodyParam(undefined, action)
       ]
+    case 'SAVE_BODY_PARAMS':
+      return action.bodyMeasure
     default:
       return state
   }
 }
 
-export function profile(state = 'DO_NOT_CREATE', action) {
+export function profile(state = {}, action) {
   switch (action.type) {
-    case 'CREATE_PROFILE':
-      return {
-        text: action.text,
-      }
+    // case 'CREATE_PROFILE':
+    //   return {
+    //     program: action.program,
+    //     amount: action.amount,
+    //     packageType: action.packageType
+    //   }
     case 'SIGNUP':
       return {
         program: action.program,
@@ -81,7 +83,9 @@ const profileData = (state = {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        profileData: action.json,
+        profileData: action.profile,
+        insurance: action.insurance,
+        bodyParams: action.bodyParams,
         lastUpdated: action.receivedAt
       }
     default:

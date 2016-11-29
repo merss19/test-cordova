@@ -2,7 +2,7 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
 
-import CustomInput from '../componentKit/CustomInput';
+import CustomInput from '../componentKit/CustomInput'
 
 const SignupValidationForm = props => {
   const { error, handleSubmit, pristine, reset, submitting, signup, onSubmit } = props
@@ -21,11 +21,11 @@ const SignupValidationForm = props => {
       <br/>
       <Link to="/restore">Забыли пароль?</Link>
     </form>
-  );
+  )
 }
 
 const validate = data => {
-  const errors = {};
+  const errors = {}
 
   switch (true) {
     case !data.email:
@@ -54,7 +54,7 @@ const validate = data => {
   if (data.password !== data.passwordAgain)
     errors.passwordAgain = 'Пароли должны совпадать'
 
-  return errors;
+  return errors
 }
 
 export default reduxForm({

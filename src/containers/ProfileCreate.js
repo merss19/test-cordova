@@ -14,7 +14,7 @@ const contentStyle = {
 class ProfileCreate extends Component {
   static propTypes = {
     token: PropTypes.string,
-    profile: PropTypes.object,
+    profileData: PropTypes.object,
     selectedProfile: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
@@ -34,36 +34,46 @@ class ProfileCreate extends Component {
   }
 
   render() {
-    const { selectedProfile, profileData, dispatch, token, isFetching, lastUpdated } = this.props
-    const isEmpty = profileData === undefined || profileData.data === undefined
+    const { profileData, insurance, bodyParams, token, isFetching } = this.props
+    const isEmpty = !profileData || !profileData.email
+
+    console.log('<=========||===')
+    console.log(profileData)
+    console.log(isEmpty)
     return (
       <div>
         {isEmpty
           ? (isFetching ? <h2>Загружается...</h2> : <h2>Ничего не найдено</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-            <SubmitValidationForm initialValues={profileData.data[0]} onSubmit={data => {
-              const payload = {
-                authToken: token ? token : cookie.load('token'),
-                data
-              }
+            <SubmitValidationForm
+              insurance={insurance}
+              bodyMeasure={bodyParams}
+              initialValues={profileData}
+              onSubmit={data => {
+                const payload = {
+                  authToken: token ? token : cookie.load('token'),
+                  data
+                }
 
-              return fetch('http://sport.muhanov.net/api/user/user-update', {
-                  headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST',
-                  body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then(user => {
-                  if (!user.data) {
-                    throw new SubmissionError({ _error: 'Что-то пошло не так, попробуйте снова.' })
-                  } else {
-                    this.refs.successModal.show()
-                  }
-                })
-            }}/>
+                return fetch('http://sport.muhanov.net/api/user/user-update', {
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                  })
+                  .then(response => response.json())
+                  .then(user => {
+                    if (!user.data) {
+                      throw new SubmissionError({ _error: 'Что-то пошло не так, попробуйте снова.' })
+                    } else {
+                      this.refs.successModal.show()
+                    }
+                  })
+                }
+              }
+            />
             <Modal ref='successModal' modalStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
             </Modal>
@@ -78,13 +88,17 @@ class ProfileCreate extends Component {
 const mapStateToProps = state => {
   const { selectedProfile, recivedProfile, userToken } = state
 
+  // console.log('<<<<<<<==)==0')
+  // console.log(recivedProfile)
   const {
     isFetching,
     lastUpdated,
-    profileData
+    profileData,
+    insurance,
+    bodyParams
   } = recivedProfile[selectedProfile] || {
     isFetching: true,
-    profile: {}
+    profileData: {}
   }
 
   return {
@@ -92,6 +106,8 @@ const mapStateToProps = state => {
     isFetching,
     lastUpdated,
     profileData,
+    insurance,
+    bodyParams,
     token: userToken.token
   }
 }

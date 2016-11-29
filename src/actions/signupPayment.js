@@ -48,19 +48,19 @@ const fetchPayment = partialState => dispatch => {
     data.append("json", JSON.stringify(payload))
 
     return fetch('http://sport.muhanov.net/api/user/payment-create', {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(json => {
-        if (json && json.data && json.data.txId)
-          cookie.save('txId', json.data.txId, { path: '/' })
-        return dispatch(receivePayment(payment, json))
-      })
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (json && json.data && json.data.txId)
+        cookie.save('txId', json.data.txId, { path: '/' })
+      return dispatch(receivePayment(payment, json))
+    })
   } else {
     const payload = {
       authToken: token ? token : cookie.load('token'),
@@ -74,20 +74,20 @@ const fetchPayment = partialState => dispatch => {
     data.append("json", JSON.stringify(payload))
 
     return fetch('http://sport.muhanov.net/api/user/payment-get', {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(json => {
-        console.log('!=======')
-        console.log(json)
-        if (json && json.data)
-        return dispatch(receivePayment(payment, { data: json.data[0] }))
-      })
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(json => {
+      console.log('!=======')
+      console.log(json)
+      if (json && json.data)
+      return dispatch(receivePayment(payment, { data: json.data[0] }))
+    })
   }
 }
 

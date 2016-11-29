@@ -7,6 +7,7 @@ const RadioProfile = ({ input, title, val, name, id, meta: { touched, error } })
       <span className="radio__ph"></span>
       <span>{title}</span>
     </label>
+    {touched && error && <span>{error}</span>}
   </span>
 )
 

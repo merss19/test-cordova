@@ -13,6 +13,7 @@ const CheckboxProfile = ({ input, title, onChange, id, meta: { touched, error } 
         <span className="checkbox__title">{title}</span>
       </label>
     </span>
+    {touched && error && <span>{error}</span>}
   </li>
 )
 
