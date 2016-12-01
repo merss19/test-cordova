@@ -8,7 +8,7 @@ import cookie from 'react-cookie'
 
 class ProfilePay extends Component {
   componentWillMount() {
-    const { dispatch, selectedPayment, payment, program, amount, packageType } = this.props
+    const { dispatch, selectedPayment, payment, program, amount, packageType, promo } = this.props
     dispatch(actions.fetchPaymentIfNeeded(selectedPayment))
   }
 
@@ -46,7 +46,7 @@ class ProfilePay extends Component {
 
     const isEmpty = payment === undefined || payment.data === undefined
 
-    if (!isEmpty && payment.data.txId) {
+    if (!isEmpty && payment.data && payment.data.txId) {
       console.log('true')
       const frameScript = document.createElement("script")
       frameScript.type  = "text/javascript"
@@ -127,7 +127,7 @@ class ProfilePay extends Component {
 
 const mapStateToProps = state => {
   const { selectedPayment, recivedPayment, userToken, profile } = state
-  const { program, amount, packageType } = profile
+  const { program, amount, packageType, promo } = profile
 
   console.log(state)
 
@@ -148,6 +148,7 @@ const mapStateToProps = state => {
     program,
     amount,
     packageType,
+    promo,
     token: userToken.token
   })
 }

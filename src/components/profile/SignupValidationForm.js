@@ -1,6 +1,7 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
+import cookie from 'react-cookie'
 
 import CustomInput from '../componentKit/CustomInput'
 
@@ -20,6 +21,7 @@ const SignupValidationForm = props => {
       <Link to="/profile">Войти</Link>
       <br/>
       <Link to="/restore">Забыли пароль?</Link>
+      <br/>
     </form>
   )
 }

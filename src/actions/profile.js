@@ -25,19 +25,21 @@ export const receiveProfile = (profileData, json) => {
     profileData,
     receivedAt: Date.now()
   }
+
   json.map(j => {
-    switch (true) {
-      case !j && !j.data && !j.data[0]:
-        return
-      case !!j.data[0].email:
-        profile = { ...profile, profile: j.data[0] }
-        break
-      case !!j.data[0].chest:
-        profile = { ...profile, bodyParams: j.data }
-        break
-      case !!j.data[0].passport:
-        profile = { ...profile, insurance: j.data }
-        break
+    console.log(j)
+    if (j && j.data && j.data.length > 0) {
+      switch (true) {
+        case !!j.data[0].email:
+          profile = { ...profile, profile: j.data[0] }
+          break
+        case !!j.data[0].chest:
+          profile = { ...profile, bodyParams: j.data }
+          break
+        case !!j.data[0].passport:
+          profile = { ...profile, insurance: j.data }
+          break
+      }
     }
   })
 
@@ -63,7 +65,7 @@ const fetchProfile = partialState => dispatch => {
   const method = 'POST'
   const urls = [
     'http://sport.muhanov.net/api/user/user-get',
-    'http://sport.muhanov.net/api/user/bodymeasure-get',
+    'http://sport.muhanov.net/api/user/bodyMeasure-get',
     'http://sport.muhanov.net/api/user/insurance-get'
   ]
 

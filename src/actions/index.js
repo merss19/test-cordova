@@ -16,10 +16,13 @@ export const createProfile = text => ({
 //   text
 // })
 
-export const signup = ({program, amount, packageType}) => {
+export const signup = (program, amount, packageType, promo) => {
+  console.log('===//===========>')
+  console.log(program)
   return ({
     type: SIGNUP,
     program,
+    promo,
     amount,
     packageType
   })

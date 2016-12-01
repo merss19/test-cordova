@@ -16,26 +16,28 @@ const VK = window.VK
 class ProfileSignup extends Component {
   componentWillMount() {
     const programParam = this.props.params.program
-    const { amount, type } = this.props.location.query
+    const { amount, type, promo } = this.props.location.query
     const packageType = type
     let program
 
     switch (programParam) {
       case 'mommy':
-        program = '#МАМА МОЖЕТ'
+        program = 2
         break
       case 'extremeways':
-        program = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+        program = 3
         break
       case 'tommorowman':
-        program = '#Я ЗАВТРА'
+        program = 4
         break
       default:
-        program = '#Я ГЕРОЙ'
+        program = 1
     }
 
+    console.log(program)
+
     const { signup } = this.props
-    signup(program, amount, packageType)
+    signup(program, amount, packageType, promo)
   }
 
   statusChangeCallback(response) {
@@ -65,6 +67,7 @@ class ProfileSignup extends Component {
 
     const { error, handleSubmit, pristine, reset, setToken, submitting } = this.props
     let program
+    let packageName
 
     switch (programParam) {
       case 'mommy':
@@ -80,11 +83,31 @@ class ProfileSignup extends Component {
         program = '#Я ГЕРОЙ'
     }
 
+    switch (packageType) {
+      case 1:
+        packageName = '1  человек'
+        break
+      case 2:
+        packageName = '2  человек'
+        break
+      case 3:
+        packageName = '3  человек'
+        break
+      default:
+        packageName = '1  человек'
+    }
+
     const loginVk = () => {
       VK.Auth.login(response => {
         console.log(response)
         const { first_name, last_name } = response.session.user
-      }, VK.access.EMAIL);
+        VK.Api.call('users.get', {fields: 'email'}, function(r) {
+          console.log(r)
+          if(r.response && r.response[0] && r.response[0].email) {
+            console.log(r.response[0])
+          }
+        })
+      })
     }
 
     const loginFb = () => {
@@ -92,7 +115,6 @@ class ProfileSignup extends Component {
       console.log(self)
       FB.login(response => {
         if (response.status === 'connected') {
-          const userID = response.userID
           FB.api(`/me?fields=first_name,last_name,email`,
             response => {
               const { email, first_name, last_name } = response
@@ -134,7 +156,7 @@ class ProfileSignup extends Component {
                       setToken(json.data.authToken)
                       browserHistory.push('/signup/pay')
                     } else {
-                      throw new SubmissionError({ passwordAa: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
+                      throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
                     }
                   })
                 }
@@ -203,7 +225,7 @@ class ProfileSignup extends Component {
                 <ul className="packet-info">
                   <li className="packet-info__item">
                     <span className="packet-info__name-title">Пакет</span>
-                    <span className="packet-info__name">{packageType}</span>
+                    <span className="packet-info__name">{packageName}</span>
                   </li>
                   <li className="packet-info__item">
                     <span className="packet-info__name-title">Цена</span>
@@ -240,7 +262,7 @@ class ProfileSignup extends Component {
                         program = 1
                     }
 
-                    const payload = { program, email, password }
+                    const payload = { program, email, password, package: packageType }
 
                     return fetch('http://sport.muhanov.net/api/user/user-create', {
                         headers: {
@@ -257,7 +279,7 @@ class ProfileSignup extends Component {
                           setToken(json.data.authToken)
                           browserHistory.push('/signup/pay')
                         } else {
-                          throw new SubmissionError({ passwordAa: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
+                          throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
                         }
                       })
                   }}/>

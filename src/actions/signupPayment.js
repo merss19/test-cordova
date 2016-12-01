@@ -21,6 +21,7 @@ export const requestPayment = payment => ({
 })
 
 export const receivePayment = (payment, json) => {
+  console.log(json)
   return ({
     type: RECEIVE_PAYMENT,
     payment,
@@ -31,23 +32,29 @@ export const receivePayment = (payment, json) => {
 
 const fetchPayment = partialState => dispatch => {
   const { token, profile, payment } = partialState
-  const { program, amount } = profile
+  const { program, packageType, amount, promo } = profile
   dispatch(requestPayment(payment))
   const txId = cookie.load('txId')
 
+  console.log('<)))))))===0')
+  console.log(profile)
+
   if (txId === undefined) {
-    const payload = {
+    let payload = {
       authToken: token ? token : cookie.load('token'),
       data: {
         program,
-        amount
+        package: packageType
       }
     }
+
+    if (promo)
+      payload.data.promoName = promo
 
     let data = new FormData()
     data.append("json", JSON.stringify(payload))
 
-    return fetch('http://sport.muhanov.net/api/user/payment-create', {
+    return fetch('http://sport.muhanov.net/api/payment/payment-create', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -57,6 +64,7 @@ const fetchPayment = partialState => dispatch => {
     })
     .then(response => response.json())
     .then(json => {
+      console.log(json)
       if (json && json.data && json.data.txId)
         cookie.save('txId', json.data.txId, { path: '/' })
       return dispatch(receivePayment(payment, json))
@@ -73,7 +81,7 @@ const fetchPayment = partialState => dispatch => {
     let data = new FormData()
     data.append("json", JSON.stringify(payload))
 
-    return fetch('http://sport.muhanov.net/api/user/payment-get', {
+    return fetch('http://sport.muhanov.net/api/payment/payment-get', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

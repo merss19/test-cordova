@@ -44,6 +44,7 @@ export function profile(state = {}, action) {
     case 'SIGNUP':
       return {
         program: action.program,
+        promo: action.promo,
         amount: action.amount,
         packageType: action.packageType
       }

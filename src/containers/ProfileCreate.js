@@ -5,6 +5,7 @@ import { SubmissionError } from 'redux-form'
 import SubmitValidationForm from '../components/profile/SubmitValidationForm'
 import cookie from 'react-cookie'
 import Modal from 'boron/DropModal'
+import moment from 'moment'
 
 const contentStyle = {
   borderRadius: '18px',
@@ -36,10 +37,14 @@ class ProfileCreate extends Component {
   render() {
     const { profileData, insurance, bodyParams, token, isFetching } = this.props
     const isEmpty = !profileData || !profileData.email
+    const insuranceIsEmpty = !insurance || !insurance[insurance.length - 1]
 
     console.log('<=========||===')
     console.log(profileData)
     console.log(isEmpty)
+    if (!isEmpty) {
+      console.log(moment(profileData.birthday).format('DD/MM/YYYY'))
+    }
     return (
       <div>
         {isEmpty
@@ -48,8 +53,20 @@ class ProfileCreate extends Component {
             <SubmitValidationForm
               insurance={insurance}
               bodyMeasure={bodyParams}
-              initialValues={profileData}
+              initialValues={{
+                ...profileData,
+                birthday: moment(profileData.birthday).format('DD/MM/YYYY'),
+                fullName: !insuranceIsEmpty && insurance[insurance.length - 1].fullName
+                  ? insurance[insurance.length - 1].fullName : '' ,
+                profession: !insuranceIsEmpty && insurance[insurance.length - 1].profession
+                  ? insurance[insurance.length - 1].profession : '',
+                passport: !insuranceIsEmpty && insurance[insurance.length - 1].passport
+                  ? insurance[insurance.length - 1].passport : '',
+                address: !insuranceIsEmpty && insurance[insurance.length - 1].address
+                  ? insurance[insurance.length - 1].address : ''
+              }}
               onSubmit={data => {
+                console.log(data)
                 const payload = {
                   authToken: token ? token : cookie.load('token'),
                   data

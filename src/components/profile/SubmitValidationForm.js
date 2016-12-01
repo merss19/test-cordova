@@ -13,6 +13,7 @@ import CheckboxProfile from '../componentKit/CheckboxProfile'
 import SelectProfile from '../componentKit/SelectProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
 import InputProfileDate from '../componentKit/InputProfileDate'
+import ErrorField from '../componentKit/ErrorField'
 import InsuranceValidationForm from '../profile/InsuranceValidationForm'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
@@ -28,13 +29,25 @@ const contentStyle = {
   padding: '30px'
 }
 
+const FB = window.FB
+const VK = window.VK
+const FAPI = window.FAPI
+
 class SubmitValidationForm extends Component {
   componentWillMount() {
     const { bodyMeasure, dispatch } = this.props
-    dispatch({
-      type: 'SAVE_BODY_PARAMS',
-      bodyMeasure
-    })
+    const script = document.createElement("script")
+
+    script.type  = "text/javascript"
+    script.text = 'http://api.ok.ru/js/fapi5.js'
+    document.body.appendChild(script)
+
+    if (bodyMeasure) {
+      dispatch({
+        type: 'SAVE_BODY_PARAMS',
+        bodyMeasure
+      })
+    }
   }
 
   render() {
@@ -93,27 +106,131 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            <h3 className="h3">Личные данные</h3>
+            <div className="grid">
+              <div className="1/2--desk grid__cell mb30">
+                <h3 className="h3">Личные данные</h3>
 
-            <div className="text-center">
-              <div className="avatar avatar--profile">
-                <label className="upload-file avatar--upload" htmlFor="ava[1]">
-                  <input id="ava[1]" type="file" accept="image/*" className="upload-file__input" onChange={input => {
-                    const { target } = input
-                    if (target.files && target.files[0]) {
-                      var reader = new FileReader()
+                <div className="text-center">
+                  <div className="avatar avatar--profile">
+                    <label className="upload-file avatar--upload" htmlFor="ava[1]">
+                      <input id="ava[1]" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
 
-                      reader.onload = e => {
-                        this.refs.avatar.src = e.target.result
-                      }
+                          reader.onload = e => {
+                            this.refs.avatar.src = e.target.result
 
-                      reader.readAsDataURL(target.files[0])
-                    }
-                  }}/>
-                </label>
-                <div className="avatar__img-wrap">
-                  <img ref="avatar" className="avatar__img" src="/assets/img/png/ava-ph-big.png" alt=""/>
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name: target.files[0].name,
+                                content: reader.result.replace(/data:image\/\w+;base64,/, '')
+                              }
+                            }
+
+                            return fetch('http://sport.muhanov.net/api/data/file-upload', {
+                              headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                              },
+                              method: 'POST',
+                              body: JSON.stringify(payload)
+                            })
+                            .then(response => response.json())
+                            .then(json => {
+                              console.log(json)
+                              if (json.errorCode === 1 && json.data) {
+                                const photoPayload = {
+                                  authToken: cookie.load('token'),
+                                  data: {
+                                    photo: `http://sport.muhanov.net/api/files/${json.data.uid}.${json.data.extension}`,
+                                  }
+                                }
+
+                                console.log(photoPayload)
+
+                                return fetch('http://sport.muhanov.net/api/user/user-update', {
+                                  headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                  },
+                                  method: 'POST',
+                                  body: JSON.stringify(photoPayload)
+                                })
+                                .then(response => response.json())
+                                .then(json => {console.log(json)})
+                              }
+                            })
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
+                    </label>
+                    <div className="avatar__img-wrap">
+                      <img ref="avatar" className="avatar__img" src={initialValues.photo ? initialValues.photo : "/assets/img/png/ava-ph-big.png"} alt=""/>
+                    </div>
+                  </div>
                 </div>
+              </div>
+              <div className="1/2--desk grid__cell">
+                <h3 className="h3">Привязка к социальным сетям</h3>
+                <ul className="btn-social btn-social--profile">
+                  <li className="btn-social__item btn-social__item--vk" onClick={() => {
+                    const self = this
+                    VK.Auth.login(response => {
+                      VK.Api.call('users.get', {fields: 'photo_200'}, function(r) {
+                        if(r.response && r.response[0] && r.response[0].photo_200) {
+                          self.refs.avatar.src = r.response[0].photo_200
+                        }
+                      })
+                    })
+                  }}>
+                    <svg className="svg-icon ico-vk">
+                      <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#vk"></use>
+                    </svg>
+                    <span className="btn-social__title">Вконтакте</span>
+                  </li>
+                  <li className="btn-social__item btn-social__item--odnoklassniki" onClick={() => {
+                    const FAPI = window.FAPI
+                    var rParams = window.FAPI.Util.getRequestParameters()
+                    console.log(rParams)
+                    FAPI.init(rParams["api_server"], rParams["apiconnection"], () => {
+                        console.log('here')
+                        FAPI.Client.call({
+                          method: "users.getInfo",
+                          fields: "pic190x190"
+                        }, r => {
+                          console.log(r)
+                        }, () => { console.log(error) })
+                      }
+                    )
+                  }}>
+                    <svg className="svg-icon ico-odnoklassniki">
+                      <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#odnoklassniki"></use>
+                    </svg>
+                    <span className="btn-social__title">Одноклассники</span>
+                  </li>
+                  <li className="btn-social__item btn-social__item--fb" onClick={() => {
+                    FB.login(response => {
+                      if (response.status === 'connected') {
+                        FB.api(`/me/picture?type=normal`,
+                          response => {
+                            if (response.data && response.data.url) {
+                              this.refs.avatar.src = response.data.url
+                            }
+                          }
+                        )
+                      }
+                    })
+                  }}>
+                    <svg className="svg-icon ico-fb">
+                      <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#fb"></use>
+                    </svg>
+                    <span className="btn-social__title">facebook</span>
+                  </li>
+                </ul>
               </div>
             </div>
 
@@ -121,8 +238,8 @@ class SubmitValidationForm extends Component {
 
             <div className="gender">
               <p className="gender__title">Пол</p>
-              <Field name="gender" val="male" title="Мужчина" id="gender[1]" component={RadioProfile} />
-              <Field name="gender" val="female" title="Женщина" id="gender[2]" component={RadioProfile} />
+              <Field name="gender" value="male" type='radio' title="Мужчина" id="gender[1]" component={RadioProfile} />
+              <Field name="gender" value="female" type='radio' title="Женщина" id="gender[2]" component={RadioProfile} />
             </div>
 
             <hr/>
@@ -136,14 +253,22 @@ class SubmitValidationForm extends Component {
               </div>
             </div>
 
-            <p className="base-parag">Дата рождения</p>
-            <Field name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} />
+            <div className="grid">
+              <div className="1/2--desk 1/1--pocket grid__cell">
+                <p className="base-parag">Дата рождения</p>
+                <Field name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} />
+              </div>
+              <div className="1/2--desk 1/1--pocket grid__cell">
+                <p className="base-parag">Ссылка на Instagram</p>
+                <Field name="instagram" placeholder="https://www.instagram.com/test/" component={InputProfile} />
+              </div>
+            </div>
 
-            <h3 className="h3">Сменить пароль</h3>
+            {/* <h3 className="h3">Сменить пароль</h3>
 
             <Field name="passwordOld" placeholder="Старый пароль" type='password' component={InputProfile} />
             <Field name='passwordNew' placeholder="Новый пароль"  type='password' component={InputProfile} />
-            <Field name='passwordNewAgain' placeholder="Новый пароль еще раз" type='password' component={InputProfile} />
+            <Field name='passwordNewAgain' placeholder="Новый пароль еще раз" type='password' component={InputProfile} /> */}
 
             <h3 className="h3">Контактные данные</h3>
 
@@ -166,10 +291,6 @@ class SubmitValidationForm extends Component {
             </div>
 
             <Field name="timezone" options={['Часовой пояс Минкс+1', 'Часовой пояс Москва+3']} component={SelectProfile} />
-
-            <div className="text-center">
-              <div className="btn btn--primary">Сохранить изменения</div>
-            </div>
 
             <hr/>
 
@@ -251,56 +372,6 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            <div className="grid">
-              <div className="grid__cell">
-                <h3 className="h3">Привязка к социальным сетям</h3>
-                <ul className="btn-social">
-                  <li className="btn-social__item btn-social__item--vk" onClick={() => {
-                    const payload = {
-                      fields: 'photo_100,city,country'
-                    }
-
-                    console.log(payload)
-
-                    let data = new FormData()
-                    data.append("json", JSON.stringify(payload))
-                    fetch('https://api.vk.com/method/users.get', {
-                        headers: {
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json',
-                          'Access-Control-Allow-Origin': 'http://localhost:3000/profile/create'
-                        },
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                      })
-                      .then(response => response.json())
-                      .then(json => {
-                        console.log(json)
-                      })
-                  }}>
-                    <svg className="svg-icon ico-vk">
-                      <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#vk"></use>
-                    </svg>
-                    <span className="btn-social__title">Вконтакте</span>
-                  </li>
-                  <li className="btn-social__item btn-social__item--odnoklassniki">
-                    <svg className="svg-icon ico-odnoklassniki">
-                      <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#odnoklassniki"></use>
-                    </svg>
-                    <span className="btn-social__title">Одноклассники</span>
-                  </li>
-                  <li className="btn-social__item btn-social__item--fb">
-                    <svg className="svg-icon ico-fb">
-                      <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#fb"></use>
-                    </svg>
-                    <span className="btn-social__title">facebook</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <hr/>
-
             {initialValues.program === 2 &&
               <div>
                 <h3 className="h3">Для программы "Мама может"</h3>
@@ -323,7 +394,19 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            <p className="base-parag text-center">Как у тебя со спортом? Выбери свой уровень</p>
+            <h3 className="h3">Осталось решить всего 1 вопрос и бонусы будут у тебя в копилочке!</h3>
+            <p className="sub-title">Посчитай сколько раз ты приседаешь за 1 минуту и запиши цифру</p>
+            <Field name="squatsCount" placeholder="Впиши свой результат сюда" component={InputProfile} />
+            <p className="base-rapag text-center">Вот тебе таймер обратного отсчета. Запускай и начинай приседать</p>
+
+            <Timer timer={{
+              minutes: 1,
+              seconds: 20
+            }}/>
+
+            <hr/>
+
+            {/* <p className="base-parag text-center">Как у тебя со спортом? Выбери свой уровень</p>
 
             <ul className="options options--white mtb30">
               {sports.map((val, index) => (
@@ -341,7 +424,7 @@ class SubmitValidationForm extends Component {
                   <span/>
                 </label>
               ))}
-            </ul>
+            </ul> */}
 
             <p className="base-parag text-center">Занимался спортом раньше?</p>
 
@@ -355,18 +438,19 @@ class SubmitValidationForm extends Component {
                         document.getElementById(`sportsPast[${i}]`).className = "options__item"
                     })
                   }}>
-                    <Field component='input' type='radio' name="sportsPast" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                    <Field component='input' type='radio' name="didSports" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
                     {val.text}
                   </li>
                   <span/>
                 </label>
               ))}
             </ul>
+            <Field name="didSports" component={ErrorField} />
 
-            <div className="text-center">
+            {/* <div className="text-center">
               <Field name='insurance' val='Я любитель' title='Я любитель' id="insurance[1]" component={RadioProfile} />
               <Field name='insurance' val='Я профи' title='Я профи' id="insurance[2]" component={RadioProfile} />
-            </div>
+            </div> */}
 
             <hr/>
 
@@ -382,14 +466,15 @@ class SubmitValidationForm extends Component {
                         document.getElementById(`injuriesExist[${i}]`).className = "options__item"
                     })
                   }}>
-                    <Field component={RadioCustom} name="injuriesExist" val={val.val}/>
-                    {/* <Field component='input' type='radio' name="injuriesExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/> */}
+                    {/* <Field component={RadioCustom} name="injuriesExist" val={val.val}/> */}
+                    <Field component='input' type='radio' name="injuriesExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
                     {val.text}
                   </li>
                   <span/>
                 </label>
               ))}
             </ul>
+            <Field name="injuriesExist" component={ErrorField} />
 
             <ul className="checkboxes">
               {injuriesList.map((val, index) => (
@@ -403,7 +488,7 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            <p className="base-parag text-center">А хронические заболевания?</p>
+            {/* <p className="base-parag text-center">А хронические заболевания?</p>
 
             <ul className="options options--white mtb30">
               {injuriesExist.map((val, index) => (
@@ -433,9 +518,9 @@ class SubmitValidationForm extends Component {
 
             <Field name="diseasesAnother" placeholder="Другое" component={InputProfile} />
 
-            <hr/>
+            <hr/> */}
 
-            <p className="base-parag text-center">Какое у тебя давление?</p>
+            {/* <p className="base-parag text-center">Какое у тебя давление?</p>
 
             <ul className="options options--white mtb30">
               {pressure.map((val, index) => (
@@ -475,22 +560,7 @@ class SubmitValidationForm extends Component {
               ))}
             </ul>
 
-            <hr/>
-
-            <h3 className="h3">Осталось решить всего 1 вопрос и бонусы будут у тебя в копилочке!</h3>
-
-            <p className="sub-title">Посчитай сколько раз ты приседаешь за 1 минуту и запиши цифру</p>
-
-            <Field name="squatsCount" placeholder="Впиши свой результат сюда" component={InputProfile} />
-
-            <p className="base-rapag text-center">Вот тебе таймер обратного отсчета. Запускай и начинай приседать</p>
-
-            <Timer timer={{
-              minutes: 1,
-              seconds: 20
-            }}/>
-
-            <hr/>
+            <hr/> */}
 
             <div className="text-center">
               <button type='submit' className="btn btn--primary">
@@ -595,29 +665,29 @@ const validate = data => {
     errors.squatsCount = 'Количество приседаний должно быть заполнено'
   }
 
-  if (!data.sportsPast) {
-    errors.sportsPast = 'Поле спорт должно быть отмечено'
+  if (!data.didSports) {
+    errors.didSports = 'Поле спорт должно быть отмечено'
   }
 
-  if (!data.injuriesExist) {
+  if (data.injuriesExist === 'undefined') {
     errors.injuriesExist = 'Поле травмы должно быть отмечено'
   } else if (data.injuriesExist && data.injuries.length === 0 && !data.injuriesAnother) {
-    errors.diseases = 'Выберите травмы'
+    errors.injuriesAnother = 'Выберите травмы'
   }
 
-  if (!data.diseasesExist) {
-    errors.diseasesExist = 'Поле хронические заболевания должно быть отмечено'
-  } else if (data.diseasesExist && data.diseases.length === 0 && !data.diseasesAnother) {
-    errors.diseases = 'Выберите хронические заболевания'
-  }
+  // if (!data.diseasesExist) {
+  //   errors.diseasesExist = 'Поле хронические заболевания должно быть отмечено'
+  // } else if (data.diseasesExist && data.diseases.length === 0 && !data.diseasesAnother) {
+  //   errors.diseases = 'Выберите хронические заболевания'
+  // }
 
-  if (!data.pressure) {
-    errors.pressure = 'Поле давление должно быть отмечено'
-  }
-
-  if (!data.badHabbitsExist) {
-    errors.badHabbitsExist = 'Поле вредные привычки должно быть отмечено'
-  }
+  // if (!data.pressure) {
+  //   errors.pressure = 'Поле давление должно быть отмечено'
+  // }
+  //
+  // if (!data.badHabbitsExist) {
+  //   errors.badHabbitsExist = 'Поле вредные привычки должно быть отмечено'
+  // }
 
   return errors
 }
