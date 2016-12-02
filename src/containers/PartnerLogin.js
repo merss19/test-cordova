@@ -2,14 +2,14 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import LoginValidationForm from '../components/profile/LoginValidationForm'
+import LoginPartnerValidationForm from '../components/profile/LoginPartnerValidationForm'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 
-let ProfileLogin = ({ profile, showError, setToken }) => {
+let PartnerLogin = setToken => {
   return (
-    <LoginValidationForm onSubmit={ data => {
+    <LoginPartnerValidationForm onSubmit={ data => {
       return fetch('http://sport.muhanov.net/api/user/authenticate', {
           headers: {
             'Accept': 'application/json',
@@ -20,12 +20,12 @@ let ProfileLogin = ({ profile, showError, setToken }) => {
         })
         .then(response => response.json())
         .then(json => {
-          if (json.data && json.data.authToken) {
+          if (json.data && json.data.authToken && json.data.role === 1) {
             cookie.save('token', json.data.authToken, { path: '/' })
             console.log('token')
             console.log(cookie.load('token'))
             setToken(json.data.authToken)
-            browserHistory.push('/profile/create')
+            browserHistory.push('/partner/show')
           } else {
             throw new SubmissionError({
               password: '',
@@ -37,16 +37,12 @@ let ProfileLogin = ({ profile, showError, setToken }) => {
   )
 }
 
-const mapStateToProps = state => ({ profile: state.profile })
-
 const mapDispatchToProps = dispatch => ({
-  showError: bindActionCreators(actions.createProfile, dispatch),
   setToken: bindActionCreators(actions.setToken, dispatch)
 })
 
-ProfileLogin = connect(
-  mapStateToProps,
+PartnerLogin = connect(
   mapDispatchToProps
-)(ProfileLogin)
+)(PartnerLogin)
 
-export default ProfileLogin
+export default PartnerLogin

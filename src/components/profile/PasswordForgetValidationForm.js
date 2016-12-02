@@ -37,24 +37,6 @@ const validate = data => {
       break
   }
 
-  switch (true) {
-    case !data.password:
-      errors.password = 'Поле пароля должно быть заполнено'
-      break
-    case data.password.length < 6:
-      errors.password = 'Поле пароля должно быть длиннее 6 символов'
-      break
-    case data.password.length > 20:
-      errors.password = 'Поле пароля должно быть короче 20 символов'
-      break
-    case !/^[A-Za-z0-9!@#$%^&*()_]{6,20}$/.test(data.password):
-      errors.password = 'Поле пароля может содержать только буквы английского алфавита, цифры и какой-нибудь из знаков !@#$%^&*()_'
-      break
-  }
-
-  if (data.password !== data.passwordAgain)
-    errors.passwordAgain = 'Пароли должны совпадать'
-
   return errors;
 }
 

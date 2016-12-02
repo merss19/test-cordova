@@ -94,9 +94,36 @@ class ProfilePasswordForget extends Component {
                   <h2>Письмо с инструкциями отправлено на указанный вами email</h2>
                 </Modal>
 
+                <Modal ref='failModal' modalStyle={contentStyle}>
+                  <h2>Пользователь с таким email, не найден</h2>
+                </Modal>
+
                 <div className="grid grid--middle">
-                  <PasswordForgetValidationForm onSubmit={(data) => {
-                    this.refs.successModal.show()
+                  <PasswordForgetValidationForm onSubmit={ data => {
+                    return fetch('http://sport.muhanov.net/api/user/user-sendRestorePassword', {
+                        headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json'
+                        },
+                        method: 'POST',
+                        body: JSON.stringify(data)
+                      })
+                      .then(response => response.json())
+                      .then(json => {
+                        console.log(json)
+                        if (json.errorCode === 1 && json.data) {
+                          if (json.data.resultCode === 2) {
+                            this.refs.failModal.show()
+                          } else {
+                            this.refs.successModal.show()
+                          }
+                        } else {
+                          throw new SubmissionError({
+                            password: '',
+                            _error: 'Что-то пошло не так, попробуйте снова'
+                          })
+                        }
+                      })
                   }}/>
                   <div className="1/2--desk grid__cell entry-form__social">
                     <p className="entry-form__social-title">Войти через социальные сети</p>

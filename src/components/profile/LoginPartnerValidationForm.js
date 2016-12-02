@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 
 import CustomInput from '../componentKit/CustomInput';
 
-const LoginValidationForm = props => {
+const LoginPartnerValidationForm = props => {
   const { error, handleSubmit, pristine, reset, submitting } = props
   return (
     <div className="layout layout--login">
@@ -32,36 +32,16 @@ const LoginValidationForm = props => {
 
               {error && <strong>{error}</strong>}
 
-              <h2 className="h2">Вход в Личный кабинет </h2>
+              <h2 className="h2">Вход в кабинет </h2>
 
               <div className="grid grid--middle">
-                <div className="1/2--desk grid__cell entry-form__email">
+                <div className="1/2--desk grid__cell">
                   <Field name='email' id='login[1]' title='Ваш e-mail' component={CustomInput} />
                   <Field name='password' id='login[2]' title='Ваш пароль' type='password' component={CustomInput} />
                   <button type='submit' className="btn btn--primary">
                     Войти
                   </button>
                   <Link to="/restore">Забыли пароль?</Link>
-                </div>
-                <div className="1/2--desk grid__cell entry-form__social">
-                  <p className="entry-form__social-title">Войти через социальные сети</p>
-                  <ul className="social-signin">
-                    <li className="social-signin__item social-signin__item--vk">
-                      <svg className="svg-icon ico-vk">
-                        <use xlinkHref="#vk"></use>
-                      </svg>
-                    </li>
-                    <li className="social-signin__item social-signin__item--odnoklassniki">
-                      <svg className="svg-icon ico-odnoklassniki">
-                        <use xlinkHref="#odnoklassniki"></use>
-                      </svg>
-                    </li>
-                    <li className="social-signin__item social-signin__item--fb">
-                      <svg className="svg-icon ico-fb">
-                        <use xlinkHref="#fb"></use>
-                      </svg>
-                    </li>
-                  </ul>
                 </div>
               </div>
 
@@ -90,4 +70,4 @@ const validate = data => {
 export default reduxForm({
   form: 'loginValidation',
   validate
-})(LoginValidationForm)
+})(LoginPartnerValidationForm)

@@ -9,6 +9,7 @@ import RadioCustom from '../componentKit/RadioCustom'
 import Timer from '../componentKit/Timer'
 import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
+import InputProfilePhone from '../componentKit/InputProfilePhone'
 import CheckboxProfile from '../componentKit/CheckboxProfile'
 import SelectProfile from '../componentKit/SelectProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
@@ -34,6 +35,19 @@ const VK = window.VK
 const FAPI = window.FAPI
 
 class SubmitValidationForm extends Component {
+  updatePhoto(photoPayload) {
+    return fetch('http://sport.muhanov.net/api/user/user-update', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(photoPayload)
+    })
+    .then(response => response.json())
+    .then(json => {})
+  }
+
   componentWillMount() {
     const { bodyMeasure, dispatch } = this.props
     const script = document.createElement("script")
@@ -52,7 +66,7 @@ class SubmitValidationForm extends Component {
 
   render() {
     const { error, handleSubmit, pristine, reset, bodyParams,
-      dispatch, submitting, onSubmit, insurance, initialValues } = this.props
+      dispatch, submitting, onSubmit, initialValues } = this.props
 
     bodyParameters = bodyParams
     const sports = [
@@ -148,18 +162,7 @@ class SubmitValidationForm extends Component {
                                   }
                                 }
 
-                                console.log(photoPayload)
-
-                                return fetch('http://sport.muhanov.net/api/user/user-update', {
-                                  headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                  },
-                                  method: 'POST',
-                                  body: JSON.stringify(photoPayload)
-                                })
-                                .then(response => response.json())
-                                .then(json => {console.log(json)})
+                                return this.updatePhoto(photoPayload)
                               }
                             })
                           }
@@ -182,7 +185,14 @@ class SubmitValidationForm extends Component {
                     VK.Auth.login(response => {
                       VK.Api.call('users.get', {fields: 'photo_200'}, function(r) {
                         if(r.response && r.response[0] && r.response[0].photo_200) {
-                          self.refs.avatar.src = r.response[0].photo_200
+                          const photo = r.response[0].photo_200
+                          self.refs.avatar.src = photo
+                          const photoPayload = {
+                            authToken: cookie.load('token'),
+                            data: { photo }
+                          }
+
+                          return this.updatePhoto(photoPayload)
                         }
                       })
                     })
@@ -218,7 +228,14 @@ class SubmitValidationForm extends Component {
                         FB.api(`/me/picture?type=normal`,
                           response => {
                             if (response.data && response.data.url) {
-                              this.refs.avatar.src = response.data.url
+                              const photo = response.data.url
+                              this.refs.avatar.src = photo
+                              const photoPayload = {
+                                authToken: cookie.load('token'),
+                                data: { photo }
+                              }
+
+                              return this.updatePhoto(photoPayload)
                             }
                           }
                         )
@@ -283,7 +300,7 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХ ХХ" component={InputProfile} />
+                <Field name="phone" type="tel" placeholder="ХХХХХХХХХХ" component={InputProfilePhone} />
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field disabled name="email" type="tel" placeholder="Почта" defaultValue="anna@gmail.com" component={InputProfile} />
@@ -388,7 +405,7 @@ class SubmitValidationForm extends Component {
               </div>
             }
 
-            <InsuranceValidationForm insurance={insurance} />
+            <InsuranceValidationForm />
 
             <p className="sub-title">Для того, чтобы добиться быстрых и качественных результатов тренеру важно знать некоторые особенности твоего организма. Это поможет ему правильно распределить нагрузку на мышцы и организовать последовательность тренировок, не навредив твоему организму</p>
 
@@ -459,7 +476,7 @@ class SubmitValidationForm extends Component {
             <ul className="options options--white mtb30">
               {injuriesExist.map((val, index) => (
                 <label key={index}>
-                  <li name="sports" className="options__item" id={`injuriesExist[${index}]`} onClick={e => {
+                  <li name="sports" className={ initialValues && initialValues.injuriesExist === val.val ? "options__item is-active" : "options__item"} id={`injuriesExist[${index}]`} onClick={e => {
                     document.getElementById(`injuriesExist[${index}]`).className += ' is-active'
                     injuriesExist.map((v, i) => {
                       if (index !== i)
@@ -617,7 +634,7 @@ const validate = data => {
   }
 
   if (!data.gender) {
-    errors.gender = 'Пол должен быть заполнен'
+    errors.gender = ' (Пол должен быть заполнен)'
   }
 
   if (!data.country) {
@@ -638,8 +655,8 @@ const validate = data => {
     case data.phone.length > 20:
       errors.phone = 'Поле телефона должно быть короче 20 символов'
       break
-    case !/^[+0-9]{3,20}$/.test(data.phone):
-      errors.phone = 'Поле телефона может содержать только цифры и знак +'
+    case !/^[0-9]{3,20}$/.test(data.phone):
+      errors.phone = 'Поле телефона может содержать только цифры'
       break
   }
 
@@ -669,9 +686,11 @@ const validate = data => {
     errors.didSports = 'Поле спорт должно быть отмечено'
   }
 
-  if (data.injuriesExist === 'undefined') {
+  console.log(data.injuriesExist)
+
+  if (data.injuriesExist === undefined) {
     errors.injuriesExist = 'Поле травмы должно быть отмечено'
-  } else if (data.injuriesExist && data.injuries.length === 0 && !data.injuriesAnother) {
+  } else if (data.injuriesExist === 'true' && data.injuries.length === 0 && !data.injuriesAnother) {
     errors.injuriesAnother = 'Выберите травмы'
   }
 

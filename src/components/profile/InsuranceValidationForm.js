@@ -50,18 +50,6 @@ class InsuranceValidationForm extends Component {
         <p className="label">Адрес Регистрации</p>
         <Field ref="address" name="address" placeholder="" component={InputProfile} />
 
-        <p className="label mb10">Срок страхования</p>
-        <div className="grid">
-          <div className="1/2 grid__cell">
-            <p className="label">Дата начала</p>
-            <Field disabled={true} name="insuranceStartDate" placeholder="д/М/гггг" val="12/10/2016" component={InputProfileDate} />
-          </div>
-          <div className="1/2 grid__cell">
-            <p className="label">Дата окончания</p>
-            <Field disabled={true} name="insuranceEndDate" placeholder="д/М/гггг" val="12/10/2016" component={InputProfileDate} />
-          </div>
-        </div>
-
         <p className="label">Индивидуальная страховая сумма по рискам, указанным в п.п. ___. - ___. Договора руб.</p>
         <div className="input input--box">
           <input disabled type="text" className="input__field" placeholder="" value="100 000"/>

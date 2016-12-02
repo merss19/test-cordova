@@ -42,20 +42,18 @@ class ProfileCreate extends Component {
     console.log('<=========||===')
     console.log(profileData)
     console.log(isEmpty)
-    if (!isEmpty) {
-      console.log(moment(profileData.birthday).format('DD/MM/YYYY'))
-    }
     return (
       <div>
         {isEmpty
           ? (isFetching ? <h2>Загружается...</h2> : <h2>Ничего не найдено</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
             <SubmitValidationForm
-              insurance={insurance}
               bodyMeasure={bodyParams}
               initialValues={{
                 ...profileData,
                 birthday: moment(profileData.birthday).format('DD/MM/YYYY'),
+                country: !profileData.country ? 'Россия' : profileData.country,
+                city: !profileData.city ? 'Москва' : profileData.city,
                 fullName: !insuranceIsEmpty && insurance[insurance.length - 1].fullName
                   ? insurance[insurance.length - 1].fullName : '' ,
                 profession: !insuranceIsEmpty && insurance[insurance.length - 1].profession
@@ -66,6 +64,7 @@ class ProfileCreate extends Component {
                   ? insurance[insurance.length - 1].address : ''
               }}
               onSubmit={data => {
+                delete data.password
                 console.log(data)
                 const payload = {
                   authToken: token ? token : cookie.load('token'),
