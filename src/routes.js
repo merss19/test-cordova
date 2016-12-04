@@ -14,6 +14,7 @@ import ProfilePay from './containers/ProfilePay'
 import Faq from './components/Faq'
 import Food from './components/food/MainComponent'
 import cookie from 'react-cookie'
+import {promoWatch} from './actions/promo/promoWatch'
 
 const getRole = role => {
   return fetch('http://sport.muhanov.net/api/user/user-get', {
@@ -39,7 +40,7 @@ const requireAuth = () => getRole(3)
 const requireAdminAuth = () => getRole(1)
 
 export default (
-  <Route path='/'>
+  <Route path='/' onEnter={promoWatch}>
     <IndexRoute component={App} />
     <Route path='task' component={TodayTask} onEnter={requireAuth} />
     <Route path='faq' component={Faq} onEnter={requireAuth} />
