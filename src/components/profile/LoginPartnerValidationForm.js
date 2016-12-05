@@ -2,7 +2,7 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
 
-import CustomInput from '../componentKit/CustomInput';
+import CustomInput from '../componentKit/CustomInput'
 
 const LoginPartnerValidationForm = props => {
   const { error, handleSubmit, pristine, reset, submitting } = props
@@ -52,19 +52,19 @@ const LoginPartnerValidationForm = props => {
       </div>
 
     </div>
-  );
+  )
 }
 
 const validate = data => {
-  const errors = {};
+  const errors = {}
 
   if (!data.email)
-    errors.email = 'Email должен быть заполнен';
+    errors.email = 'Email должен быть заполнен'
 
   if (!data.password)
-    errors.password = 'Поле пароля должно быть заполнено';
+    errors.password = 'Поле пароля должно быть заполнено'
 
-  return errors;
+  return errors
 }
 
 export default reduxForm({

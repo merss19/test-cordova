@@ -9,9 +9,15 @@ import cookie from 'react-cookie'
 import { Field, reduxForm } from 'redux-form'
 import CustomInput from '../components/componentKit/CustomInput'
 import SignupValidationForm from '../components/profile/SignupValidationForm'
+import Modal from 'boron/DropModal'
 
 const FB = window.FB
 const VK = window.VK
+
+const contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
 
 class ProfileSignup extends Component {
   componentWillMount() {
@@ -67,20 +73,25 @@ class ProfileSignup extends Component {
 
     const { error, handleSubmit, pristine, reset, setToken, submitting } = this.props
     let program
+    let programName
     let packageName
 
     switch (programParam) {
       case 'mommy':
-        program = '#МАМА МОЖЕТ'
+        programName = '#МАМА МОЖЕТ'
+        program = 2
         break
       case 'extremeways':
-        program = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+        programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+        program = 3
         break
       case 'tommorowman':
-        program = '#Я ЗАВТРА'
+        programName = '#Я ЗАВТРА'
+        program = 4
         break
       default:
-        program = '#Я ГЕРОЙ'
+        programName = '#Я ГЕРОЙ'
+        program = 1
     }
 
     switch (packageType) {
@@ -98,65 +109,92 @@ class ProfileSignup extends Component {
     }
 
     const loginVk = () => {
-      VK.Auth.login(response => {
-        console.log(response)
-        const { first_name, last_name } = response.session.user
-        VK.Api.call('users.get', {fields: 'email'}, function(r) {
-          console.log(r)
-          if(r.response && r.response[0] && r.response[0].email) {
-            console.log(r.response[0])
-          }
-        })
-      })
+      console.log('some')
+      window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=http://localhost:3000/signup/social/vk?type=${packageType},${program},${amount},${this.refs.emailVkSocial.value}&display=page&response_type=token`
+      // VK.Auth.login(response => {
+      //   console.log(response)
+      //   const { first_name, last_name } = response.session.user
+      //   VK.Api.call('users.get', {fields: 'email'}, function(r) {
+      //     console.log(r)
+      //     if(r.response && r.response[0] && r.response[0].email) {
+      //       console.log(r.response[0])
+      //     }
+      //   })
+      // })
     }
 
     const loginFb = () => {
       const self = this
-      console.log(self)
       FB.login(response => {
+        console.log(response)
+        const token = response.authResponse.accessToken
+        const userId = response.authResponse.userID
         if (response.status === 'connected') {
           FB.api(`/me?fields=first_name,last_name,email`,
             response => {
-              const { email, first_name, last_name } = response
-              const { setToken } = self.props
-              const programParam = self.props.params.program
-              let program
-
-              switch (programParam) {
-                case 'mommy':
-                  program = 2
-                  break
-                case 'extremeways':
-                  program = 3
-                  break
-                case 'tommorowman':
-                  program = 4
-                  break
-                default:
-                  program = 1
+              console.log(self)
+              const emailInputValue = self.refs.emailFbSocial && self.refs.emailFbSocial.value ? self.refs.emailFbSocial.value : undefined
+              const email = emailInputValue ? emailInputValue : response.email
+              if (!email) {
+                self.refs.emailFbModal.show()
+                return
               }
 
-              FB.api(`/me/picture?type=small`,
+              const firstName = response.first_name
+              const lastName  = response.last_name
+              const { setToken } = self.props
+              let payload = { program, package: packageType, email, firstName, lastName }
+              const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+
+              FB.api(`/me/picture?type=normal`,
                 response => {
-                  const photo = response.data.url
-                  const payload = { program, email, first_name, last_name, photo }
+                  let photo
+                  if (response && response.data && response.data.url) {
+                    photo = response.data.url
+                  }
+
+                  if (photo)
+                    payload.photo = photo
 
                   return fetch('http://sport.muhanov.net/api/user/user-create', {
-                    headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                    },
+                    headers,
                     method: 'POST',
                     body: JSON.stringify(payload)
                   })
                   .then(response => response.json())
                   .then(json => {
-                    if (json.data && json.data.authToken) {
+                    console.log(json)
+                    if (json.errorCode === 1 && json.data && json.data.authToken) {
                       cookie.save('token', json.data.authToken, { path: '/' })
                       setToken(json.data.authToken)
-                      browserHistory.push('/signup/pay')
+
+                      const payload = {
+                        authToken: json.data.authToken,
+                        data: {
+                          socialNetType: 3,
+                          userId
+                        }
+                      }
+
+                      return fetch('http://sport.muhanov.net/api/user/socialNetUser-create', {
+                          headers,
+                          method: 'POST',
+                          body: JSON.stringify(payload)
+                        })
+                        .then(response => response.json())
+                        .then(json => {
+                          console.log(json)
+                          if (json && json.data) {
+                            browserHistory.push('/signup/pay')
+                          } else {
+                            throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
+                          }
+                        })
                     } else {
-                      throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
+                      throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
                     }
                   })
                 }
@@ -184,7 +222,7 @@ class ProfileSignup extends Component {
               <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
             </h1>
             <div className="1/2--portable grid__cell header__right-side">
-              <a href="#" className="header__link js-popup-ya-geroy">{program}</a>
+              <a href="#" className="header__link js-popup-ya-geroy">{programName}</a>
             </div>
           </div>
         </div>
@@ -219,7 +257,7 @@ class ProfileSignup extends Component {
                   <p>Информация о пакете</p>
                   <hr/>
                 </div>
-                <div className="entry-info__title">{program}</div>
+                <div className="entry-info__title">{programName}</div>
                 <p className="entry-info__sub-title">Оформление на участие в проекте</p>
 
                 <ul className="packet-info">
@@ -248,19 +286,19 @@ class ProfileSignup extends Component {
                 <div className="grid grid--middle">
                   <SignupValidationForm onSubmit={(data) => {
                     const { email, password } = data
-                    switch(program) {
-                      case '#МАМА МОЖЕТ':
-                        program = 2
-                        break
-                      case '#ЭКСТРИМАЛЬНАЯ СУШКА':
-                        program = 3
-                        break
-                      case '#Я ЗАВТРА':
-                        program = 4
-                        break
-                      default:
-                        program = 1
-                    }
+                    // switch(program) {
+                    //   case '#МАМА МОЖЕТ':
+                    //     program = 2
+                    //     break
+                    //   case '#ЭКСТРИМАЛЬНАЯ СУШКА':
+                    //     program = 3
+                    //     break
+                    //   case '#Я ЗАВТРА':
+                    //     program = 4
+                    //     break
+                    //   default:
+                    //     program = 1
+                    // }
 
                     const payload = { program, email, password, package: packageType }
 
@@ -286,7 +324,9 @@ class ProfileSignup extends Component {
                   <div className="1/2--desk grid__cell entry-form__social">
                     <p className="entry-form__social-title">Войти через социальные сети</p>
                     <ul className="social-signin">
-                      <li className="social-signin__item social-signin__item--vk" onClick={loginVk}>
+                      <li className="social-signin__item social-signin__item--vk" onClick={() => {
+                        this.refs.emailVkModal.show()
+                      }}>
                         <svg className="svg-icon ico-vk">
                           <use xlinkHref="#vk"></use>
                         </svg>
@@ -313,6 +353,42 @@ class ProfileSignup extends Component {
           </div>
 
         </div>
+
+        <Modal ref='emailVkModal' modalStyle={contentStyle}>
+          <h2>Введите ваш email</h2>
+          <br/>
+          <div className="input input--line">
+            <input ref='emailVkSocial' id='emailVkSocial' type='text' className="input__field"/>
+            <label className="input__label" htmlFor='emailVkSocial'>Email</label>
+          </div>
+          <button className="btn btn--action" onClick={loginVk}>
+            Продолжить
+          </button>
+        </Modal>
+
+        <Modal ref='emailFbModal' modalStyle={contentStyle}>
+          <h2>Введите ваш email</h2>
+          <br/>
+          <div className="input input--line">
+            <input ref='emailFbSocial' id='emailFbSocial' type='text' className="input__field"/>
+            <label className="input__label" htmlFor='emailFbSocial'>Email</label>
+          </div>
+          <button className="btn btn--action" onClick={loginFb}>
+            Продолжить
+          </button>
+        </Modal>
+
+        <Modal ref='emailOkModal' modalStyle={contentStyle}>
+          <h2>Введите ваш email</h2>
+          <br/>
+          <div className="input input--line">
+            <input ref='emailOkSocial' id='emailOkSocial' type='text' className="input__field"/>
+            <label className="input__label" htmlFor='emailOkSocial'>Email</label>
+          </div>
+          <button className="btn btn--action" onClick={loginVk}>
+            Продолжить
+          </button>
+        </Modal>
 
         <div id="pay-success">
           <div className="base-popup__msg">

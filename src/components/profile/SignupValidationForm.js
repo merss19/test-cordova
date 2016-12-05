@@ -22,6 +22,12 @@ const SignupValidationForm = props => {
       <br/>
       <Link to="/restore">Забыли пароль?</Link>
       <br/>
+      <button onClick={() => {
+        cookie.remove('token', { path: '/' })
+        cookie.remove('txId', { path: '/' })
+      }}>
+        Logout
+      </button>
     </form>
   )
 }

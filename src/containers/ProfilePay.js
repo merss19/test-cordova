@@ -20,34 +20,34 @@ class ProfilePay extends Component {
   }
 
   render() {
-    const { program, selectedPayment, payment,
-      token, isFetching, lastUpdated, amount, packageType } = this.props
+    const { selectedPayment, payment, token, isFetching, lastUpdated } = this.props
     let programName
-
-    console.log('<=======)==0')
-    console.log(payment)
-    console.log(program)
-    console.log(amount)
-
-    switch (program) {
-      case 2:
-        programName = '#МАМА МОЖЕТ'
-        break
-      case 3:
-        programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
-        break
-      case 4:
-        programName = '#Я ЗАВТРА'
-        break
-      default:
-        programName = '#Я ГЕРОЙ'
-        break
-    }
+    let { program, packageType, amount } = this.props
 
     const isEmpty = payment === undefined || payment.data === undefined
 
     if (!isEmpty && payment.data && payment.data.txId) {
-      console.log('true')
+      console.log('<=======)==0')
+      program = payment.data.program
+      amount = payment.data.amount
+      packageType = payment.data.package
+
+      switch (program) {
+        case 2:
+          programName = '#МАМА МОЖЕТ'
+          break
+        case 3:
+          programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+          break
+        case 4:
+          programName = '#Я ЗАВТРА'
+          break
+        default:
+          programName = '#Я ГЕРОЙ'
+          break
+      }
+
+      console.log(payment.data)
       const frameScript = document.createElement("script")
       frameScript.type  = "text/javascript"
       const data = JSON.stringify({

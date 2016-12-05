@@ -1,4 +1,5 @@
 import cookie from 'react-cookie'
+import { promoVisit } from './promo/promoWatch'
 
 export const REQUEST_PAYMENT = 'REQUEST_PAYMENT'
 export const RECEIVE_PAYMENT = 'RECEIVE_PAYMENT'
@@ -21,7 +22,6 @@ export const requestPayment = payment => ({
 })
 
 export const receivePayment = (payment, json) => {
-  console.log(json)
   return ({
     type: RECEIVE_PAYMENT,
     payment,
@@ -36,9 +36,6 @@ const fetchPayment = partialState => dispatch => {
   dispatch(requestPayment(payment))
   const txId = cookie.load('txId')
 
-  console.log('<)))))))===0')
-  console.log(profile)
-
   if (txId === undefined) {
     let payload = {
       authToken: token ? token : cookie.load('token'),
@@ -48,8 +45,13 @@ const fetchPayment = partialState => dispatch => {
       }
     }
 
-    if (promo)
+    if (promo) {
       payload.data.promoName = promo
+    }
+
+    if (!!promoVisit.getPromoSessionId()) {
+      payload.data.sessionId = promoVisit.getPromoSessionId()
+    }
 
     let data = new FormData()
     data.append("json", JSON.stringify(payload))
@@ -64,7 +66,6 @@ const fetchPayment = partialState => dispatch => {
     })
     .then(response => response.json())
     .then(json => {
-      console.log(json)
       if (json && json.data && json.data.txId)
         cookie.save('txId', json.data.txId, { path: '/' })
       return dispatch(receivePayment(payment, json))
@@ -74,9 +75,6 @@ const fetchPayment = partialState => dispatch => {
       authToken: token ? token : cookie.load('token'),
       data: { txId }
     }
-
-    console.log('<====|||====>')
-    console.log(payload)
 
     let data = new FormData()
     data.append("json", JSON.stringify(payload))
@@ -91,10 +89,8 @@ const fetchPayment = partialState => dispatch => {
     })
     .then(response => response.json())
     .then(json => {
-      console.log('!=======')
-      console.log(json)
-      if (json && json.data)
-      return dispatch(receivePayment(payment, { data: json.data[0] }))
+      if (json && json.data && json.data[0])
+        return dispatch(receivePayment(payment, { data: json.data[0] }))
     })
   }
 }
