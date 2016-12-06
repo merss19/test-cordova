@@ -1,4 +1,6 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
+import cookie from 'react-cookie'
 
 const Header = props => (
   <div className="header">
@@ -17,12 +19,25 @@ const Header = props => (
         Ясегодня
         <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
       </h1>
+      <div className="1/4--portable grid__cell header__right-side"/>
+      <div className="1/4--portable grid__cell"/>
+      <div className="1/4--portable grid__cell"/>
+      <div className="1/4--portable grid__cell"/>
       <div className="1/4--portable grid__cell header__right-side">
         <div className="header__banner">
           <a href="#" className="header__banner-link">
             <img src="/tmp/banner-1.png" alt=""/>
           </a>
         </div>
+      </div>
+      <div className="1/4--portable grid__cell">
+        <button className="btn btn--action" onClick={() => {
+          cookie.remove('token', { path: '/' })
+          cookie.remove('txId', { path: '/' })
+          browserHistory.push('/')
+        }}>
+          Выйти
+        </button>
       </div>
     </div>
   </div>

@@ -9,6 +9,7 @@ import InputProfile from '../componentKit/InputProfile'
 import InputProfilePhone from '../componentKit/InputProfilePhone'
 import CheckboxProfile from '../componentKit/CheckboxProfile'
 import SelectProfile from '../componentKit/SelectProfile'
+import SelectProgram from '../componentKit/SelectProgram'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
 import ErrorField from '../componentKit/ErrorField'
 import InsuranceValidationForm from '../profile/InsuranceValidationForm'
@@ -194,7 +195,7 @@ class SubmitValidationForm extends Component {
                     </svg>
                     <span className="btn-social__title">Вконтакте</span>
                   </li>
-                  <li className="btn-social__item btn-social__item--odnoklassniki" onClick={() => {
+                  {/* <li className="btn-social__item btn-social__item--odnoklassniki" onClick={() => {
                     // const FAPI = window.FAPI
                     // var rParams = window.FAPI.Util.getRequestParameters()
                     // FAPI.init(rParams["api_server"], rParams["apiconnection"], () => {
@@ -211,7 +212,7 @@ class SubmitValidationForm extends Component {
                       <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#odnoklassniki"></use>
                     </svg>
                     <span className="btn-social__title">Одноклассники</span>
-                  </li>
+                  </li> */}
                   <li className="btn-social__item btn-social__item--fb" onClick={() => {
                     FB.login(response => {
                       if (response.status === 'connected') {
@@ -310,7 +311,7 @@ class SubmitValidationForm extends Component {
               { name: 'Часовой пояс Владивосток+10', value: 10 },
               { name: 'Часовой пояс Сахалин+11', value: 11 },
               { name: 'Часовой пояс Камчатский край+12', value: 12 }
-            ]} component={SelectProfile} />
+            ]} component={SelectProgram} />
 
             <hr/>
 
@@ -453,7 +454,7 @@ class SubmitValidationForm extends Component {
                 <label key={index}>
                   <li name="sports" className="options__item" id={`sportsPast[${index}]`} onClick={e => {
                     document.getElementById(`sportsPast[${index}]`).className += ' is-active'
-                    sportsPast.each((v, i) => {
+                    sportsPast.forEach((v, i) => {
                       if (index !== i)
                         document.getElementById(`sportsPast[${i}]`).className = "options__item"
                     })
@@ -481,7 +482,7 @@ class SubmitValidationForm extends Component {
                 <label key={index}>
                   <li name="sports" className={ initialValues && initialValues.injuriesExist === val.val ? "options__item is-active" : "options__item"} id={`injuriesExist[${index}]`} onClick={e => {
                     document.getElementById(`injuriesExist[${index}]`).className += ' is-active'
-                    injuriesExist.each((v, i) => {
+                    injuriesExist.forEach((v, i) => {
                       if (index !== i)
                         document.getElementById(`injuriesExist[${i}]`).className = "options__item"
                     })

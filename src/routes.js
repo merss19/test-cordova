@@ -18,6 +18,11 @@ import LoginSocial from './components/profile/LoginSocial'
 import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
 
+const getToken = () => {
+  if (cookie.load('token')) {
+    browserHistory.push('/profile/create')
+  }
+}
 
 const getRole = role => {
   return fetch(`${api}/user/user-get`, {
@@ -44,28 +49,28 @@ const requireAdminAuth = () => getRole(1)
 
 export default (
   <Route path='/' onEnter={promoWatch}>
-    <IndexRoute component={App} />
+    <IndexRoute component={App} onEnter={getToken} />
     {/* <Route path='task' component={TodayTask} onEnter={requireAuth} />
     <Route path='faq' component={Faq} onEnter={requireAuth} />
     <Route path='food' component={Food} onEnter={requireAuth} />
     <Route path='reports' component={Reports} onEnter={requireAuth} /> */}
     <Route path='profile'>
-      <IndexRoute component={App} />
+      <IndexRoute component={App} onEnter={getToken}/>
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />
     </Route>
     <Route path='social/:type' component={LoginSocial} />
     <Route path='signup'>
-      <IndexRoute component={ProfileSignup} />
+      <IndexRoute component={ProfileSignup} onEnter={getToken} />
       <Route path='pay' component={ProfilePay} />
       <Route path='pay/:status' component={ProfilePay} />
     </Route>
-    <Route path='signup/:program' component={ProfileSignup} />
+    <Route path='signup/:program' component={ProfileSignup} onEnter={getToken} />
     <Route path='restore'>
-      <IndexRoute component={ProfilePasswordForget} />
-      <Route path='create' component={ProfilePasswordRestore} />
+      <IndexRoute component={ProfilePasswordForget} onEnter={getToken} />
+      <Route path='create' component={ProfilePasswordRestore} onEnter={getToken} />
     </Route>
     <Route path='partner'>
-      <IndexRoute component={PartnerLogin} />
+      <IndexRoute component={PartnerLogin} onEnter={getToken} />
       <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth}/>
     </Route>
   </Route>

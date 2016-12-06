@@ -27,7 +27,7 @@ export const receiveProfile = (profileData, json) => {
     receivedAt: Date.now()
   }
 
-  json.each(j => {
+  json.forEach(j => {
     if (j && j.data && j.data.length > 0) {
       switch (true) {
         case !!j.data[0].email:

@@ -208,11 +208,11 @@ class LoginValidationForm extends Component {
                           <use xlinkHref="#vk"></use>
                         </svg>
                       </li>
-                      <li className="social-signin__item social-signin__item--odnoklassniki">
+                      {/* <li className="social-signin__item social-signin__item--odnoklassniki">
                         <svg className="svg-icon ico-odnoklassniki">
                           <use xlinkHref="#odnoklassniki"></use>
                         </svg>
-                      </li>
+                      </li> */}
                       <li className="social-signin__item social-signin__item--fb" onClick={loginFb}>
                         <svg className="svg-icon ico-fb">
                           <use xlinkHref="#fb"></use>

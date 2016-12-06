@@ -169,13 +169,6 @@ class SignupValidationForm extends Component {
           <Link to="/profile">Войти</Link>
           <br/>
           <Link to="/restore">Забыли пароль?</Link>
-          <br/>
-          <button onClick={() => {
-            cookie.remove('token', { path: '/' })
-            cookie.remove('txId', { path: '/' })
-          }}>
-            Logout
-          </button>
         </form>
         <div className="1/2--desk grid__cell entry-form__social">
           <p className="entry-form__social-title">Войти через социальные сети</p>
@@ -185,11 +178,11 @@ class SignupValidationForm extends Component {
                 <use xlinkHref="#vk"></use>
               </svg>
             </li>
-            <li className="social-signin__item social-signin__item--odnoklassniki">
+            {/* <li className="social-signin__item social-signin__item--odnoklassniki">
               <svg className="svg-icon ico-odnoklassniki">
                 <use xlinkHref="#odnoklassniki"></use>
               </svg>
-            </li>
+            </li> */}
             <li className="social-signin__item social-signin__item--fb" onClick={loginFb}>
               <svg className="svg-icon ico-fb">
                 <use xlinkHref="#fb"></use>
