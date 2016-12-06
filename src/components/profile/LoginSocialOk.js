@@ -22,15 +22,17 @@ let programInitial
 let promoInitial
 let userId
 
-class LoginSocial extends Component {
+class LoginSocialOk extends Component {
   componentWillMount() {
     const queryHash = this.props.location.hash
     const token = queryHash.match(/#access_token=(.*)&exp.*/)[1]
-    userId = queryHash.match(/.*user_id=(.*)/)[1]
+    // userId = queryHash.match(/.*user_id=(.*)/)[1]
     const { setToken } = this.props
     const payload = { userId, token }
 
-    return fetch(`${api}/user/authenticate-social`, {
+    // return fetch(``)
+
+    fetch(`${api}/user/authenticate-social`, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -192,9 +194,9 @@ class LoginSocial extends Component {
   }
 }
 
-LoginSocial = reduxForm({
+LoginSocialOk = reduxForm({
   form: 'loginSocial'
-})(LoginSocial)
+})(LoginSocialOk)
 
 const selector = formValueSelector('loginSocial')
 const mapStateToProps = state => {
@@ -224,9 +226,9 @@ const mapDispatchToProps = dispatch => ({
   setToken: bindActionCreators(actions.setToken, dispatch)
 })
 
-LoginSocial = connect(
+LoginSocialOk = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginSocial)
+)(LoginSocialOk)
 
-export default LoginSocial
+export default LoginSocialOk

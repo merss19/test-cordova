@@ -1,14 +1,11 @@
-import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import LoginValidationForm from '../components/profile/LoginValidationForm'
-import { SubmissionError } from 'redux-form'
-import cookie from 'react-cookie'
+import { host } from '../config.js'
 
 class ProfilePay extends Component {
   componentWillMount() {
-    const { dispatch, selectedPayment, payment, program, amount, packageType, promo } = this.props
+    const { dispatch, selectedPayment } = this.props
     dispatch(actions.fetchPaymentIfNeeded(selectedPayment))
   }
 
@@ -20,14 +17,13 @@ class ProfilePay extends Component {
   }
 
   render() {
-    const { selectedPayment, payment, token, isFetching, lastUpdated } = this.props
+    const { payment, isFetching } = this.props
     let programName
     let { program, packageType, amount } = this.props
 
     const isEmpty = payment === undefined || payment.data === undefined
 
     if (!isEmpty && payment.data && payment.data.txId) {
-      console.log('<=======)==0')
       program = payment.data.program
       amount = payment.data.amount
       packageType = payment.data.package
@@ -47,7 +43,6 @@ class ProfilePay extends Component {
           break
       }
 
-      console.log(payment.data)
       const frameScript = document.createElement("script")
       frameScript.type  = "text/javascript"
       const data = JSON.stringify({
@@ -57,8 +52,8 @@ class ProfilePay extends Component {
         description: `Платеж по программе ${programName}`,
         amount: payment.data.amount * 100,
         signature: "",
-        success_redirect: "http://localhost:3000/profile/create",
-        fail_redirect: "http://localhost:3000/signup/pay/error",
+        success_redirect: `${host}/profile/create`,
+        fail_redirect: `${host}/signup/pay/error`,
         rebill: {},
         extra: {},
         version: "2.0.0"
@@ -104,7 +99,7 @@ class ProfilePay extends Component {
                         </li>
                         <li className="packet-info__item">
                           <span className="packet-info__name-title">Цена</span>
-                          <span className="packet-info__name">{payment.data.amount}</span>
+                          <span className="packet-info__name">{amount ? amount : '' }</span>
                         </li>
                       </ul>
 
@@ -128,8 +123,6 @@ class ProfilePay extends Component {
 const mapStateToProps = state => {
   const { selectedPayment, recivedPayment, userToken, profile } = state
   const { program, amount, packageType, promo } = profile
-
-  console.log(state)
 
   const {
     isFetching,

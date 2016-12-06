@@ -5,12 +5,11 @@ import React from 'react'
 import { render } from 'react-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
+import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { reducer as reduxFormReducer } from 'redux-form'
 import thunk from 'redux-thunk'
 
-import createHistory from 'history/lib/createBrowserHistory'
 import * as reducers from './reducers'
 import routes from './routes'
 

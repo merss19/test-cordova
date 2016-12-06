@@ -1,4 +1,5 @@
 import cookie from 'react-cookie'
+import { api } from '../config.js'
 
 export const REQUEST_TASKDAY = 'REQUEST_TASKDAY'
 export const RECEIVE_TASKDAY = 'RECEIVE_TASKDAY'
@@ -21,8 +22,6 @@ export const requestTaskDay = taskDay => ({
 })
 
 export const receiveTaskDay = (taskDay, json) => {
-  console.log('^================0')
-  console.log(json)
   return ({
     type: RECEIVE_TASKDAY,
     taskDay,
@@ -39,7 +38,7 @@ const fetchTaskDay = partialState => dispatch => {
   let data = new FormData()
   data.append("json", JSON.stringify(payload))
 
-  return fetch('http://sport.muhanov.net/api/data/day-get-info', {
+  return fetch(`${api}/data/day-get-info`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

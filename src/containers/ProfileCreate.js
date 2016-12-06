@@ -6,6 +6,7 @@ import SubmitValidationForm from '../components/profile/SubmitValidationForm'
 import cookie from 'react-cookie'
 import Modal from 'boron/DropModal'
 import moment from 'moment'
+import { api } from '../config.js'
 
 const contentStyle = {
   borderRadius: '18px',
@@ -39,9 +40,6 @@ class ProfileCreate extends Component {
     const isEmpty = !profileData || !profileData.email
     const insuranceIsEmpty = !insurance || !insurance[insurance.length - 1]
 
-    console.log('<=========||===')
-    console.log(profileData)
-    console.log(isEmpty)
     return (
       <div>
         {isEmpty
@@ -63,15 +61,15 @@ class ProfileCreate extends Component {
                 address: !insuranceIsEmpty && insurance[insurance.length - 1].address
                   ? insurance[insurance.length - 1].address : ''
               }}
-              onSubmit={data => {
+              onSubmit={ data => {
                 delete data.password
-                console.log(data)
+                data.timezone = data.timezone.value
                 const payload = {
                   authToken: token ? token : cookie.load('token'),
                   data
                 }
 
-                return fetch('http://sport.muhanov.net/api/user/user-update', {
+                return fetch(`${api}/user/user-update`, {
                     headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
@@ -103,9 +101,6 @@ class ProfileCreate extends Component {
 
 const mapStateToProps = state => {
   const { selectedProfile, recivedProfile, userToken } = state
-
-  // console.log('<<<<<<<==)==0')
-  // console.log(recivedProfile)
   const {
     isFetching,
     lastUpdated,

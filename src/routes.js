@@ -1,9 +1,8 @@
 import React from 'react';
 import { Route, IndexRoute, browserHistory } from 'react-router'
+import { api } from './config'
 
 import App from './components/App'
-import TodayTask from './containers/TodayTask'
-import Reports from './containers/Reports'
 import ProfileCreate from './containers/ProfileCreate'
 import ProfileSignup from './containers/ProfileSignup'
 import PartnerLogin from './containers/PartnerLogin'
@@ -12,14 +11,16 @@ import ProfilePasswordForget from './containers/ProfilePasswordForget'
 import ProfilePasswordRestore from './containers/ProfilePasswordRestore'
 import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
-import Faq from './components/Faq'
-import Food from './components/food/MainComponent'
+// import TodayTask from './containers/TodayTask'
+// import Reports from './containers/Reports'
+// import Faq from './components/Faq'
+// import Food from './components/food/MainComponent'
 import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
 
 
 const getRole = role => {
-  return fetch('http://sport.muhanov.net/api/user/user-get', {
+  return fetch(`${api}/user/user-get`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -52,12 +53,12 @@ export default (
       <IndexRoute component={App} />
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />
     </Route>
+    <Route path='social/:type' component={LoginSocial} />
     <Route path='signup'>
       <IndexRoute component={ProfileSignup} />
       <Route path='pay' component={ProfilePay} />
       <Route path='pay/:status' component={ProfilePay} />
     </Route>
-    <Route path='signup/social/:type' component={LoginSocial} />
     <Route path='signup/:program' component={ProfileSignup} />
     <Route path='restore'>
       <IndexRoute component={ProfilePasswordForget} />

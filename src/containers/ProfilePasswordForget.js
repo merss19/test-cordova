@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
-import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
-import cookie from 'react-cookie'
-import { Field, reduxForm } from 'redux-form'
-import CustomInput from '../components/componentKit/CustomInput'
 import PasswordForgetValidationForm from '../components/profile/PasswordForgetValidationForm'
 import Modal from 'boron/DropModal'
+import { api, host } from '../config.js'
 
 const contentStyle = {
   borderRadius: '18px',
@@ -17,7 +12,7 @@ const contentStyle = {
 
 class ProfilePasswordForget extends Component {
   render() {
-    const { error, handleSubmit, pristine, reset, amount, packageType, program, submitting } = this.props
+    const { amount, packageType, program } = this.props
 
     return (
       <div className="layout layout--registration">
@@ -100,7 +95,8 @@ class ProfilePasswordForget extends Component {
 
                 <div className="grid grid--middle">
                   <PasswordForgetValidationForm onSubmit={ data => {
-                    return fetch('http://sport.muhanov.net/api/user/user-sendRestorePassword', {
+                    data.url = `${host}/restore/create`
+                    return fetch(`${api}/user/user-sendRestorePassword`, {
                         headers: {
                           'Accept': 'application/json',
                           'Content-Type': 'application/json'
@@ -110,7 +106,6 @@ class ProfilePasswordForget extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
-                        console.log(json)
                         if (json.errorCode === 1 && json.data) {
                           if (json.data.resultCode === 2) {
                             this.refs.failModal.show()

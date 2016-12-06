@@ -56,8 +56,6 @@ class TodayTask extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('--------------------)==')
-  console.log(state)
   const { selectedTaskDay, recivedTaskDay, userToken } = state
 
   const {

@@ -1,47 +1,71 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import * as actions from '../actions'
 import RestoreValidationForm from '../components/profile/RestoreValidationForm'
-import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
-import cookie from 'react-cookie'
+import { api } from '../config.js'
+import Modal from 'boron/DropModal'
 
-let ProfilePasswordRestore = props => {
-  const { token } = props.location.query
-  const { setToken } = props
-  return (
-    <RestoreValidationForm onSubmit={ data => {
-      const payload = {
-        token,
-        passowrd: data.password
-      }
-      return fetch('http://sport.muhanov.net/api/user/user-approveRestorePassword', {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: 'POST',
-          body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(json => {
-          console.lof(json)
-          if (json.data && json.data.authToken) {
-            // cookie.save('token', json.data.authToken, { path: '/' })
-            // console.log('token')
-            // console.log(cookie.load('token'))
-            // setToken(json.data.authToken)
-            // browserHistory.push('/task')
-          } else {
-            throw new SubmissionError({
-              password: '',
-              _error: 'Что-то пошло не так, попробуйте снова'
-            })
+const contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
+
+class ProfilePasswordRestore extends Component {
+  render() {
+    const { token } = this.props.location.query
+    return (
+      <div className="layout layout--login">
+        <RestoreValidationForm onSubmit={ data => {
+          const payload = {
+            token,
+            password: data.password
           }
-        })
-    }}/>
-  )
+
+          this.refs.loadingModal.show()
+          return fetch(`${api}/user/user-approveRestorePassword`, {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then(json => {
+            this.refs.loadingModal.hide()
+            if (json.errorCode === 1 && json.data) {
+              if (json.data.resultCode === 1) {
+                this.refs.successModal.show()
+              } else {
+                this.refs.failModal.show()
+              }
+            } else {
+              throw new SubmissionError({
+                password: '',
+                _error: 'Что-то пошло не так, попробуйте снова'
+              })
+            }
+          })
+        }}/>
+
+        <Modal ref='successModal' modalStyle={contentStyle}>
+          <h2>Ваш пароль изменен!</h2>
+          <Link to='/'>Войти</Link>
+        </Modal>
+
+        <Modal ref='loadingModal' modalStyle={contentStyle}>
+          <h2>Подождите...</h2>
+        </Modal>
+
+        <Modal ref='failModal' modalStyle={contentStyle}>
+          <h2>Такой пароль уже есть, либо, что-то пошло не так. Попробуйте еще раз</h2>
+        </Modal>
+      </div>
+    )
+  }
 }
 
 const mapDispatchToProps = dispatch => ({

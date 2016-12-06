@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react'
 import Calendar from '../../stories/task/Calendar'
 
 const chooseDay = date => {
-  console.log(date)
 }
 
 const CalendarList = ({ calendar }) => (
