@@ -185,7 +185,7 @@ class SubmitValidationForm extends Component {
                             data: { photo }
                           }
 
-                          return this.updatePhoto(photoPayload)
+                          return self.updatePhoto(photoPayload)
                         }
                       })
                     })

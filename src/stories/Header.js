@@ -31,7 +31,8 @@ const Header = props => (
         </div>
       </div>
       <div className="1/4--portable grid__cell">
-        <button className="btn btn--action" onClick={() => {
+        <button className="btn btn--action" onClick={e => {
+          e.preventDefault()
           cookie.remove('token', { path: '/' })
           cookie.remove('txId', { path: '/' })
           browserHistory.push('/')

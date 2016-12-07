@@ -64,8 +64,6 @@ class ProfileCreate extends Component {
               onSubmit={ data => {
                 this.refs.loadingModal.show()
                 delete data.password
-                if (data.timezone)
-                  data.timezone = data.timezone.value
                 const payload = {
                   authToken: token ? token : cookie.load('token'),
                   data

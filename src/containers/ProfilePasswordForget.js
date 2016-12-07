@@ -12,7 +12,42 @@ const contentStyle = {
 
 class ProfilePasswordForget extends Component {
   render() {
-    const { amount, packageType, program } = this.props
+    let { amount, packageType, program } = this.props
+
+    let programName
+    let packageName
+    amount = !!amount ? amount : 0
+
+    switch (program) {
+      case 1:
+        programName = '#Я ГЕРОЙ'
+        break
+      case 2:
+        programName = '#МАМА МОЖЕТ'
+        break
+      case 3:
+        programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+        break
+      case 4:
+        programName = '#Я ЗАВТРА'
+        break
+      default:
+        programName = 'ЯСЕГОДНЯ'
+    }
+
+    switch (packageType) {
+      case 1:
+        packageName = '1  человек'
+        break
+      case 2:
+        packageName = '2  человек'
+        break
+      case 3:
+        packageName = '3  человек'
+        break
+      default:
+        packageName = 'Не определено'
+    }
 
     return (
       <div className="layout layout--registration">

@@ -4,9 +4,21 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import cookie from 'react-cookie'
 import SignupValidationForm from '../components/profile/SignupValidationForm'
 import { api } from '../config.js'
+import Modal from 'boron/DropModal'
+import CustomInput from '../components/componentKit/CustomInput'
+import SelectProgram from '../components/componentKit/SelectProgram'
+
+const contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
+
+let email
+let password
 
 class ProfileSignup extends Component {
   componentWillMount() {
@@ -16,6 +28,9 @@ class ProfileSignup extends Component {
     let program
 
     switch (programParam) {
+      case 'hero':
+        program = 1
+        break
       case 'mommy':
         program = 2
         break
@@ -26,7 +41,7 @@ class ProfileSignup extends Component {
         program = 4
         break
       default:
-        program = 1
+        break
     }
 
     const { signup } = this.props
@@ -45,31 +60,27 @@ class ProfileSignup extends Component {
   }
 
   render() {
-    const programParam = this.props.params.program
-    const { amount, type } = this.props.location.query
-    const packageType = type
-
-    const { setToken } = this.props
-    let program
+    let { amount, packageType, promo, program } = this.props
+    const { setToken, signup } = this.props
     let programName
     let packageName
+    amount = !!amount ? amount : 0
 
-    switch (programParam) {
-      case 'mommy':
+    switch (program) {
+      case 1:
+        programName = '#Я ГЕРОЙ'
+        break
+      case 2:
         programName = '#МАМА МОЖЕТ'
-        program = 2
         break
-      case 'extremeways':
+      case 3:
         programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
-        program = 3
         break
-      case 'tommorowman':
+      case 4:
         programName = '#Я ЗАВТРА'
-        program = 4
         break
       default:
-        programName = '#Я ГЕРОЙ'
-        program = 1
+        programName = 'ЯСЕГОДНЯ'
     }
 
     switch (packageType) {
@@ -83,7 +94,29 @@ class ProfileSignup extends Component {
         packageName = '3  человек'
         break
       default:
-        packageName = '1  человек'
+        packageName = 'Не определено'
+    }
+
+    const userCreate = (payload) => {
+      console.log(payload)
+      return fetch(`${api}/user/user-create`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(json => {
+        if (json.data && json.data.authToken) {
+          cookie.save('token', json.data.authToken, { path: '/' })
+          setToken(json.data.authToken)
+          browserHistory.push('/signup/pay')
+        } else {
+          throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
+        }
+      })
     }
 
     return (
@@ -158,27 +191,16 @@ class ProfileSignup extends Component {
                 <hr/>
 
                 <SignupValidationForm onSubmit={data => {
-                  const { email, password } = data
+                  email = data.email
+                  password = data.password
+                  if (!program || !packageType) {
+                    this.refs.accModal.show()
+                    return
+                  }
+
                   const payload = { program, email, password, package: packageType }
 
-                  return fetch(`${api}/user/user-create`, {
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                      },
-                      method: 'POST',
-                      body: JSON.stringify(payload)
-                    })
-                    .then(response => response.json())
-                    .then(json => {
-                      if (json.data && json.data.authToken) {
-                        cookie.save('token', json.data.authToken, { path: '/' })
-                        setToken(json.data.authToken)
-                        browserHistory.push('/signup/pay')
-                      } else {
-                        throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
-                      }
-                    })
+                  return userCreate(payload)
                 }}/>
 
                 <p className="entry-form__note">Выполнив этот шаг вы автоматически перейдете к следующему</p>
@@ -189,6 +211,33 @@ class ProfileSignup extends Component {
           </div>
 
         </div>
+
+
+        <Modal ref='accModal' modalStyle={contentStyle}>
+          <h2>Выберите программу</h2>
+          <br/>
+          <Field name="programValue" id="programValue" options={[
+            { name: '#Я ГЕРОЙ', value: 1},
+            { name: '#МАМА МОЖЕТ', value: 2 },
+            { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: 3 },
+            { name: '#Я ЗАВТРА', value: 4 }
+          ]} component={SelectProgram} />
+          <Field name="packageTypeValue" id="packageTypeValue" options={[
+            { name: '1 человек', value: 1},
+            { name: '2 человека', value: 2 },
+            { name: '3 человека', value: 3 }
+          ]} component={SelectProgram} />
+          <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+          <button className="btn btn--action" onClick={() => {
+            program = !!program ? program : 1
+            packageType = !!packageType ? packageType : 1
+            signup(program, undefined, packageType, promo)
+            const payload = { program, email, password, package: packageType }
+            return userCreate(payload)
+          }}>
+            Продолжить
+          </button>
+        </Modal>
 
         <div id="pay-success">
           <div className="base-popup__msg">
@@ -206,11 +255,28 @@ class ProfileSignup extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  program: state.profile,
-  email: state.profile,
-  password: state.profile,
-})
+ProfileSignup = reduxForm({
+  form: 'signupValidation'
+})(ProfileSignup)
+
+const selector = formValueSelector('signupValidation')
+const mapStateToProps = state => {
+  let { program, packageType, promo, amount } = state.profile
+
+  if (!program || !packageType) {
+    program = selector(state, 'programValue')
+    packageType = selector(state, 'packageTypeValue')
+  }
+
+  promo = selector(state, 'promoValue')
+
+  return {
+    program,
+    packageType,
+    promo,
+    amount
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
   signup: bindActionCreators(actions.signup, dispatch),
