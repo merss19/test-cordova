@@ -7,14 +7,14 @@ let promoTokenStorage = new (function() {
         this.setPromoToken = (promoToken) => {
             var promoTokenArray = promoToken ? promoToken.split(";") : [];
             this.promoToken = promoToken;
-            this.promoSessionId =  promoTokenArray.length  == 2 ? promoTokenArray[0] : null;
-            this.promoTokenSignature = promoTokenArray.length == 2 ? promoTokenArray[0] : null;
+            this.promoSessionId =  promoTokenArray.length  === 2 ? promoTokenArray[0] : null;
+            this.promoTokenSignature = promoTokenArray.length === 2 ? promoTokenArray[0] : null;
         };
     
         this.getPromoToken  =  ()=>   { return this.promoToken; };
         this.getPromoSessionId  =  ()=>   { return this.promoSessionId; };
         this.getPromoTokenSignature =  ()=>   { return this.promoTokenSignature; };
-});
+})();
 
 export const promoWatch = props => {
 
@@ -34,7 +34,7 @@ export const promoWatch = props => {
 export const promoVisit = ((storage) => {
     return {
         getPromoToken: () => { return storage.getPromoToken(); },
-        getPromoSessionId: () => {  return storage.getPromoTokenSignature();  },
+        getPromoSessionId: () => {  return storage.getPromoSessionId();  },
         getPromoTokenSignature: () => {  return storage.getPromoTokenSignature();  }
     }
 })(promoTokenStorage);
