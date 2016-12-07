@@ -1848,6 +1848,60 @@ a.btn {
     transform: translate(-50%, -50%);
     line-height: 0; }
 
+.upload-gallery {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap; }
+  .upload-gallery__item {
+    position: relative;
+    margin-bottom: 20px; }
+    .upload-gallery__item--uploaded .upload-gallery__title, .upload-gallery__item--uploaded .upload-gallery__ico {
+      display: none; }
+    @media screen and (max-width: 600px) {
+      .upload-gallery__item {
+        width: 100% !important;
+        margin-right: 0 !important; } }
+    @media screen and (max-width: 1024px) {
+      .upload-gallery__item {
+        width: 48%; }
+        .upload-gallery__item:not(:last-child) {
+          margin-right: 3%; }
+        .upload-gallery__item:nth-of-type(2n+2) {
+          margin-right: 0; } }
+    @media screen and (min-width: 1025px) {
+      .upload-gallery__item {
+        width: 23%; }
+        .upload-gallery__item:not(:last-child) {
+          margin-right: 2.5%; } }
+  .upload-gallery__item-inner {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #F3F6F8;
+    overflow: hidden;
+    border-radius: 5px;
+    max-height: 200px;
+    height: 100%; }
+    @media screen and (max-width: 1024px) {
+      .upload-gallery__item-inner {
+        max-height: 300px; } }
+    @media screen and (min-width: 1025px) {
+      .upload-gallery__item-inner {
+        max-height: 200px; } }
+  .upload-gallery__ico {
+    margin-bottom: 10px; }
+  .upload-gallery__title {
+    font-weight: 700;
+    color: #b3b9bd; }
+  .upload-gallery__img {
+    max-width: 100%; }
+
 .entry__inner {
   position: relative;
   text-align: center;
@@ -2199,6 +2253,10 @@ a.btn {
 .ico-trash {
   width: 15px;
   height: 20px; }
+
+.ico-gallery {
+  width: 46px;
+  height: 40px; }
 
 .ico-your-condition-1,
 .ico-your-condition-2,
