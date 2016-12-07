@@ -19,6 +19,7 @@ class ProfilePay extends Component {
   render() {
     const { payment, isFetching } = this.props
     let programName
+    let packageName
     let { program, packageType, amount } = this.props
 
     const isEmpty = payment === undefined || payment.data === undefined
@@ -41,6 +42,20 @@ class ProfilePay extends Component {
         default:
           programName = '#Я ГЕРОЙ'
           break
+      }
+
+      switch (packageType) {
+        case 1:
+          packageName = '1  человек'
+          break
+        case 2:
+          packageName = '2  человек'
+          break
+        case 3:
+          packageName = '3  человек'
+          break
+        default:
+          packageName = 'Не определено'
       }
 
       const frameScript = document.createElement("script")
@@ -95,11 +110,11 @@ class ProfilePay extends Component {
                       <ul className="packet-info">
                         <li className="packet-info__item">
                           <span className="packet-info__name-title">Пакет</span>
-                          <span className="packet-info__name">{packageType}</span>
+                          <span className="packet-info__name">{packageName}</span>
                         </li>
                         <li className="packet-info__item">
                           <span className="packet-info__name-title">Цена</span>
-                          <span className="packet-info__name">{amount ? amount : '' }</span>
+                          <span className="packet-info__name">{amount ? amount : '0' }</span>
                         </li>
                       </ul>
 

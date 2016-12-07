@@ -29,17 +29,17 @@ class LoginValidationForm extends Component {
       if (program && packageType) {
         window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk?type=${packageType},${program},${promo}&display=page&response_type=token`
       } else {
-        this.refs.accModal.show()
+        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=token`
       }
     }
 
-    const loginOk = () => {
-      if (program && packageType) {
-        window.location(`https://connect.ok.ru/oauth/authorize?client_id=1248995328&scope=VALUABLE_ACCESS&response_type=token&redirect_uri=${host}/social/ok&state=${packageType},${program},${promo}`)
-      } else {
-        this.refs.accModal.show()
-      }
-    }
+    // const loginOk = () => {
+    //   if (program && packageType) {
+    //     window.location(`https://connect.ok.ru/oauth/authorize?client_id=1248995328&scope=VALUABLE_ACCESS&response_type=token&redirect_uri=${host}/social/ok&state=${packageType},${program},${promo}`)
+    //   } else {
+    //     this.refs.accModal.show()
+    //   }
+    // }
 
     const goToPayment = () => {
       fbPayload.program = program
