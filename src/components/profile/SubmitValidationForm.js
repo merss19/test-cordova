@@ -455,7 +455,7 @@ class SubmitValidationForm extends Component {
             <ul className="options options--white mtb30">
               {sportsPast.map((val, index) => (
                 <label key={index}>
-                  <li name="sports" className="options__item" id={`sportsPast[${index}]`} onClick={e => {
+                  <li name="sports" className={initialValues && initialValues.injuriesExist === val.val ? "options__item is-active" : "options__item"} id={`sportsPast[${index}]`} onClick={e => {
                     document.getElementById(`sportsPast[${index}]`).className += ' is-active'
                     sportsPast.forEach((v, i) => {
                       if (index !== i)
@@ -699,7 +699,7 @@ const validate = data => {
     errors.squatsCount = 'Количество приседаний должно быть заполнено'
   }
 
-  if (!data.didSports) {
+  if (data.didSports === undefined) {
     errors.didSports = 'Поле спорт должно быть отмечено'
   }
 
