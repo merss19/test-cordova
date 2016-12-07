@@ -4,8 +4,6 @@ import { Field, reduxForm } from 'redux-form'
 import InputModal from '../componentKit/InputModal'
 
 const SendReportModal = props => {
-  console.log('MMM====')
-  console.log(props)
   const { error, handleSubmit, pristine, reset, submitting, onSubmit } = props
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

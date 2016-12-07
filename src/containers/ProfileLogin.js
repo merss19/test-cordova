@@ -6,11 +6,12 @@ import LoginValidationForm from '../components/profile/LoginValidationForm'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
+import { api } from '../config.js'
 
 let ProfileLogin = ({ profile, showError, setToken }) => {
   return (
     <LoginValidationForm onSubmit={ data => {
-      return fetch('http://sport.muhanov.net/api/user/authenticate', {
+      return fetch(`${api}/user/authenticate`, {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -22,8 +23,6 @@ let ProfileLogin = ({ profile, showError, setToken }) => {
         .then(json => {
           if (json.data && json.data.authToken) {
             cookie.save('token', json.data.authToken, { path: '/' })
-            console.log('token')
-            console.log(cookie.load('token'))
             setToken(json.data.authToken)
             browserHistory.push('/profile/create')
           } else {

@@ -35,12 +35,6 @@ export const bodyParams = (state = [], action) => {
 
 export function profile(state = {}, action) {
   switch (action.type) {
-    // case 'CREATE_PROFILE':
-    //   return {
-    //     program: action.program,
-    //     amount: action.amount,
-    //     packageType: action.packageType
-    //   }
     case 'SIGNUP':
       return {
         program: action.program,

@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
 import { Field } from 'redux-form'
-import { Link } from 'react-router'
 import { connect } from 'react-redux'
 
-import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
-import InputProfileDate from '../componentKit/InputProfileDate'
-import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import Modal from 'boron/DropModal'
+import { api } from '../../config.js'
 
 const contentStyle = {
   borderRadius: '18px',
@@ -93,7 +90,7 @@ class InsuranceValidationForm extends Component {
                       }
                     }
 
-                    return fetch('http://sport.muhanov.net/api/data/file-upload', {
+                    return fetch(`${api}/data/file-upload`, {
                         headers: {
                           'Accept': 'application/json',
                           'Content-Type': 'application/json'
@@ -103,7 +100,6 @@ class InsuranceValidationForm extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
-                        console.log(json)
                         if (json.errorCode === 1 && json.data) {
                           dispatch({
                             type: 'ADD_INSURANCE_DOC',
@@ -139,9 +135,7 @@ class InsuranceValidationForm extends Component {
               }
             }
 
-            console.log(payload)
-
-            return fetch('http://sport.muhanov.net/api/user/insurance-create', {
+            return fetch(`${api}/user/insurance-create`, {
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'

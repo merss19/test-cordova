@@ -10,7 +10,8 @@ import Modal from 'boron/DropModal'
 import SendReportModal from './SendReportModal'
 import { connect } from 'react-redux'
 import { SubmissionError } from 'redux-form'
-import cookie from 'react-cookie';
+import cookie from 'react-cookie'
+import { api } from '../../config.js'
 
 import { action } from '@kadira/storybook'
 
@@ -22,10 +23,6 @@ const contentStyle = {
 class MainComponent extends Component {
   render() {
     const { taskDay, token } = this.props
-
-    console.log('<=======*==0')
-    console.log(taskDay)
-    console.log(token)
 
     return (
       <div className="layout">
@@ -71,7 +68,7 @@ class MainComponent extends Component {
 
               <Modal ref='sendReportModal' modalStyle={contentStyle}>
                 <SendReportModal onSubmit={(data) => {
-                  return fetch('http://sport.muhanov.net/api/user/userTask-create', {
+                  return fetch(`${api}/user/userTask-create`, {
                       headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -92,10 +89,7 @@ class MainComponent extends Component {
                     })
                     .then(response => response.json())
                     .then(json => {
-                      console.log('<=--------=--------')
-                      console.log(json.data)
                       if (json.data) {
-                        console.log('success')
                       } else {
                         throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
                       }

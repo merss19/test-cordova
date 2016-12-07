@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import CustomInput from '../componentKit/CustomInput';
 
 const PasswordForgetValidationForm = props => {
-  const { error, handleSubmit, pristine, reset, submitting, signup, onSubmit } = props
+  const { error, handleSubmit, onSubmit } = props
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="1/2--desk grid__cell entry-form__email">
       <div className="input input--line">
@@ -34,6 +34,8 @@ const validate = data => {
       break
     case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.email):
       errors.email = 'Email заполнен неправильно, проверьте его еще раз'
+      break
+    default:
       break
   }
 

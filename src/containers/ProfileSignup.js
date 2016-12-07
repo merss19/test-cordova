@@ -2,16 +2,23 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import LoginValidationForm from '../components/profile/LoginValidationForm'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import cookie from 'react-cookie'
-import { Field, reduxForm } from 'redux-form'
-import CustomInput from '../components/componentKit/CustomInput'
 import SignupValidationForm from '../components/profile/SignupValidationForm'
+import { api } from '../config.js'
+import Modal from 'boron/DropModal'
+import CustomInput from '../components/componentKit/CustomInput'
+import SelectProgram from '../components/componentKit/SelectProgram'
 
-const FB = window.FB
-const VK = window.VK
+const contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
+
+let email
+let password
 
 class ProfileSignup extends Component {
   componentWillMount() {
@@ -21,6 +28,9 @@ class ProfileSignup extends Component {
     let program
 
     switch (programParam) {
+      case 'hero':
+        program = 1
+        break
       case 'mommy':
         program = 2
         break
@@ -31,20 +41,15 @@ class ProfileSignup extends Component {
         program = 4
         break
       default:
-        program = 1
+        break
     }
-
-    console.log(program)
 
     const { signup } = this.props
     signup(program, amount, packageType, promo)
   }
 
   statusChangeCallback(response) {
-    console.log('statusChangeCallback')
-    console.log(response)
     if (response.status === 'connected') {
-      console.log('connect')
     } else if (response.status === 'not_authorized') {
       document.getElementById('status').innerHTML = 'Please log ' +
         'into this app.'
@@ -54,33 +59,28 @@ class ProfileSignup extends Component {
     }
   }
 
-  checkLoginState() {
-    FB.getLoginStatus(function(response) {
-      this.statusChangeCallback(response)
-    })
-  }
-
   render() {
-    const programParam = this.props.params.program
-    const { amount, type } = this.props.location.query
-    const packageType = type
-
-    const { error, handleSubmit, pristine, reset, setToken, submitting } = this.props
-    let program
+    let { amount, packageType, promo, program } = this.props
+    const { setToken, signup } = this.props
+    let programName
     let packageName
+    amount = !!amount ? amount : 0
 
-    switch (programParam) {
-      case 'mommy':
-        program = '#МАМА МОЖЕТ'
+    switch (program) {
+      case 1:
+        programName = '#Я ГЕРОЙ'
         break
-      case 'extremeways':
-        program = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+      case 2:
+        programName = '#МАМА МОЖЕТ'
         break
-      case 'tommorowman':
-        program = '#Я ЗАВТРА'
+      case 3:
+        programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+        break
+      case 4:
+        programName = '#Я ЗАВТРА'
         break
       default:
-        program = '#Я ГЕРОЙ'
+        programName = 'ЯСЕГОДНЯ'
     }
 
     switch (packageType) {
@@ -94,84 +94,29 @@ class ProfileSignup extends Component {
         packageName = '3  человек'
         break
       default:
-        packageName = '1  человек'
+        packageName = 'Не определено'
     }
 
-    const loginVk = () => {
-      VK.Auth.login(response => {
-        console.log(response)
-        const { first_name, last_name } = response.session.user
-        VK.Api.call('users.get', {fields: 'email'}, function(r) {
-          console.log(r)
-          if(r.response && r.response[0] && r.response[0].email) {
-            console.log(r.response[0])
-          }
-        })
+    const userCreate = (payload) => {
+      console.log(payload)
+      return fetch(`${api}/user/user-create`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(payload)
       })
-    }
-
-    const loginFb = () => {
-      const self = this
-      console.log(self)
-      FB.login(response => {
-        if (response.status === 'connected') {
-          FB.api(`/me?fields=first_name,last_name,email`,
-            response => {
-              const { email, first_name, last_name } = response
-              const { setToken } = self.props
-              const programParam = self.props.params.program
-              let program
-
-              switch (programParam) {
-                case 'mommy':
-                  program = 2
-                  break
-                case 'extremeways':
-                  program = 3
-                  break
-                case 'tommorowman':
-                  program = 4
-                  break
-                default:
-                  program = 1
-              }
-
-              FB.api(`/me/picture?type=small`,
-                response => {
-                  const photo = response.data.url
-                  const payload = { program, email, first_name, last_name, photo }
-
-                  return fetch('http://sport.muhanov.net/api/user/user-create', {
-                    headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                  })
-                  .then(response => response.json())
-                  .then(json => {
-                    if (json.data && json.data.authToken) {
-                      cookie.save('token', json.data.authToken, { path: '/' })
-                      setToken(json.data.authToken)
-                      browserHistory.push('/signup/pay')
-                    } else {
-                      throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
-                    }
-                  })
-                }
-              )
-            }
-          )
-        } else if (response.status === 'not_authorized') {
-          console.log('there')
-          // The person is logged into Facebook, but not your app.
+      .then(response => response.json())
+      .then(json => {
+        if (json.data && json.data.authToken) {
+          cookie.save('token', json.data.authToken, { path: '/' })
+          setToken(json.data.authToken)
+          browserHistory.push('/signup/pay')
         } else {
-          console.log('anywhere')
-          // The person is not logged into Facebook, so we're not sure if
-          // they are logged into this app or not.
+          throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
         }
-      }, { scope: 'email' })
+      })
     }
 
     return (
@@ -184,7 +129,7 @@ class ProfileSignup extends Component {
               <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
             </h1>
             <div className="1/2--portable grid__cell header__right-side">
-              <a href="#" className="header__link js-popup-ya-geroy">{program}</a>
+              <a href="#" className="header__link js-popup-ya-geroy">{programName}</a>
             </div>
           </div>
         </div>
@@ -219,7 +164,7 @@ class ProfileSignup extends Component {
                   <p>Информация о пакете</p>
                   <hr/>
                 </div>
-                <div className="entry-info__title">{program}</div>
+                <div className="entry-info__title">{programName}</div>
                 <p className="entry-info__sub-title">Оформление на участие в проекте</p>
 
                 <ul className="packet-info">
@@ -245,65 +190,18 @@ class ProfileSignup extends Component {
 
                 <hr/>
 
-                <div className="grid grid--middle">
-                  <SignupValidationForm onSubmit={(data) => {
-                    const { email, password } = data
-                    switch(program) {
-                      case '#МАМА МОЖЕТ':
-                        program = 2
-                        break
-                      case '#ЭКСТРИМАЛЬНАЯ СУШКА':
-                        program = 3
-                        break
-                      case '#Я ЗАВТРА':
-                        program = 4
-                        break
-                      default:
-                        program = 1
-                    }
+                <SignupValidationForm onSubmit={data => {
+                  email = data.email
+                  password = data.password
+                  if (!program || !packageType) {
+                    this.refs.accModal.show()
+                    return
+                  }
 
-                    const payload = { program, email, password, package: packageType }
+                  const payload = { program, email, password, package: packageType }
 
-                    return fetch('http://sport.muhanov.net/api/user/user-create', {
-                        headers: {
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json'
-                        },
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                      })
-                      .then(response => response.json())
-                      .then(json => {
-                        if (json.data && json.data.authToken) {
-                          cookie.save('token', json.data.authToken, { path: '/' })
-                          setToken(json.data.authToken)
-                          browserHistory.push('/signup/pay')
-                        } else {
-                          throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
-                        }
-                      })
-                  }}/>
-                  <div className="1/2--desk grid__cell entry-form__social">
-                    <p className="entry-form__social-title">Войти через социальные сети</p>
-                    <ul className="social-signin">
-                      <li className="social-signin__item social-signin__item--vk" onClick={loginVk}>
-                        <svg className="svg-icon ico-vk">
-                          <use xlinkHref="#vk"></use>
-                        </svg>
-                      </li>
-                      <li className="social-signin__item social-signin__item--odnoklassniki">
-                        <svg className="svg-icon ico-odnoklassniki">
-                          <use xlinkHref="#odnoklassniki"></use>
-                        </svg>
-                      </li>
-                      <li className="social-signin__item social-signin__item--fb" onClick={loginFb}>
-                        <svg className="svg-icon ico-fb">
-                          <use xlinkHref="#fb"></use>
-                        </svg>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                  return userCreate(payload)
+                }}/>
 
                 <p className="entry-form__note">Выполнив этот шаг вы автоматически перейдете к следующему</p>
 
@@ -313,6 +211,33 @@ class ProfileSignup extends Component {
           </div>
 
         </div>
+
+
+        <Modal ref='accModal' modalStyle={contentStyle}>
+          <h2>Выберите программу</h2>
+          <br/>
+          <Field name="programValue" id="programValue" options={[
+            { name: '#Я ГЕРОЙ', value: 1},
+            { name: '#МАМА МОЖЕТ', value: 2 },
+            { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: 3 },
+            { name: '#Я ЗАВТРА', value: 4 }
+          ]} component={SelectProgram} />
+          <Field name="packageTypeValue" id="packageTypeValue" options={[
+            { name: '1 человек', value: 1},
+            { name: '2 человека', value: 2 },
+            { name: '3 человека', value: 3 }
+          ]} component={SelectProgram} />
+          <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+          <button className="btn btn--action" onClick={() => {
+            program = !!program ? program : 1
+            packageType = !!packageType ? packageType : 1
+            signup(program, undefined, packageType, promo)
+            const payload = { program, email, password, package: packageType }
+            return userCreate(payload)
+          }}>
+            Продолжить
+          </button>
+        </Modal>
 
         <div id="pay-success">
           <div className="base-popup__msg">
@@ -330,11 +255,28 @@ class ProfileSignup extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  program: state.profile,
-  email: state.profile,
-  password: state.profile,
-})
+ProfileSignup = reduxForm({
+  form: 'signupValidation'
+})(ProfileSignup)
+
+const selector = formValueSelector('signupValidation')
+const mapStateToProps = state => {
+  let { program, packageType, promo, amount } = state.profile
+
+  if (!program || !packageType) {
+    program = selector(state, 'programValue')
+    packageType = selector(state, 'packageTypeValue')
+  }
+
+  promo = selector(state, 'promoValue')
+
+  return {
+    program,
+    packageType,
+    promo,
+    amount
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
   signup: bindActionCreators(actions.signup, dispatch),

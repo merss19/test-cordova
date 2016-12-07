@@ -1,4 +1,5 @@
 import cookie from 'react-cookie'
+import { api } from '../config.js'
 
 export const REQUEST_PROFILE = 'REQUEST_PROFILE'
 export const RECEIVE_PROFILE = 'RECEIVE_PROFILE'
@@ -26,8 +27,7 @@ export const receiveProfile = (profileData, json) => {
     receivedAt: Date.now()
   }
 
-  json.map(j => {
-    console.log(j)
+  json.forEach(j => {
     if (j && j.data && j.data.length > 0) {
       switch (true) {
         case !!j.data[0].email:
@@ -38,6 +38,8 @@ export const receiveProfile = (profileData, json) => {
           break
         case !!j.data[0].passport:
           profile = { ...profile, insurance: j.data }
+          break
+        default:
           break
       }
     }
@@ -64,9 +66,9 @@ const fetchProfile = partialState => dispatch => {
 
   const method = 'POST'
   const urls = [
-    'http://sport.muhanov.net/api/user/user-get',
-    'http://sport.muhanov.net/api/user/bodyMeasure-get',
-    'http://sport.muhanov.net/api/user/insurance-get'
+    `${api}/user/user-get`,
+    `${api}/user/bodyMeasure-get`,
+    `${api}/user/insurance-get`
   ]
 
   return Promise.all(urls.map(url =>

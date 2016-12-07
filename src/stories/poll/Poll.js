@@ -5,11 +5,9 @@ import TextPoll from './TextPoll';
 
 function sendPoll(e) {
   e.preventDefault();
-  console.log('send')
 }
 
 function select(children) {
-  console.log(children)
 }
 
 const Poll = ({ children, fields }) => {

@@ -1,29 +1,25 @@
 import React, { Component } from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { Link } from 'react-router'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import Header from '../../stories/Header'
 
 import RadioProfile from '../componentKit/RadioProfile'
-import RadioCustom from '../componentKit/RadioCustom'
 import Timer from '../componentKit/Timer'
-import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
 import InputProfilePhone from '../componentKit/InputProfilePhone'
 import CheckboxProfile from '../componentKit/CheckboxProfile'
 import SelectProfile from '../componentKit/SelectProfile'
+import SelectProgram from '../componentKit/SelectProgram'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
-import InputProfileDate from '../componentKit/InputProfileDate'
 import ErrorField from '../componentKit/ErrorField'
 import InsuranceValidationForm from '../profile/InsuranceValidationForm'
-import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import moment from 'moment'
 import Modal from 'boron/DropModal'
+import { api } from '../../config.js'
 
 let injuries = []
 let diseases = []
-let bodyParameters = []
 
 const contentStyle = {
   borderRadius: '18px',
@@ -32,11 +28,10 @@ const contentStyle = {
 
 const FB = window.FB
 const VK = window.VK
-const FAPI = window.FAPI
 
 class SubmitValidationForm extends Component {
   updatePhoto(photoPayload) {
-    return fetch('http://sport.muhanov.net/api/user/user-update', {
+    return fetch(`${api}/user/user-update`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -65,16 +60,15 @@ class SubmitValidationForm extends Component {
   }
 
   render() {
-    const { error, handleSubmit, pristine, reset, bodyParams,
-      dispatch, submitting, onSubmit, initialValues } = this.props
+    const { error, valid, handleSubmit, bodyParams,
+      dispatch, onSubmit, initialValues, cities } = this.props
 
-    bodyParameters = bodyParams
-    const sports = [
-      'Сложно',
-      'Нормально',
-      'Хорошо',
-      'Отлично'
-    ]
+    // const sports = [
+    //   'Сложно',
+    //   'Нормально',
+    //   'Хорошо',
+    //   'Отлично'
+    // ]
 
     const sportsPast = [
       { text: 'Да', val: true },
@@ -94,19 +88,19 @@ class SubmitValidationForm extends Component {
       'Другое'
     ]
 
-    const diseasesList = [
-      'Диабет',
-      'Сердце',
-      'Почки',
-      'Поджелудочная',
-      'Другое'
-    ]
+    // const diseasesList = [
+    //   'Диабет',
+    //   'Сердце',
+    //   'Почки',
+    //   'Поджелудочная',
+    //   'Другое'
+    // ]
 
-    const pressure = [
-      'Пониженное',
-      'Нормальное',
-      'Повышенное'
-    ]
+    // const pressure = [
+    //   'Пониженное',
+    //   'Нормальное',
+    //   'Повышенное'
+    // ]
 
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="layout">
@@ -143,7 +137,7 @@ class SubmitValidationForm extends Component {
                               }
                             }
 
-                            return fetch('http://sport.muhanov.net/api/data/file-upload', {
+                            return fetch(`${api}/data/file-upload`, {
                               headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
@@ -153,12 +147,11 @@ class SubmitValidationForm extends Component {
                             })
                             .then(response => response.json())
                             .then(json => {
-                              console.log(json)
                               if (json.errorCode === 1 && json.data) {
                                 const photoPayload = {
                                   authToken: cookie.load('token'),
                                   data: {
-                                    photo: `http://sport.muhanov.net/api/files/${json.data.uid}.${json.data.extension}`,
+                                    photo: `${api}/files/${json.data.uid}.${json.data.extension}`,
                                   }
                                 }
 
@@ -192,7 +185,7 @@ class SubmitValidationForm extends Component {
                             data: { photo }
                           }
 
-                          return this.updatePhoto(photoPayload)
+                          return self.updatePhoto(photoPayload)
                         }
                       })
                     })
@@ -202,26 +195,24 @@ class SubmitValidationForm extends Component {
                     </svg>
                     <span className="btn-social__title">Вконтакте</span>
                   </li>
-                  <li className="btn-social__item btn-social__item--odnoklassniki" onClick={() => {
-                    const FAPI = window.FAPI
-                    var rParams = window.FAPI.Util.getRequestParameters()
-                    console.log(rParams)
-                    FAPI.init(rParams["api_server"], rParams["apiconnection"], () => {
-                        console.log('here')
-                        FAPI.Client.call({
-                          method: "users.getInfo",
-                          fields: "pic190x190"
-                        }, r => {
-                          console.log(r)
-                        }, () => { console.log(error) })
-                      }
-                    )
+                  {/* <li className="btn-social__item btn-social__item--odnoklassniki" onClick={() => {
+                    // const FAPI = window.FAPI
+                    // var rParams = window.FAPI.Util.getRequestParameters()
+                    // FAPI.init(rParams["api_server"], rParams["apiconnection"], () => {
+                    //     FAPI.Client.call({
+                    //       method: "users.getInfo",
+                    //       fields: "pic190x190"
+                    //     }, r => {
+                    //       console.log(r)
+                    //     }, () => { console.log(error) })
+                    //   }
+                    // )
                   }}>
                     <svg className="svg-icon ico-odnoklassniki">
                       <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#odnoklassniki"></use>
                     </svg>
                     <span className="btn-social__title">Одноклассники</span>
-                  </li>
+                  </li> */}
                   <li className="btn-social__item btn-social__item--fb" onClick={() => {
                     FB.login(response => {
                       if (response.status === 'connected') {
@@ -291,10 +282,10 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="country" options={['Россия', 'Украина']} component={SelectProfile} />
+                <Field name="country" id="country" options={['Россия', 'Украина', 'США']} component={SelectProfile} />
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="city" options={['Москва', 'Одесса']} component={SelectProfile} />
+                <Field name="city" options={cities ? cities : []} component={SelectProfile} />
               </div>
             </div>
 
@@ -307,7 +298,20 @@ class SubmitValidationForm extends Component {
               </div>
             </div>
 
-            <Field name="timezone" options={['Часовой пояс Минкс+1', 'Часовой пояс Москва+3']} component={SelectProfile} />
+            <Field name="timezone" options={[
+              { name: 'Часовой пояс Минск+1', value: 1 },
+              { name: 'Часовой пояс Киев+2', value: 2 },
+              { name: 'Часовой пояс Москва+3', value: 3 },
+              { name: 'Часовой пояс Самара+4', value: 4 },
+              { name: 'Часовой пояс Екатеринбург+5', value: 5 },
+              { name: 'Часовой пояс Омск+6', value: 6 },
+              { name: 'Часовой пояс Красноярск+7', value: 7 },
+              { name: 'Часовой пояс Иркутск+8', value: 8 },
+              { name: 'Часовой пояс Якутия+9', value: 9 },
+              { name: 'Часовой пояс Владивосток+10', value: 10 },
+              { name: 'Часовой пояс Сахалин+11', value: 11 },
+              { name: 'Часовой пояс Камчатский край+12', value: 12 }
+            ]} component={SelectProgram} />
 
             <hr/>
 
@@ -358,7 +362,7 @@ class SubmitValidationForm extends Component {
                     data
                   }
 
-                  return fetch('http://sport.muhanov.net/api/user/bodymeasure-create', {
+                  return fetch(`${api}/user/bodymeasure-create`, {
                       headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -379,7 +383,10 @@ class SubmitValidationForm extends Component {
                   Добавить
                 </button>
                 <Modal ref='failModal' modalStyle={contentStyle}>
-                  <h2>Что-то пошло не так, поробуйте чуть позже</h2>
+                  <h2>Что-то пошло не так, поробуйте снова</h2>
+                </Modal>
+                <Modal ref='submitFailModal' modalStyle={contentStyle}>
+                  <h2>Одно или несколько полей были заполнены не правильно, проверьте вашу анкету еще раз</h2>
                 </Modal>
                 <Modal ref='successModal' modalStyle={contentStyle}>
                   <h2>Данные добавлены!</h2>
@@ -448,9 +455,9 @@ class SubmitValidationForm extends Component {
             <ul className="options options--white mtb30">
               {sportsPast.map((val, index) => (
                 <label key={index}>
-                  <li name="sports" className="options__item" id={`sportsPast[${index}]`} onClick={e => {
+                  <li name="sports" className={initialValues && initialValues.injuriesExist === val.val ? "options__item is-active" : "options__item"} id={`sportsPast[${index}]`} onClick={e => {
                     document.getElementById(`sportsPast[${index}]`).className += ' is-active'
-                    sportsPast.map((v, i) => {
+                    sportsPast.forEach((v, i) => {
                       if (index !== i)
                         document.getElementById(`sportsPast[${i}]`).className = "options__item"
                     })
@@ -478,7 +485,7 @@ class SubmitValidationForm extends Component {
                 <label key={index}>
                   <li name="sports" className={ initialValues && initialValues.injuriesExist === val.val ? "options__item is-active" : "options__item"} id={`injuriesExist[${index}]`} onClick={e => {
                     document.getElementById(`injuriesExist[${index}]`).className += ' is-active'
-                    injuriesExist.map((v, i) => {
+                    injuriesExist.forEach((v, i) => {
                       if (index !== i)
                         document.getElementById(`injuriesExist[${i}]`).className = "options__item"
                     })
@@ -580,7 +587,11 @@ class SubmitValidationForm extends Component {
             <hr/> */}
 
             <div className="text-center">
-              <button type='submit' className="btn btn--primary">
+              <button type='submit' className="btn btn--primary" onClick={() => {
+                if (!valid) {
+                  this.refs.submitFailModal.show()
+                }
+              }}>
                 Отправить анкету
               </button>
               {error && <strong>{error}</strong>}
@@ -598,10 +609,6 @@ const validate = data => {
 
   data.injuries = injuries.join()
   data.diseases = diseases.join()
-  // data.bodyParams = bodyParameters
-
-  console.log('validation')
-  console.log(data)
 
   switch (true) {
     case !data.firstName:
@@ -615,6 +622,8 @@ const validate = data => {
       break
     case !/^[A-Za-z0-9А-Яа-я]{3,20}$/.test(data.firstName):
       errors.firstName = 'Имя может содержать только буквы английского/русского алфавитов и цифры'
+      break
+    default:
       break
   }
 
@@ -630,6 +639,8 @@ const validate = data => {
       break
     case !/^[A-Za-z0-9А-Яа-я]{3,20}$/.test(data.lastName):
       errors.lastName = 'Фамилия может содержать только буквы английского/русского алфавитов и цифры'
+      break
+    default:
       break
   }
 
@@ -658,6 +669,8 @@ const validate = data => {
     case !/^[0-9]{3,20}$/.test(data.phone):
       errors.phone = 'Поле телефона может содержать только цифры'
       break
+    default:
+      break
   }
 
   switch (true) {
@@ -666,6 +679,8 @@ const validate = data => {
       break
     case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.email):
       errors.email = 'Email заполнен неправильно, проверьте его еще раз'
+      break
+    default:
       break
   }
 
@@ -676,17 +691,17 @@ const validate = data => {
     case !/^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$/.test(data.birthday):
       errors.birthday = 'Поле День Рождения не соответствует формату 02/01/2017'
       break
+    default:
+      break
   }
 
   if (!data.squatsCount) {
     errors.squatsCount = 'Количество приседаний должно быть заполнено'
   }
 
-  if (!data.didSports) {
+  if (data.didSports === undefined) {
     errors.didSports = 'Поле спорт должно быть отмечено'
   }
-
-  console.log(data.injuriesExist)
 
   if (data.injuriesExist === undefined) {
     errors.injuriesExist = 'Поле травмы должно быть отмечено'
@@ -716,8 +731,181 @@ SubmitValidationForm = reduxForm({
   validate
 })(SubmitValidationForm)
 
+const selector = formValueSelector('submitValidation')
+
 const mapStateToProps = state => {
-  return { bodyParams: state.bodyParams }
+  const country = selector(state, 'country')
+  let cities
+  switch (country) {
+    case 'Россия':
+      cities = ['Адыгея',
+      'Алтайский край',
+      'Амурская обл.',
+      'Архангельская обл.',
+      'Астраханская обл.',
+      'Башкортостан(Башкирия)',
+      'Белгородская обл.',
+      'Брянская обл.',
+      'Бурятия',
+      'Владимирская обл.',
+      'Волгоградская обл.',
+      'Вологодская обл.',
+      'Воронежская обл.',
+      'Дагестан',
+      'Еврейская обл.',
+      'Ивановская обл.',
+      'Иркутская обл.',
+      'Кабардино-Балкария',
+      'Калининградская обл.',
+      'Калмыкия',
+      'Калужская обл.',
+      'Камчатская обл.',
+      'Карелия',
+      'Кемеровская обл.',
+      'Кировская обл.',
+      'Коми',
+      'Костромская обл.',
+      'Краснодарский край',
+      'Красноярский край',
+      'Курганская обл.',
+      'Курская обл.',
+      'Ленинградская обл.',
+      'Липецкая обл.',
+      'Магаданская обл.',
+      'Марий Эл',
+      'Мордовия',
+      'Москва и Московская обл',
+      'Мурманская обл.',
+      'Нижегородская обл.',
+      'Новгородская обл.',
+      'Новосибирская обл.',
+      'Омская обл.',
+      'Оренбургская обл.',
+      'Орловская обл.',
+      'Пензенская обл.',
+      'Пермская обл.',
+      'Приморский край',
+      'Псковская обл.',
+      'Ростовская обл.',
+      'Рязанская обл.',
+      'Самарская обл.',
+      'Саратовская обл.',
+      'Саха (Якутия)',
+      'Сахалин',
+      'Свердловская обл.',
+      'Северная Осетия',
+      'Смоленская обл.',
+      'Ставропольский край',
+      'Тамбовская обл.',
+      'Татарстан',
+      'Тверская обл.',
+      'Томская обл.',
+      'Тульская обл.',
+      'Тыва (Тувинская Респ.)',
+      'Тюменская обл.',
+      'Удмуртия',
+      'Ульяновская обл.',
+      'Хабаровский край',
+      'Хакасия',
+      'Ханты-Мансийский АО',
+      'Челябинская обл.',
+      'Чечено-Ингушетия',
+      'Читинская обл.',
+      'Чувашия',
+      'Чукотский АО',
+      'Ямало-Ненецкий АО',
+      'Ярославская обл.']
+      break
+    case 'Украина':
+      cities = ['Винницкая обл.',
+      'Волынская обл.',
+      'Днепропетровская обл.',
+      'Донецкая обл.',
+      'Житомирская обл.',
+      'Закарпатская обл.',
+      'Запорожская обл.',
+      'Ивано-Франковская обл.',
+      'Киевская обл.',
+      'Кировоградская обл.',
+      'Крымская обл.',
+      'Луганская обл.',
+      'Львовская обл.',
+      'Николаевская обл.',
+      'Одесская обл.',
+      'Полтавская обл.',
+      'Ровенская обл.',
+      'Сумская обл.',
+      'Тернопольская обл.',
+      'Украина',
+      'Харьковская обл.',
+      'Херсонская обл.',
+      'Хмельницкая обл.',
+      'Черкасская обл.',
+      'Черниговская обл.',
+      'Черновицкая обл.']
+      break
+    case 'США':
+      cities = ['Айдахо',
+      'Айова',
+      'Алабама',
+      'Аляска',
+      'Аризона',
+      'Арканзас',
+      'Вайоминг',
+      'Вашингтон',
+      'Вермонт',
+      'Виргиния',
+      'Висконсин',
+      'Гаваи',
+      'Делавар',
+      'Джорджия',
+      'Западная Виргиния',
+      'Иллинойс',
+      'Индиана',
+      'Калифорния',
+      'Канзас',
+      'Кентукки',
+      'Колорадо',
+      'Коннектикут',
+      'Луизиана',
+      'Массачусетс',
+      'Миннесота',
+      'Миссисипи',
+      'Миссури',
+      'Мичиган',
+      'Монтана',
+      'Мэн',
+      'Мэриленд',
+      'Небраска',
+      'Невада',
+      'Нью-Гэмпшир',
+      'Нью-Джерси',
+      'Нью-Йорк',
+      'Нью-Мексико',
+      'Огайо',
+      'Оклахома',
+      'окр.Колумбия',
+      'Орегон',
+      'Пенсильвания',
+      'Род-Айленд',
+      'Северная Дакота',
+      'Северная Каролина',
+      'США',
+      'Теннесси',
+      'Техас',
+      'Флорида',
+      'Южная Дакота',
+      'Южная Каролина',
+      'Юта']
+      break
+      default:
+        break
+  }
+  return {
+    country,
+    cities,
+    bodyParams: state.bodyParams
+  }
 }
 
 SubmitValidationForm = connect(

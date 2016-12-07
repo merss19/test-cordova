@@ -5,9 +5,9 @@ import { Link } from 'react-router'
 import CustomInput from '../componentKit/CustomInput'
 
 const RestoreValidationForm = props => {
-  const { error, handleSubmit, pristine, reset, submitting } = props
+  const { error, handleSubmit, onSubmit } = props
   return (
-    <div className="layout layout--login">
+    <form onSubmit={handleSubmit(onSubmit)} className="layout layout--login">
 
       <div className="header">
         <div className="grid header__inner">
@@ -23,7 +23,7 @@ const RestoreValidationForm = props => {
         <div className="entry__inner">
           <div className="entry__box">
 
-            <form onSubmit={handleSubmit(props.onSubmit)} className="entry-form">
+            <div className="entry-form">
               <div className="entry-form__header">
                 <Link to="/signup">Регистрация</Link>
               </div>
@@ -43,13 +43,13 @@ const RestoreValidationForm = props => {
                   </button>
                 </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
 
       </div>
 
-    </div>
+    </form>
   )
 }
 
@@ -68,6 +68,8 @@ const validate = data => {
       break
     case !/^[A-Za-z0-9!@#$%^&*()_]{6,20}$/.test(data.password):
       errors.password = 'Поле пароля может содержать только буквы английского алфавита, цифры и какой-нибудь из знаков !@#$%^&*()_'
+      break
+    default:
       break
   }
 

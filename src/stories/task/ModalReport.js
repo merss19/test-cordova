@@ -10,11 +10,9 @@ const problemStyles = {};
 
 function sendReport(e) {
   e.preventDefault();
-  console.log('send')
 }
 
 function close() {
-  console.log('close')
 }
 
 const ModalReport = ({ children, exam }) => {
