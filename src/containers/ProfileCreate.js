@@ -62,8 +62,10 @@ class ProfileCreate extends Component {
                   ? insurance[insurance.length - 1].address : ''
               }}
               onSubmit={ data => {
+                this.refs.loadingModal.show()
                 delete data.password
-                data.timezone = data.timezone.value
+                if (data.timezone)
+                  data.timezone = data.timezone.value
                 const payload = {
                   authToken: token ? token : cookie.load('token'),
                   data
@@ -79,6 +81,7 @@ class ProfileCreate extends Component {
                   })
                   .then(response => response.json())
                   .then(user => {
+                    this.refs.loadingModal.hide()
                     if (!user.data) {
                       throw new SubmissionError({ _error: 'Что-то пошло не так, попробуйте снова.' })
                     } else {
@@ -90,6 +93,9 @@ class ProfileCreate extends Component {
             />
             <Modal ref='successModal' modalStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
+            </Modal>
+            <Modal ref='loadingModal' modalStyle={contentStyle}>
+              <h2>Подождите...</h2>
             </Modal>
           </div>
         }

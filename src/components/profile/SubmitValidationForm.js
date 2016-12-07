@@ -60,7 +60,7 @@ class SubmitValidationForm extends Component {
   }
 
   render() {
-    const { error, handleSubmit, bodyParams,
+    const { error, valid, handleSubmit, bodyParams,
       dispatch, onSubmit, initialValues, cities } = this.props
 
     // const sports = [
@@ -383,7 +383,10 @@ class SubmitValidationForm extends Component {
                   Добавить
                 </button>
                 <Modal ref='failModal' modalStyle={contentStyle}>
-                  <h2>Что-то пошло не так, поробуйте чуть позже</h2>
+                  <h2>Что-то пошло не так, поробуйте снова</h2>
+                </Modal>
+                <Modal ref='submitFailModal' modalStyle={contentStyle}>
+                  <h2>Одно или несколько полей были заполнены не правильно, проверьте вашу анкету еще раз</h2>
                 </Modal>
                 <Modal ref='successModal' modalStyle={contentStyle}>
                   <h2>Данные добавлены!</h2>
@@ -584,7 +587,11 @@ class SubmitValidationForm extends Component {
             <hr/> */}
 
             <div className="text-center">
-              <button type='submit' className="btn btn--primary">
+              <button type='submit' className="btn btn--primary" onClick={() => {
+                if (!valid) {
+                  this.refs.submitFailModal.show()
+                }
+              }}>
                 Отправить анкету
               </button>
               {error && <strong>{error}</strong>}
