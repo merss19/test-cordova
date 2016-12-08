@@ -59,7 +59,7 @@ class ProfilePasswordForget extends Component {
               <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
             </h1>
             <div className="1/2--portable grid__cell header__right-side">
-              <a href="#" className="header__link js-popup-ya-geroy">{program}</a>
+              <a href="#" className="header__link js-popup-ya-geroy">{programName}</a>
             </div>
           </div>
         </div>
@@ -94,13 +94,13 @@ class ProfilePasswordForget extends Component {
                   <p>Информация о пакете</p>
                   <hr/>
                 </div>
-                <div className="entry-info__title">{program}</div>
+                <div className="entry-info__title">{programName}</div>
                 <p className="entry-info__sub-title">Оформление на участие в проекте</p>
 
                 <ul className="packet-info">
                   <li className="packet-info__item">
                     <span className="packet-info__name-title">Пакет</span>
-                    <span className="packet-info__name">{packageType}</span>
+                    <span className="packet-info__name">{packageName}</span>
                   </li>
                   <li className="packet-info__item">
                     <span className="packet-info__name-title">Цена</span>

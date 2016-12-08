@@ -8,7 +8,6 @@ import Timer from '../componentKit/Timer'
 import InputProfile from '../componentKit/InputProfile'
 import InputProfilePhone from '../componentKit/InputProfilePhone'
 import CheckboxProfile from '../componentKit/CheckboxProfile'
-import LoadingView from '../componentKit/LoadingView'
 import SelectProfile from '../componentKit/SelectProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
@@ -46,7 +45,7 @@ class SubmitValidationForm extends Component {
 
   componentWillMount() {
     const { bodyMeasure, dispatch } = this.props
-    const script = document.createElement("script")
+    // const script = document.createElement("script")
 
     // script.type  = "text/javascript"
     // script.text = 'http://api.ok.ru/js/fapi5.js'
