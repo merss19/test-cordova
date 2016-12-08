@@ -20,7 +20,7 @@ class InsuranceValidationForm extends Component {
     const { dispatch, docs } = this.props
     dispatch({
       type: 'SAVE_INSURANCE_DOCS',
-      docs: docs.map((doc, index) => ({ ...doc, name: `файл-${index}` }))
+      docs
     })
   }
 
