@@ -17,7 +17,7 @@ import SuccessProfile from './components/profile/SuccessProfile'
 // import Reports from './containers/Reports'
 // import Faq from './components/Faq'
 // import Food from './components/food/MainComponent'
-import Photos from './containers/Photos'
+// import Photos from './containers/Photos'
 
 import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
@@ -57,8 +57,8 @@ export default (
     {/* <Route path='task' component={TodayTask} onEnter={requireAuth} />
     <Route path='faq' component={Faq} onEnter={requireAuth} />
     <Route path='food' component={Food} onEnter={requireAuth} />
-    <Route path='reports' component={Reports} onEnter={requireAuth} /> */}
-    <Route path='photos' component={Photos} />
+    <Route path='reports' component={Reports} onEnter={requireAuth} />
+    <Route path='photos' component={Photos} /> */}
     <Route path='profile'>
       <IndexRoute component={App} onEnter={getToken}/>
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />
