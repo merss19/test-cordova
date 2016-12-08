@@ -20,15 +20,13 @@ const contentStyle = {
 let packageTypeInitial
 let programInitial
 let promoInitial
-let userId
+let code
 
 class LoginSocial extends Component {
   componentWillMount() {
-    const queryHash = this.props.location.hash
-    const token = queryHash.match(/#access_token=(.*)&exp.*/)[1]
-    userId = queryHash.match(/.*user_id=(.*)/)[1]
     const { setToken } = this.props
-    const payload = { userId, token }
+    code = this.props.location.query.code
+    const payload = { code }
 
     return fetch(`${api}/user/authenticate-social`, {
         headers: {
@@ -88,7 +86,7 @@ class LoginSocial extends Component {
               authToken: json.data.authToken,
               data: {
                 socialNetType: 1,
-                userId
+                code
               }
             }
 

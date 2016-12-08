@@ -26,10 +26,11 @@ class SignupValidationForm extends Component {
     const { error, handleSubmit, packageType, program, onSubmit, promo, email, setToken, signup } = this.props
 
     const loginVk = () => {
+      console.log('<===)=0')
       if (program && packageType) {
-        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk?type=${packageType},${program},${promo}&display=page&response_type=token`
+        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk?type=${packageType},${program},${promo}&display=page&response_type=code`
       } else {
-        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=token`
+        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
       }
     }
 

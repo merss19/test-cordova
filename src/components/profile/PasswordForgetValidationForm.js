@@ -7,7 +7,7 @@ import CustomInput from '../componentKit/CustomInput';
 const PasswordForgetValidationForm = props => {
   const { error, handleSubmit, onSubmit } = props
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="1/2--desk grid__cell entry-form__email">
+    <form onSubmit={handleSubmit(onSubmit)} className="1/2--desk grid__cell">
       <div className="input input--line">
         <Field name='email' id='login[1]' title='Ваш e-mail' component={CustomInput} />
       </div>

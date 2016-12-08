@@ -336,6 +336,33 @@ class SubmitValidationForm extends Component {
                       <td>{param.waist}</td>
                       <td>{param.hips}</td>
                       <td>{param.thigh}</td>
+                      <td>
+                        <span className="base-table__btn-del">
+                          <svg className="svg-icon ico-trash" onClick={e => {
+                            e.preventDefault()
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: { id: param.id}
+                            }
+
+                            dispatch({ id: param.id, type: 'REMOVE_BODY_PARAM' })
+
+                            return fetch(`${api}/user/bodyMeasure-delete`, {
+                                headers: {
+                                  'Accept': 'application/json',
+                                  'Content-Type': 'application/json'
+                                },
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                              })
+                          }}>
+                            <use xlinkHref="#ico-trash"></use>
+                          </svg>
+                        </span>
+                      </td>
                     </tr>
                   ))}
                   <tr>
@@ -349,7 +376,7 @@ class SubmitValidationForm extends Component {
                 </tbody>
               </table>
               <div className="text-center">
-                <button onClick={() => {
+                <div onClick={() => {
                   const data = {
                     date: moment().format('YYYY-DD-MM, HH:mm:ss'),
                     weight: this.refs.weight.value,
@@ -364,7 +391,7 @@ class SubmitValidationForm extends Component {
                     data
                   }
 
-                  return fetch(`${api}/user/bodymeasure-create`, {
+                  return fetch(`${api}/user/bodyMeasure-create`, {
                       headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -383,7 +410,7 @@ class SubmitValidationForm extends Component {
                     })
                 }} className="btn btn--primary">
                   Добавить
-                </button>
+                </div>
                 <Modal ref='failModal' modalStyle={contentStyle}>
                   <h2>Что-то пошло не так, поробуйте снова</h2>
                 </Modal>
@@ -414,7 +441,7 @@ class SubmitValidationForm extends Component {
               </div>
             }
 
-            <InsuranceValidationForm />
+            <InsuranceValidationForm docs={initialValues.insuranceFile}/>
 
             <p className="sub-title">Для того, чтобы добиться быстрых и качественных результатов тренеру важно знать некоторые особенности твоего организма. Это поможет ему правильно распределить нагрузку на мышцы и организовать последовательность тренировок, не навредив твоему организму</p>
 

@@ -11,7 +11,6 @@ const MenuButton = ({ children, onClick, icon }) => (
 
 MenuButton.propTypes = {
   children: React.PropTypes.string.isRequired,
-  children: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func,
 }
 

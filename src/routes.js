@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { Route, IndexRoute, browserHistory } from 'react-router'
 import { api } from './config'
 
@@ -17,12 +17,14 @@ import SuccessProfile from './components/profile/SuccessProfile'
 // import Reports from './containers/Reports'
 // import Faq from './components/Faq'
 // import Food from './components/food/MainComponent'
+import Photos from './containers/Photos'
+
 import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
 
 const getToken = () => {
   if (cookie.load('token')) {
-    browserHistory.push('/profile/create')
+    browserHistory.push('/signup/pay/success')
   }
 }
 
@@ -56,6 +58,7 @@ export default (
     <Route path='faq' component={Faq} onEnter={requireAuth} />
     <Route path='food' component={Food} onEnter={requireAuth} />
     <Route path='reports' component={Reports} onEnter={requireAuth} /> */}
+    <Route path='photos' component={Photos} />
     <Route path='profile'>
       <IndexRoute component={App} onEnter={getToken}/>
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />
@@ -76,4 +79,4 @@ export default (
       <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth}/>
     </Route>
   </Route>
-);
+)

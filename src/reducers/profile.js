@@ -14,6 +14,8 @@ const bodyParam = (state, action) => {
         hips: action.hips,
         thigh: action.thigh
       }
+    case 'REMOVE_BODY_PARAM':
+      return action.id
     default:
       return state
   }
@@ -26,6 +28,8 @@ export const bodyParams = (state = [], action) => {
         ...state,
         bodyParam(undefined, action)
       ]
+    case 'REMOVE_BODY_PARAM':
+      return state.filter(param => param.id !== bodyParam(undefined, action))
     case 'SAVE_BODY_PARAMS':
       return action.bodyMeasure
     default:

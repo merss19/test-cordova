@@ -155,26 +155,6 @@ class ProfilePasswordForget extends Component {
                         }
                       })
                   }}/>
-                  <div className="1/2--desk grid__cell entry-form__social">
-                    <p className="entry-form__social-title">Войти через социальные сети</p>
-                    <ul className="social-signin">
-                      <li className="social-signin__item social-signin__item--vk">
-                        <svg className="svg-icon ico-vk">
-                          <use xlinkHref="#vk"></use>
-                        </svg>
-                      </li>
-                      <li className="social-signin__item social-signin__item--odnoklassniki">
-                        <svg className="svg-icon ico-odnoklassniki">
-                          <use xlinkHref="#odnoklassniki"></use>
-                        </svg>
-                      </li>
-                      <li className="social-signin__item social-signin__item--fb">
-                        <svg className="svg-icon ico-fb">
-                          <use xlinkHref="#fb"></use>
-                        </svg>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               </div>
             </div>

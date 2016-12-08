@@ -13,14 +13,22 @@ const contentStyle = {
   padding: '30px'
 }
 
+let insuranceFiles = []
+
 class InsuranceValidationForm extends Component {
+  componentWillMount() {
+    const { dispatch, docs } = this.props
+    dispatch({
+      type: 'SAVE_INSURANCE_DOCS',
+      docs: docs.map((doc, index) => ({ ...doc, name: `файл-${index}` }))
+    })
+  }
+
   render() {
     const { dispatch, insuranceDocs } = this.props
-    const docsNames = insuranceDocs.map(doc => {
-      return doc.name
-    })
-
+    const docsNames = insuranceDocs.map(doc => doc.name)
     const docsString = docsNames.join()
+
     return (
       <div>
         <h3 className="h3">Страховка</h3>
@@ -63,7 +71,34 @@ class InsuranceValidationForm extends Component {
                 <li key={index} className="upload-list__item">
                   <span className="upload-list__title">{doc.name}</span>
                   <span className="upload-list__btn-del">
-                    <svg className="svg-icon ico-trash">
+                    <svg className="svg-icon ico-trash" onClick={e => {
+                      e.preventDefault()
+                      const payload = {
+                        authToken: cookie.load('token'),
+                        data: { uid: doc.uid }
+                      }
+
+                      const headers = {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      }
+
+                      dispatch({
+                        type: 'REMOVE_INSURANCE_DOC',
+                        doc
+                      })
+
+                      insuranceFiles.splice(insuranceFiles.indexOf(doc.uid), 1)
+
+                      return fetch(`${api}/user/insuranceFile-delete`, {
+                          headers,
+                          method: 'POST',
+                          body: JSON.stringify(payload)
+                        })
+                        .then(response => response.json())
+                        .then(json => {
+                        })
+                    }}>
                       <use xlinkHref="#ico-trash"></use>
                     </svg>
                   </span>
@@ -90,20 +125,24 @@ class InsuranceValidationForm extends Component {
                       }
                     }
 
+                    const headers = {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    }
+
                     return fetch(`${api}/data/file-upload`, {
-                        headers: {
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json'
-                        },
+                        headers,
                         method: 'POST',
                         body: JSON.stringify(payload)
                       })
                       .then(response => response.json())
                       .then(json => {
                         if (json.errorCode === 1 && json.data) {
+                          insuranceFiles.push(json.data.uid)
+
                           dispatch({
                             type: 'ADD_INSURANCE_DOC',
-                            name: json.data.name,
+                            name: target.files[0].name,
                             uid: json.data.uid
                           })
                         }
@@ -119,7 +158,7 @@ class InsuranceValidationForm extends Component {
         </div>
 
         <div className="text-center mb30">
-          <button className="btn btn--primary" onClick={data => {
+          <div className="btn btn--primary" onClick={data => {
             const payload = {
               authToken: cookie.load('token'),
               data: {
@@ -146,6 +185,26 @@ class InsuranceValidationForm extends Component {
               .then(response => response.json())
               .then(json => {
                 if (json.errorCode === 1 && json.data) {
+                  insuranceFiles.map(uid => {
+                    const payload = {
+                      authToken: cookie.load('token'),
+                      data: { uid, insurance: json.data.id }
+                    }
+
+                    const headers = {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    }
+
+                    return fetch(`${api}/user/insuranceFile-create`, {
+                        headers,
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                      })
+                      .then(response => response.json())
+                      .then(json => {
+                      })
+                  })
                   this.refs.successModal.show()
                 } else {
                   this.refs.failModal.show()
@@ -153,7 +212,7 @@ class InsuranceValidationForm extends Component {
               })
           }}>
             Активировать
-          </button>
+          </div>
         </div>
 
         <hr/>

@@ -62,7 +62,10 @@ class ProfileCreate extends Component {
                 passport: !insuranceIsEmpty && insurance[insurance.length - 1].passport
                   ? insurance[insurance.length - 1].passport : '',
                 address: !insuranceIsEmpty && insurance[insurance.length - 1].address
-                  ? insurance[insurance.length - 1].address : ''
+                  ? insurance[insurance.length - 1].address : '',
+                insuranceFile: !insuranceIsEmpty && insurance[insurance.length - 1].insuranceFile
+                  ? insurance[insurance.length - 1].insuranceFile : []
+
               }}
               onSubmit={ data => {
                 this.refs.loadingModal.show()

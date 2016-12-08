@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import MenuButton from '../../stories/MenuButton'
 import { browserHistory } from 'react-router'
 import { Link } from 'react-router'
@@ -25,6 +25,11 @@ const Menu = () => (
         <MenuButton onClick={() => {
           browserHistory.push('/faq')
         }} icon="ico-m-faq">ЧАВО</MenuButton>
+      </li>
+      <li className="main-nav__item">
+        <MenuButton onClick={() => {
+          browserHistory.push('/photos')
+        }} icon="ico-m-faq">Фото</MenuButton>
       </li>
     </ul>
     <hr/>
