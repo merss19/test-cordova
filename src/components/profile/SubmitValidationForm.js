@@ -319,32 +319,34 @@ class SubmitValidationForm extends Component {
 
             <div className="base-table-scroll">
               <table className="base-table">
-                <tr>
-                  <th>Дата</th>
-                  <th>Вес, кг</th>
-                  <th>Грудь, см</th>
-                  <th>Талия, см</th>
-                  <th>Бедра, см</th>
-                  <th>Обхват бедра, см</th>
-                </tr>
-                {bodyParams.map((param, index) => (
-                  <tr key={index}>
-                    <td>{param.date}</td>
-                    <td>{param.weight}</td>
-                    <td>{param.chest}</td>
-                    <td>{param.waist}</td>
-                    <td>{param.hips}</td>
-                    <td>{param.thigh}</td>
+                <tbody>
+                  <tr>
+                    <th>Дата</th>
+                    <th>Вес, кг</th>
+                    <th>Грудь, см</th>
+                    <th>Талия, см</th>
+                    <th>Бедра, см</th>
+                    <th>Обхват бедра, см</th>
                   </tr>
-                ))}
-                <tr>
-                  <td></td>
-                  <td><input ref="weight" type="text" className="base-table__input"/></td>
-                  <td><input ref="chest" type="text" className="base-table__input"/></td>
-                  <td><input ref="waist" type="text" className="base-table__input"/></td>
-                  <td><input ref="hips" type="text" className="base-table__input"/></td>
-                  <td><input ref="thigh" type="text" className="base-table__input"/></td>
-                </tr>
+                  {bodyParams.map((param, index) => (
+                    <tr key={index}>
+                      <td>{param.date}</td>
+                      <td>{param.weight}</td>
+                      <td>{param.chest}</td>
+                      <td>{param.waist}</td>
+                      <td>{param.hips}</td>
+                      <td>{param.thigh}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td></td>
+                    <td><input ref="weight" type="text" className="base-table__input"/></td>
+                    <td><input ref="chest" type="text" className="base-table__input"/></td>
+                    <td><input ref="waist" type="text" className="base-table__input"/></td>
+                    <td><input ref="hips" type="text" className="base-table__input"/></td>
+                    <td><input ref="thigh" type="text" className="base-table__input"/></td>
+                  </tr>
+                </tbody>
               </table>
               <div className="text-center">
                 <button onClick={() => {

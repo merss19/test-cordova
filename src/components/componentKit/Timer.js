@@ -13,12 +13,13 @@ class Timer extends Component {
     return (
       <div>
         <div className="timer">
-          <input ref="timerMin" type="text" className="timer__min" value={minutes}/>
-          <input ref="timerSec" type="text" className="timer__sec" value={seconds}/>
+          <input ref="timerMin" type="text" className="timer__min" value={minutes} onChange={()=>{}}/>
+          <input ref="timerSec" type="text" className="timer__sec" value={seconds} onChange={()=>{}}/>
         </div>
 
         <div className="text-center mb30">
-          <button className="btn btn--secondary" onClick={() => {
+          <button className="btn btn--secondary" onClick={e => {
+            e.preventDefault()
             localMinutes = 1
             localSeconds = 20
             clearInterval(refreshTimer)
