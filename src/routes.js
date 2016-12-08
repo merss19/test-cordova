@@ -11,6 +11,8 @@ import ProfilePasswordForget from './containers/ProfilePasswordForget'
 import ProfilePasswordRestore from './containers/ProfilePasswordRestore'
 import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
+import SuccessProfile from './components/profile/SuccessProfile'
+
 // import TodayTask from './containers/TodayTask'
 // import Reports from './containers/Reports'
 // import Faq from './components/Faq'
@@ -62,7 +64,7 @@ export default (
     <Route path='signup'>
       <IndexRoute component={ProfileSignup} onEnter={getToken} />
       <Route path='pay' component={ProfilePay} />
-      <Route path='pay/:status' component={ProfilePay} />
+      <Route path='pay/success' component={SuccessProfile} />
     </Route>
     <Route path='signup/:program' component={ProfileSignup} onEnter={getToken} />
     <Route path='restore'>

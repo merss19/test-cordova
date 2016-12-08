@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 
 import MainComponent from '../components/todayTask/MainComponent'
+import LoadingView from '../components/componentKit/LoadingView'
 
 class TodayTask extends Component {
   static propTypes = {
@@ -45,7 +46,7 @@ class TodayTask extends Component {
     return (
       <div>
         {isEmpty
-          ? (isFetching ? <h2>Загружается...</h2> : <h2>Ничего не найдено</h2>)
+          ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <MainComponent token={token} taskDay={taskDay.data[0]} />
             </div>

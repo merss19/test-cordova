@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { host } from '../config.js'
+import LoadingView from '../components/componentKit/LoadingView'
 
 class ProfilePay extends Component {
   componentWillMount() {
@@ -67,8 +68,8 @@ class ProfilePay extends Component {
         description: `Платеж по программе ${programName}`,
         amount: payment.data.amount * 100,
         signature: "",
-        success_redirect: `${host}/profile/create`,
-        fail_redirect: `${host}/signup/pay/error`,
+        success_redirect: `${host}/signup/pay/success`,
+        fail_redirect: `${host}/signup/pay`,
         rebill: {},
         extra: {},
         version: "2.0.0"
@@ -82,7 +83,7 @@ class ProfilePay extends Component {
     return (
       <div className="layout layout--registration">
         {isEmpty
-          ? (isFetching ? <h2>Загружается...</h2> : <h2>Ничего не найдено</h2>)
+          ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="header">
                 <div className="grid header__inner">

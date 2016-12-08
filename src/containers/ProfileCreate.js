@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { SubmissionError } from 'redux-form'
 import SubmitValidationForm from '../components/profile/SubmitValidationForm'
+import LoadingView from '../components/componentKit/LoadingView'
 import cookie from 'react-cookie'
 import Modal from 'boron/DropModal'
 import moment from 'moment'
@@ -41,9 +42,11 @@ class ProfileCreate extends Component {
     const insuranceIsEmpty = !insurance || !insurance[insurance.length - 1]
 
     return (
-      <div>
+      <div className="entry__inner">
         {isEmpty
-          ? (isFetching ? <h2>Загружается...</h2> : <h2>Ничего не найдено</h2>)
+          ? (isFetching
+            ? <LoadingView title="Загружается..."/>
+            : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
             <SubmitValidationForm
               bodyMeasure={bodyParams}
