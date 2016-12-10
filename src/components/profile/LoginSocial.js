@@ -26,7 +26,7 @@ class LoginSocial extends Component {
   componentWillMount() {
     const { setToken } = this.props
     code = this.props.location.query.code
-    const payload = { code }
+    const payload = { socialNetType: 1, code }
 
     return fetch(`${api}/user/authenticate-social`, {
         headers: {
