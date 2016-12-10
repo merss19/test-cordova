@@ -1,11 +1,5 @@
 import React from 'react';
 import ButtonPoll from './ButtonPoll';
-import ButtonPollSend from './ButtonPollSend';
-import TextPoll from './TextPoll';
-
-function sendPoll(e) {
-  e.preventDefault();
-}
 
 function select(children) {
 }

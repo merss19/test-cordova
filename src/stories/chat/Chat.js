@@ -1,6 +1,4 @@
-import React from 'react';
-
-const chatStyles = {};
+import React from 'react'
 
 const Chat = ({ children, messages }) => (
   <div className="chat">
@@ -87,11 +85,11 @@ const Chat = ({ children, messages }) => (
     </div>
 
   </div>
-);
+)
 
 Chat.propTypes = {
   children: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func,
-};
+}
 
-export default Chat;
+export default Chat

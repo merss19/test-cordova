@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 
@@ -8,11 +7,8 @@ import LoadingView from '../components/componentKit/LoadingView'
 
 class TodayTask extends Component {
   static propTypes = {
-    token: PropTypes.string.isRequired,
     taskDay: PropTypes.object.isRequired,
-    selectedTaskDay: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
   }
 
@@ -41,10 +37,10 @@ class TodayTask extends Component {
   }
 
   render() {
-    const { selectedTaskDay, taskDay, token, isFetching, lastUpdated } = this.props
-    const isEmpty = taskDay === undefined || taskDay.data === undefined
+    const { taskDay, token, isFetching } = this.props
+    const isEmpty = !taskDay|| !taskDay.data || taskDay.data.length === 0
     return (
-      <div>
+      <div className='entry__inner'>
         {isEmpty
           ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>

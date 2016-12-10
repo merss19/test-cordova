@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Chat from '../../stories/chat/Chat'
 import Poll from '../../stories/poll/Poll'
 import Header from '../../stories/Header'
@@ -12,8 +12,6 @@ import { connect } from 'react-redux'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
-
-import { action } from '@kadira/storybook'
 
 const contentStyle = {
   borderRadius: '18px',

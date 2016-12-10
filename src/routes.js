@@ -12,6 +12,8 @@ import ProfilePasswordRestore from './containers/ProfilePasswordRestore'
 import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
 import SuccessProfile from './components/profile/SuccessProfile'
+import DayEditor from './components/admin/DayEditor'
+import AdminLogin from './containers/AdminLogin'
 
 // import TodayTask from './containers/TodayTask'
 // import Reports from './containers/Reports'
@@ -42,7 +44,9 @@ const getRole = role => {
     .then(response => response.json())
     .then(json => {
       if (!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role) {
-        browserHistory.push('/')
+        if (role === 3 && !json.data[0].paidPackage) {
+          browserHistory.push('/')
+        }
       }
     })
 }
@@ -78,5 +82,9 @@ export default (
       <IndexRoute component={PartnerLogin} onEnter={getToken} />
       <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth}/>
     </Route>
+    {/* <Route path='superadmin'>
+      <IndexRoute component={AdminLogin} />
+      <Route path='day' component={DayEditor} />
+    </Route> */}
   </Route>
 )

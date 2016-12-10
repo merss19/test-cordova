@@ -1,10 +1,9 @@
-import React, { PropTypes } from 'react'
-import { deletePost, hideModal } from '../../actions'
+import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import InputModal from '../componentKit/InputModal'
 
 const SendReportModal = props => {
-  const { error, handleSubmit, pristine, reset, submitting, onSubmit } = props
+  const { error, handleSubmit, onSubmit } = props
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h3 className="h1">Отчет миньону</h3>
