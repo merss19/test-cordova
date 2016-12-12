@@ -24,7 +24,7 @@ let ProfileLogin = ({ profile, showError, setToken }) => {
           if (json.data && json.data.authToken) {
             cookie.save('token', json.data.authToken, { path: '/' })
             setToken(json.data.authToken)
-            browserHistory.push('/profile/create')
+            browserHistory.push('/signup/pay')
           } else {
             throw new SubmissionError({
               password: '',

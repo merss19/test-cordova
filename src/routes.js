@@ -51,8 +51,28 @@ const getRole = role => {
     })
 }
 
-const requireAuth = () => getRole(3)
+const requirePayAuth = () => {
+  return fetch(`${api}/user/user-get`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        authToken: cookie.load('token'), data: {}
+      })
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role) {
+        if (json.data[0].paidPackage) {
+          browserHistory.push('/signup/pay/success')
+        }
+      }
+    })
+}
 
+const requireAuth = () => getRole(3)
 const requireAdminAuth = () => getRole(1)
 
 export default (
@@ -70,7 +90,7 @@ export default (
     <Route path='social/:type' component={LoginSocial} />
     <Route path='signup'>
       <IndexRoute component={ProfileSignup} onEnter={getToken} />
-      <Route path='pay' component={ProfilePay} />
+      <Route path='pay' component={ProfilePay} onEnter={requirePayAuth} />
       <Route path='pay/success' component={SuccessProfile} onEnter={requireAuth} />
     </Route>
     <Route path='signup/:program' component={ProfileSignup} onEnter={getToken} />

@@ -41,7 +41,7 @@ class LoginSocial extends Component {
         if (json.errorCode === 1 && json.data && json.data.authToken) {
           cookie.save('token', json.data.authToken, { path: '/' })
           setToken(json.data.authToken)
-          browserHistory.push('/profile/create')
+          browserHistory.push('/signup/pay')
         } else {
           if (this.props.location.query && this.props.location.query.type) {
             const query = this.props.location.query.type.split(',')

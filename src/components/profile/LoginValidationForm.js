@@ -152,7 +152,7 @@ class LoginValidationForm extends Component {
               if (json.errorCode === 1 && json.data && json.data.authToken) {
                 cookie.save('token', json.data.authToken, { path: '/' })
                 self.props.setToken(json.data.authToken)
-                browserHistory.push('/profile/create')
+                browserHistory.push('/signup/pay')
               } else {
                 signupFb()
               }
