@@ -3,7 +3,7 @@ import { Route, IndexRoute, browserHistory } from 'react-router'
 import { api } from './config'
 
 import App from './components/App'
-import ProfileCreate from './containers/ProfileCreate'
+// import ProfileCreate from './containers/ProfileCreate'
 import ProfileSignup from './containers/ProfileSignup'
 import PartnerLogin from './containers/PartnerLogin'
 import PartnerDataShow from './containers/PartnerDataShow'
@@ -12,7 +12,7 @@ import ProfilePasswordRestore from './containers/ProfilePasswordRestore'
 import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
 import SuccessProfile from './components/profile/SuccessProfile'
-import DayEditor from './components/admin/DayEditor'
+// import DayEditor from './components/admin/DayEditor'
 import AdminLogin from './containers/AdminLogin'
 
 // import TodayTask from './containers/TodayTask'
@@ -83,10 +83,10 @@ export default (
     <Route path='food' component={Food} onEnter={requireAuth} />
     <Route path='reports' component={Reports} onEnter={requireAuth} />
     <Route path='photos' component={Photos} /> */}
-    <Route path='profile'>
+    {/* <Route path='profile'>
       <IndexRoute component={App} onEnter={getToken}/>
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />
-    </Route>
+    </Route> */}
     <Route path='social/:type' component={LoginSocial} />
     <Route path='signup'>
       <IndexRoute component={ProfileSignup} onEnter={getToken} />
