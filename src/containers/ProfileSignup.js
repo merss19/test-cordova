@@ -37,7 +37,7 @@ class ProfileSignup extends Component {
       case 'extremeways':
         program = 3
         break
-      case 'tommorowman':
+      case 'tomorrowman':
         program = 4
         break
       default:

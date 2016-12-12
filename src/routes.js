@@ -71,7 +71,7 @@ export default (
     <Route path='signup'>
       <IndexRoute component={ProfileSignup} onEnter={getToken} />
       <Route path='pay' component={ProfilePay} />
-      <Route path='pay/success' component={SuccessProfile} />
+      <Route path='pay/success' component={SuccessProfile} onEnter={requireAuth} />
     </Route>
     <Route path='signup/:program' component={ProfileSignup} onEnter={getToken} />
     <Route path='restore'>
