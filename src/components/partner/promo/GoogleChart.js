@@ -1,32 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
-const script = typeof window !== 'undefined' ? require('scriptjs') : (link, callback) => callback();
-
-const googleChartLoader = {
-    isLoaded: false,
-    isLoading: false,
-    initPromise: {},
-    init: function init(packages, version) {
-        console.log('init', packages, version);
-        if (this.isLoading || this.isLoaded) {
-            return this.initPromise;
-        }
-        this.isLoading = true;
-        this.initPromise = new Promise((resolve) => {
-            script('https://www.gstatic.com/charts/loader.js', () => {
-                window.google.charts.load(version || 'current', {packages: packages || ['corechart'], language: 'ru'});
-                window.google.charts.setOnLoadCallback(() => {
-                    console.log('Chart Loaded');
-                    this.isLoaded = true;
-                    this.isLoading = false;
-                    resolve();
-                });
-            });
-        });
-        return this.initPromise;
-    }
-};
+import { visualization } from './google-jsapi-loader';
 
 class GoogleChart extends Component {
 
@@ -46,7 +21,8 @@ class GoogleChart extends Component {
     };
 
     static defaultProps = {
-        onError: () => {},
+        onError: () => {
+        },
         options: {}
     };
 
@@ -64,7 +40,7 @@ class GoogleChart extends Component {
     }
 
     componentDidMount() {
-        googleChartLoader.init().then(() => this.drawChart(this.props)).catch(this.props.onError);
+        visualization().then(() => this.drawChart(this.props)).catch(this.props.onError);
     }
 
     drawChart = (props) => {
