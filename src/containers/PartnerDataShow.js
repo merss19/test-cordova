@@ -2,6 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
+import PromoCodeReportGrid from '../components/partner/promo/PromoCodeReportGrid'
 
 let PartnerDataShow = ({ profile, showError, setToken }) => {
   return (
@@ -15,20 +16,26 @@ let PartnerDataShow = ({ profile, showError, setToken }) => {
           </h1>
         </div>
       </div>
+      <div>
+       Ясегодня.Промокоды
+      <br/>
+      <br/>
+      <PromoCodeReportGrid/>
+    </div>
     </div>
   )
-}
+};
 
 const mapStateToProps = state => ({ profile: state.profile })
 
 const mapDispatchToProps = dispatch => ({
   showError: bindActionCreators(actions.createProfile, dispatch),
   setToken: bindActionCreators(actions.setToken, dispatch)
-})
+});
 
 PartnerDataShow = connect(
   mapStateToProps,
   mapDispatchToProps
-)(PartnerDataShow)
+)(PartnerDataShow);
 
 export default PartnerDataShow

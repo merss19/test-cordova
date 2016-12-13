@@ -4,6 +4,8 @@
    =========================== */
 @import url("https://fonts.googleapis.com/css?family=Exo+2:700&subset=cyrillic");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic");
+@import url("pickaday.css");
+@import url("promo-report.css");
 /*! Avalanche | MIT License | @colourgarden */
 /*------------------------------------*    SETTINGS
 \*------------------------------------*/
@@ -1591,7 +1593,7 @@ a.btn {
   border-radius: 5px; }
   .upload-list__item:not(:last-child) {
     margin-bottom: 2px; }
-    
+
 .upload-list__btn-del {
   cursor: pointer;
   display: -ms-flexbox;
