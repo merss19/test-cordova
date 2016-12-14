@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { host } from '../config.js'
 import LoadingView from '../components/componentKit/LoadingView'
+import Header from '../stories/Header'
 
 class ProfilePay extends Component {
   componentWillMount() {
@@ -85,17 +86,7 @@ class ProfilePay extends Component {
         {isEmpty
           ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <div className="header">
-                <div className="grid header__inner">
-                  <h1 className="1/2--portable 1/1--desk grid__cell header__logo">
-                    Ясегодня
-                    <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
-                  </h1>
-                  <div className="1/2--portable grid__cell header__right-side">
-                    <a href="#" className="header__link js-popup-ya-geroy">{programName}</a>
-                  </div>
-                </div>
-              </div>
+              <Header burger={false} />
               <br/>
               <div className="entry entry--sign-up">
                 <div className="entry__inner mb60">

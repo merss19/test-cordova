@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import Modal from 'boron/DropModal'
 import cookie from 'react-cookie'
-import { api, host } from '../../config.js'
+import { api } from '../../config.js'
 
 import CustomInput from '../componentKit/CustomInput'
 import SelectProgram from '../componentKit/SelectProgram'
@@ -23,48 +23,37 @@ let promoInitial
 let code
 let socialNetType
 let socialName
+let shareInitial
 
-class LoginSocial extends Component {
-  componentWillMount() {
+class SignupSocial extends Component {
+  componentDidMount() {
     const { setToken } = this.props
     code = this.props.location.query.code
     const socialTypeString = this.props.params.type
     socialNetType = 1
     socialName = 'Vk'
 
-    const payload = { socialNetType, code }
+    if (this.props.location.query && this.props.location.query.type) {
+      const query = this.props.location.query.type.split(',')
+      packageTypeInitial = query[0]
+      programInitial = query[1]
+      promoInitial = query[2]
+      shareInitial = query[3]
+    }
 
-    return fetch(`${api}/user/authenticate-social`, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(json => {
-        console.log(json)
-        // if (json.errorCode === 1 && json.data && json.data.authToken) {
-        //   cookie.save('token', json.data.authToken, { path: '/' })
-        //   setToken(json.data.authToken)
-        //   browserHistory.push('/signup/pay')
-        // } else {
-        //   if (this.props.location.query && this.props.location.query.type) {
-        //     window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk/second?type=${this.props.location.query.type}&display=page&response_type=code`
-        //   } else {
-        //     window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk/second&display=page&response_type=code`
-        //   }
-        // }
-      })
+    if (packageTypeInitial && packageTypeInitial) {
+      this.refs.emailModal.show()
+    } else {
+      this.refs.accModal.show()
+    }
   }
 
   render() {
 
-    const { packageType, program, promo, setToken, signup, email, emailFriend } = this.props
+    const { packageType, program, promo, setToken, signup, email, emailFriend, share } = this.props
 
-    const signupWith = (email, program, packageType, promo) => {
-      signup(program, undefined, packageType, promo)
+    const signupWith = (email, program, packageType, promo, emailFriend) => {
+      signup(program, undefined, packageType, promo, emailFriend, share)
       const payload = { email, emailFriend, program, package: packageType }
       const headers = {
         'Accept': 'application/json',
@@ -110,11 +99,11 @@ class LoginSocial extends Component {
     }
 
     const loginVk = () => {
-      signupWith(email, program, packageType, promo)
+      signupWith(email, program, packageType, promo, emailFriend)
     }
 
     const loginVkInitial = () => {
-      signupWith(this.refs.email.value, programInitial, packageTypeInitial, promoInitial)
+      signupWith(email, programInitial, packageTypeInitial, promoInitial, emailFriend)
     }
 
     return (
@@ -151,10 +140,10 @@ class LoginSocial extends Component {
               <Modal ref='emailModal' modalStyle={contentStyle}>
                 <h2>Введите ваш email</h2>
                 <br/>
-                <div className="input input--line">
-                  <input ref='email' id='emailVkSocial' type='text' className="input__field"/>
-                  <label className="input__label" htmlFor='emailVkSocial'>Email</label>
-                </div>
+                <Field name='emailValue' id='emailValue' title='Email' component={CustomInput} />
+                {program === '4' &&
+                  <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+                }
                 <button className="btn btn--action" onClick={loginVkInitial}>
                   Продолжить
                 </button>
@@ -193,21 +182,24 @@ class LoginSocial extends Component {
   }
 }
 
-LoginSocial = reduxForm({
+SignupSocial = reduxForm({
   form: 'loginSocial'
-})(LoginSocial)
+})(SignupSocial)
 
 const selector = formValueSelector('loginSocial')
 const mapStateToProps = state => {
-  let { program, packageType, promo } = state.profile
+  let { program, packageType, promo, share } = state.profile
 
   if (!program || !packageType) {
     program = selector(state, 'programValue')
     packageType = selector(state, 'packageTypeValue')
   }
 
-  if (!programInitial && !packageTypeInitial && !program && !packageType) {
+  if (!programInitial && !packageTypeInitial) {
     program = 1
+  }
+
+  if (!programInitial && !packageType) {
     packageType = 1
   }
 
@@ -220,7 +212,8 @@ const mapStateToProps = state => {
     packageType: packageTypeInitial ? packageTypeInitial : packageType,
     promo,
     email,
-    emailFriend
+    emailFriend,
+    share: share ? share : shareInitial
   }
 }
 
@@ -229,9 +222,9 @@ const mapDispatchToProps = dispatch => ({
   setToken: bindActionCreators(actions.setToken, dispatch)
 })
 
-LoginSocial = connect(
+SignupSocial = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginSocial)
+)(SignupSocial)
 
-export default LoginSocial
+export default SignupSocial

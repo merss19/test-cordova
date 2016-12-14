@@ -11,8 +11,10 @@ import ProfilePasswordForget from './containers/ProfilePasswordForget'
 import ProfilePasswordRestore from './containers/ProfilePasswordRestore'
 import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
+import SignupSocial from './components/profile/SignupSocial'
+import LoginFB from './components/profile/LoginFB'
 import SuccessProfile from './components/profile/SuccessProfile'
-// import DayEditor from './components/admin/DayEditor'
+import DayEditor from './components/admin/DayEditor'
 import AdminLogin from './containers/AdminLogin'
 
 // import TodayTask from './containers/TodayTask'
@@ -38,15 +40,20 @@ const getRole = role => {
       },
       method: 'POST',
       body: JSON.stringify({
-        authToken: cookie.load('token'), data: {}
+        authToken: cookie.load('token'),
+        data: {}
       })
     })
     .then(response => response.json())
     .then(json => {
-      if (!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role) {
-        if (role === 3 && !json.data[0].paidPackage) {
-          browserHistory.push('/')
-        }
+      const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
+
+      if (!isRegistered) {
+        browserHistory.push('/')
+      }
+
+      if (isRegistered && role === 3 && !json.data[0].paidPackage) {
+        browserHistory.push('/signup/pay')
       }
     })
 }
@@ -59,14 +66,17 @@ const requirePayAuth = () => {
       },
       method: 'POST',
       body: JSON.stringify({
-        authToken: cookie.load('token'), data: {}
+        authToken: cookie.load('token'),
+        data: {}
       })
     })
     .then(response => response.json())
     .then(json => {
-      if (!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== 3) {
+      if (json && json.errorCode === 1 && json.data && json.data[0] && json.data[0].role === 3) {
         if (json.data[0].paidPackage) {
           browserHistory.push('/signup/pay/success')
+        } else {
+          browserHistory.push('/signup/pay/')
         }
       }
     })
@@ -87,21 +97,24 @@ export default (
       <IndexRoute component={App} onEnter={getToken}/>
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />
     </Route> */}
-    <Route path='social/:type' component={LoginSocial} />
+    {/* <Route path='social/vk' component={LoginSocial} /> */}
+    <Route path='social/fb' component={LoginFB} />
+    {/* <Route path='social/vk/second' component={SignupSocial} /> */}
     <Route path='signup'>
-      <IndexRoute component={ProfileSignup} onEnter={getToken} />
+      <IndexRoute component={ProfileSignup} onEnter={requirePayAuth} />
       <Route path='pay' component={ProfilePay} onEnter={requirePayAuth} />
       <Route path='pay/success' component={SuccessProfile} onEnter={requireAuth} />
     </Route>
-    <Route path='signup/:program' component={ProfileSignup} onEnter={getToken} />
+    <Route path='signup/:program' component={ProfileSignup} onEnter={requirePayAuth} />
     <Route path='restore'>
-      <IndexRoute component={ProfilePasswordForget} onEnter={getToken} />
-      <Route path='create' component={ProfilePasswordRestore} onEnter={getToken} />
+      <IndexRoute component={ProfilePasswordForget} onEnter={requirePayAuth} />
+      <Route path='create' component={ProfilePasswordRestore} onEnter={requirePayAuth} />
     </Route>
     <Route path='partner'>
       <IndexRoute component={PartnerLogin} onEnter={getToken} />
       <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth}/>
     </Route>
+
     {/* <Route path='superadmin'>
       <IndexRoute component={AdminLogin} />
       <Route path='day' component={DayEditor} />

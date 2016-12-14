@@ -23,7 +23,7 @@ let password
 class ProfileSignup extends Component {
   componentWillMount() {
     const programParam = this.props.params.program
-    const { amount, type, promo } = this.props.location.query
+    const { amount, type, promo, emailFriend, share } = this.props.location.query
     const packageType = type
     let program
 
@@ -45,7 +45,7 @@ class ProfileSignup extends Component {
     }
 
     const { signup } = this.props
-    signup(program, amount, packageType, promo)
+    signup(program, amount, packageType, promo, emailFriend, share)
   }
 
   statusChangeCallback(response) {
@@ -60,11 +60,13 @@ class ProfileSignup extends Component {
   }
 
   render() {
-    let { amount, packageType, promo, program } = this.props
+    let { amount, packageType, promo, emailFriend, program, share } = this.props
     const { setToken, signup } = this.props
     let programName
     let packageName
     amount = !!amount ? amount : 0
+
+    console.log(program)
 
     switch (program) {
       case 1:
@@ -198,7 +200,7 @@ class ProfileSignup extends Component {
                     return
                   }
 
-                  const payload = { program, email, password, package: packageType }
+                  const payload = { program, email, emailFriend, password, package: packageType }
 
                   return userCreate(payload)
                 }}/>
@@ -227,29 +229,20 @@ class ProfileSignup extends Component {
             { name: '2 человека', value: 2 },
             { name: '3 человека', value: 3 }
           ]} component={SelectProgram} />
+          {program === '4' &&
+            <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+          }
           <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
           <button className="btn btn--action" onClick={() => {
             program = !!program ? program : 1
             packageType = !!packageType ? packageType : 1
-            signup(program, undefined, packageType, promo)
+            signup(program, undefined, packageType, promo, emailFriend, share)
             const payload = { program, email, password, package: packageType }
             return userCreate(payload)
           }}>
             Продолжить
           </button>
         </Modal>
-
-        <div id="pay-success">
-          <div className="base-popup__msg">
-            <h3 className="h1">Оплата прошла успешно!</h3>
-            <hr/>
-            <div className="base-popup__msg-content">
-              <p className="base-parag">Вам придет подтверждение об оплате с кодом на ваш Email<br/> alex@gmail.com</p>
-            </div>
-            <div className="btn btn--primary">Отлично!</div>
-          </div>
-        </div>
-
       </div>
     )
   }
@@ -261,20 +254,23 @@ ProfileSignup = reduxForm({
 
 const selector = formValueSelector('signupValidation')
 const mapStateToProps = state => {
-  let { program, packageType, promo, amount } = state.profile
+  let { program, packageType, promo, amount, share } = state.profile
 
   if (!program || !packageType) {
     program = selector(state, 'programValue')
     packageType = selector(state, 'packageTypeValue')
   }
 
+  const emailFriend = selector(state, 'emailFriendValue')
   promo = selector(state, 'promoValue')
 
   return {
     program,
     packageType,
     promo,
-    amount
+    amount,
+    emailFriend,
+    share
   }
 }
 

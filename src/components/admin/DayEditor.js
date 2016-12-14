@@ -1,10 +1,44 @@
 import React, { Component } from 'react'
 import { Editor } from 'react-draft-wysiwyg'
-import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import { connect } from 'react-redux'
+import '../../../public/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
 import Header from '../../stories/Header'
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
+import InputProfile from '../componentKit/InputProfile'
 
 let htmlEditor = ''
+
+const renderExercises = ({ fields, meta: { touched, error } }) => (
+  <ul>
+    <li>
+      <button type="button" className="btn btn--primary" onClick={() => fields.push({})}>+</button>
+    </li>
+    {fields.map((exercise, index) => (
+      <li key={index}>
+        <Field name={`${exercise}.count`} placeholder="Количество раз" component={InputProfile} />
+        <Field name={`${exercise}.description`} placeholder="Описание упражения" component={InputProfile} />
+        <Field name={`${exercise}.video`} placeholder="https://youtube/video" component={InputProfile} />
+      </li>
+    ))}
+  </ul>
+)
+
+const renderTasks = ({ fields, meta: { error } }) => (
+  <ul>
+    <li>
+      <br/>
+      <button type="button" className="btn btn--primary" onClick={() => fields.push({})}>+</button>
+    </li>
+    {fields.map((task, index) => (
+      <li key={index}>
+        <Field name={`${task}.name`} placeholder="Название" component={InputProfile} />
+        <Field name={`${task}.description`} placeholder="Описание" component={InputProfile} />
+        <FieldArray name={`${task}.exercises`} component={renderExercises} />
+      </li>
+    ))}
+  </ul>
+)
 
 class DayEditor extends Component {
   onEditorChange: Function = (editorContent) => {
@@ -32,8 +66,9 @@ class DayEditor extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
-      <div className='layout'>
+      <form className='layout'>
         <Header burger={false} />
         <div className="layout__inner layout__inner--profile">
           <div className="stage-box stage-box--small-padding">
@@ -54,12 +89,34 @@ class DayEditor extends Component {
                 uploadCallback={this.uploadImageCallBack}
               />
             </div>
+            <FieldArray name='tasks' component={renderTasks} />
           </div>
         </div>
-
-      </div>
+      </form>
     )
   }
 }
 
-export default DayEditor
+// DayEditor = reduxForm({
+//   form: 'dayEditor',
+// })(DayEditor)
+//
+// const selector = formValueSelector('dayEditor')
+//
+// const mapStateToProps = state => {
+//   const tasks = selector(state, 'tasks')
+//   console.log(tasks)
+//   return {
+//     tasks
+//   }
+// }
+//
+// DayEditor = connect(
+//   mapStateToProps
+// )(DayEditor)
+
+export default reduxForm({
+  form: 'fieldArrays',     // a unique identifier for this form
+})(DayEditor)
+
+// export default DayEditor

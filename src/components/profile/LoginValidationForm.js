@@ -33,132 +33,46 @@ class LoginValidationForm extends Component {
       }
     }
 
-    // const loginOk = () => {
-    //   if (program && packageType) {
-    //     window.location(`https://connect.ok.ru/oauth/authorize?client_id=1248995328&scope=VALUABLE_ACCESS&response_type=token&redirect_uri=${host}/social/ok&state=${packageType},${program},${promo}`)
-    //   } else {
-    //     this.refs.accModal.show()
-    //   }
-    // }
+    const redirectFb = () => {
+      let uri
 
-    const goToPayment = () => {
-      fbPayload.program = program
-      fbPayload.package = packageType
-      fbPayload.promo   = promo
-
-      if (!fbPayload.email)
-        fbPayload.email   = email
-
-      if (!fbPayload.program || !fbPayload.package || !fbPayload.email) {
-        this.refs.accModalFB.show()
-        return
+      if (program && packageType) {
+        uri = encodeURI(`${host}/social/fb?type=${packageType},${program},${promo}`)
+      } else {
+        uri = encodeURI(`${host}/social/fb`)
       }
 
-      const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-
-      return fetch(`${api}/user/user-create`, {
-        headers,
-        method: 'POST',
-        body: JSON.stringify(fbPayload)
-      })
-      .then(response => response.json())
-      .then(json => {
-        if (json.errorCode === 1 && json.data && json.data.authToken) {
-          cookie.save('token', json.data.authToken, { path: '/' })
-          setToken(json.data.authToken)
-
-          const payload = {
-            authToken: json.data.authToken,
-            data: {
-              socialNetType: 3,
-              userId: fbUserId
-            }
-          }
-
-          return fetch(`${api}/user/socialNetUser-create`, {
-              headers,
-              method: 'POST',
-              body: JSON.stringify(payload)
-            })
-            .then(response => response.json())
-            .then(json => {
-              if (json && json.data) {
-                signup(program, undefined, packageType, promo)
-                browserHistory.push('/signup/pay')
-              } else {
-                throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
-              }
-            })
-        } else {
-          throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
-        }
-      })
-    }
-
-    const signupFb = () => {
-      FB.login(response => {
-        fbUserId = response.authResponse.userID
-        if (response.status === 'connected') {
-          FB.api(`/me?fields=first_name,last_name,email`,
-            response => {
-              const firstName = response.first_name
-              const lastName  = response.last_name
-              fbPayload = { program, package: packageType, email: email ? email : response.email, firstName, lastName, promo }
-
-              FB.api(`/me/picture?type=normal`,
-                response => {
-                  let photo
-                  if (response && response.data && response.data.url) {
-                    photo = response.data.url
-                  }
-
-                  if (photo)
-                    fbPayload.photo = photo
-
-                  goToPayment()
-                }
-              )
-            }
-          )
-        } else if (response.status === 'not_authorized') {
-          // The person is logged into Facebook, but not your app.
-        } else {
-          // The person is not logged into Facebook, so we're not sure if
-          // they are logged into this app or not.
-        }
-      }, { scope: 'email' })
+      window.location = encodeURI("https://www.facebook.com/dialog/oauth?client_id=602675109923486&redirect_uri="+uri+"&response_type=token")
     }
 
     const loginFb = () => {
       const self = this
-      FB.login(response => {
+      FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
           const token = response.authResponse.accessToken
           const userId = response.authResponse.userID
           const payload = { userId, token }
           return fetch(`${api}/user/authenticate-social`, {
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              method: 'POST',
-              body: JSON.stringify(payload)
-            })
-            .then(response => response.json())
-            .then(json => {
-              if (json.errorCode === 1 && json.data && json.data.authToken) {
-                cookie.save('token', json.data.authToken, { path: '/' })
-                self.props.setToken(json.data.authToken)
-                browserHistory.push('/signup/pay')
-              } else {
-                signupFb()
-              }
-            })
-        } else if (response.status === 'not_authorized') {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then(json => {
+            console.log(json)
+            if (json.errorCode === 1 && json.data && json.data.authToken) {
+              cookie.save('token', json.data.authToken, { path: '/' })
+              self.props.setToken(json.data.authToken)
+              browserHistory.push('/signup/pay')
+            } else {
+              redirectFb()
+            }
+          })
         } else {
+          redirectFb()
         }
       }, { scope: 'email' })
     }
@@ -221,50 +135,6 @@ class LoginValidationForm extends Component {
                     </ul>
                   </div>
                 </div>
-
-                <Modal ref='accModal' modalStyle={contentStyle}>
-                  <h2>Выберите программу</h2>
-                  <br/>
-                  <Field name="programValue" id="programValue" options={[
-                    { name: '#Я ГЕРОЙ', value: 1},
-                    { name: '#МАМА МОЖЕТ', value: 2 },
-                    { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: 3 },
-                    { name: '#Я ЗАВТРА', value: 4 }
-                  ]} component={SelectProgram} />
-                  <Field name="packageTypeValue" id="packageTypeValue" options={[
-                    { name: '1 человек', value: 1},
-                    { name: '2 человека', value: 2 },
-                    { name: '3 человека', value: 3 },
-                  ]} component={SelectProgram} />
-                  <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
-                  <button className="btn btn--action" onClick={loginVk}>
-                    Продолжить
-                  </button>
-                </Modal>
-
-                <Modal ref='accModalFB' modalStyle={contentStyle}>
-                  <h2>Выберите программу</h2>
-                  <br/>
-                  <Field name="programValue" id="programValue" options={[
-                    { name: '#Я ГЕРОЙ', value: 1},
-                    { name: '#МАМА МОЖЕТ', value: 2 },
-                    { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: 3 },
-                    { name: '#Я ЗАВТРА', value: 4 }
-                  ]} component={SelectProgram} />
-                  <Field name="packageTypeValue" id="packageTypeValue" options={[
-                    { name: '1 человек', value: 1},
-                    { name: '2 человека', value: 2 },
-                    { name: '3 человека', value: 3 },
-                  ]} component={SelectProgram} />
-                  {!email &&
-                    <Field name='emailValue' id='emailValue' title='Email' component={CustomInput} />
-                  }
-                  <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
-                  <button className="btn btn--action" onClick={goToPayment}>
-                    Продолжить
-                  </button>
-                </Modal>
-
               </form>
             </div>
           </div>
@@ -297,22 +167,10 @@ const selector = formValueSelector('loginValidation')
 const mapStateToProps = state => {
   let { program, packageType, promo } = state
 
-  if (!program || !packageType) {
-    program = selector(state, 'programValue')
-    packageType = selector(state, 'packageTypeValue')
-  } else {
-    program = 1
-    packageType = 1
-  }
-
-  const email = fbPayload.email ? fbPayload.email : selector(state, 'emailValue')
-  promo = selector(state, 'promoValue')
-
   return {
     program,
     packageType,
     promo,
-    email
   }
 }
 

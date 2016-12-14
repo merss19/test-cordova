@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import Modal from 'boron/DropModal'
 import cookie from 'react-cookie'
-import { api, host } from '../../config.js'
+import { api } from '../../config.js'
 
 import CustomInput from '../componentKit/CustomInput'
 import SelectProgram from '../componentKit/SelectProgram'
@@ -20,51 +20,73 @@ const contentStyle = {
 let packageTypeInitial
 let programInitial
 let promoInitial
-let code
+let token
+let userId
 let socialNetType
 let socialName
+let shareInitial
 
-class LoginSocial extends Component {
+class LoginFB extends Component {
   componentWillMount() {
     const { setToken } = this.props
-    code = this.props.location.query.code
-    const socialTypeString = this.props.params.type
-    socialNetType = 1
-    socialName = 'Vk'
+    const queryHash = this.props.location.hash
+    token = queryHash.match(/#access_token=(.*)&exp.*/)[1]
 
-    const payload = { socialNetType, code }
+    socialNetType = 3
+    socialName = 'Facebook'
 
-    return fetch(`${api}/user/authenticate-social`, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(json => {
-        console.log(json)
-        // if (json.errorCode === 1 && json.data && json.data.authToken) {
-        //   cookie.save('token', json.data.authToken, { path: '/' })
-        //   setToken(json.data.authToken)
-        //   browserHistory.push('/signup/pay')
-        // } else {
-        //   if (this.props.location.query && this.props.location.query.type) {
-        //     window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk/second?type=${this.props.location.query.type}&display=page&response_type=code`
-        //   } else {
-        //     window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk/second&display=page&response_type=code`
-        //   }
-        // }
-      })
+    return fetch(`https://graph.facebook.com/me?access_token=${token}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'GET'
+    })
+    .then(response => response.json())
+    .then(json => {
+      console.log(json)
+      userId = json.id
+      const payload = { socialNetType, token, userId }
+
+      return fetch(`${api}/user/authenticate-social`, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(json => {
+          if (json.errorCode === 1 && json.data && json.data.authToken) {
+            cookie.save('token', json.data.authToken, { path: '/' })
+            setToken(json.data.authToken)
+            browserHistory.push('/signup/pay')
+          } else {
+            console.log(this.props.location.query)
+            if (this.props.location.query && this.props.location.query.type) {
+              const query = this.props.location.query.type.split(',')
+              packageTypeInitial = query[0]
+              programInitial = query[1]
+              promoInitial = query[2]
+            }
+
+            if (packageTypeInitial && packageTypeInitial) {
+              this.refs.emailModal.show()
+            } else {
+              this.refs.accModal.show()
+            }
+          }
+        })
+    })
   }
 
   render() {
 
-    const { packageType, program, promo, setToken, signup, email, emailFriend } = this.props
+    const { packageType, program, promo, setToken, signup, email, emailFriend, share } = this.props
 
-    const signupWith = (email, program, packageType, promo) => {
-      signup(program, undefined, packageType, promo)
+    const signupWith = (email, program, packageType, promo, emailFriend, share) => {
+      signup(program, undefined, packageType, promo, emailFriend, share)
       const payload = { email, emailFriend, program, package: packageType }
       const headers = {
         'Accept': 'application/json',
@@ -86,7 +108,8 @@ class LoginSocial extends Component {
               authToken: json.data.authToken,
               data: {
                 socialNetType,
-                code
+                token,
+                userId
               }
             }
 
@@ -97,6 +120,7 @@ class LoginSocial extends Component {
               })
               .then(response => response.json())
               .then(json => {
+                console.log(json)
                 if (json && json.data) {
                   browserHistory.push('/signup/pay')
                 } else {
@@ -110,11 +134,11 @@ class LoginSocial extends Component {
     }
 
     const loginVk = () => {
-      signupWith(email, program, packageType, promo)
+      signupWith(email, program, packageType, promo, shareInitial, share)
     }
 
     const loginVkInitial = () => {
-      signupWith(this.refs.email.value, programInitial, packageTypeInitial, promoInitial)
+      signupWith(email, programInitial, packageTypeInitial, promoInitial, shareInitial. share)
     }
 
     return (
@@ -151,10 +175,10 @@ class LoginSocial extends Component {
               <Modal ref='emailModal' modalStyle={contentStyle}>
                 <h2>Введите ваш email</h2>
                 <br/>
-                <div className="input input--line">
-                  <input ref='email' id='emailVkSocial' type='text' className="input__field"/>
-                  <label className="input__label" htmlFor='emailVkSocial'>Email</label>
-                </div>
+                <Field name='emailValue' id='emailValue' title='Email' component={CustomInput} />
+                {program === '4' &&
+                  <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+                }
                 <button className="btn btn--action" onClick={loginVkInitial}>
                   Продолжить
                 </button>
@@ -193,9 +217,9 @@ class LoginSocial extends Component {
   }
 }
 
-LoginSocial = reduxForm({
+LoginFB = reduxForm({
   form: 'loginSocial'
-})(LoginSocial)
+})(LoginFB)
 
 const selector = formValueSelector('loginSocial')
 const mapStateToProps = state => {
@@ -229,9 +253,9 @@ const mapDispatchToProps = dispatch => ({
   setToken: bindActionCreators(actions.setToken, dispatch)
 })
 
-LoginSocial = connect(
+LoginFB = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginSocial)
+)(LoginFB)
 
-export default LoginSocial
+export default LoginFB

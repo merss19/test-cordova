@@ -16,13 +16,15 @@ export const createProfile = text => ({
 //   text
 // })
 
-export const signup = (program, amount, packageType, promo) => {
+export const signup = (program, amount, packageType, promo, emailFriend, share) => {
   return ({
     type: SIGNUP,
     program,
     promo,
     amount,
-    packageType
+    packageType,
+    emailFriend,
+    share
   })
 }
 

@@ -33,67 +33,64 @@ export const receivePayment = (payment, json) => {
 
 const fetchPayment = partialState => dispatch => {
   const { token, profile, payment } = partialState
-  const { program, packageType, promo } = profile
+  const { program, packageType, promo, emailFriend, share } = profile
   dispatch(requestPayment(payment))
-  const txId = cookie.load('txId')
 
-  if (txId === undefined) {
-    let payload = {
+  return fetch(`${api}/payment/payment-get`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
       authToken: token ? token : cookie.load('token'),
-      data: {
-        program,
-        package: packageType
+      data: {}
+    })
+  })
+  .then(response => response.json())
+  .then(json => {
+    console.log(json)
+    if (!json || !json.data || !json.data[0] || !json.data[json.data.length - 1].txId) {
+      let payload = {
+        authToken: token ? token : cookie.load('token'),
+        data: {
+          program,
+          package: packageType,
+          isShare: share ? share : false
+        }
       }
+
+      if (!!promo) {
+        payload.data.promoName = promo
+      }
+
+      if (!!promoVisit.getPromoSessionId()) {
+        payload.data.promoSession = promoVisit.getPromoSessionId()
+      }
+
+      if (!!emailFriend) {
+        payload.data.tomorrowManEmail = emailFriend
+      }
+
+      let data = new FormData()
+      data.append("json", JSON.stringify(payload))
+
+      return fetch(`${api}/payment/payment-create`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(json => {
+        return dispatch(receivePayment(payment, json))
+      })
+    } else {
+      return dispatch(receivePayment(payment, { data: json.data[json.data.length - 1] }))
     }
-
-    if (!!promo) {
-      payload.data.promoName = promo
-    }
-
-    if (!!promoVisit.getPromoSessionId()) {
-      payload.data.promoSession = promoVisit.getPromoSessionId()
-    }
-
-    let data = new FormData()
-    data.append("json", JSON.stringify(payload))
-
-    return fetch(`${api}/payment/payment-create`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(payload)
-    })
-    .then(response => response.json())
-    .then(json => {
-      if (json && json.data && json.data.txId)
-        cookie.save('txId', json.data.txId, { path: '/' })
-      return dispatch(receivePayment(payment, json))
-    })
-  } else {
-    const payload = {
-      authToken: token ? token : cookie.load('token'),
-      data: { txId }
-    }
-
-    let data = new FormData()
-    data.append("json", JSON.stringify(payload))
-
-    return fetch(`${api}/payment/payment-get`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(payload)
-    })
-    .then(response => response.json())
-    .then(json => {
-      if (json && json.data && json.data[0])
-        return dispatch(receivePayment(payment, { data: json.data[0] }))
-    })
-  }
+  })
 }
 
 const shouldFetchPayment = (state, payment) => {
