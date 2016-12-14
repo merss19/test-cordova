@@ -72,13 +72,12 @@ const requirePayAuth = () => {
     })
     .then(response => response.json())
     .then(json => {
+      console.log('here')
       console.log(json)
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
         if (json.data[0].paidPackage && json.data[0].role === 3) {
           browserHistory.push('/signup/pay/success')
-        } else if (json.data[0].role === 1) {
-          browserHistory.push('/partner/show')
-        } {
+        } else {
           browserHistory.push('/signup/pay/')
         }
       }
@@ -114,15 +113,15 @@ export default (
       <Route path='create' component={ProfilePasswordRestore} onEnter={requirePayAuth} />
     </Route>
     <Route path='partner'>
-      <IndexRoute component={PartnerLogin} onEnter={getToken} />
-      <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth}/>
+      <IndexRoute component={PartnerLogin} />
+      <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth} />
     </Route>
 
-    {/* <Route path='superadmin'>
+    <Route path='superadmin'>
       <IndexRoute component={AdminLogin} />
       <Route path='day' component={DayEditor} />
       <Route path='day/:program' component={DayEditor} />
       <Route path='day/:program/:id' component={DayEditor} />
-    </Route> */}
+    </Route>
   </Route>
 )

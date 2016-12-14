@@ -8,7 +8,7 @@ import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../config.js'
 
-let PartnerLogin = setToken => {
+let PartnerLogin = ({ setToken }) => {
   return (
     <LoginPartnerValidationForm onSubmit={ data => {
       return fetch(`${api}/user/authenticate`, {
@@ -36,11 +36,14 @@ let PartnerLogin = setToken => {
   )
 }
 
+const mapStateToProps = state => ({ token: state.userToken })
+
 const mapDispatchToProps = dispatch => ({
   setToken: bindActionCreators(actions.setToken, dispatch)
 })
 
 PartnerLogin = connect(
+  mapStateToProps,
   mapDispatchToProps
 )(PartnerLogin)
 
