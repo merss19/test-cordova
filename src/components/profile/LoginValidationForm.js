@@ -62,7 +62,6 @@ class LoginValidationForm extends Component {
           })
           .then(response => response.json())
           .then(json => {
-            console.log(json)
             if (json.errorCode === 1 && json.data && json.data.authToken) {
               cookie.save('token', json.data.authToken, { path: '/' })
               self.props.setToken(json.data.authToken)

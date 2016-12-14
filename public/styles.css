@@ -1,3 +1,5 @@
+/*custom styles*/
+
 .entry__inner {
   height: 100%;
   position: relative;
@@ -7,6 +9,12 @@
 #root {
   height: 100%;
 }
+
+.low {
+  margin: 7px;
+}
+
+/*react-draft-wysiwyg styles*/
 
 .home-root {
   width: 100%;

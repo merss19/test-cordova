@@ -6,12 +6,16 @@ const chooseDay = id => {
 
 }
 
-const CalendarList = ({ calendar }) => (
+const CalendarList = ({ dispatch, calendar, program, initialValues }) => (
   <div className="1/3 grid__cell">
     <ul className="min-calendar">
       {calendar.map((field, index) => (
         <Calendar onClick={() => {
           console.log(field.id)
+          console.log('nnnnnnnnnnn===0')
+          console.log(initialValues)
+          dispatch(() => ({type: 'EDIT_DAY', ...initialValues}))
+          browserHistory.push(`/superadmin/day/${program}/${index}`)
         }}
           key={index}
           number={field.number}

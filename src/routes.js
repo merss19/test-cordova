@@ -72,10 +72,13 @@ const requirePayAuth = () => {
     })
     .then(response => response.json())
     .then(json => {
-      if (json && json.errorCode === 1 && json.data && json.data[0] && json.data[0].role === 3) {
-        if (json.data[0].paidPackage) {
+      console.log(json)
+      if (json && json.errorCode === 1 && json.data && json.data[0]) {
+        if (json.data[0].paidPackage && json.data[0].role === 3) {
           browserHistory.push('/signup/pay/success')
-        } else {
+        } else if (json.data[0].role === 1) {
+          browserHistory.push('/partner/show')
+        } {
           browserHistory.push('/signup/pay/')
         }
       }
@@ -118,6 +121,8 @@ export default (
     {/* <Route path='superadmin'>
       <IndexRoute component={AdminLogin} />
       <Route path='day' component={DayEditor} />
+      <Route path='day/:program' component={DayEditor} />
+      <Route path='day/:program/:id' component={DayEditor} />
     </Route> */}
   </Route>
 )

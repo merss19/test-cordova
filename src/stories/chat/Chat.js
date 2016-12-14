@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Chat = ({ children, messages }) => (
-  <div className="chat">
+  <div className="chat" style={{overflow: 'auto', height: '400px'}}>
     <ul className="chat__tabs">
       <li className="chat__tab">
         <span className="chat__tab-title">Общий</span>

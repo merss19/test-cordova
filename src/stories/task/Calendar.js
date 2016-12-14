@@ -26,7 +26,7 @@ const Calendar = ({ children, onClick, number, completeText, icon, status, date,
     }
 
     return (
-      <li className="min-calendar__item">
+      <li className="min-calendar__item" onClick={onClick}>
         <span className="min-calendar__date-wrap">
           <span className="min-calendar__day">{children}</span>
           <span className="min-calendar__date">{number}</span>
