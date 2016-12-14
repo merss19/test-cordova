@@ -97,7 +97,7 @@ export default (
       <IndexRoute component={App} onEnter={getToken}/>
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />
     </Route> */}
-    {/* <Route path='social/vk' component={LoginSocial} /> */}
+    <Route path='social/vk' component={LoginSocial} />
     <Route path='social/fb' component={LoginFB} />
     {/* <Route path='social/vk/second' component={SignupSocial} /> */}
     <Route path='signup'>
