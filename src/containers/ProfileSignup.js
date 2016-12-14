@@ -66,8 +66,6 @@ class ProfileSignup extends Component {
     let packageName
     amount = !!amount ? amount : 0
 
-    console.log(program)
-
     switch (program) {
       case 1:
         programName = '#Я ГЕРОЙ'
@@ -86,13 +84,13 @@ class ProfileSignup extends Component {
     }
 
     switch (packageType) {
-      case 1:
+      case '1':
         packageName = '1  человек'
         break
-      case 2:
+      case '2':
         packageName = '2  человек'
         break
-      case 3:
+      case '3':
         packageName = '3  человек'
         break
       default:
@@ -100,7 +98,6 @@ class ProfileSignup extends Component {
     }
 
     const userCreate = (payload) => {
-      console.log(payload)
       return fetch(`${api}/user/user-create`, {
         headers: {
           'Accept': 'application/json',

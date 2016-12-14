@@ -8,7 +8,7 @@ import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../config.js'
 
-let PartnerLogin = ({ setToken }) => {
+let PartnerLogin = ({ setToken, setRole }) => {
   return (
     <LoginPartnerValidationForm onSubmit={ data => {
       return fetch(`${api}/user/authenticate`, {
@@ -23,7 +23,9 @@ let PartnerLogin = ({ setToken }) => {
         .then(json => {
           if (json.data && json.data.authToken && json.data.role === 1) {
             cookie.save('token', json.data.authToken, { path: '/' })
+            cookie.save('role', json.data.role, { path: '/' })
             setToken(json.data.authToken)
+            setRole(json.data.role)
             browserHistory.push('/partner/show')
           } else {
             throw new SubmissionError({
@@ -39,7 +41,8 @@ let PartnerLogin = ({ setToken }) => {
 const mapStateToProps = state => ({ token: state.userToken })
 
 const mapDispatchToProps = dispatch => ({
-  setToken: bindActionCreators(actions.setToken, dispatch)
+  setToken: bindActionCreators(actions.setToken, dispatch),
+  setRole: bindActionCreators(actions.setRole, dispatch)
 })
 
 PartnerLogin = connect(

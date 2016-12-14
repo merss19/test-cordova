@@ -15,6 +15,7 @@ const LoadingView = ({title, logout}) => (
                 e.preventDefault()
                 cookie.remove('token', { path: '/' })
                 cookie.remove('txId', { path: '/' })
+                cookie.remove('role', { path: '/' })
                 browserHistory.push('/')
               }}>
                 Выйти

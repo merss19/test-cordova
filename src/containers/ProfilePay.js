@@ -47,7 +47,7 @@ class ProfilePay extends Component {
       }
 
       switch (packageType) {
-        case 1:
+        case 1 :
           packageName = '1  человек'
           break
         case 2:

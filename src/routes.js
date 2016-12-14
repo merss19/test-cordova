@@ -27,61 +27,59 @@ import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
 
 const getToken = () => {
-  if (cookie.load('token')) {
+  console.log(!cookie.load('role'))
+  if (cookie.load('token') && !cookie.load('role'))
     browserHistory.push('/signup/pay/success')
-  }
 }
 
 const getRole = role => {
   return fetch(`${api}/user/user-get`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        authToken: cookie.load('token'),
-        data: {}
-      })
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      authToken: cookie.load('token'),
+      data: {}
     })
-    .then(response => response.json())
-    .then(json => {
-      const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
+  })
+  .then(response => response.json())
+  .then(json => {
+    const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
 
-      if (!isRegistered) {
-        browserHistory.push('/')
-      }
+    if (!isRegistered)
+      browserHistory.push('/')
 
-      if (isRegistered && role === 3 && !json.data[0].paidPackage) {
-        browserHistory.push('/signup/pay')
-      }
-    })
+    if (isRegistered && role === 3 && !json.data[0].paidPackage)
+      browserHistory.push('/signup/pay')
+  })
 }
 
 const requirePayAuth = () => {
   return fetch(`${api}/user/user-get`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        authToken: cookie.load('token'),
-        data: {}
-      })
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      authToken: cookie.load('token'),
+      data: {}
     })
-    .then(response => response.json())
-    .then(json => {
-      console.log('here')
-      console.log(json)
-      if (json && json.errorCode === 1 && json.data && json.data[0]) {
-        if (json.data[0].paidPackage && json.data[0].role === 3) {
-          browserHistory.push('/signup/pay/success')
-        } else {
-          browserHistory.push('/signup/pay/')
-        }
+  })
+  .then(response => response.json())
+  .then(json => {
+    console.log('here')
+    console.log(json)
+    if (json && json.errorCode === 1 && json.data && json.data[0]) {
+      if (json.data[0].paidPackage && json.data[0].role === 3) {
+        browserHistory.push('/signup/pay/success')
+      } else {
+        browserHistory.push('/signup/pay/')
       }
-    })
+    }
+  })
 }
 
 const requireAuth = () => getRole(3)
@@ -117,11 +115,11 @@ export default (
       <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth} />
     </Route>
 
-    <Route path='superadmin'>
+    {/* <Route path='superadmin'>
       <IndexRoute component={AdminLogin} />
       <Route path='day' component={DayEditor} />
       <Route path='day/:program' component={DayEditor} />
       <Route path='day/:program/:id' component={DayEditor} />
-    </Route>
+    </Route> */}
   </Route>
 )

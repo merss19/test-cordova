@@ -160,7 +160,6 @@ class ProfilePasswordForget extends Component {
             </div>
           </div>
         </div>
-
       </div>
     )
   }
