@@ -239,11 +239,13 @@ class ProfileSignup extends Component {
             { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: 3 },
             { name: '#Я ЗАВТРА', value: 4 }
           ]} component={SelectProgram} />
-          <Field name="packageTypeValue" id="packageTypeValue" options={[
-            { name: '1 человек', value: 1},
-            { name: '2 человека', value: 2 },
-            { name: '3 человека', value: 3 }
-          ]} component={SelectProgram} />
+          {program !== '4' &&
+            <Field name="packageTypeValue" id="packageTypeValue" options={[
+              { name: '1 человек', value: 1},
+              { name: '2 человека', value: 2 },
+              { name: '3 человека', value: 3 }
+            ]} component={SelectProgram} />
+          }
           {program === '4' &&
             <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
           }
