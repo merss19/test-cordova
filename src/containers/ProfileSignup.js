@@ -133,26 +133,44 @@ class ProfileSignup extends Component {
           </div>
         </div>
 
-        <div className="entry-bc__wrap entry-bc__wrap--step-1">
-          <ul className="entry-bc">
-            <li className="entry-bc__item entry-bc__item--active">
-              <span className="entry-bc__num">1</span>
-              <span className="entry-bc__title">Регистрация/Вход</span>
-            </li>
-            <li className="entry-bc__item">
-              <span className="entry-bc__num">2</span>
-              <span className="entry-bc__title">Способ оплаты</span>
-            </li>
-            <li className="entry-bc__item">
-              <span className="entry-bc__num">3</span>
-              <span className="entry-bc__title">Оплата</span>
-            </li>
-            <li className="entry-bc__item">
-              <span className="entry-bc__num">4</span>
-              <span className="entry-bc__title">Подтверждение</span>
-            </li>
-          </ul>
-        </div>
+        <ul className="entry-bc entry-bc--step-1">
+          <li className="entry-bc__item entry-bc__item--done">
+            <span className="entry-bc__step">
+              <span className="entry-bc__step-num">1</span>
+              <svg className="svg-icon ico-done">
+                <use xlinkHref="#ico-done"></use>
+              </svg>
+            </span>
+            <span className="entry-bc__title">План</span>
+          </li>
+          <li className="entry-bc__item entry-bc__item--active">
+            <span className="entry-bc__step">
+              <span className="entry-bc__step-num">2</span>
+              <svg className="svg-icon ico-done">
+                <use xlinkHref="#ico-done"></use>
+              </svg>
+            </span>
+            <span className="entry-bc__title">Регистрация/Вход</span>
+          </li>
+          <li className="entry-bc__item">
+            <span className="entry-bc__step">
+              <span className="entry-bc__step-num">3</span>
+              <svg className="svg-icon ico-done">
+                <use xlinkHref="#ico-done"></use>
+              </svg>
+            </span>
+            <span className="entry-bc__title">Оплата</span>
+          </li>
+          <li className="entry-bc__item">
+            <span className="entry-bc__step">
+              <span className="entry-bc__step-num">4</span>
+              <svg className="svg-icon ico-done">
+                <use xlinkHref="#ico-done"></use>
+              </svg>
+            </span>
+            <span className="entry-bc__title">Успех</span>
+          </li>
+        </ul>
 
         <div className="entry entry--sign-up">
 
