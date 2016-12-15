@@ -21,6 +21,7 @@ const contentStyle = {
 class MainComponent extends Component {
   render() {
     const { taskDay, token } = this.props
+    const { intro, tasks, poll, chat } = taskDay
 
     return (
       <div className="layout">
@@ -58,8 +59,8 @@ class MainComponent extends Component {
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-              <TaskIntro/>
-              <Exercises sendReport={() => {
+              <TaskIntro text={intro} />
+              <Exercises tasks={tasks} sendReport={() => {
                 this.refs.sendReportModal.show()
               }}/>
 
@@ -95,12 +96,13 @@ class MainComponent extends Component {
               </Modal>
 
 
-              <Poll fields={this.props.taskDay.task.poll.fields}>
-                {this.props.taskDay.task.poll.description}
-              </Poll>
+              {poll &&
+                <Poll poll={poll} />
+              }
 
-              <h2 className="h1">Чаты</h2>
-              <Chat>Test</Chat>
+              {chat &&
+                <Chat chat={chat} userId={1} />
+              }
             </div>
           </div>
         </div>

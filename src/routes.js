@@ -17,11 +17,11 @@ import SuccessProfile from './components/profile/SuccessProfile'
 import DayEditor from './components/admin/DayEditor'
 import AdminLogin from './containers/AdminLogin'
 
-// import TodayTask from './containers/TodayTask'
-// import Reports from './containers/Reports'
-// import Faq from './components/Faq'
-// import Food from './components/food/MainComponent'
-// import Photos from './containers/Photos'
+import TodayTask from './containers/TodayTask'
+import Reports from './containers/Reports'
+import Faq from './components/Faq'
+import Food from './components/food/MainComponent'
+import Photos from './containers/Photos'
 
 import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
@@ -88,11 +88,11 @@ const requireAdminAuth = () => getRole(1)
 export default (
   <Route path='/' onEnter={promoWatch}>
     <IndexRoute component={App} onEnter={getToken} />
-    {/* <Route path='task' component={TodayTask} onEnter={requireAuth} />
-    <Route path='faq' component={Faq} onEnter={requireAuth} />
-    <Route path='food' component={Food} onEnter={requireAuth} />
-    <Route path='reports' component={Reports} onEnter={requireAuth} />
-    <Route path='photos' component={Photos} /> */}
+    <Route path='task' component={TodayTask} />
+    <Route path='faq' component={Faq} />
+    <Route path='food' component={Food} />
+    <Route path='reports' component={Reports} />
+    <Route path='photos' component={Photos} />
     {/* <Route path='profile'>
       <IndexRoute component={App} onEnter={getToken}/>
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />

@@ -97,7 +97,8 @@ class ProfileSignup extends Component {
         packageName = 'Не определено'
     }
 
-    const userCreate = (payload) => {
+    const userCreate = payload => {
+      this.refs.loadingModal.show()
       return fetch(`${api}/user/user-create`, {
         headers: {
           'Accept': 'application/json',
@@ -108,6 +109,7 @@ class ProfileSignup extends Component {
       })
       .then(response => response.json())
       .then(json => {
+        this.refs.loadingModal.hide()
         if (json.data && json.data.authToken) {
           cookie.save('token', json.data.authToken, { path: '/' })
           setToken(json.data.authToken)
@@ -259,6 +261,9 @@ class ProfileSignup extends Component {
           }}>
             Продолжить
           </button>
+        </Modal>
+        <Modal ref='loadingModal' modalStyle={contentStyle}>
+          <h2>Подождите...</h2>
         </Modal>
       </div>
     )
