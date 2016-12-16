@@ -1,5 +1,5 @@
-import React from 'react';
-import ButtonPoll from './ButtonPoll';
+import React from 'react'
+import ButtonPoll from './ButtonPoll'
 
 function select(children) {
 }
@@ -22,12 +22,7 @@ const Poll = ({ poll }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-Poll.propTypes = {
-  children: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func,
-};
-
-export default Poll;
+export default Poll

@@ -64,14 +64,11 @@ const renderTasks = ({ fields, meta: { error } }) => (
 class DayEditorValidationForm extends Component {
   // componentWillMount() {
   //   const { dispatch, initialValues } = this.props
-  //   console.log('nnnnnnnnnnn===0')
-  //   console.log(initialValues)
   //   dispatch(() => ({type: 'EDIT_DAY', ...initialValues}))
   // }
 
   onEditorChange: Function = (editorContent) => {
     htmlEditor = draftToHtml(editorContent)
-    console.log(htmlEditor)
   }
 
   uploadImageCallBack(file) {
@@ -137,8 +134,6 @@ DayEditorValidationForm = reduxForm({
 const selector = formValueSelector('dayEditor')
 
 const mapStateToProps = state => {
-  console.log('M<=======)=-0')
-  console.log(state)
   return {
     initialValues: state.editDay
   }

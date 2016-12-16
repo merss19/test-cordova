@@ -44,7 +44,6 @@ class LoginFB extends Component {
     })
     .then(response => response.json())
     .then(json => {
-      console.log(json)
       userId = json.id
       const payload = { socialNetType, token, userId }
 
@@ -63,7 +62,6 @@ class LoginFB extends Component {
             setToken(json.data.authToken)
             browserHistory.push('/signup/pay')
           } else {
-            console.log(this.props.location.query)
             if (this.props.location.query && this.props.location.query.type) {
               const query = this.props.location.query.type.split(',')
               packageTypeInitial = query[0]
@@ -120,7 +118,6 @@ class LoginFB extends Component {
               })
               .then(response => response.json())
               .then(json => {
-                console.log(json)
                 if (json && json.data) {
                   browserHistory.push('/signup/pay')
                 } else {
@@ -227,13 +224,19 @@ const selector = formValueSelector('loginSocial')
 const mapStateToProps = state => {
   let { program, packageType, promo } = state.profile
 
-  if (!program || !packageType) {
+  if (!program) {
     program = selector(state, 'programValue')
+  }
+
+  if (!packageType) {
     packageType = selector(state, 'packageTypeValue')
   }
 
-  if (!programInitial && !packageTypeInitial && !program && !packageType) {
+  if (!programInitial && !program) {
     program = 1
+  }
+
+  if (!packageTypeInitial && !packageType) {
     packageType = 1
   }
 

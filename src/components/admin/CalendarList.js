@@ -11,9 +11,6 @@ const CalendarList = ({ dispatch, calendar, program, initialValues }) => (
     <ul className="min-calendar">
       {calendar.map((field, index) => (
         <Calendar onClick={() => {
-          console.log(field.id)
-          console.log('nnnnnnnnnnn===0')
-          console.log(initialValues)
           dispatch(() => ({type: 'EDIT_DAY', ...initialValues}))
           browserHistory.push(`/superadmin/day/${program}/${index}`)
         }}

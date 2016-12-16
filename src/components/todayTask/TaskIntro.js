@@ -1,7 +1,7 @@
 import React from 'react'
 
 const TaskIntro = ({ text }) => (
-  <div>{text}</div>
+  <div class="stage-box stage-box--big-padding">{text}</div>
   // <div className="stage-box stage-box--big-padding">
   //
   //   <h2 className="h1 main-message">Сегодня долгожданный первый понедельник первого месяца Нового Года! А это значит, что нам пора начинать меняться. Меняться к лучшему!!! Сейчас мы еще раз повторим основные идеи, которые мы с тобой будем преследовать на всем протяжении проекта.</h2>

@@ -1,9 +1,21 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import { host } from '../config.js'
+import { api, host } from '../config.js'
 import LoadingView from '../components/componentKit/LoadingView'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
+import cookie from 'react-cookie'
 import Header from '../stories/Header'
+import Modal from 'boron/DropModal'
+import { promoVisit } from '../actions/promo/promoWatch'
+import CustomInput from '../components/componentKit/CustomInput'
+import SelectProgram from '../components/componentKit/SelectProgram'
+
+const contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
 
 class ProfilePay extends Component {
   componentWillMount() {
@@ -22,23 +34,21 @@ class ProfilePay extends Component {
     const { payment, isFetching } = this.props
     let programName
     let packageName
-    let { program, packageType, amount } = this.props
+    let { recivedPayment, dispatch, program, packageType, amount, emailFriend, promo, share, signup, receivePayment } = this.props
 
     const isEmpty = payment === undefined || payment.data === undefined
 
     if (!isEmpty && payment.data && payment.data.txId) {
-      program = payment.data.program
       amount = payment.data.amount
-      packageType = payment.data.package
 
-      switch (program) {
-        case 2:
+      switch (payment.data.program + '') {
+        case '2':
           programName = '#МАМА МОЖЕТ'
           break
-        case 3:
+        case '3':
           programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
           break
-        case 4:
+        case '4':
           programName = '#Я ЗАВТРА'
           break
         default:
@@ -46,14 +56,14 @@ class ProfilePay extends Component {
           break
       }
 
-      switch (packageType) {
-        case 1 :
+      switch (payment.data.package + '') {
+        case '1':
           packageName = '1  человек'
           break
-        case 2:
+        case '2':
           packageName = '2  человек'
           break
-        case 3:
+        case '3':
           packageName = '3  человек'
           break
         default:
@@ -81,6 +91,50 @@ class ProfilePay extends Component {
       document.body.appendChild(frameScript)
     }
 
+    const paymentCreate = () => {
+      this.refs.accModal.hide()
+      this.refs.loadingModal.show()
+      let payload = {
+        authToken: cookie.load('token'),
+        data: {
+          program,
+          package: packageType,
+          isShare: share ? share : false
+        }
+      }
+
+      if (!!promo) {
+        payload.data.promoName = promo
+      }
+
+      if (!!promoVisit.getPromoSessionId()) {
+        payload.data.promoSession = promoVisit.getPromoSessionId()
+      }
+
+      if (!!emailFriend) {
+        payload.data.tomorrowManEmail = emailFriend
+      }
+
+      let data = new FormData()
+      data.append("json", JSON.stringify(payload))
+
+      return fetch(`${api}/payment/payment-create`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(json => {
+        if (json.errorCode === 1 && json.data) {
+          dispatch(receivePayment('reactjs', json))
+        }
+        this.refs.loadingModal.hide()
+      })
+    }
+
     return (
       <div className="layout layout--registration">
         {isEmpty
@@ -106,11 +160,17 @@ class ProfilePay extends Component {
                         </li>
                         <li className="packet-info__item">
                           <span className="packet-info__name-title">Цена</span>
-                          <span className="packet-info__name">{amount ? amount : '0' }</span>
+                          <span className="packet-info__name">{amount ? amount : '0' } руб</span>
                         </li>
                       </ul>
 
-                      <p>Учавствуешь в проекте и борешься за ценные призы</p>
+                      <p>Оплата занимает какое-то время. СМС придёт в течении нескольких минут.</p>
+                      <br/>
+                      <button className="btn btn--primary" onClick={() => {
+                        this.refs.accModal.show()
+                      }}>
+                        Изменить программу
+                      </button>
                     </div>
                   </div>
 
@@ -119,6 +179,38 @@ class ProfilePay extends Component {
                       <div id="iframe_parent"/>
                     </div>
                   </div>
+
+                  <Modal ref='accModal' modalStyle={contentStyle}>
+                    <h2>Выберите программу</h2>
+                    <br/>
+                    <Field name="program" id="programValue" options={[
+                      { name: '#Я ГЕРОЙ', value: '1'},
+                      { name: '#МАМА МОЖЕТ', value: '2' },
+                      { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: '3' },
+                      { name: '#Я ЗАВТРА', value: '4' }
+                    ]} component={SelectProgram} />
+                    {program !== '4' &&
+                      <Field name="packageType" id="packageTypeValue" options={[
+                        { name: '1 человек', value: '1'},
+                        { name: '2 человека', value: '2' },
+                        { name: '3 человека', value: '3' }
+                      ]} component={SelectProgram} />
+                    }
+                    {program === '4' &&
+                      <Field name='emailFriend' id='emailFriendValue' title='Email друга' component={CustomInput} />
+                    }
+                    <Field name='promo' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+                    <button className="btn btn--action" onClick={() => {
+                        program = program ? program : '1'
+                        packageType = packageType ? packageType : '1'
+                        return paymentCreate(share, emailFriend, promo, program, packageType)
+                    }}>
+                      Обновить
+                    </button>
+                  </Modal>
+                  <Modal ref='loadingModal' modalStyle={contentStyle}>
+                    <h2>Подождите...</h2>
+                  </Modal>
                 </div>
               </div>
             </div>
@@ -127,9 +219,15 @@ class ProfilePay extends Component {
   )}
 }
 
+ProfilePay = reduxForm({
+  form: 'payCreateValidation'
+})(ProfilePay)
+
+let selector = formValueSelector('payCreateValidation')
+
 const mapStateToProps = state => {
   const { selectedPayment, recivedPayment, userToken, profile } = state
-  const { program, amount, packageType, promo } = profile
+  let { program, amount, packageType, promo, emailFriend, share } = profile
 
   const {
     isFetching,
@@ -137,8 +235,20 @@ const mapStateToProps = state => {
     payment
   } = recivedPayment[selectedPayment] || {
     isFetching: true,
-    taskDay: {}
+    payment: {}
   }
+
+  if (selector(state, 'program'))
+    program = selector(state, 'program')
+
+  if (selector(state, 'packageType'))
+    packageType = program === '4' ? 1 : selector(state, 'packageType')
+
+  if (program === '4')
+    emailFriend = selector(state, 'emailFriend')
+
+  if (selector(state, 'promo'))
+    promo = selector(state, 'promo')
 
   return({
     selectedPayment,
@@ -148,13 +258,20 @@ const mapStateToProps = state => {
     program,
     amount,
     packageType,
+    emailFriend,
     promo,
     token: userToken.token
   })
 }
 
+const mapDispatchToProps = dispatch => ({
+  signup: bindActionCreators(actions.signup, dispatch),
+  receivePayment: bindActionCreators(actions.receivePayment, dispatch)
+})
+
 ProfilePay = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ProfilePay)
 
 export default ProfilePay

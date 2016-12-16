@@ -61,9 +61,4 @@ const Chat = ({ chat, userId }) => (
   </div>
 )
 
-Chat.propTypes = {
-  children: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func,
-}
-
 export default Chat

@@ -18,7 +18,7 @@ const LoadingView = ({title, logout}) => (
                 cookie.remove('role', { path: '/' })
                 browserHistory.push('/')
               }}>
-                Выйти
+                Продолжить
               </button>
             </div>
           }

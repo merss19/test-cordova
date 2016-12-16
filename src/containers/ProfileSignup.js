@@ -278,8 +278,11 @@ const selector = formValueSelector('signupValidation')
 const mapStateToProps = state => {
   let { program, packageType, promo, amount, share } = state.profile
 
-  if (!program || !packageType) {
+  if (!program) {
     program = selector(state, 'programValue')
+  }
+
+  if (!packageType) {
     packageType = selector(state, 'packageTypeValue')
   }
 

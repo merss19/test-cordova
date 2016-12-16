@@ -27,7 +27,6 @@ import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
 
 const getToken = () => {
-  console.log(!cookie.load('role'))
   if (cookie.load('token') && !cookie.load('role'))
     browserHistory.push('/signup/pay/success')
 }
@@ -70,8 +69,6 @@ const requirePayAuth = () => {
   })
   .then(response => response.json())
   .then(json => {
-    console.log('here')
-    console.log(json)
     if (json && json.errorCode === 1 && json.data && json.data[0]) {
       if (json.data[0].paidPackage && json.data[0].role === 3) {
         browserHistory.push('/signup/pay/success')
@@ -88,11 +85,11 @@ const requireAdminAuth = () => getRole(1)
 export default (
   <Route path='/' onEnter={promoWatch}>
     <IndexRoute component={App} onEnter={getToken} />
-    <Route path='task' component={TodayTask} />
+    {/* <Route path='task' component={TodayTask} />
     <Route path='faq' component={Faq} />
     <Route path='food' component={Food} />
     <Route path='reports' component={Reports} />
-    <Route path='photos' component={Photos} />
+    <Route path='photos' component={Photos} /> */}
     {/* <Route path='profile'>
       <IndexRoute component={App} onEnter={getToken}/>
       <Route path='create' component={ProfileCreate} onEnter={requireAuth} />

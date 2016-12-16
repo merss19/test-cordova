@@ -217,8 +217,11 @@ const selector = formValueSelector('loginSocial')
 const mapStateToProps = state => {
   let { program, packageType, promo, share } = state.profile
 
-  if (!program || !packageType) {
+  if (!program) {
     program = selector(state, 'programValue')
+  }
+
+  if (!packageType) {
     packageType = selector(state, 'packageTypeValue')
   }
 

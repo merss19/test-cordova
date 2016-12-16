@@ -44,13 +44,12 @@ const fetchPayment = partialState => dispatch => {
     method: 'POST',
     body: JSON.stringify({
       authToken: token ? token : cookie.load('token'),
-      data: {}
+      data: { take: 1 },
     })
   })
   .then(response => response.json())
   .then(json => {
-    console.log(json)
-    if (!json || !json.data || !json.data[0] || !json.data[json.data.length - 1].txId) {
+    if (!json || !json.data || !json.data[0] || !json.data[0].txId) {
       let payload = {
         authToken: token ? token : cookie.load('token'),
         data: {
@@ -88,7 +87,7 @@ const fetchPayment = partialState => dispatch => {
         return dispatch(receivePayment(payment, json))
       })
     } else {
-      return dispatch(receivePayment(payment, { data: json.data[json.data.length - 1] }))
+      return dispatch(receivePayment(payment, { data: json.data[0] }))
     }
   })
 }
