@@ -16,7 +16,7 @@ import routes from './routes'
 import createLogger from 'redux-logger'
 
 const middleware = [ thunk, promise ]
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   middleware.push(createLogger())
 }
 
