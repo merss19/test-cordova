@@ -68,7 +68,7 @@ const fetchPayment = partialState => dispatch => {
       }
 
       if (!!emailFriend) {
-        payload.data.tomorrowManEmail = emailFriend
+        payload.data.tomorrowManEmail = emailFriend.replace(/ /g,'')
       }
 
       let data = new FormData()

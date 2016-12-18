@@ -3,13 +3,11 @@ import {
   REQUEST_DAYS, RECEIVE_DAYS
 } from '../actions'
 
-export function editDay(state = {}, action) {
+export const editDay = (state = {}, action) => {
   switch (action.type) {
     case 'EDIT_DAY':
       return {
-        tasks: action.tasks,
-        customIcon: action.customIcon,
-        customName: action.customName,
+        data: action.json
       }
     default:
       return state

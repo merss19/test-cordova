@@ -85,7 +85,11 @@ class LoginFB extends Component {
 
     const signupWith = (email, program, packageType, promo, emailFriend, share) => {
       signup(program, undefined, packageType, promo, emailFriend, share)
-      const payload = { email, emailFriend, program, package: packageType }
+      const payload = {
+        email: email ? email.replace(/ /g,'') : email,
+        emailFriend: emailFriend ? emailFriend.replace(/ /g,'') : emailFriend,
+        program,
+        package: packageType }
       const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

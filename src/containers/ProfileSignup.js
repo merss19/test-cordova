@@ -256,7 +256,11 @@ class ProfileSignup extends Component {
             program = !!program ? program : 1
             packageType = !!packageType ? packageType : 1
             signup(program, undefined, packageType, promo, emailFriend, share)
-            const payload = { program, email, password, package: packageType }
+            const payload = {
+              program,
+              email: email ? email.replace(/ /g,'') : email, 
+              password, package:
+              packageType }
             return userCreate(payload)
           }}>
             Продолжить

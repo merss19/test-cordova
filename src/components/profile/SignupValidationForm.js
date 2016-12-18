@@ -120,6 +120,9 @@ class SignupValidationForm extends Component {
 const validate = data => {
   const errors = {}
 
+  if (data.email)
+    data.email = data.email.replace(/ /g,'')
+
   switch (true) {
     case !data.email:
       errors.email = 'Email должен быть заполнен'

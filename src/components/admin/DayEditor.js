@@ -21,7 +21,7 @@ class DayEditor extends Component {
   }
 
   render() {
-    const { days, token, isFetching } = this.props
+    const { days, token, isFetching, editDay } = this.props
     const isEmpty = !days || !days[0]
     const id = this.props.params.id
     let initialValues = {}
@@ -43,29 +43,16 @@ class DayEditor extends Component {
             : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="layout__inner">
-                <div className="grid">
-                  <div className="1/4--desk grid__cell layout__menu">
-                    <div className="grid layout__menu-inner">
-                      <Menu/>
-                      <CalendarList
-                        calendar={days}
-                        program={this.props.params.program}
-                        initialValues={initialValues}
-                      />
-                    </div>
-                  </div>
-                  <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-                    <div className="stage-box stage-box--small-padding">
-                      <DayEditorValidationForm
-                        initialValues={initialValues}
-                        onSubmit={ data => {
-                          console.log(this.props.params.id)
-                          console.log(this.props.params.program)
-                          console.log(data)
-                      }}/>
-                    </div>
-                  </div>
-                </div>
+                <DayEditorValidationForm
+                  calendar={days}
+                  program={this.props.params.program}
+                  editDay={editDay}
+                  // initialValues={editDay}
+                  onSubmit={ data => {
+                    console.log(this.props.params.id)
+                    console.log(this.props.params.program)
+                    console.log(data)
+                }}/>
               </div>
             </div>
           }

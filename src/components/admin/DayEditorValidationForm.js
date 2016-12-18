@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 import { Editor } from 'react-draft-wysiwyg'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import '../../../public/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
 import Header from '../../stories/Header'
-import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector, change } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
+import Calendar from '../../stories/task/Calendar'
+import Menu from './Menu'
+import CalendarList from './CalendarList'
+import * as actions from '../../actions'
 
 let htmlEditor = ''
 
@@ -62,11 +67,6 @@ const renderTasks = ({ fields, meta: { error } }) => (
 )
 
 class DayEditorValidationForm extends Component {
-  // componentWillMount() {
-  //   const { dispatch, initialValues } = this.props
-  //   dispatch(() => ({type: 'EDIT_DAY', ...initialValues}))
-  // }
-
   onEditorChange: Function = (editorContent) => {
     htmlEditor = draftToHtml(editorContent)
   }
@@ -91,37 +91,67 @@ class DayEditorValidationForm extends Component {
   }
 
   render() {
-    const { error, handleSubmit, onSubmit, initialValues } = this.props
+    const { error, reset, handleSubmit, onSubmit, dispatch, calendar, program, change } = this.props
     return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid">
-          <div className="1/2--desk grid__cell mb30">
-            <button type className='btn btn--primary'>
-              Сохранить
-            </button>
+      <form onSubmit={handleSubmit(onSubmit)} className="grid">
+        <div className="1/4--desk grid__cell layout__menu">
+          <div className="grid layout__menu-inner">
+            <Menu/>
+            <div className="1/3 grid__cell">
+              <ul className="min-calendar">
+                {calendar.map((field, index) => (
+                  <Calendar onClick={() => {
+                      change('customName', calendar[index].customName)
+                      change('customIcon', calendar[index].customIcon)
+                      change('tasks', calendar[index].tasks)
+                    }}
+                    key={index}
+                    number={field.number}
+                    icon={field.icon}
+                    status={field.status}
+                    date={field.date}
+                    admin={field.admin}
+                    completeText={field.completeText}
+                  >
+                    {field.day}
+                  </Calendar>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
+        <div className="3/4--desk 1/1--pocket grid__cell layout__content">
+          <div className="stage-box stage-box--small-padding">
+            <div className="grid">
+              <div className="1/2--desk grid__cell mb30">
+                <button type className='btn btn--primary'>
+                  Сохранить
+                </button>
+              </div>
+            </div>
 
-        <div className="grid">
-          <div className="1/2--desk 1/1--pocket grid__cell">
-            <Field name={'customName'} placeholder="Название дня" component={InputProfile} />
-          </div>
-          <div className="1/2--desk 1/1--pocket grid__cell">
-            <Field name={'customIcon'} placeholder="Выберите иконку" component={InputProfile} />
-          </div>
-        </div>
+            <div className="grid">
+              <div className="1/2--desk 1/1--pocket grid__cell">
+                <Field name='customName' placeholder="Название дня" component={InputProfile} />
+              </div>
+              <div className="1/2--desk 1/1--pocket grid__cell">
+                <Field name='customIcon' placeholder="Выберите иконку" component={InputProfile} />
+              </div>
+            </div>
 
-        <div className='home-root'>
-          <Editor
-            toolbarClassName="home-toolbar"
-            wrapperClassName="home-wrapper"
-            editorClassName="home-editor"
-            placeholder="Вставьте текст..."
-            onChange={this.onEditorChange}
-            uploadCallback={this.uploadImageCallBack}
-          />
+            <div className='home-root'>
+              <Editor
+                toolbarClassName="home-toolbar"
+                wrapperClassName="home-wrapper"
+                editorClassName="home-editor"
+                placeholder="Вставьте текст..."
+                onChange={this.onEditorChange}
+                uploadCallback={this.uploadImageCallBack}
+              />
+            </div>
+            <FieldArray name='tasks' component={renderTasks} />
+          </div>
         </div>
-        <FieldArray name='tasks' component={renderTasks} />
       </form>
     )
   }
@@ -129,22 +159,7 @@ class DayEditorValidationForm extends Component {
 
 DayEditorValidationForm = reduxForm({
   form: 'dayEditor',
+  fields: ['tasks', 'customName', 'customIcon']
 })(DayEditorValidationForm)
 
-const selector = formValueSelector('dayEditor')
-
-const mapStateToProps = state => {
-  return {
-    initialValues: state.editDay
-  }
-}
-
-DayEditorValidationForm = connect(
-  mapStateToProps
-)(DayEditorValidationForm)
-
-export default reduxForm({
-  form: 'fieldArrays',     // a unique identifier for this form
-})(DayEditorValidationForm)
-
-// export default DayEditorValidationForm
+export default DayEditorValidationForm
