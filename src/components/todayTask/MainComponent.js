@@ -13,12 +13,18 @@ import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 class MainComponent extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+  
   render() {
     const { taskDay, token } = this.props
     const { intro, tasks, poll, chat } = taskDay

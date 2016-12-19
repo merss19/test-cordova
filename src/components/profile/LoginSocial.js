@@ -12,7 +12,7 @@ import { api, host } from '../../config.js'
 import CustomInput from '../componentKit/CustomInput'
 import SelectProgram from '../componentKit/SelectProgram'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
@@ -27,6 +27,10 @@ let shareInitial
 
 class LoginSocial extends Component {
   componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+    
     const { setToken } = this.props
     code = this.props.location.query.code
     const socialTypeString = this.props.params.type
@@ -186,7 +190,7 @@ class LoginSocial extends Component {
                 <Field name="programValue" id="programValue" options={[
                   { name: '#Я ГЕРОЙ', value: 1},
                   { name: '#МАМА МОЖЕТ', value: 2 },
-                  { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: 3 },
+                  { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: 3 },
                   { name: '#Я ЗАВТРА', value: 4 }
                 ]} component={SelectProgram} />
                 {program !== '4' &&

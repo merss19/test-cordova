@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
 import Modal from 'boron/DropModal'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 
 class Exercises extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+  
   render() {
     const { sendReport, tasks } = this.props
     return (

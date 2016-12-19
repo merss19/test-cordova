@@ -8,12 +8,18 @@ import { SubmissionError } from 'redux-form'
 import { api } from '../config.js'
 import Modal from 'boron/DropModal'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 class ProfilePasswordRestore extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+  
   render() {
     const { token } = this.props.location.query
     return (

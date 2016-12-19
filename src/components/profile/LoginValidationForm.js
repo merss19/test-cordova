@@ -12,7 +12,7 @@ import CustomInput from '../componentKit/CustomInput'
 import SelectProgram from '../componentKit/SelectProgram'
 import { api, host } from '../../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
@@ -22,6 +22,12 @@ let fbPayload = {}
 let fbUserId
 
 class LoginValidationForm extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+  
   render() {
     const { error, handleSubmit, packageType, program, promo, email, setToken, signup } = this.props
 

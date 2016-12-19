@@ -9,7 +9,7 @@ import Modal from 'boron/DropModal'
 import moment from 'moment'
 import { api } from '../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
@@ -22,6 +22,12 @@ class ProfileCreate extends Component {
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
+  }
+
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
   }
 
   componentDidMount() {

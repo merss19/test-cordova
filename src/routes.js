@@ -32,51 +32,61 @@ const getToken = () => {
 }
 
 const getRole = role => {
-  return fetch(`${api}/user/user-get`, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      authToken: cookie.load('token'),
-      data: {}
+  const token = cookie.load('token')
+  if (token) {
+    return fetch(`${api}/user/user-get`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        authToken: token,
+        data: {}
+      })
     })
-  })
-  .then(response => response.json())
-  .then(json => {
-    const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
+    .then(response => response.json())
+    .then(json => {
+      const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
 
-    if (!isRegistered)
-      browserHistory.push('/')
+      if (!isRegistered)
+        browserHistory.push('/')
 
-    if (isRegistered && role === 3 && !json.data[0].paidPackage)
-      browserHistory.push('/signup/pay')
-  })
+      if (isRegistered && role === 3 && !json.data[0].paidPackage)
+        browserHistory.push('/signup/pay')
+    })
+  } else {
+    browserHistory.push('/')
+  }
 }
 
 const requirePayAuth = () => {
-  return fetch(`${api}/user/user-get`, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      authToken: cookie.load('token'),
-      data: {}
+  const token = cookie.load('token')
+  if (token) {
+    return fetch(`${api}/user/user-get`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        authToken: token,
+        data: {}
+      })
     })
-  })
-  .then(response => response.json())
-  .then(json => {
-    if (json && json.errorCode === 1 && json.data && json.data[0]) {
-      if (json.data[0].paidPackage && json.data[0].role === 3) {
-        browserHistory.push('/signup/pay/success')
+    .then(response => response.json())
+    .then(json => {
+      if (json && json.errorCode === 1 && json.data && json.data[0]) {
+        if (json.data[0].paidPackage && json.data[0].role === 3) {
+          browserHistory.push('/signup/pay/success')
+        } else {
+          browserHistory.push('/signup/pay/')
+        }
       } else {
-        browserHistory.push('/signup/pay/')
+        browserHistory.push('/')
       }
-    }
-  })
+    })
+  }
 }
 
 const requireAuth = () => getRole(3)

@@ -21,7 +21,7 @@ import { api } from '../../config.js'
 let injuries = []
 let diseases = []
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
@@ -45,6 +45,10 @@ class SubmitValidationForm extends Component {
 
   componentWillMount() {
     const { bodyMeasure, dispatch } = this.props
+
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
     // const script = document.createElement("script")
 
     // script.type  = "text/javascript"

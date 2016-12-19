@@ -12,7 +12,7 @@ import Modal from 'boron/DropModal'
 import CustomInput from '../components/componentKit/CustomInput'
 import SelectProgram from '../components/componentKit/SelectProgram'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
@@ -22,6 +22,14 @@ let password
 
 class ProfileSignup extends Component {
   componentWillMount() {
+    const fbScript = document.createElement("script")
+    fbScript.text = "fbq('track', 'RegistrationStarts')"
+    document.body.appendChild(fbScript)
+
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+
     const programParam = this.props.params.program
     const { amount, type, promo, emailFriend, share } = this.props.location.query
     const packageType = type
@@ -74,7 +82,7 @@ class ProfileSignup extends Component {
         programName = '#МАМА МОЖЕТ'
         break
       case 3:
-        programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+        programName = '#ЭКСТРЕМАЛЬНАЯ СУШКА'
         break
       case 4:
         programName = '#Я ЗАВТРА'
@@ -94,7 +102,7 @@ class ProfileSignup extends Component {
         packageName = '3  человек'
         break
       default:
-        packageName = 'Не определено'
+        packageName = 'Не выбран'
     }
 
     const userCreate = payload => {
@@ -115,6 +123,7 @@ class ProfileSignup extends Component {
           setToken(json.data.authToken)
           browserHistory.push('/signup/pay')
         } else {
+          this.refs.errorModal.show()
           throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
         }
       })
@@ -212,6 +221,7 @@ class ProfileSignup extends Component {
                 <SignupValidationForm onSubmit={data => {
                   email = data.email
                   password = data.password
+
                   if (!program || !packageType) {
                     this.refs.accModal.show()
                     return
@@ -238,7 +248,7 @@ class ProfileSignup extends Component {
           <Field name="programValue" id="programValue" options={[
             { name: '#Я ГЕРОЙ', value: 1},
             { name: '#МАМА МОЖЕТ', value: 2 },
-            { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: 3 },
+            { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: 3 },
             { name: '#Я ЗАВТРА', value: 4 }
           ]} component={SelectProgram} />
           {program !== '4' &&
@@ -258,7 +268,7 @@ class ProfileSignup extends Component {
             signup(program, undefined, packageType, promo, emailFriend, share)
             const payload = {
               program,
-              email: email ? email.replace(/ /g,'') : email, 
+              email: email ? email.replace(/ /g,'') : email,
               password, package:
               packageType }
             return userCreate(payload)
@@ -268,6 +278,9 @@ class ProfileSignup extends Component {
         </Modal>
         <Modal ref='loadingModal' modalStyle={contentStyle}>
           <h2>Подождите...</h2>
+        </Modal>
+        <Modal ref='errorModal' modalStyle={contentStyle}>
+          <h2>Что-то пошло не так, попробуйте снова</h2>
         </Modal>
       </div>
     )

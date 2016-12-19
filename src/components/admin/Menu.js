@@ -19,7 +19,7 @@ const Menu = () => (
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/superadmin/day/3/')
-        }} icon="ico-m-book">#ЭКСТРИМАЛЬНАЯ СУШКА</MenuButton>
+        }} icon="ico-m-book">#ЭКСТРЕМАЛЬНАЯ СУШКА</MenuButton>
       </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {

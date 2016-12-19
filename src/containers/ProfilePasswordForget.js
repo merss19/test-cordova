@@ -5,12 +5,18 @@ import PasswordForgetValidationForm from '../components/profile/PasswordForgetVa
 import Modal from 'boron/DropModal'
 import { api, host } from '../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 class ProfilePasswordForget extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+  
   render() {
     let { amount, packageType, program } = this.props
 
@@ -26,7 +32,7 @@ class ProfilePasswordForget extends Component {
         programName = '#МАМА МОЖЕТ'
         break
       case 3:
-        programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+        programName = '#ЭКСТРЕМАЛЬНАЯ СУШКА'
         break
       case 4:
         programName = '#Я ЗАВТРА'
@@ -46,7 +52,7 @@ class ProfilePasswordForget extends Component {
         packageName = '3  человек'
         break
       default:
-        packageName = 'Не определено'
+        packageName = 'Не выбран'
     }
 
     return (

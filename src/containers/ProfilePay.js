@@ -12,16 +12,36 @@ import { promoVisit } from '../actions/promo/promoWatch'
 import CustomInput from '../components/componentKit/CustomInput'
 import SelectProgram from '../components/componentKit/SelectProgram'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 class ProfilePay extends Component {
   componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+
+    const fbScript = document.createElement("script")
+    fbScript.text = "fbq('track', 'Lead')"
+    document.body.appendChild(fbScript)
+
     const { dispatch, selectedPayment } = this.props
     dispatch(actions.fetchPaymentIfNeeded(selectedPayment))
   }
+
+  // componentDidUpdate() {
+  //   if (window.mobilecheck()) {
+  //     paymentFrameStyle = {
+  //       width: '300px'
+  //     }
+  //     const frame = this.refs.paymentFrame
+  //     if (frame) {
+  //       console.log(frame.children)
+  //     }
+  //   }
+  // }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedPayment !== this.props.selectedPayment) {
@@ -46,7 +66,7 @@ class ProfilePay extends Component {
           programName = '#МАМА МОЖЕТ'
           break
         case '3':
-          programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+          programName = '#ЭКСТРЕМАЛЬНАЯ СУШКА'
           break
         case '4':
           programName = '#Я ЗАВТРА'
@@ -67,7 +87,7 @@ class ProfilePay extends Component {
           packageName = '3  человек'
           break
         default:
-          packageName = 'Не определено'
+          packageName = 'Не выбран'
       }
 
       const frameScript = document.createElement("script")
@@ -86,8 +106,7 @@ class ProfilePay extends Component {
         version: "2.0.0"
       })
 
-      frameScript.text = 'PaymoFrame.set(' + data + ')'
-
+      frameScript.text = 'PaymoFrame.set(' + data + ');'
       document.body.appendChild(frameScript)
     }
 
@@ -186,7 +205,7 @@ class ProfilePay extends Component {
                     <Field name="program" id="programValue" options={[
                       { name: '#Я ГЕРОЙ', value: '1'},
                       { name: '#МАМА МОЖЕТ', value: '2' },
-                      { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: '3' },
+                      { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
                       { name: '#Я ЗАВТРА', value: '4' }
                     ]} component={SelectProgram} />
                     {program !== '4' &&
