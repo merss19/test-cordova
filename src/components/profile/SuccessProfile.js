@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { Component } from 'react'
 import LoadingView from '../componentKit/LoadingView'
 
-const SuccessProfile = () => (
-  <LoadingView
-    title="Оплата прошла успешно! Вам придет подтверждение об оплате с кодом на ваш Email"
-    logout={true}
-  />
-)
+class SuccessProfile extends Component {
+  componentWillMount() {
+    const fbScript = document.createElement("script")
+    fbScript.text = "fbq('track', 'Purchase')"
+    document.body.appendChild(fbScript)
+  }
+
+  render() {
+    return (
+      <LoadingView
+        title="Оплата прошла успешно! Вам придет подтверждение об оплате с кодом на ваш Email"
+        logout={true}
+      />
+    )
+  }
+}
 
 export default SuccessProfile
