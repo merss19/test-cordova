@@ -75,7 +75,6 @@ const exampleJson = [{
 }]
 
 export const receiveDay = (days, id) => {
-  console.log(exampleJson[id])
   return ({
     type: 'EDIT_DAY',
     days,

@@ -30,7 +30,7 @@ class LoginSocial extends Component {
     if (window.mobilecheck()) {
       contentStyle.width = '300px'
     }
-    
+
     const { setToken } = this.props
     code = this.props.location.query.code
     const socialTypeString = this.props.params.type
@@ -49,7 +49,6 @@ class LoginSocial extends Component {
       })
       .then(response => response.json())
       .then(json => {
-        console.log(json)
         if (this.props.location.query && this.props.location.query.type) {
           const query = this.props.location.query.type.split(',')
           packageTypeInitial = query[0]
