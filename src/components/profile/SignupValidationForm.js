@@ -40,7 +40,7 @@ class SignupValidationForm extends Component {
     const { error, handleSubmit, packageType, program, onSubmit, promo, setToken } = this.props
 
     const loginVk = () => {
-      if (packageType) {
+      if (packageType)
         cookie.save('packageType', packageType, { path: '/' })
       if (program)
         cookie.save('program', program, { path: '/' })
