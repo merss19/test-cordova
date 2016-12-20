@@ -10,6 +10,7 @@ import SignupValidationForm from '../components/profile/SignupValidationForm'
 import { api } from '../config.js'
 import Modal from 'boron/DropModal'
 import CustomInput from '../components/componentKit/CustomInput'
+import InputProfile from '../components/componentKit/InputProfile'
 import SelectProgram from '../components/componentKit/SelectProgram'
 
 let contentStyle = {
@@ -54,6 +55,8 @@ class ProfileSignup extends Component {
         break
     }
 
+    cookie.save('program', program, { path: '/' })
+
     const { signup } = this.props
     signup(program, amount, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
   }
@@ -93,21 +96,30 @@ class ProfileSignup extends Component {
         programName = 'ЯСЕГОДНЯ'
     }
 
-    switch (packageType + '') {
-      case '1':
-        packageName = '1  человек'
-        break
-      case '2':
-        packageName = '2  человек'
-        break
-      case '3':
-        packageName = '3  человек'
-        break
-      default:
-        packageName = 'Не выбран'
+    if (program + '' === '4') {
+      packageName = 'Подарок другу'
+      amount = 3000
+    } else {
+      switch (packageType + '') {
+        case '1':
+          packageName = '1  человек'
+          break
+        case '2':
+          packageName = '2  человек'
+          break
+        case '3':
+          packageName = '3  человек'
+          break
+        default:
+          packageName = 'Не выбран'
+      }
     }
 
     const userCreate = payload => {
+      program = !!program ? program : '1'
+      packageType = !!packageType ? packageType : '1'
+      cookie.save('program', program + '', { path: '/' })
+      signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
       this.refs.loadingModal.show()
       return fetch(`${api}/user/user-create`, {
         headers: {
@@ -124,6 +136,8 @@ class ProfileSignup extends Component {
           cookie.save('token', json.data.authToken, { path: '/' })
           setToken(json.data.authToken)
           browserHistory.push('/signup/pay')
+        } else if (json.errorCode = 129) {
+          this.refs.errorEmailModal.show()
         } else {
           this.refs.errorModal.show()
           throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
@@ -269,12 +283,12 @@ class ProfileSignup extends Component {
           }
           {program === '4' &&
             <div>
-              <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
-              <Field name='phoneFriendValue' id='phoneFriendValue' title='Телефон друга' component={CustomInput} />
-              <Field name='nameFriendValue' id='nameFriendValue' title='Имя друга' component={CustomInput} />
+              <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
+              <Field name='phoneFriendValue' id='phoneFriendValue' placeholder='Телефон друга' component={InputProfile} />
+              <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
             </div>
           }
-          <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+          <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
           <button className="btn btn--action" onClick={() => {
             program = !!program ? program : 1
             packageType = !!packageType ? packageType : 1
@@ -302,6 +316,9 @@ class ProfileSignup extends Component {
         </Modal>
         <Modal ref='errorModal' modalStyle={contentStyle}>
           <h2>Что-то пошло не так, попробуйте снова</h2>
+        </Modal>
+        <Modal ref='errorEmailModal' modalStyle={contentStyle}>
+          <h2>Введенный вами email уже существует</h2>
         </Modal>
       </div>
     )

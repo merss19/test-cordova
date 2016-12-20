@@ -2,7 +2,7 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
 
-import CustomInput from '../componentKit/CustomInput';
+import CustomInput from '../componentKit/CustomInput'
 
 const PasswordForgetValidationForm = props => {
   const { error, handleSubmit, onSubmit } = props
@@ -22,11 +22,14 @@ const PasswordForgetValidationForm = props => {
       <br/>
       <Link to="/signup">Регистрация</Link>
     </form>
-  );
+  )
 }
 
 const validate = data => {
-  const errors = {};
+  const errors = {}
+
+  if (data.email)
+    data.email = data.email.replace(/ /g,'')
 
   switch (true) {
     case !data.email:
@@ -39,7 +42,7 @@ const validate = data => {
       break
   }
 
-  return errors;
+  return errors
 }
 
 export default reduxForm({

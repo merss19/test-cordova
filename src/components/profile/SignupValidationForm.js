@@ -8,7 +8,7 @@ import Modal from 'boron/DropModal'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import * as actions from '../../actions'
-import CustomInput from '../componentKit/CustomInput'
+import InputProfile from '../componentKit/InputProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 import { api, host } from '../../config.js'
 
@@ -94,15 +94,15 @@ class SignupValidationForm extends Component {
       <div className="grid grid--middle">
         <form onSubmit={handleSubmit(onSubmit)} className="1/2--desk grid__cell entry-form__email">
           <div className="input input--line">
-            <Field name='email' id='login[1]' title='Ваш e-mail' component={CustomInput} />
-            <Field name='password' id='login[2]' title='Ваш пароль' type='password' component={CustomInput} />
-            <Field name='passwordAgain' id='login[3]' title='Пароль повторно' type='password' component={CustomInput} />
+            <Field name='email' id='login[1]' placeholder='Ваш e-mail' component={InputProfile} />
+            <Field name='password' id='login[2]' placeholder='Ваш пароль' type='password' component={InputProfile} />
+            <Field name='passwordAgain' id='login[3]' placeholder='Пароль повторно' type='password' component={InputProfile} />
           </div>
           {error && <strong>{error}</strong>}
           <button type='submit' className="btn btn--action">
             Зарегистрироваться
           </button>
-          <Link to="/profile">Войти</Link>
+          <Link to="/">Войти</Link>
           <br/>
           <Link to="/restore">Забыли пароль?</Link>
         </form>

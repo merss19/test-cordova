@@ -10,6 +10,7 @@ import cookie from 'react-cookie'
 import { api, host } from '../../config.js'
 
 import CustomInput from '../componentKit/CustomInput'
+import InputProfile from '../componentKit/InputProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 
 let contentStyle = {
@@ -26,7 +27,8 @@ let socialName
 let shareInitial
 
 class LoginSocial extends Component {
-  componentWillMount() {
+  componentDidMount() {
+    this.refs.loadingModal.show()
     if (window.mobilecheck()) {
       contentStyle.width = '300px'
     }
@@ -49,6 +51,8 @@ class LoginSocial extends Component {
       })
       .then(response => response.json())
       .then(json => {
+        this.refs.loadingModal.hide()
+
         if (json.errorCode === 1 && json.data && json.data.authToken) {
           cookie.save('token', json.data.authToken, { path: '/' })
           setToken(json.data.authToken)
@@ -65,30 +69,25 @@ class LoginSocial extends Component {
             this.refs.emailModal.show()
           }
         }
-        // if (json.errorCode === 1 && json.data && json.data.authToken) {
-        //   cookie.save('token', json.data.authToken, { path: '/' })
-        //   setToken(json.data.authToken)
-        //   browserHistory.push('/signup/pay')
-        // } else {
-        //   if (this.props.location.query && this.props.location.query.type) {
-        //     window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk/second?type=${this.props.location.query.type}&display=page&response_type=code`
-        //   } else {
-        //     window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk/second&display=page&response_type=code`
-        //   }
-        // }
       })
   }
 
   render() {
 
-    const { packageType, program, promo, setToken, signup, email, emailFriend, share, phoneFriend, nameFriend } = this.props
+    const { packageType, program, promo, setToken, signup, share, phoneFriend, nameFriend } = this.props
+    let { email, emailFriend } = this.props
 
     const signupWith = (email, program, packageType, promo) => {
+      if (email)
+        email = email.replace(/ /g,'')
+      if (emailFriend)
+        emailFriend = emailFriend.replace(/ /g,'')
+
       const pack = program === '4' ? '1' : packageType
+      this.refs.loadingModal.show()
       signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
       const payload = {
         email: email ? email.replace(/ /g,'') : email,
-        //emailFriend: emailFriend ? emailFriend.replace(/ /g,'') : emailFriend,
         program,
         package: pack
       }
@@ -124,13 +123,19 @@ class LoginSocial extends Component {
               })
               .then(response => response.json())
               .then(json => {
+                this.refs.loadingModal.hide()
                 if (json && json.data) {
                   browserHistory.push('/signup/pay')
                 } else {
                   throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
                 }
               })
+          } else if (json.errorCode = 129) {
+            this.refs.loadingModal.hide()
+            this.refs.errorEmailModal.show()
           } else {
+            this.refs.loadingModal.hide()
+            this.refs.errorModal.show()
             throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
           }
         })
@@ -187,7 +192,7 @@ class LoginSocial extends Component {
                 </button>
               </Modal>
 
-              <Modal ref='accModal' modalStyle={contentStyle}>
+              <Modal ref='accModal' modalStyle={contentStyle} backdrop={false}>
                 <h2>Выберите программу</h2>
                 <br/>
                 {!programInitial &&
@@ -208,15 +213,24 @@ class LoginSocial extends Component {
                 <Field name='emailValue' id='emailValue' title='Email' component={CustomInput} />
                 {program === '4' &&
                   <div>
-                    <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
-                    <Field name='phoneFriendValue' id='phoneFriendValue' title='Телефон друга' component={CustomInput} />
-                    <Field name='nameFriendValue' id='nameFriendValue' title='Имя друга' component={CustomInput} />
+                    <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
+                    <Field name='phoneFriendValue' id='phoneFriendValue' placeholder='Телефон друга' component={InputProfile} />
+                    <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
                   </div>
                 }
-                <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+                <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
                 <button className="btn btn--action" onClick={loginVk}>
                   Продолжить
                 </button>
+              </Modal>
+              <Modal ref='loadingModal' modalStyle={contentStyle}>
+                <h2>Подождите...</h2>
+              </Modal>
+              <Modal ref='errorModal' modalStyle={contentStyle}>
+                <h2>Что-то пошло не так, попробуйте снова</h2>
+              </Modal>
+              <Modal ref='errorEmailModal' modalStyle={contentStyle}>
+                <h2>Введенный вами email уже существует</h2>
               </Modal>
             </div>
           </div>
@@ -227,6 +241,47 @@ class LoginSocial extends Component {
     )
   }
 }
+
+// const validate = data => {
+//   const errors = {}
+//
+//   if (data.email)
+//     data.email = data.email.replace(/ /g,'')
+//   if (data.emailFriendValue)
+//     data.emailFriendValue = data.emailFriendValue.replace(/ /g,'')
+//
+//   switch (true) {
+//     case !data.email:
+//       errors.email = 'Email должен быть заполнен'
+//       break
+//     case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.email):
+//       errors.email = 'Email заполнен неправильно, проверьте его еще раз'
+//       break
+//     default:
+//       break
+//   }
+//
+//   if (data.program === '4') {
+//     switch (true) {
+//       case !data.emailFriendValue:
+//         errors.emailFriendValue = 'Email должен быть заполнен'
+//         break
+//       case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.emailFriendValue):
+//         errors.emailFriendValue = 'Email заполнен неправильно, проверьте его еще раз'
+//         break
+//       default:
+//         break
+//     }
+//
+//     if (!data.phoneFriendValue)
+//       errors.phoneFriendValue = 'Телефон друга должен быть заполнен'
+//
+//     if (!data.nameFriendValue)
+//       errors.nameFriendValue = 'Имя друга должно быть заполнено'
+//   }
+//
+//   return errors
+// }
 
 LoginSocial = reduxForm({
   form: 'loginSocial'

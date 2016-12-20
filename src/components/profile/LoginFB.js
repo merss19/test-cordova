@@ -10,6 +10,7 @@ import cookie from 'react-cookie'
 import { api } from '../../config.js'
 
 import CustomInput from '../componentKit/CustomInput'
+import InputProfile from '../componentKit/InputProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 
 let contentStyle = {
@@ -27,7 +28,8 @@ let socialName
 let shareInitial
 
 class LoginFB extends Component {
-  componentWillMount() {
+  componentDidMount() {
+    this.refs.loadingModal.show()
     if (window.mobilecheck()) {
       contentStyle.width = '300px'
     }
@@ -61,6 +63,7 @@ class LoginFB extends Component {
         })
         .then(response => response.json())
         .then(json => {
+          this.refs.loadingModal.hide()
           if (json.errorCode === 1 && json.data && json.data.authToken) {
             cookie.save('token', json.data.authToken, { path: '/' })
             setToken(json.data.authToken)
@@ -84,15 +87,20 @@ class LoginFB extends Component {
   }
 
   render() {
-
-    const { packageType, program, promo, setToken, signup, email, emailFriend, share, phoneFriend, nameFriend } = this.props
+    const { packageType, program, promo, setToken, signup, share, phoneFriend, nameFriend } = this.props
+    let { email, emailFriend } = this.props
 
     const signupWith = (email, program, packageType, promo, share) => {
+      if (email)
+        email = email.replace(/ /g,'')
+      if (emailFriend)
+        emailFriend = emailFriend.replace(/ /g,'')
+
+      this.refs.loadingModal.show()
       const pack = program === '4' ? '1' : packageType
       signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
       const payload = {
         email: email ? email.replace(/ /g,'') : email,
-        // emailFriend: emailFriend ? emailFriend.replace(/ /g,'') : emailFriend,
         program,
         package: pack }
       const headers = {
@@ -128,12 +136,18 @@ class LoginFB extends Component {
               .then(response => response.json())
               .then(json => {
                 if (json && json.data) {
+                  this.refs.loadingModal.hide()
                   browserHistory.push('/signup/pay')
                 } else {
                   throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
                 }
               })
+          } else if (json.errorCode = 129) {
+            this.refs.loadingModal.hide()
+            this.refs.errorEmailModal.show()
           } else {
+            this.refs.loadingModal.hide()
+            this.refs.errorModal.show()
             throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
           }
         })
@@ -190,7 +204,7 @@ class LoginFB extends Component {
                 </button>
               </Modal>
 
-              <Modal ref='accModal' modalStyle={contentStyle}>
+              <Modal ref='accModal' modalStyle={contentStyle} backdrop={false}>
                 <h2>Выберите программу</h2>
                 <br/>
                 {!programInitial &&
@@ -211,15 +225,24 @@ class LoginFB extends Component {
                 <Field name='emailValue' id='emailValue' title='Email' component={CustomInput} />
                 {program === '4' &&
                   <div>
-                    <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
-                    <Field name='phoneFriendValue' id='phoneFriendValue' title='Телефон друга' component={CustomInput} />
-                    <Field name='nameFriendValue' id='nameFriendValue' title='Имя друга' component={CustomInput} />
+                    <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
+                    <Field name='phoneFriendValue' id='phoneFriendValue' placeholder='Телефон друга' component={InputProfile} />
+                    <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
                   </div>
                 }
-                <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+                <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
                 <button className="btn btn--action" onClick={loginFb}>
                   Продолжить
                 </button>
+              </Modal>
+              <Modal ref='loadingModal' modalStyle={contentStyle}>
+                <h2>Подождите...</h2>
+              </Modal>
+              <Modal ref='errorModal' modalStyle={contentStyle}>
+                <h2>Что-то пошло не так, попробуйте снова</h2>
+              </Modal>
+              <Modal ref='errorEmailModal' modalStyle={contentStyle}>
+                <h2>Введенный вами email уже существует</h2>
               </Modal>
             </div>
           </div>
