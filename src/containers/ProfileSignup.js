@@ -245,12 +245,14 @@ class ProfileSignup extends Component {
         <Modal ref='accModal' modalStyle={contentStyle}>
           <h2>Выберите программу</h2>
           <br/>
-          <Field name="programValue" id="programValue" options={[
-            { name: '#Я ГЕРОЙ', value: 1},
-            { name: '#МАМА МОЖЕТ', value: 2 },
-            { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: 3 },
-            { name: '#Я ЗАВТРА', value: 4 }
-          ]} component={SelectProgram} />
+          {!this.props.params.program &&
+            <Field name="programValue" id="programValue" options={[
+              { name: '#Я ГЕРОЙ', value: 1},
+              { name: '#МАМА МОЖЕТ', value: 2 },
+              { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: 3 },
+              { name: '#Я ЗАВТРА', value: 4 }
+            ]} component={SelectProgram} />
+          }
           {program !== '4' &&
             <Field name="packageTypeValue" id="packageTypeValue" options={[
               { name: '1 человек', value: 1},
