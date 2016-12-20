@@ -54,10 +54,10 @@ class LoginSocial extends Component {
           setToken(json.data.authToken)
           browserHistory.push('/signup/pay')
         } else {
-          packageTypeInitial = cookie.load(packageType)
-          programInitial     = cookie.load(program)
-          promoInitial       = cookie.load(promo)
-          shareInitial       = cookie.load(share)
+          packageTypeInitial = cookie.load('packageType')
+          programInitial     = cookie.load('program')
+          promoInitial       = cookie.load('promo')
+          shareInitial       = cookie.load('share')
 
           if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
             this.refs.accModal.show()
