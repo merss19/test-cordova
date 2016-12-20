@@ -49,18 +49,21 @@ class LoginSocial extends Component {
       })
       .then(response => response.json())
       .then(json => {
-        if (this.props.location.query && this.props.location.query.type) {
-          const query = this.props.location.query.type.split(',')
-          packageTypeInitial = query[0]
-          programInitial = query[1]
-          promoInitial = query[2]
-          shareInitial = query[3]
-        }
-
-        if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
-          this.refs.accModal.show()
+        if (json.errorCode === 1 && json.data && json.data.authToken) {
+          cookie.save('token', json.data.authToken, { path: '/' })
+          setToken(json.data.authToken)
+          browserHistory.push('/signup/pay')
         } else {
-          this.refs.emailModal.show()
+          packageTypeInitial = cookie.load(packageType)
+          programInitial     = cookie.load(program)
+          promoInitial       = cookie.load(promo)
+          shareInitial       = cookie.load(share)
+
+          if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
+            this.refs.accModal.show()
+          } else {
+            this.refs.emailModal.show()
+          }
         }
         // if (json.errorCode === 1 && json.data && json.data.authToken) {
         //   cookie.save('token', json.data.authToken, { path: '/' })

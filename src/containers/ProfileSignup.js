@@ -35,6 +35,8 @@ class ProfileSignup extends Component {
     const packageType = type
     let program
 
+    cookie.save('share', share, { path: '/' })
+
     switch (programParam) {
       case 'hero':
         program = '1'
