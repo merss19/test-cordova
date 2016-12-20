@@ -66,6 +66,31 @@ const renderTasks = ({ fields, meta: { error } }) => (
   </ul>
 )
 
+const renderPollFields = ({ fields, meta: { error } }) => {
+  <ul>
+    <h4>Варианты опроса:</h4>
+    {fields.map((field, index) => (
+      <li key={index}>
+        <br/>
+        <div className="gender">
+          <h4 className="low">Вариант - {index + 1}:</h4>
+          <span className="base-table__btn-del">
+            <svg className="svg-icon ico-trash" onClick={() => fields.remove(index)}>
+              <use xlinkHref="#ico-trash"></use>
+            </svg>
+          </span>
+        </div>
+        <br/>
+        <Field name={`${field}.name`} placeholder="Название" component={InputProfile} />
+      </li>
+    ))}
+    <li>
+      <br/>
+      <a href='#' onClick={() => fields.push({})}>Добавить</a>
+    </li>
+  </ul>
+}
+
 class DayEditorValidationForm extends Component {
   onEditorChange: Function = (editorContent) => {
     htmlEditor = draftToHtml(editorContent)
@@ -91,7 +116,8 @@ class DayEditorValidationForm extends Component {
   }
 
   render() {
-    const { error, reset, handleSubmit, onSubmit, dispatch, calendar, program, change } = this.props
+    const { error, reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar, program, change } = this.props
+    console.log(hideCreatePoll)
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="grid">
         <div className="1/4--desk grid__cell layout__menu">
@@ -101,6 +127,7 @@ class DayEditorValidationForm extends Component {
               <ul className="min-calendar">
                 {calendar.map((field, index) => (
                   <Calendar onClick={() => {
+                      reset()
                       change('customName', calendar[index].customName)
                       change('customIcon', calendar[index].customIcon)
                       change('tasks', calendar[index].tasks)
@@ -150,6 +177,19 @@ class DayEditorValidationForm extends Component {
               />
             </div>
             <FieldArray name='tasks' component={renderTasks} />
+            <br/>
+            <button type="button" className="btn btn--secondary" onClick={() => {
+              dispatch({ type: 'HIDE_POLL', hideCreatePoll: !hideCreatePoll })
+            }}>
+              {!hideCreatePoll ? 'Добавить опрос' : 'Убрать опрос' }
+            </button>
+            {hideCreatePoll &&
+              <div>
+                <br/>
+                <Field name='description' placeholder="Описание опроса" component={InputProfile} />
+                {/* <FieldArray name='pollFields' component={renderPollFields} /> */}
+              </div>
+            }
           </div>
         </div>
       </form>
@@ -161,5 +201,15 @@ DayEditorValidationForm = reduxForm({
   form: 'dayEditor',
   fields: ['tasks', 'customName', 'customIcon']
 })(DayEditorValidationForm)
+
+const mapStateToProps = state => {
+  console.log('SSSSSSSS==========0')
+  console.log(state.hidePoll)
+  return { hideCreatePoll: state.hidePoll }
+}
+
+DayEditorValidationForm = connect(
+  mapStateToProps
+)(DayEditorValidationForm)
 
 export default DayEditorValidationForm

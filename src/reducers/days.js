@@ -3,6 +3,15 @@ import {
   REQUEST_DAYS, RECEIVE_DAYS
 } from '../actions'
 
+export const hidePoll = (state = false, action) => {
+  switch (action.type) {
+    case 'HIDE_POLL':
+      return action.hideCreatePoll
+    default:
+      return state
+  }
+}
+
 export const editDay = (state = {}, action) => {
   switch (action.type) {
     case 'EDIT_DAY':

@@ -47,6 +47,7 @@ class DayEditor extends Component {
                   calendar={days}
                   program={this.props.params.program}
                   editDay={editDay}
+                  hideCreatePoll={false}
                   // initialValues={editDay}
                   onSubmit={ data => {
                     console.log(this.props.params.id)

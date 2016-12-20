@@ -46,6 +46,8 @@ export function profile(state = {}, action) {
         amount: action.amount,
         packageType: action.packageType,
         emailFriend: action.emailFriend,
+        phoneFriend: action.phoneFriend,
+        nameFriend: action.nameFriend,
         share: action.share
       }
     default:

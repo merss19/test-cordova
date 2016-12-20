@@ -31,29 +31,29 @@ class ProfileSignup extends Component {
     }
 
     const programParam = this.props.params.program
-    const { amount, type, promo, emailFriend, share } = this.props.location.query
+    const { amount, type, promo, emailFriend, phoneFriend, nameFriend, share } = this.props.location.query
     const packageType = type
     let program
 
     switch (programParam) {
       case 'hero':
-        program = 1
+        program = '1'
         break
       case 'mommy':
-        program = 2
+        program = '2'
         break
       case 'extremeways':
-        program = 3
+        program = '3'
         break
       case 'tomorrowman':
-        program = 4
+        program = '4'
         break
       default:
         break
     }
 
     const { signup } = this.props
-    signup(program, amount, packageType, promo, emailFriend, share)
+    signup(program, amount, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
   }
 
   statusChangeCallback(response) {
@@ -68,30 +68,30 @@ class ProfileSignup extends Component {
   }
 
   render() {
-    let { amount, packageType, promo, emailFriend, program, share } = this.props
+    let { amount, packageType, promo, emailFriend, program, share, phoneFriend, nameFriend } = this.props
     const { setToken, signup } = this.props
     let programName
     let packageName
     amount = !!amount ? amount : 0
 
-    switch (program) {
-      case 1:
+    switch (program + '') {
+      case '1':
         programName = '#Я ГЕРОЙ'
         break
-      case 2:
+      case '2':
         programName = '#МАМА МОЖЕТ'
         break
-      case 3:
+      case '3':
         programName = '#ЭКСТРЕМАЛЬНАЯ СУШКА'
         break
-      case 4:
+      case '4':
         programName = '#Я ЗАВТРА'
         break
       default:
         programName = 'ЯСЕГОДНЯ'
     }
 
-    switch (packageType) {
+    switch (packageType + '') {
       case '1':
         packageName = '1  человек'
         break
@@ -218,7 +218,7 @@ class ProfileSignup extends Component {
 
                 <hr/>
 
-                <SignupValidationForm onSubmit={data => {
+                <SignupValidationForm email={this.props.location.query.email} onSubmit={data => {
                   email = data.email
                   password = data.password
 
@@ -227,7 +227,12 @@ class ProfileSignup extends Component {
                     return
                   }
 
-                  const payload = { program, email, emailFriend, password, package: packageType }
+                  let payload = { program, email, emailFriend, password, package: packageType }
+                  const name = this.props.location.query.name
+
+                  if (name) {
+                    payload.firstName = name
+                  }
 
                   return userCreate(payload)
                 }}/>
@@ -247,32 +252,44 @@ class ProfileSignup extends Component {
           <br/>
           {!this.props.params.program &&
             <Field name="programValue" id="programValue" options={[
-              { name: '#Я ГЕРОЙ', value: 1},
-              { name: '#МАМА МОЖЕТ', value: 2 },
-              { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: 3 },
-              { name: '#Я ЗАВТРА', value: 4 }
+              { name: '#Я ГЕРОЙ', value: '1'},
+              { name: '#МАМА МОЖЕТ', value: '2' },
+              { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
+              { name: '#Я ЗАВТРА', value: '4' }
             ]} component={SelectProgram} />
           }
           {program !== '4' &&
             <Field name="packageTypeValue" id="packageTypeValue" options={[
-              { name: '1 человек', value: 1},
-              { name: '2 человека', value: 2 },
-              { name: '3 человека', value: 3 }
+              { name: '1 человек', value: '1'},
+              { name: '2 человека', value: '2' },
+              { name: '3 человека', value: '3' }
             ]} component={SelectProgram} />
           }
           {program === '4' &&
-            <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+            <div>
+              <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+              <Field name='phoneFriendValue' id='phoneFriendValue' title='Телефон друга' component={CustomInput} />
+              <Field name='nameFriendValue' id='nameFriendValue' title='Имя друга' component={CustomInput} />
+            </div>
           }
           <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
           <button className="btn btn--action" onClick={() => {
             program = !!program ? program : 1
             packageType = !!packageType ? packageType : 1
-            signup(program, undefined, packageType, promo, emailFriend, share)
-            const payload = {
+
+            signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
+            let payload = {
               program,
               email: email ? email.replace(/ /g,'') : email,
               password, package:
               packageType }
+
+            const name = this.props.location.query.name
+
+            if (name) {
+              payload.firstName = name
+            }
+
             return userCreate(payload)
           }}>
             Продолжить
@@ -306,6 +323,8 @@ const mapStateToProps = state => {
   }
 
   const emailFriend = selector(state, 'emailFriendValue')
+  const phoneFriend = selector(state, 'phoneFriendValue')
+  const nameFriend  = selector(state, 'nameFriendValue')
   promo = selector(state, 'promoValue')
 
   return {
@@ -314,6 +333,8 @@ const mapStateToProps = state => {
     promo,
     amount,
     emailFriend,
+    phoneFriend,
+    nameFriend,
     share
   }
 }

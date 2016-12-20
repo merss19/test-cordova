@@ -57,10 +57,10 @@ class LoginSocial extends Component {
           shareInitial = query[3]
         }
 
-        if (packageTypeInitial && packageTypeInitial) {
-          this.refs.emailModal.show()
-        } else {
+        if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
           this.refs.accModal.show()
+        } else {
+          this.refs.emailModal.show()
         }
         // if (json.errorCode === 1 && json.data && json.data.authToken) {
         //   cookie.save('token', json.data.authToken, { path: '/' })
@@ -78,15 +78,16 @@ class LoginSocial extends Component {
 
   render() {
 
-    const { packageType, program, promo, setToken, signup, email, emailFriend, share } = this.props
+    const { packageType, program, promo, setToken, signup, email, emailFriend, share, phoneFriend, nameFriend } = this.props
 
-    const signupWith = (email, program, packageType, promo, emailFriend) => {
-      signup(program, undefined, packageType, promo, emailFriend, share)
+    const signupWith = (email, program, packageType, promo) => {
+      const pack = program === '4' ? '1' : packageType
+      signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
       const payload = {
         email: email ? email.replace(/ /g,'') : email,
-        emailFriend: emailFriend ? emailFriend.replace(/ /g,'') : emailFriend,
+        //emailFriend: emailFriend ? emailFriend.replace(/ /g,'') : emailFriend,
         program,
-        package: packageType
+        package: pack
       }
 
       const headers = {
@@ -186,22 +187,28 @@ class LoginSocial extends Component {
               <Modal ref='accModal' modalStyle={contentStyle}>
                 <h2>Выберите программу</h2>
                 <br/>
-                <Field name="programValue" id="programValue" options={[
-                  { name: '#Я ГЕРОЙ', value: 1},
-                  { name: '#МАМА МОЖЕТ', value: 2 },
-                  { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: 3 },
-                  { name: '#Я ЗАВТРА', value: 4 }
-                ]} component={SelectProgram} />
+                {!programInitial &&
+                  <Field name="programValue" id="programValue" options={[
+                    { name: '#Я ГЕРОЙ', value: '1'},
+                    { name: '#МАМА МОЖЕТ', value: '2' },
+                    { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
+                    { name: '#Я ЗАВТРА', value: '4' }
+                  ]} component={SelectProgram} />
+                }
                 {program !== '4' &&
                   <Field name="packageTypeValue" id="packageTypeValue" options={[
-                    { name: '1 человек', value: 1},
-                    { name: '2 человека', value: 2 },
-                    { name: '3 человека', value: 3 }
+                    { name: '1 человек', value: '1'},
+                    { name: '2 человека', value: '2' },
+                    { name: '3 человека', value: '3' }
                   ]} component={SelectProgram} />
                 }
                 <Field name='emailValue' id='emailValue' title='Email' component={CustomInput} />
                 {program === '4' &&
-                  <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+                  <div>
+                    <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+                    <Field name='phoneFriendValue' id='phoneFriendValue' title='Телефон друга' component={CustomInput} />
+                    <Field name='nameFriendValue' id='nameFriendValue' title='Имя друга' component={CustomInput} />
+                  </div>
                 }
                 <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
                 <button className="btn btn--action" onClick={loginVk}>
@@ -245,6 +252,8 @@ const mapStateToProps = state => {
   const email = selector(state, 'emailValue')
   promo = promoInitial ? promoInitial : selector(state, 'promoValue')
   const emailFriend = selector(state, 'emailFriendValue')
+  const phoneFriend = selector(state, 'phoneFriendValue')
+  const nameFriend  = selector(state, 'nameFriendValue')
 
   return {
     program: programInitial ? programInitial : program,
@@ -252,6 +261,8 @@ const mapStateToProps = state => {
     promo,
     email,
     emailFriend,
+    phoneFriend,
+    nameFriend,
     share: share ? share : shareInitial
   }
 }

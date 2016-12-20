@@ -33,7 +33,7 @@ export const receivePayment = (payment, json) => {
 
 const fetchPayment = partialState => dispatch => {
   const { token, profile, payment } = partialState
-  const { program, packageType, promo, emailFriend, share } = profile
+  const { program, packageType, promo, emailFriend, phoneFriend, nameFriend, share } = profile
   dispatch(requestPayment(payment))
 
   return fetch(`${api}/payment/payment-get`, {
@@ -69,6 +69,14 @@ const fetchPayment = partialState => dispatch => {
 
       if (!!emailFriend) {
         payload.data.tomorrowManEmail = emailFriend.replace(/ /g,'')
+      }
+
+      if (!!phoneFriend) {
+        payload.data.tomorrowManPhone = phoneFriend
+      }
+
+      if (!!nameFriend) {
+        payload.data.tomorrowManName = nameFriend
       }
 
       let data = new FormData()

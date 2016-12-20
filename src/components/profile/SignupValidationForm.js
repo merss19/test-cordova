@@ -27,12 +27,20 @@ class SignupValidationForm extends Component {
       contentStyle.width = '300px'
     }
   }
-  
+
+  componentDidMount() {
+    const { change, email } = this.props
+
+    if (email) {
+      change('email', email)
+    }
+  }
+
   render() {
     const { error, handleSubmit, packageType, program, onSubmit, promo, setToken } = this.props
 
     const loginVk = () => {
-      if (program && packageType) {
+      if (program) {
         window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk?type=${packageType},${program},${promo}&display=page&response_type=code`
       } else {
         window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
@@ -42,7 +50,7 @@ class SignupValidationForm extends Component {
     const redirectFb = () => {
       let uri
 
-      if (program && packageType) {
+      if (program) {
         uri = encodeURI(`${host}/social/fb?type=${packageType},${program},${promo}`)
       } else {
         uri = encodeURI(`${host}/social/fb`)
