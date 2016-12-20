@@ -40,9 +40,12 @@ class SignupValidationForm extends Component {
     const { error, handleSubmit, packageType, program, onSubmit, promo, setToken } = this.props
 
     const loginVk = () => {
-      cookie.save('packageType', packageType, { path: '/' })
-      cookie.save('program', program, { path: '/' })
-      cookie.save('promo', promo, { path: '/' })
+      if (packageType) {
+        cookie.save('packageType', packageType, { path: '/' })
+      if (program)
+        cookie.save('program', program, { path: '/' })
+      if (promo)
+        cookie.save('promo', promo, { path: '/' })
 
       window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
     }
