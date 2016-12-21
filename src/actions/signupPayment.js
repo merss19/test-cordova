@@ -36,7 +36,7 @@ const fetchPayment = partialState => dispatch => {
   const { program, packageType, promo, emailFriend, phoneFriend, nameFriend, share } = profile
   dispatch(requestPayment(payment))
 
-  return fetch(`${api}/payment/payment-get`, {
+  return fetch(`${api}/payment/payment-get-info`, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -59,9 +59,7 @@ const fetchPayment = partialState => dispatch => {
         }
       }
 
-      if (!!promo) {
-        payload.data.promoName = promo
-      }
+      payload.data.promoName = promo || cookie.load('promo')
 
       if (!!promoVisit.getPromoSessionId()) {
         payload.data.promoSession = promoVisit.getPromoSessionId()

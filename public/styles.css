@@ -18,6 +18,14 @@ div {
   outline: 0
 }
 
+button {
+  outline: 0
+}
+
+#payment-entry {
+  height: 720px;
+}
+
 /*react-draft-wysiwyg styles*/
 
 .home-root {

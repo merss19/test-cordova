@@ -11,7 +11,7 @@ class SuccessProfile extends Component {
   render() {
     return (
       <LoadingView
-        title="Оплата прошла успешно! Вам придет подтверждение об оплате с кодом на ваш Email"
+        title="Оплата прошла успешно! Вам придет подтверждение об оплате с кодом на ваш email"
         logout={true}
       />
     )

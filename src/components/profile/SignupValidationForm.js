@@ -161,8 +161,8 @@ const validate = data => {
     case data.password.length > 20:
       errors.password = 'Поле пароля должно быть короче 20 символов'
       break
-    case !/^[A-Za-z0-9!@#$%^&*()_]{6,20}$/.test(data.password):
-      errors.password = 'Поле пароля может содержать только буквы английского алфавита, цифры и какой-нибудь из знаков !@#$%^&*()_'
+    case /["]/g.test(data.password):
+      errors.password = 'Поле пароля не должно содержать знак "'
       break
     default:
       break
@@ -174,9 +174,29 @@ const validate = data => {
   return errors
 }
 
+const asyncValidate = values => {
+  return fetch(`${api}/user/user-check`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ email: values.email })
+  })
+  .then(response => response.json())
+  .then(json => {
+    console.log(json)
+    if (json.data) {
+      throw { email: 'Такой email уже существует' }
+    }
+  })
+}
+
 SignupValidationForm = reduxForm({
   form: 'signupFormValidation',
-  validate
+  validate,
+  asyncValidate,
+  asyncBlurFields: [ 'email' ]
 })(SignupValidationForm)
 
 const selector = formValueSelector('signupFormValidation')

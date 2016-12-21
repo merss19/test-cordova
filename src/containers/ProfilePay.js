@@ -32,16 +32,12 @@ class ProfilePay extends Component {
     dispatch(actions.fetchPaymentIfNeeded(selectedPayment))
   }
 
-  // componentDidUpdate() {
-  //   const { payment, change } = this.props
-  //   const isEmpty = payment === undefined || payment.data === undefined
-  //   console.log(payment)
-  //   if (!isEmpty && payment.data) {
-  //     change('emailFriend', payment.data.tomorrowManEmail)
-  //     change('phoneFriend', payment.data.tomorrowManPhone)
-  //     change('nameFriend', payment.data.tomorrowManName)
-  //   }
-  // }
+  componentDidUpdate() {
+    const { payment, change, emailFriend, phoneFriend, nameFriend } = this.props
+    change('emailFriend', emailFriend)
+    change('phoneFriend', phoneFriend)
+    change('nameFriend', nameFriend)
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedPayment !== this.props.selectedPayment) {
@@ -60,7 +56,8 @@ class ProfilePay extends Component {
 
     if (!isEmpty && payment.data && payment.data.txId) {
       amount = payment.data.amount
-      program = payment.data.program + ''
+      if (!cookie.load('general'))
+        program = payment.data.program + ''
 
       switch (payment.data.program + '') {
         case '2':
@@ -132,6 +129,10 @@ class ProfilePay extends Component {
         payload.data.promoSession = promoVisit.getPromoSessionId()
       }
 
+      console.log(emailFriend)
+      console.log(phoneFriend)
+      console.log(nameFriend)
+
       if (!!emailFriend) {
         payload.data.tomorrowManEmail = emailFriend
       }
@@ -146,6 +147,9 @@ class ProfilePay extends Component {
 
       let data = new FormData()
       data.append("json", JSON.stringify(payload))
+
+      console.log('<lllllllllll===)==0')
+      console.log(payload)
 
       return fetch(`${api}/payment/payment-create`, {
         headers: {
@@ -172,7 +176,7 @@ class ProfilePay extends Component {
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <Header burger={false} />
               <br/>
-              <div className="entry entry--sign-up">
+              <div id="payment-entry" className="entry entry--sign-up">
                 <div className="entry__inner mb60">
                   <div className="entry-info">
                     <div className="entry-info__inner">
@@ -213,12 +217,14 @@ class ProfilePay extends Component {
                   <Modal ref='accModal' modalStyle={contentStyle}>
                     <h2>{ program === '4' ? 'Введите новые данные о друге' : 'Выберите количество человек' }</h2>
                     <br/>
-                    {/* <Field name="program" id="programValue" options={[
-                      { name: '#Я ГЕРОЙ', value: '1'},
-                      { name: '#МАМА МОЖЕТ', value: '2' },
-                      { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
-                      { name: '#Я ЗАВТРА', value: '4' }
-                    ]} component={SelectProgram} /> */}
+                    {cookie.load('general') &&
+                      <Field name="program" id="programValue" options={[
+                        { name: '#Я ГЕРОЙ', value: '1'},
+                        { name: '#МАМА МОЖЕТ', value: '2' },
+                        { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
+                        { name: '#Я ЗАВТРА', value: '4' }
+                      ]} component={SelectProgram} />
+                    }
                     {program !== '4' &&
                       <Field name="packageType" id="packageTypeValue" options={[
                         { name: '1 человек', value: '1'},
@@ -235,7 +241,22 @@ class ProfilePay extends Component {
                     }
                     <Field name='promo' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
                     <button className="btn btn--action" onClick={() => {
-                        return paymentCreate()
+                      return fetch(`${api}/day/package-get`, {
+                        headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json'
+                        },
+                        method: 'POST',
+                        body: JSON.stringify({ promoName: promo })
+                      })
+                      .then(response => response.json())
+                      .then(json => {
+                        if (json.errorCode === 1) {
+                          paymentCreate()
+                        } else {
+                          this.refs.errorPromoModal.show()
+                        }
+                      })
                     }}>
                       Обновить
                     </button>
@@ -245,6 +266,17 @@ class ProfilePay extends Component {
                   </Modal>
                   <Modal ref='successModal' modalStyle={contentStyle}>
                     <h2>Изменения сохранены</h2>
+                    <br/>
+                    <button className="btn btn--action" onClick={() => this.refs.successModal.hide()}>
+                      Продолжить
+                    </button>
+                  </Modal>
+                  <Modal ref='errorPromoModal' modalStyle={contentStyle}>
+                    <h2>Промокод недействителен</h2>
+                    <br/>
+                    <button className="btn btn--action" onClick={() => this.refs.errorPromoModal.hide()}>
+                      Продолжить
+                    </button>
                   </Modal>
                 </div>
               </div>
@@ -279,11 +311,19 @@ const mapStateToProps = state => {
   if (selector(state, 'packageType'))
     packageType = program === '4' ? 1 : selector(state, 'packageType')
 
-  if (program === '4') {
-    emailFriend = selector(state, 'emailFriend')
-    phoneFriend = selector(state, 'phoneFriend')
-    nameFriend  = selector(state, 'nameFriend')
+  console.log(payment)
+  if ((!cookie.load('general') && payment && payment.data && payment.data.program + '' === '4')
+    || (cookie.load('general') && program + '' === '4')) {
+    console.log(selector(state, 'emailFriend'))
+    const friend = payment && payment.data
+      && payment.data.tomorrowManEmails && payment.data.tomorrowManEmails[0]
+      ? payment.data.tomorrowManEmails[0] : {}
+    emailFriend = selector(state, 'emailFriend') || friend.email
+    phoneFriend = selector(state, 'phoneFriend') || friend.phone
+    nameFriend  = selector(state, 'nameFriend') || friend.name
   }
+
+  console.log(emailFriend)
 
   if (selector(state, 'promo'))
     promo = selector(state, 'promo')

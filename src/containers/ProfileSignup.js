@@ -11,6 +11,7 @@ import { api } from '../config.js'
 import Modal from 'boron/DropModal'
 import CustomInput from '../components/componentKit/CustomInput'
 import InputProfile from '../components/componentKit/InputProfile'
+import InputProfilePhone from '../components/componentKit/InputProfilePhone'
 import SelectProgram from '../components/componentKit/SelectProgram'
 
 let contentStyle = {
@@ -37,6 +38,7 @@ class ProfileSignup extends Component {
     let program
 
     cookie.save('share', share, { path: '/' })
+    cookie.save('promo', promo, { path: '/' })
 
     switch (programParam) {
       case 'hero':
@@ -55,7 +57,11 @@ class ProfileSignup extends Component {
         break
     }
 
-    cookie.save('program', program, { path: '/' })
+    if (program) {
+      cookie.save('program', program, { path: '/' })
+    } else {
+      cookie.save('general', true, { path: '/' })
+    }
 
     const { signup } = this.props
     signup(program, amount, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
@@ -284,7 +290,7 @@ class ProfileSignup extends Component {
           {program === '4' &&
             <div>
               <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
-              <Field name='phoneFriendValue' id='phoneFriendValue' placeholder='Телефон друга' component={InputProfile} />
+              <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
               <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
             </div>
           }
@@ -293,20 +299,34 @@ class ProfileSignup extends Component {
             program = !!program ? program : 1
             packageType = !!packageType ? packageType : 1
 
-            signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
-            let payload = {
-              program,
-              email: email ? email.replace(/ /g,'') : email,
-              password, package:
-              packageType }
+            return fetch(`${api}/day/package-get`, {
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              method: 'POST',
+              body: JSON.stringify({ promoName: promo })
+            })
+            .then(response => response.json())
+            .then(json => {
+              if (json.errorCode === 1) {
+                signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
+                let payload = {
+                  program,
+                  email: email ? email.replace(/ /g,'') : email,
+                  password, package:
+                  packageType }
 
-            const name = this.props.location.query.name
+                const name = this.props.location.query.name
 
-            if (name) {
-              payload.firstName = name
-            }
-
-            return userCreate(payload)
+                if (name) {
+                  payload.firstName = name
+                }
+                userCreate(payload)
+              } else {
+                this.refs.errorPromoModal.show()
+              }
+            })
           }}>
             Продолжить
           </button>
@@ -319,6 +339,13 @@ class ProfileSignup extends Component {
         </Modal>
         <Modal ref='errorEmailModal' modalStyle={contentStyle}>
           <h2>Введенный вами email уже существует</h2>
+        </Modal>
+        <Modal ref='errorPromoModal' modalStyle={contentStyle}>
+          <h2>Промокод недействителен</h2>
+          <br/>
+          <button className="btn btn--action" onClick={() => this.refs.errorPromoModal.hide()}>
+            Продолжить
+          </button>
         </Modal>
       </div>
     )

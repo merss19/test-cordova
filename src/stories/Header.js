@@ -40,6 +40,7 @@ const Header = props => (
           cookie.remove('packageType', { path: '/' })
           cookie.remove('promo', { path: '/' })
           cookie.remove('share', { path: '/' })
+          cookie.remove('general', { path: '/' })
           browserHistory.push('/')
         }}>
           Выйти

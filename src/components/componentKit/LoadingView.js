@@ -20,6 +20,7 @@ const LoadingView = ({title, logout}) => (
                 cookie.remove('packageType', { path: '/' })
                 cookie.remove('promo', { path: '/' })
                 cookie.remove('share', { path: '/' })
+                cookie.remove('general', { path: '/' })
                 browserHistory.push('/')
               }}>
                 Продолжить

@@ -11,6 +11,7 @@ import { api, host } from '../../config.js'
 
 import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
+import InputProfilePhone from '../componentKit/InputProfilePhone'
 import SelectProgram from '../componentKit/SelectProgram'
 
 let contentStyle = {
@@ -73,8 +74,7 @@ class LoginSocial extends Component {
   }
 
   render() {
-
-    const { packageType, program, promo, setToken, signup, share, phoneFriend, nameFriend } = this.props
+    const { packageType, handleSubmit, program, promo, setToken, signup, share, phoneFriend, nameFriend } = this.props
     let { email, emailFriend } = this.props
 
     const signupWith = (email, program, packageType, promo) => {
@@ -164,7 +164,7 @@ class LoginSocial extends Component {
         <div className="entry entry--sign-in">
 
           <div className="entry__inner">
-            <div className="entry__box">
+            <form onSubmit={handleSubmit(loginVk)} className="entry__box">
 
               <div className="entry-form">
 
@@ -214,12 +214,12 @@ class LoginSocial extends Component {
                 {program === '4' &&
                   <div>
                     <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
-                    <Field name='phoneFriendValue' id='phoneFriendValue' placeholder='Телефон друга' component={InputProfile} />
+                    <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
                     <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
                   </div>
                 }
-                <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
-                <button className="btn btn--action" onClick={loginVk}>
+                <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+                <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>
               </Modal>
@@ -232,7 +232,7 @@ class LoginSocial extends Component {
               <Modal ref='errorEmailModal' modalStyle={contentStyle}>
                 <h2>Введенный вами email уже существует</h2>
               </Modal>
-            </div>
+            </form>
           </div>
 
         </div>
@@ -242,49 +242,86 @@ class LoginSocial extends Component {
   }
 }
 
-// const validate = data => {
-//   const errors = {}
-//
-//   if (data.email)
-//     data.email = data.email.replace(/ /g,'')
-//   if (data.emailFriendValue)
-//     data.emailFriendValue = data.emailFriendValue.replace(/ /g,'')
-//
-//   switch (true) {
-//     case !data.email:
-//       errors.email = 'Email должен быть заполнен'
-//       break
-//     case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.email):
-//       errors.email = 'Email заполнен неправильно, проверьте его еще раз'
-//       break
-//     default:
-//       break
-//   }
-//
-//   if (data.program === '4') {
-//     switch (true) {
-//       case !data.emailFriendValue:
-//         errors.emailFriendValue = 'Email должен быть заполнен'
-//         break
-//       case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.emailFriendValue):
-//         errors.emailFriendValue = 'Email заполнен неправильно, проверьте его еще раз'
-//         break
-//       default:
-//         break
-//     }
-//
-//     if (!data.phoneFriendValue)
-//       errors.phoneFriendValue = 'Телефон друга должен быть заполнен'
-//
-//     if (!data.nameFriendValue)
-//       errors.nameFriendValue = 'Имя друга должно быть заполнено'
-//   }
-//
-//   return errors
-// }
+const validate = data => {
+  const errors = {}
+
+  if (data.emailValue)
+    data.emailValue = data.emailValue.replace(/ /g,'')
+  if (data.emailFriendValue)
+    data.emailFriendValue = data.emailFriendValue.replace(/ /g,'')
+
+  switch (true) {
+    case !data.emailValue:
+      errors.emailValue = 'Email должен быть заполнен'
+      break
+    case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.emailValue):
+      errors.emailValue = 'Email заполнен неправильно, проверьте его еще раз'
+      break
+    default:
+      break
+  }
+
+  if (data.program === '4') {
+    switch (true) {
+      case !data.emailFriendValue:
+        errors.emailFriendValue = 'Email должен быть заполнен'
+        break
+      case !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(data.emailFriendValue):
+        errors.emailFriendValue = 'Email заполнен неправильно, проверьте его еще раз'
+        break
+      default:
+        break
+    }
+
+    if (!data.phoneFriendValue)
+      errors.phoneFriendValue = 'Телефон друга должен быть заполнен'
+
+    if (!data.nameFriendValue)
+      errors.nameFriendValue = 'Имя друга должно быть заполнено'
+  }
+
+  return errors
+}
+
+const asyncValidate = values => {
+  return fetch(`${api}/user/user-check`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ email: values.emailValue })
+  })
+  .then(response => response.json())
+  .then(json => {
+    const emailExists = json.data
+    return fetch(`${api}/day/package-get`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ promoName: values.promoValue })
+    })
+    .then(response => response.json())
+    .then(json => {
+      let error = {}
+      if (json.errorCode !== 1)
+        error.promoValue = 'Промокод недействителен'
+      if (emailExists)
+        error.emailValue = 'Такой email уже существует'
+
+      if (Object.keys(error).length > 0)
+        throw error
+    })
+  })
+}
 
 LoginSocial = reduxForm({
-  form: 'loginSocial'
+  form: 'loginSocial',
+  validate,
+  asyncValidate,
+  asyncBlurFields: [ 'emailValue', 'promoValue' ]
 })(LoginSocial)
 
 const selector = formValueSelector('loginSocial')
