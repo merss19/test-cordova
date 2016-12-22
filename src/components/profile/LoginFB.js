@@ -103,7 +103,7 @@ class LoginFB extends Component {
 
       const payload = {
         email: email ? email.replace(/ /g,'') : email,
-        program,
+        program: program ? program : '1',
         package: pack }
 
       const headers = {
@@ -145,7 +145,7 @@ class LoginFB extends Component {
                   throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
                 }
               })
-          } else if (json.errorCode = 129) {
+          } else if (json.errorCode === 129) {
             this.refs.loadingModal.hide()
             this.refs.errorEmailModal.show()
           } else {
@@ -241,9 +241,17 @@ class LoginFB extends Component {
               </Modal>
               <Modal ref='errorModal' contentStyle={contentStyle}>
                 <h2>Что-то пошло не так, попробуйте снова</h2>
+                <br/>
+                <button className="btn btn--action" onClick={() => this.refs.errorModal.hide()}>
+                  Продолжить
+                </button>
               </Modal>
               <Modal ref='errorEmailModal' contentStyle={contentStyle}>
                 <h2>Введенный вами email уже существует</h2>
+                <br/>
+                <button className="btn btn--action" onClick={() => this.refs.errorEmailModal.hide()}>
+                  Продолжить
+                </button>
               </Modal>
             </form>
           </div>

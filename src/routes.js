@@ -86,6 +86,8 @@ const requirePayAuth = () => {
         browserHistory.push('/')
       }
     })
+  } else {
+    browserHistory.push('/')
   }
 }
 
