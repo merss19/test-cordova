@@ -2,6 +2,7 @@ export * from './taskDay'
 export * from './signupPayment'
 export * from './profile'
 export * from './days'
+export * from './pendingProfiles'
 
 export const CREATE_PROFILE = 'CREATE_PROFILE'
 export const SET_TOKEN      = 'SET_TOKEN'

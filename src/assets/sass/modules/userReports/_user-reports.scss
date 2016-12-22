@@ -1,0 +1,30 @@
+@import "../../_theme";
+
+.user-reports {
+  margin: 50px 0;
+
+  &-menu {
+    width: 250px;
+    margin: 50px auto 15px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+    &__item {
+      padding: 10px;
+      display: block;
+      color: white;
+      text-align: left;
+      text-decoration: none;
+
+      &:hover, &:focus {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      &_active {
+        background-color: lighten($c-l-blue, 1%)
+      }
+    }
+  }
+
+}

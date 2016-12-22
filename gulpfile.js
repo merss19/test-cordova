@@ -136,3 +136,8 @@ gulp.task('server', ['build'], function() {
   });
 
 });
+
+
+gulp.task('sass:watch', ['build'], function() {
+  gulp.watch(path.src.sass + '/**/*.scss', ['build:sass']);
+});

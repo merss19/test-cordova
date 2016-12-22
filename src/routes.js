@@ -21,6 +21,9 @@ import AdminLogin from './containers/AdminLogin'
 
 import MinionLogin from './containers/MinionLogin'
 
+import PendingProfile from './containers/PendingProfile'
+import PendingProfiles from './containers/PendingProfiles'
+
 // import TodayTask from './containers/TodayTask'
 // import Reports from './containers/Reports'
 // import Faq from './components/Faq'
@@ -121,6 +124,9 @@ export default (
     </Route>
     <Route path='userReports'>
       <IndexRoute component={MinionLogin} onEnter={requireMinionAuth} />
+
+      <Route path='pendingProfiles' component={PendingProfiles} onEnter={requireMinionAuth} />
+      <Route path='pendingProfiles/:userId' component={PendingProfile} onEnter={requireMinionAuth} />
     </Route>
 
     {/* <Route path='superadmin'>
