@@ -3,6 +3,7 @@ export * from './signupPayment'
 export * from './profile'
 export * from './days'
 export * from './pendingProfiles'
+export * from './pendingInsuranceProfiles'
 
 export const CREATE_PROFILE = 'CREATE_PROFILE'
 export const SET_TOKEN      = 'SET_TOKEN'

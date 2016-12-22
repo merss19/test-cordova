@@ -24,6 +24,9 @@ import MinionLogin from './containers/MinionLogin'
 import PendingProfile from './containers/PendingProfile'
 import PendingProfiles from './containers/PendingProfiles'
 
+import PendingInsuranceProfile from './containers/PendingInsuranceProfile'
+import PendingInsuranceProfiles from './containers/PendingInsuranceProfiles'
+
 // import TodayTask from './containers/TodayTask'
 // import Reports from './containers/Reports'
 // import Faq from './components/Faq'
@@ -127,6 +130,9 @@ export default (
 
       <Route path='pendingProfiles' component={PendingProfiles} onEnter={requireMinionAuth} />
       <Route path='pendingProfiles/:userId' component={PendingProfile} onEnter={requireMinionAuth} />
+
+      <Route path='pendingInsurance' component={PendingInsuranceProfiles} onEnter={requireMinionAuth} />
+      <Route path='pendingInsurance/:userId/:insuranceId' component={PendingInsuranceProfile} onEnter={requireMinionAuth} />
     </Route>
 
     {/* <Route path='superadmin'>
