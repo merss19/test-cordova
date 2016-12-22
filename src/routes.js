@@ -56,7 +56,7 @@ const getRole = role => {
   })
 }
 
-const requirePayAuth = () => {
+const requirePayAuth = fromPay => {
   const token = cookie.load('token')
   if (token) {
     return fetch(`${api}/user/user-get`, {
@@ -82,11 +82,15 @@ const requirePayAuth = () => {
         browserHistory.push('/')
       }
     })
+  } else if (fromPay) {
+    browserHistory.push('/')
   }
 }
 
 const requireAuth = () => getRole(3)
 const requireAdminAuth = () => getRole(1)
+const requireFromPayAuth = () => requirePayAuth(true)
+const requireFromLoginAuth = () => requirePayAuth(false)
 
 export default (
   <Route path='/' onEnter={promoWatch}>
@@ -102,10 +106,9 @@ export default (
     </Route> */}
     <Route path='social/vk' component={LoginSocial} />
     <Route path='social/fb' component={LoginFB} />
-    {/* <Route path='social/vk/second' component={SignupSocial} /> */}
     <Route path='signup'>
-      <IndexRoute component={ProfileSignup} onEnter={requirePayAuth} />
-      <Route path='pay' component={ProfilePay} onEnter={requirePayAuth} />
+      <IndexRoute component={ProfileSignup} onEnter={requireFromLoginAuth} />
+      <Route path='pay' component={ProfilePay} onEnter={requireFromPayAuth} />
       <Route path='pay/success' component={SuccessProfile} onEnter={requireAuth} />
       <Route path='pay/success/friend' component={SuccessTomorrowProfile} />
     </Route>

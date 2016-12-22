@@ -210,7 +210,7 @@ class LoginSocial extends Component {
                     { name: '3 человека', value: '3' }
                   ]} component={SelectProgram} />
                 }
-                <Field name='emailValue' id='emailValue' title='Email' component={CustomInput} />
+                <Field name='emailValue' id='emailValue' placeholder='Email' component={InputProfile} />
                 {program === '4' &&
                   <div>
                     <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
@@ -218,7 +218,7 @@ class LoginSocial extends Component {
                     <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
                   </div>
                 }
-                <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+                <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
                 <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>

@@ -58,10 +58,10 @@ const fetchPayment = partialState => dispatch => {
           isShare: share ? share : false
         }
       }
-
+      
       const promoName = promo || cookie.load('promoName')
 
-      if (!promoName && promoName === "undefined")
+      if (promoName && promoName !== "undefined")
         payload.data.promoName = promoName
 
       if (!!promoVisit.getPromoSessionId())
