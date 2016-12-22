@@ -112,10 +112,10 @@ export default (
       <Route path='pay/success' component={SuccessProfile} onEnter={requireAuth} />
       <Route path='pay/success/friend' component={SuccessTomorrowProfile} />
     </Route>
-    <Route path='signup/:program' component={ProfileSignup} onEnter={requirePayAuth} />
+    <Route path='signup/:program' component={ProfileSignup} onEnter={requireFromLoginAuth} />
     <Route path='restore'>
-      <IndexRoute component={ProfilePasswordForget} onEnter={requirePayAuth} />
-      <Route path='create' component={ProfilePasswordRestore} onEnter={requirePayAuth} />
+      <IndexRoute component={ProfilePasswordForget} onEnter={requireFromLoginAuth} />
+      <Route path='create' component={ProfilePasswordRestore} onEnter={requireFromLoginAuth} />
     </Route>
     <Route path='partner'>
       <IndexRoute component={PartnerLogin} />
