@@ -106,7 +106,7 @@ class ProfileSignup extends Component {
     if (program + '' === '4') {
       packageName = 'Подарок другу'
       if (amount === 0)
-        amount = 3000
+        amount = 2000
     } else {
       switch (packageType + '') {
         case '1':
@@ -338,9 +338,17 @@ class ProfileSignup extends Component {
         </Modal>
         <Modal ref='errorModal' contentStyle={contentStyle}>
           <h2>Что-то пошло не так, попробуйте снова</h2>
+          <br/>
+          <button className="btn btn--action" onClick={() => this.refs.errorModal.hide()}>
+            Продолжить
+          </button>
         </Modal>
         <Modal ref='errorEmailModal' contentStyle={contentStyle}>
           <h2>Введенный вами email уже существует</h2>
+          <br/>
+          <button className="btn btn--action" onClick={() => this.refs.errorEmailModal.hide()}>
+            Продолжить
+          </button>
         </Modal>
         <Modal ref='errorPromoModal' contentStyle={contentStyle}>
           <h2>Промокод недействителен</h2>

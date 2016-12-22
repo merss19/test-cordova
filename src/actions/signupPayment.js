@@ -59,23 +59,22 @@ const fetchPayment = partialState => dispatch => {
         }
       }
 
-      payload.data.promoName = promo || cookie.load('promoName')
+      const promoName = promo || cookie.load('promoName')
 
-      if (!!promoVisit.getPromoSessionId()) {
+      if (!promoName && promoName === "undefined")
+        payload.data.promoName = promoName
+
+      if (!!promoVisit.getPromoSessionId())
         payload.data.promoSession = promoVisit.getPromoSessionId()
-      }
 
-      if (!!emailFriend) {
+      if (!!emailFriend)
         payload.data.tomorrowManEmail = emailFriend.replace(/ /g,'')
-      }
 
-      if (!!phoneFriend) {
+      if (!!phoneFriend)
         payload.data.tomorrowManPhone = phoneFriend
-      }
 
-      if (!!nameFriend) {
+      if (!!nameFriend)
         payload.data.tomorrowManName = nameFriend
-      }
 
       let data = new FormData()
       data.append("json", JSON.stringify(payload))
