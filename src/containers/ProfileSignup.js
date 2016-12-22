@@ -8,7 +8,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import cookie from 'react-cookie'
 import SignupValidationForm from '../components/profile/SignupValidationForm'
 import { api } from '../config.js'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import CustomInput from '../components/componentKit/CustomInput'
 import InputProfile from '../components/componentKit/InputProfile'
 import InputProfilePhone from '../components/componentKit/InputProfilePhone'
@@ -271,7 +271,7 @@ class ProfileSignup extends Component {
         </div>
 
 
-        <Modal ref='accModal' modalStyle={contentStyle}>
+        <Modal ref='accModal' contentStyle={contentStyle}>
           <h2>Выберите программу</h2>
           <br/>
           {!this.props.params.program &&
@@ -333,16 +333,16 @@ class ProfileSignup extends Component {
             Продолжить
           </button>
         </Modal>
-        <Modal ref='loadingModal' modalStyle={contentStyle}>
+        <Modal ref='loadingModal' contentStyle={contentStyle}>
           <h2>Подождите...</h2>
         </Modal>
-        <Modal ref='errorModal' modalStyle={contentStyle}>
+        <Modal ref='errorModal' contentStyle={contentStyle}>
           <h2>Что-то пошло не так, попробуйте снова</h2>
         </Modal>
-        <Modal ref='errorEmailModal' modalStyle={contentStyle}>
+        <Modal ref='errorEmailModal' contentStyle={contentStyle}>
           <h2>Введенный вами email уже существует</h2>
         </Modal>
-        <Modal ref='errorPromoModal' modalStyle={contentStyle}>
+        <Modal ref='errorPromoModal' contentStyle={contentStyle}>
           <h2>Промокод недействителен</h2>
           <br/>
           <button className="btn btn--action" onClick={() => this.refs.errorPromoModal.hide()}>

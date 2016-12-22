@@ -8,7 +8,7 @@ import LoadingView from '../components/componentKit/LoadingView'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import cookie from 'react-cookie'
 import Header from '../stories/Header'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import { promoVisit } from '../actions/promo/promoWatch'
 import CustomInput from '../components/componentKit/CustomInput'
 import InputProfile from '../components/componentKit/InputProfile'
@@ -277,7 +277,7 @@ class ProfilePay extends Component {
                     </div>
                   }
 
-                  <Modal ref='accModal' modalStyle={contentStyle}>
+                  <Modal ref='accModal' contentStyle={contentStyle}>
                     <h2>{ program === '4' ? 'Введите новые данные о друге' : 'Выберите количество человек' }</h2>
                     <br/>
                     {cookie.load('general') &&
@@ -324,17 +324,17 @@ class ProfilePay extends Component {
                       Обновить
                     </button>
                   </Modal>
-                  <Modal ref='loadingModal' modalStyle={contentStyle}>
+                  <Modal ref='loadingModal' contentStyle={contentStyle}>
                     <h2>Подождите...</h2>
                   </Modal>
-                  <Modal ref='successModal' modalStyle={contentStyle}>
+                  <Modal ref='successModal' contentStyle={contentStyle}>
                     <h2>Изменения сохранены</h2>
                     <br/>
                     <button className="btn btn--action" onClick={() => this.refs.successModal.hide()}>
                       Продолжить
                     </button>
                   </Modal>
-                  <Modal ref='errorPromoModal' modalStyle={contentStyle}>
+                  <Modal ref='errorPromoModal' contentStyle={contentStyle}>
                     <h2>Промокод недействителен</h2>
                     <br/>
                     <button className="btn btn--action" onClick={() => this.refs.errorPromoModal.hide()}>

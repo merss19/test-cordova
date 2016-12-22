@@ -6,7 +6,7 @@ import CalendarList from './CalendarList'
 import TaskIntro from './TaskIntro'
 import Menu from './Menu'
 import Exercises from './Exercises'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import SendReportModal from './SendReportModal'
 import { connect } from 'react-redux'
 import { SubmissionError } from 'redux-form'
@@ -70,7 +70,7 @@ class MainComponent extends Component {
                 this.refs.sendReportModal.show()
               }}/>
 
-              <Modal ref='sendReportModal' modalStyle={contentStyle}>
+              <Modal ref='sendReportModal' contentStyle={contentStyle}>
                 <SendReportModal onSubmit={(data) => {
                   return fetch(`${api}/user/userTask-create`, {
                       headers: {

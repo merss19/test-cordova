@@ -5,7 +5,7 @@ import { SubmissionError } from 'redux-form'
 import SubmitValidationForm from '../components/profile/SubmitValidationForm'
 import LoadingView from '../components/componentKit/LoadingView'
 import cookie from 'react-cookie'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import moment from 'moment'
 import { api } from '../config.js'
 
@@ -101,10 +101,10 @@ class ProfileCreate extends Component {
                 }
               }
             />
-            <Modal ref='successModal' modalStyle={contentStyle}>
+            <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
             </Modal>
-            <Modal ref='loadingModal' modalStyle={contentStyle}>
+            <Modal ref='loadingModal' contentStyle={contentStyle}>
               <h2>Подождите...</h2>
             </Modal>
           </div>

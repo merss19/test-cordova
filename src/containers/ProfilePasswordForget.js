@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { SubmissionError } from 'redux-form'
 import PasswordForgetValidationForm from '../components/profile/PasswordForgetValidationForm'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import { api, host } from '../config.js'
 
 let contentStyle = {
@@ -144,11 +144,11 @@ class ProfilePasswordForget extends Component {
 
                 <hr/>
 
-                <Modal ref='successModal' modalStyle={contentStyle}>
+                <Modal ref='successModal' contentStyle={contentStyle}>
                   <h2>Письмо с инструкциями отправлено на указанный вами email</h2>
                 </Modal>
 
-                <Modal ref='failModal' modalStyle={contentStyle}>
+                <Modal ref='failModal' contentStyle={contentStyle}>
                   <h2>Пользователь с таким email, не найден</h2>
                 </Modal>
 

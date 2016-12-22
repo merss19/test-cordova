@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 
 let contentStyle = {
   borderRadius: '18px',
@@ -61,7 +61,7 @@ class Exercises extends Component {
                           {exercise.description}
                         </a>
                       </p>
-                      <Modal ref='videoModal' modalStyle={contentStyle}>
+                      <Modal ref='videoModal' contentStyle={contentStyle}>
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/E3Wq9YxqTI4" frameborder="0" allowfullscreen=""></iframe>
                       </Modal>
                     </li>

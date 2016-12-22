@@ -5,7 +5,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import * as actions from '../../actions'
 import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
 
@@ -193,7 +193,7 @@ class LoginFB extends Component {
 
               </div>
 
-              <Modal ref='emailModal' modalStyle={contentStyle}>
+              <Modal ref='emailModal' contentStyle={contentStyle}>
                 <h2>Введите ваш email</h2>
                 <br/>
                 <Field name='emailValue' id='emailValue' placeholder='Email' component={InputProfile} />
@@ -205,7 +205,7 @@ class LoginFB extends Component {
                 </button>
               </Modal>
 
-              <Modal ref='accModal' modalStyle={contentStyle} backdrop={false}>
+              <Modal ref='accModal' contentStyle={contentStyle} backdrop={false}>
                 <h2>Выберите программу</h2>
                 <br/>
                 {!programInitial &&
@@ -236,13 +236,13 @@ class LoginFB extends Component {
                   Продолжить
                 </button>
               </Modal>
-              <Modal ref='loadingModal' modalStyle={contentStyle}>
+              <Modal ref='loadingModal' contentStyle={contentStyle}>
                 <h2>Подождите...</h2>
               </Modal>
-              <Modal ref='errorModal' modalStyle={contentStyle}>
+              <Modal ref='errorModal' contentStyle={contentStyle}>
                 <h2>Что-то пошло не так, попробуйте снова</h2>
               </Modal>
-              <Modal ref='errorEmailModal' modalStyle={contentStyle}>
+              <Modal ref='errorEmailModal' contentStyle={contentStyle}>
                 <h2>Введенный вами email уже существует</h2>
               </Modal>
             </form>

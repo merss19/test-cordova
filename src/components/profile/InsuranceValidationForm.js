@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import InputProfile from '../componentKit/InputProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
 import cookie from 'react-cookie'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
 
 let contentStyle = {
@@ -221,10 +221,10 @@ class InsuranceValidationForm extends Component {
 
         <hr/>
 
-        <Modal ref='failModal' modalStyle={contentStyle}>
+        <Modal ref='failModal' contentStyle={contentStyle}>
           <h2>Что-то пошло не так, поробуйте чуть позже</h2>
         </Modal>
-        <Modal ref='successModal' modalStyle={contentStyle}>
+        <Modal ref='successModal' contentStyle={contentStyle}>
           <h2>Данные отправлены!</h2>
         </Modal>
       </div>
