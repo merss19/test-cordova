@@ -9,6 +9,7 @@ import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import * as actions from '../../actions'
 import InputProfile from '../componentKit/InputProfile'
+import CheckboxAccept from '../componentKit/CheckboxAccept'
 import SelectProgram from '../componentKit/SelectProgram'
 import { api, host } from '../../config.js'
 
@@ -100,6 +101,7 @@ class SignupValidationForm extends Component {
             <Field name='email' id='login[1]' placeholder='Ваш e-mail' component={InputProfile} />
             <Field name='password' id='login[2]' placeholder='Ваш пароль' type='password' component={InputProfile} />
             <Field name='passwordAgain' id='login[3]' placeholder='Пароль повторно' type='password' component={InputProfile} />
+            <Field name='accept' title='Принять условия оферты' id='accept' component={CheckboxAccept} />
           </div>
           {error && <strong>{error}</strong>}
           <button type='submit' className="btn btn--action">
@@ -170,6 +172,9 @@ const validate = data => {
 
   if (data.password !== data.passwordAgain)
     errors.passwordAgain = 'Пароли должны совпадать'
+
+  if (!data.accept)
+    errors.accept = 'Вы должны принять условия оферты'
 
   return errors
 }
