@@ -260,14 +260,16 @@ class ProfilePay extends Component {
                   </div>
 
                   {amount === 0
-                    ? <button className="btn btn--action" onClick={() => {
-                      {payment.data.program + '' === '4'
-                        ? browserHistory.push('/signup/pay/success/friend')
-                        : browserHistory.push('/signup/pay/success')
-                      }
-                    }}>
-                      Продолжить
-                    </button>
+                    ? <div className="entry__box">
+                        <button id="pay-free" className="btn btn--action" onClick={() => {
+                        {payment.data.program + '' === '4'
+                          ? browserHistory.push('/signup/pay/success/friend')
+                          : browserHistory.push('/signup/pay/success')
+                        }
+                      }}>
+                        Продолжить
+                      </button>
+                    </div>
                     : <div className="entry__box">
                         <div className="entry-form">
                           <div id="iframe_parent"/>
