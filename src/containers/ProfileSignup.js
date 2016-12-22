@@ -59,6 +59,7 @@ class ProfileSignup extends Component {
 
     if (program) {
       cookie.save('program', program, { path: '/' })
+      cookie.remove('general', { path: '/' })
     } else {
       cookie.save('general', true, { path: '/' })
     }
@@ -104,7 +105,8 @@ class ProfileSignup extends Component {
 
     if (program + '' === '4') {
       packageName = 'Подарок другу'
-      amount = 3000
+      if (amount === 0)
+        amount = 3000
     } else {
       switch (packageType + '') {
         case '1':
@@ -244,7 +246,7 @@ class ProfileSignup extends Component {
                   email = data.email
                   password = data.password
 
-                  if (!program || !packageType) {
+                  if (!program || !packageType || program === '4') {
                     this.refs.accModal.show()
                     return
                   }

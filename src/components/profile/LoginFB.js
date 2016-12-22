@@ -100,14 +100,19 @@ class LoginFB extends Component {
       this.refs.loadingModal.show()
       const pack = program === '4' ? '1' : packageType
       signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
+
       const payload = {
         email: email ? email.replace(/ /g,'') : email,
         program,
         package: pack }
+
       const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
+
+      console.log('<=========**)===0')
+      console.log(payload)
 
       return fetch(`${api}/user/user-create`, {
           headers,
@@ -155,11 +160,11 @@ class LoginFB extends Component {
     }
 
     const loginFb = () => {
-      signupWith(email, program, packageType, promo, share)
-    }
-
-    const loginFbInitial = () => {
-      signupWith(email, programInitial, packageTypeInitial, promoInitial, shareInitial)
+      if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
+        signupWith(email, program, packageType, promo, share)
+      } else {
+        signupWith(email, programInitial, packageTypeInitial, promoInitial, shareInitial)
+      }
     }
 
     return (
@@ -198,7 +203,7 @@ class LoginFB extends Component {
                 {program === '4' &&
                   <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
                 }
-                <button type="submit" className="btn btn--action" onClick={loginFbInitial}>
+                <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>
               </Modal>
@@ -305,6 +310,7 @@ const asyncValidate = values => {
   })
   .then(response => response.json())
   .then(json => {
+    console.log(json)
     const emailExists = json.data
     return fetch(`${api}/day/package-get`, {
       headers: {

@@ -203,7 +203,8 @@ class ProfilePay extends Component {
                       <button className="btn btn--primary" onClick={() => {
                         this.refs.accModal.show()
                       }}>
-                        { program === '4' ? 'Изменить данные друга' : 'Изменить программу' }
+                        { cookie.load('general') ? 'Изменить программу'
+                          : program === '4' ? 'Изменить данные друга' : 'Изменить пакет' }
                       </button>
                     </div>
                   </div>
