@@ -17,6 +17,10 @@ import SuccessProfile from './components/profile/SuccessProfile'
 import DayEditor from './components/admin/DayEditor'
 import AdminLogin from './containers/AdminLogin'
 
+// Minion containers
+
+import MinionLogin from './containers/MinionLogin'
+
 // import TodayTask from './containers/TodayTask'
 // import Reports from './containers/Reports'
 // import Faq from './components/Faq'
@@ -27,7 +31,6 @@ import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
 
 const getToken = () => {
-  console.log(!cookie.load('role'))
   if (cookie.load('token') && !cookie.load('role'))
     browserHistory.push('/signup/pay/success')
 }
@@ -48,11 +51,12 @@ const getRole = role => {
   .then(json => {
     const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
 
-    if (!isRegistered)
-      browserHistory.push('/')
-
-    if (isRegistered && role === 3 && !json.data[0].paidPackage)
-      browserHistory.push('/signup/pay')
+    if (isRegistered) {
+      if (role === 3 && !json.data[0].paidPackage)
+        browserHistory.push('/signup/pay')
+    } else {
+      browserHistory.push(role === 2 ? '/userReports' : '/')
+    }
   })
 }
 
@@ -83,6 +87,7 @@ const requirePayAuth = () => {
 }
 
 const requireAuth = () => getRole(3)
+const requireMinionAuth = () => getRole(2)
 const requireAdminAuth = () => getRole(1)
 
 export default (
@@ -113,6 +118,9 @@ export default (
     <Route path='partner'>
       <IndexRoute component={PartnerLogin} />
       <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth} />
+    </Route>
+    <Route path='userReports'>
+      <IndexRoute component={MinionLogin} onEnter={requireMinionAuth} />
     </Route>
 
     {/* <Route path='superadmin'>

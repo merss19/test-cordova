@@ -5,7 +5,7 @@ const env = process.env.NODE_ENV || DEVELOPMENT
 
 const api = env === PRODUCTION
   ? ''//add here
-  : 'http://sport.muhanov.net/api'
+  : 'https://api.todayme.ru/api'
 
 const host = env === PRODUCTION
   ? ''//add here

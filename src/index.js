@@ -9,14 +9,16 @@ import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { reducer as reduxFormReducer } from 'redux-form'
 import thunk from 'redux-thunk'
+import createLogger from 'redux-logger'
 
 import * as reducers from './reducers'
 import routes from './routes'
 
 const middleware = [ thunk ]
-// if (process.env.NODE_ENV !== 'production') {
-//   middleware.push(createLogger())
-// }
+
+if (process.env.NODE_ENV !== 'production') {
+  middleware.push(createLogger())
+}
 
 const store = createStore(combineReducers({
   ...reducers,
