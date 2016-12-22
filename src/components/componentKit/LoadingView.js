@@ -18,7 +18,7 @@ const LoadingView = ({title, logout}) => (
                 cookie.remove('role', { path: '/' })
                 cookie.remove('program', { path: '/' })
                 cookie.remove('packageType', { path: '/' })
-                cookie.remove('promo', { path: '/' })
+                cookie.remove('promoName', { path: '/' })
                 cookie.remove('share', { path: '/' })
                 cookie.remove('general', { path: '/' })
                 browserHistory.push('/')

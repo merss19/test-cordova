@@ -46,7 +46,7 @@ class SignupValidationForm extends Component {
       if (program)
         cookie.save('program', program, { path: '/' })
       if (promo)
-        cookie.save('promo', promo, { path: '/' })
+        cookie.save('promoName', promo, { path: '/' })
 
       window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
     }
@@ -190,7 +190,6 @@ const asyncValidate = values => {
   })
   .then(response => response.json())
   .then(json => {
-    console.log(json)
     if (json.data) {
       throw { email: 'Такой email уже существует' }
     }

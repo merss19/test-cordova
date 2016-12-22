@@ -13,6 +13,7 @@ import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
 import LoginFB from './components/profile/LoginFB'
 import SuccessProfile from './components/profile/SuccessProfile'
+import SuccessTomorrowProfile from './components/profile/SuccessTomorrowProfile'
 import DayEditor from './components/admin/DayEditor'
 import AdminLogin from './containers/AdminLogin'
 
@@ -27,7 +28,7 @@ import { promoWatch } from './actions/promo/promoWatch'
 
 const getToken = () => {
   if (cookie.load('token') && !cookie.load('role'))
-    browserHistory.push('/signup/pay/success')
+    browserHistory.push('/signup/pay')
 }
 
 const getRole = role => {
@@ -110,6 +111,7 @@ export default (
       <IndexRoute component={ProfileSignup} onEnter={requirePayAuth} />
       <Route path='pay' component={ProfilePay} onEnter={requirePayAuth} />
       <Route path='pay/success' component={SuccessProfile} onEnter={requireAuth} />
+      <Route path='pay/success/friend' component={SuccessTomorrowProfile} />
     </Route>
     <Route path='signup/:program' component={ProfileSignup} onEnter={requirePayAuth} />
     <Route path='restore'>

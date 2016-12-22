@@ -59,7 +59,7 @@ const fetchPayment = partialState => dispatch => {
         }
       }
 
-      payload.data.promoName = promo || cookie.load('promo')
+      payload.data.promoName = promo || cookie.load('promoName')
 
       if (!!promoVisit.getPromoSessionId()) {
         payload.data.promoSession = promoVisit.getPromoSessionId()

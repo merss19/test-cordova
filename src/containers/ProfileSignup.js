@@ -38,7 +38,7 @@ class ProfileSignup extends Component {
     let program
 
     cookie.save('share', share, { path: '/' })
-    cookie.save('promo', promo, { path: '/' })
+    cookie.save('promoName', promo, { path: '/' })
 
     switch (programParam) {
       case 'hero':

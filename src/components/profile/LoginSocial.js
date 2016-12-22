@@ -61,7 +61,7 @@ class LoginSocial extends Component {
         } else {
           packageTypeInitial = cookie.load('packageType')
           programInitial     = cookie.load('program')
-          promoInitial       = cookie.load('promo')
+          promoInitial       = cookie.load('promoName')
           shareInitial       = cookie.load('share')
 
           if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {

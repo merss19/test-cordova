@@ -111,9 +111,6 @@ class LoginFB extends Component {
         'Content-Type': 'application/json'
       }
 
-      console.log('<=========**)===0')
-      console.log(payload)
-
       return fetch(`${api}/user/user-create`, {
           headers,
           method: 'POST',
@@ -310,7 +307,6 @@ const asyncValidate = values => {
   })
   .then(response => response.json())
   .then(json => {
-    console.log(json)
     const emailExists = json.data
     return fetch(`${api}/day/package-get`, {
       headers: {
