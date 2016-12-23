@@ -1,10 +1,5 @@
 import React, { PropTypes } from 'react'
 import Calendar from '../../stories/task/Calendar'
-import { browserHistory } from 'react-router'
-
-const chooseDay = id => {
-
-}
 
 const CalendarList = ({ calendar }) => (
   <div className="1/3 grid__cell">

@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import Modal from 'boron/FadeModal'
 import cookie from 'react-cookie'
-import { api, host } from '../../config.js'
+import { api } from '../../config.js'
 
 import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
@@ -36,7 +36,6 @@ class LoginSocial extends Component {
 
     const { setToken } = this.props
     code = this.props.location.query.code
-    const socialTypeString = this.props.params.type
     socialNetType = 1
     socialName = 'Vk'
 

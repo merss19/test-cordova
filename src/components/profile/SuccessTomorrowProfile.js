@@ -3,14 +3,11 @@ import { bindActionCreators } from 'redux'
 import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import * as actions from '../../actions'
-import { api, host } from '../../config.js'
-import LoadingView from '../componentKit/LoadingView'
+import { api } from '../../config.js'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import cookie from 'react-cookie'
-import Header from '../../stories/Header'
 import Modal from 'boron/FadeModal'
 import { promoVisit } from '../../actions/promo/promoWatch'
-import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 import InputProfilePhone from '../componentKit/InputProfilePhone'
@@ -28,11 +25,7 @@ class SuccessTomorrowProfile extends Component {
   }
 
   render() {
-    const { payment, isFetching } = this.props
-    let programName
-    let packageName
-    let { recivedPayment, dispatch, program, packageType, amount,
-      emailFriend, promo, share, signup, receivePayment, phoneFriend, nameFriend } = this.props
+    let { dispatch, program, packageType, emailFriend, promo, share, receivePayment, phoneFriend, nameFriend } = this.props
     const paymentCreate = () => {
       this.refs.loadingModal.show()
 

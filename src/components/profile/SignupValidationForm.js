@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import cookie from 'react-cookie'
-import Modal from 'boron/FadeModal'
 import { browserHistory } from 'react-router'
-import { SubmissionError } from 'redux-form'
 import * as actions from '../../actions'
 import InputProfile from '../componentKit/InputProfile'
 import CheckboxAccept from '../componentKit/CheckboxAccept'
-import SelectProgram from '../componentKit/SelectProgram'
 import { api, host } from '../../config.js'
 
 let contentStyle = {
@@ -19,8 +16,6 @@ let contentStyle = {
 }
 
 const FB = window.FB
-let fbPayload = {}
-let fbUserId
 
 class SignupValidationForm extends Component {
   componentWillMount() {
@@ -38,7 +33,7 @@ class SignupValidationForm extends Component {
   }
 
   render() {
-    const { error, handleSubmit, packageType, program, onSubmit, promo, setToken } = this.props
+    const { error, handleSubmit, packageType, program, onSubmit, promo } = this.props
 
     const loginVk = () => {
       if (packageType)
@@ -203,7 +198,6 @@ SignupValidationForm = reduxForm({
   asyncBlurFields: [ 'email' ]
 })(SignupValidationForm)
 
-const selector = formValueSelector('signupFormValidation')
 const mapStateToProps = state => {
   let { program, packageType, promo } = state.profile
 

@@ -10,7 +10,6 @@ import cookie from 'react-cookie'
 import Header from '../stories/Header'
 import Modal from 'boron/FadeModal'
 import { promoVisit } from '../actions/promo/promoWatch'
-import CustomInput from '../components/componentKit/CustomInput'
 import InputProfile from '../components/componentKit/InputProfile'
 import InputProfilePhone from '../components/componentKit/InputProfilePhone'
 import SelectProgram from '../components/componentKit/SelectProgram'
@@ -35,8 +34,7 @@ class ProfilePay extends Component {
   }
 
   componentDidMount() {
-    const { payment, isFetching } = this.props
-    let { dispatch, program, packageType, amount, emailFriend, promo, share, signup, receivePayment, phoneFriend, nameFriend } = this.props
+    let { dispatch, program, packageType, emailFriend, promo, share, receivePayment, phoneFriend, nameFriend } = this.props
 
     if (this.props.location.query && this.props.location.query.fail) {
       let payload = {
@@ -90,7 +88,7 @@ class ProfilePay extends Component {
   }
 
   componentDidUpdate() {
-    const { payment, change, emailFriend, phoneFriend, nameFriend } = this.props
+    const { change, emailFriend, phoneFriend, nameFriend } = this.props
     change('emailFriend', emailFriend)
     change('phoneFriend', phoneFriend)
     change('nameFriend', nameFriend)
@@ -107,7 +105,7 @@ class ProfilePay extends Component {
     const { payment, isFetching } = this.props
     let programName
     let packageName
-    let { recivedPayment, dispatch, program, packageType, amount, emailFriend, promo, share, signup, receivePayment, phoneFriend, nameFriend } = this.props
+    let { dispatch, program, packageType, amount, emailFriend, promo, share, receivePayment, phoneFriend, nameFriend } = this.props
 
     const isEmpty = payment === undefined || payment.data === undefined
 
@@ -262,10 +260,11 @@ class ProfilePay extends Component {
 
                   {amount === 0
                     ? <div className="entry__box">
-                        <button id="pay-free" className="btn btn--action" onClick={() => {
-                        {payment.data.program + '' === '4'
-                          ? browserHistory.push('/signup/pay/success/friend')
-                          : browserHistory.push('/signup/pay/success')
+                      <button id="pay-free" className="btn btn--action" onClick={() => {
+                        if (payment.data.program + '' === '4') {
+                          browserHistory.push('/signup/pay/success/friend')
+                        } else {
+                          browserHistory.push('/signup/pay/success')
                         }
                       }}>
                         Продолжить
@@ -404,6 +403,7 @@ const mapStateToProps = state => {
     phoneFriend: phoneFriend || initialPhoneFriend,
     nameFriend: nameFriend || initialNameFriend,
     promo,
+    share,
     token: userToken.token
   })
 }

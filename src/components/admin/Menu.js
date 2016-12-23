@@ -1,7 +1,6 @@
 import React from 'react'
 import MenuButton from '../../stories/MenuButton'
 import { browserHistory } from 'react-router'
-import { Link } from 'react-router'
 
 const Menu = () => (
   <div className="2/3 grid__cell">

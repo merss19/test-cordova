@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
 import { Editor } from 'react-draft-wysiwyg'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import '../../../public/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
-import Header from '../../stories/Header'
-import { Field, FieldArray, reduxForm, formValueSelector, change } from 'redux-form'
+import { Field, FieldArray, reduxForm } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
 import Calendar from '../../stories/task/Calendar'
 import Menu from './Menu'
-import CalendarList from './CalendarList'
-import * as actions from '../../actions'
 
 let htmlEditor = ''
 
@@ -116,7 +112,7 @@ class DayEditorValidationForm extends Component {
   }
 
   render() {
-    const { error, reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar, program, change } = this.props
+    const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar, change } = this.props
     console.log(hideCreatePoll)
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="grid">

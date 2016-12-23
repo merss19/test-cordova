@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import * as actions from '../../actions'
 import Header from '../../stories/Header'
 import Menu from './Menu'
-import CalendarList from './CalendarList'
 import DayEditorValidationForm from './DayEditorValidationForm'
 import LoadingView from '../componentKit/LoadingView'
 

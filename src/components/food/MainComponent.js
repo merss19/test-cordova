@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import Menu from '../todayTask/Menu'
 import CalendarList from '../todayTask/CalendarList'
 import Header from '../../stories/Header'

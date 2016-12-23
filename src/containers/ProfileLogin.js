@@ -14,9 +14,9 @@ class ProfileLogin extends Component{
     fbScript.text = "fbq('track', 'PageView');"
     document.body.appendChild(fbScript)
   }
-  
+
   render () {
-    const { profile, showError, setToken } = this.props
+    const { setToken } = this.props
     return (
       <LoginValidationForm onSubmit={ data => {
         return fetch(`${api}/user/authenticate`, {

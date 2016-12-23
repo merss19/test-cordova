@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { browserHistory } from 'react-router'
-import { SubmissionError } from 'redux-form'
 import * as actions from '../../actions'
-import Modal from 'boron/FadeModal'
 import cookie from 'react-cookie'
 import InputProfile from '../componentKit/InputProfile'
-import SelectProgram from '../componentKit/SelectProgram'
 import { api, host } from '../../config.js'
 
 let contentStyle = {
@@ -18,8 +15,6 @@ let contentStyle = {
 }
 
 const FB = window.FB
-let fbPayload = {}
-let fbUserId
 
 class LoginValidationForm extends Component {
   componentWillMount() {
@@ -29,7 +24,7 @@ class LoginValidationForm extends Component {
   }
 
   render() {
-    const { error, handleSubmit, packageType, program, promo, email, setToken, signup } = this.props
+    const { error, handleSubmit, packageType, program, promo } = this.props
 
     const loginVk = () => {
       if (packageType)
@@ -173,7 +168,6 @@ LoginValidationForm = reduxForm({
   validate
 })(LoginValidationForm)
 
-const selector = formValueSelector('loginValidation')
 const mapStateToProps = state => {
   let { program, packageType, promo } = state
 
