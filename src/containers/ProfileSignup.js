@@ -144,7 +144,7 @@ class ProfileSignup extends Component {
           cookie.save('token', json.data.authToken, { path: '/' })
           setToken(json.data.authToken)
           browserHistory.push('/signup/pay')
-        } else if (json.errorCode = 129) {
+        } else if (json.errorCode === 129) {
           this.refs.errorEmailModal.show()
         } else {
           this.refs.errorModal.show()

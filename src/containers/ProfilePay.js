@@ -378,21 +378,16 @@ const mapStateToProps = state => {
   if (selector(state, 'packageType'))
     packageType = program === '4' ? 1 : selector(state, 'packageType')
 
-  console.log(emailFriend)
   if ((!cookie.load('general') && payment && payment.data && payment.data.program + '' === '4')
     || (cookie.load('general') && program + '' === '4')) {
     const friend = payment && payment.data
       && payment.data.tomorrowManEmails && payment.data.tomorrowManEmails[0]
       ? payment.data.tomorrowManEmails[0] : {}
 
-    console.log(selector(state, 'emailFriend'))
-    console.log(friend.email)
-
     emailFriend = selector(state, 'emailFriend') || friend.email
     phoneFriend = selector(state, 'phoneFriend') || friend.phone
     nameFriend  = selector(state, 'nameFriend') || friend.name
   }
-  console.log(emailFriend)
 
   if (selector(state, 'promo'))
     promo = selector(state, 'promo')
