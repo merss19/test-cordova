@@ -65,6 +65,9 @@ table.button.google table td {
 }
 
 
+.logo_yasegodnya {
+  width: 147px; height: 65px;
+}
 .logo-hero {
   width: 125px; height: 65px;
 }
@@ -81,4 +84,8 @@ table.button.google table td {
 .main-tel {
   color: #1f447b;
   font-size: 28px;
+}
+
+table.menu td.social-item, table.menu th.social-item {
+  padding: 5px; padding-right: 5px;
 }
