@@ -12,6 +12,7 @@ import Modal from 'boron/FadeModal'
 import { promoVisit } from '../actions/promo/promoWatch'
 import CustomInput from '../components/componentKit/CustomInput'
 import InputProfile from '../components/componentKit/InputProfile'
+import InputProfilePhone from '../components/componentKit/InputProfilePhone'
 import SelectProgram from '../components/componentKit/SelectProgram'
 
 let contentStyle = {
@@ -26,7 +27,7 @@ class ProfilePay extends Component {
     }
 
     const fbScript = document.createElement("script")
-    fbScript.text = "fbq('track', 'Lead')"
+    fbScript.text = "fbq('track', 'PageView'); fbq('track', 'Lead')"
     document.body.appendChild(fbScript)
 
     const { dispatch, selectedPayment } = this.props
@@ -298,7 +299,7 @@ class ProfilePay extends Component {
                     {program === '4' &&
                       <div>
                         <Field name='emailFriend' id='emailFriend' placeholder='Email друга' component={InputProfile} />
-                        <Field name='phoneFriend' id='phoneFriend' placeholder='Телефон друга' component={InputProfile} />
+                        <Field name='phoneFriend' id='phoneFriend' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
                         <Field name='nameFriend' id='nameFriend' placeholder='Имя друга' component={InputProfile} />
                       </div>
                     }
@@ -358,6 +359,9 @@ let selector = formValueSelector('payCreateValidation')
 const mapStateToProps = state => {
   const { selectedPayment, recivedPayment, userToken, profile } = state
   let { program, amount, packageType, promo, emailFriend, phoneFriend, nameFriend, share } = profile
+  const initialPhoneFriend = phoneFriend
+  const initialEmailFriend = emailFriend
+  const initialNameFriend = nameFriend
 
   const {
     isFetching,
@@ -374,15 +378,21 @@ const mapStateToProps = state => {
   if (selector(state, 'packageType'))
     packageType = program === '4' ? 1 : selector(state, 'packageType')
 
+  console.log(emailFriend)
   if ((!cookie.load('general') && payment && payment.data && payment.data.program + '' === '4')
     || (cookie.load('general') && program + '' === '4')) {
     const friend = payment && payment.data
       && payment.data.tomorrowManEmails && payment.data.tomorrowManEmails[0]
       ? payment.data.tomorrowManEmails[0] : {}
+
+    console.log(selector(state, 'emailFriend'))
+    console.log(friend.email)
+
     emailFriend = selector(state, 'emailFriend') || friend.email
     phoneFriend = selector(state, 'phoneFriend') || friend.phone
     nameFriend  = selector(state, 'nameFriend') || friend.name
   }
+  console.log(emailFriend)
 
   if (selector(state, 'promo'))
     promo = selector(state, 'promo')
@@ -395,9 +405,9 @@ const mapStateToProps = state => {
     program,
     amount,
     packageType,
-    emailFriend,
-    phoneFriend,
-    nameFriend,
+    emailFriend: emailFriend || initialEmailFriend,
+    phoneFriend: phoneFriend || initialPhoneFriend,
+    nameFriend: nameFriend || initialNameFriend,
     promo,
     token: userToken.token
   })

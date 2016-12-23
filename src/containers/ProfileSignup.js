@@ -25,7 +25,7 @@ let password
 class ProfileSignup extends Component {
   componentWillMount() {
     const fbScript = document.createElement("script")
-    fbScript.text = "fbq('track', 'RegistrationStarts')"
+    fbScript.text = "fbq('track', 'PageView'); fbq('track', 'RegistrationStarts')"
     document.body.appendChild(fbScript)
 
     if (window.mobilecheck()) {

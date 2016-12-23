@@ -25,10 +25,17 @@ button {
 #pay-free {
   top: 50%;
   left: 50%;
+  position: absolute;
 }
 
 #payment-entry {
   height: 720px;
+}
+
+.divider {
+  width: 5px;
+  height: auto;
+  display:inline-block;
 }
 
 /*react-draft-wysiwyg styles*/

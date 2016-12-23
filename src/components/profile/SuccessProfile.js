@@ -4,7 +4,7 @@ import LoadingView from '../componentKit/LoadingView'
 class SuccessProfile extends Component {
   componentWillMount() {
     const fbScript = document.createElement("script")
-    fbScript.text = "fbq('track', 'Purchase')"
+    fbScript.text = "fbq('track', 'PageView'); fbq('track', 'Purchase')"
     document.body.appendChild(fbScript)
   }
 

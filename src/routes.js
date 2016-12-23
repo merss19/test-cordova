@@ -73,12 +73,20 @@ const requirePayAuth = fromPay => {
     .then(response => response.json())
     .then(json => {
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
-        if (json.data[0].paidPackage && json.data[0].role === 3) {
+        if (json.data[0].paidPackage && json.data[0].role === 3 && json.data[0].program + '' !== '4') {
           browserHistory.push('/signup/pay/success')
         } else {
           browserHistory.push('/signup/pay/')
         }
       } else {
+        cookie.remove('token', { path: '/' })
+        cookie.remove('txId', { path: '/' })
+        cookie.remove('role', { path: '/' })
+        cookie.remove('program', { path: '/' })
+        cookie.remove('packageType', { path: '/' })
+        cookie.remove('promoName', { path: '/' })
+        cookie.remove('share', { path: '/' })
+        cookie.remove('general', { path: '/' })
         browserHistory.push('/')
       }
     })
@@ -109,7 +117,7 @@ export default (
     <Route path='signup'>
       <IndexRoute component={ProfileSignup} onEnter={requireFromLoginAuth} />
       <Route path='pay' component={ProfilePay} onEnter={requireFromPayAuth} />
-      <Route path='pay/success' component={SuccessProfile} onEnter={requireAuth} />
+      <Route path='pay/success' component={SuccessProfile} onEnter={requireFromLoginAuth} />
       <Route path='pay/success/friend' component={SuccessTomorrowProfile} />
     </Route>
     <Route path='signup/:program' component={ProfileSignup} onEnter={requireFromLoginAuth} />

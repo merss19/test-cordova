@@ -8,7 +8,7 @@ import { SubmissionError } from 'redux-form'
 import * as actions from '../../actions'
 import Modal from 'boron/FadeModal'
 import cookie from 'react-cookie'
-import CustomInput from '../componentKit/CustomInput'
+import InputProfile from '../componentKit/InputProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 import { api, host } from '../../config.js'
 
@@ -115,8 +115,10 @@ class LoginValidationForm extends Component {
 
                 <div className="grid grid--middle">
                   <div className="1/2--desk grid__cell entry-form__email">
-                    <Field name='email' id='login[1]' title='Ваш e-mail' component={CustomInput} />
-                    <Field name='password' id='login[2]' title='Ваш пароль' type='password' component={CustomInput} />
+                    <div className="input input--line">
+                      <Field name='email' id='login[1]' placeholder='Ваш e-mail' component={InputProfile} />
+                      <Field name='password' id='login[2]' placeholder='Ваш пароль' type='password' component={InputProfile} />
+                    </div>
                     <button type='submit' className="btn btn--primary">
                       Войти
                     </button>

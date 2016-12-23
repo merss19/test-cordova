@@ -12,11 +12,15 @@ let contentStyle = {
 
 class ProfilePasswordForget extends Component {
   componentWillMount() {
+    const fbScript = document.createElement("script")
+    fbScript.text = "fbq('track', 'PageView');"
+    document.body.appendChild(fbScript)
+    
     if (window.mobilecheck()) {
       contentStyle.width = '300px'
     }
   }
-  
+
   render() {
     let { amount, packageType, program } = this.props
 

@@ -18,7 +18,7 @@ const PasswordForgetValidationForm = props => {
       <button type='submit' className="btn btn--action">
         Изменить пароль
       </button>
-      <Link to="/profile">Войти</Link>
+      <Link to="/">Войти</Link>
       <br/>
       <Link to="/signup">Регистрация</Link>
     </form>
