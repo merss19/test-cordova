@@ -229,12 +229,14 @@
 .select {
   position: relative;
   margin-bottom: 20px;
+  background-color: #fff;
   &__field {
     border: 1px solid $c-border;
     border-radius: $baseRadius;
     padding: 8px 12px;
     height: 44px;
-    background-color: #fff;
+    -moz-appearance:none;
+    outline: none;
   }
   .ico-arrow-accordion {
     width: 15px; height: 8px;
