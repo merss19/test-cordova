@@ -97,7 +97,7 @@ class SuccessTomorrowProfile extends Component {
         <div className="entry entry--sign-in">
           <div className="entry__inner">
             <div className="entry__box">
-              <h2>Оплата прошла успешно. Скоро вам и вашему другу придут уведомления на указыанные email</h2>
+              <h2>Оплата прошла успешно. Скоро вам и вашему другу придут уведомления на указанные email</h2>
               <br/>
               {!this.props.params.program &&
                 <Field name="program" id="program" options={[
