@@ -8,11 +8,12 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import cookie from 'react-cookie'
 import SignupValidationForm from '../components/profile/SignupValidationForm'
 import { api } from '../config.js'
-import Modal from 'boron/DropModal'
-import CustomInput from '../components/componentKit/CustomInput'
+import Modal from 'boron/FadeModal'
+import InputProfile from '../components/componentKit/InputProfile'
+import InputProfilePhone from '../components/componentKit/InputProfilePhone'
 import SelectProgram from '../components/componentKit/SelectProgram'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
@@ -22,30 +23,48 @@ let password
 
 class ProfileSignup extends Component {
   componentWillMount() {
+    const fbScript = document.createElement("script")
+    fbScript.text = "fbq('track', 'PageView'); fbq('track', 'RegistrationStarts')"
+    document.body.appendChild(fbScript)
+
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+
     const programParam = this.props.params.program
-    const { amount, type, promo, emailFriend, share } = this.props.location.query
+    const { amount, type, promo, emailFriend, phoneFriend, nameFriend, share } = this.props.location.query
     const packageType = type
     let program
 
+    cookie.save('share', share, { path: '/' })
+    cookie.save('promoName', promo, { path: '/' })
+
     switch (programParam) {
       case 'hero':
-        program = 1
+        program = '1'
         break
       case 'mommy':
-        program = 2
+        program = '2'
         break
       case 'extremeways':
-        program = 3
+        program = '3'
         break
       case 'tomorrowman':
-        program = 4
+        program = '4'
         break
       default:
         break
     }
 
+    if (program) {
+      cookie.save('program', program, { path: '/' })
+      cookie.remove('general', { path: '/' })
+    } else {
+      cookie.save('general', true, { path: '/' })
+    }
+
     const { signup } = this.props
-    signup(program, amount, packageType, promo, emailFriend, share)
+    signup(program, amount, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
   }
 
   statusChangeCallback(response) {
@@ -60,44 +79,55 @@ class ProfileSignup extends Component {
   }
 
   render() {
-    let { amount, packageType, promo, emailFriend, program, share } = this.props
+    let { amount, packageType, promo, emailFriend, program, share, phoneFriend, nameFriend } = this.props
     const { setToken, signup } = this.props
     let programName
     let packageName
     amount = !!amount ? amount : 0
 
-    switch (program) {
-      case 1:
+    switch (program + '') {
+      case '1':
         programName = '#Я ГЕРОЙ'
         break
-      case 2:
+      case '2':
         programName = '#МАМА МОЖЕТ'
         break
-      case 3:
-        programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+      case '3':
+        programName = '#ЭКСТРЕМАЛЬНАЯ СУШКА'
         break
-      case 4:
+      case '4':
         programName = '#Я ЗАВТРА'
         break
       default:
         programName = 'ЯСЕГОДНЯ'
     }
 
-    switch (packageType) {
-      case '1':
-        packageName = '1  человек'
-        break
-      case '2':
-        packageName = '2  человек'
-        break
-      case '3':
-        packageName = '3  человек'
-        break
-      default:
-        packageName = 'Не определено'
+    if (program + '' === '4') {
+      packageName = 'Подарок другу'
+      if (amount === 0)
+        amount = 2000
+    } else {
+      switch (packageType + '') {
+        case '1':
+          packageName = '1  человек'
+          break
+        case '2':
+          packageName = '2  человек'
+          break
+        case '3':
+          packageName = '3  человек'
+          break
+        default:
+          packageName = 'Не выбран'
+      }
     }
 
-    const userCreate = (payload) => {
+    const userCreate = payload => {
+      program = !!program ? program : '1'
+      packageType = !!packageType ? packageType : '1'
+      cookie.save('program', program + '', { path: '/' })
+      signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
+      this.refs.loadingModal.show()
       return fetch(`${api}/user/user-create`, {
         headers: {
           'Accept': 'application/json',
@@ -108,11 +138,15 @@ class ProfileSignup extends Component {
       })
       .then(response => response.json())
       .then(json => {
+        this.refs.loadingModal.hide()
         if (json.data && json.data.authToken) {
           cookie.save('token', json.data.authToken, { path: '/' })
           setToken(json.data.authToken)
           browserHistory.push('/signup/pay')
+        } else if (json.errorCode === 129) {
+          this.refs.errorEmailModal.show()
         } else {
+          this.refs.errorModal.show()
           throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
         }
       })
@@ -207,15 +241,21 @@ class ProfileSignup extends Component {
 
                 <hr/>
 
-                <SignupValidationForm onSubmit={data => {
+                <SignupValidationForm email={this.props.location.query.email} onSubmit={data => {
                   email = data.email
                   password = data.password
-                  if (!program || !packageType) {
+
+                  if (!program || !packageType || program === '4') {
                     this.refs.accModal.show()
                     return
                   }
 
-                  const payload = { program, email, emailFriend, password, package: packageType }
+                  let payload = { program, email, emailFriend, password, package: packageType }
+                  const name = this.props.location.query.name
+
+                  if (name) {
+                    payload.firstName = name
+                  }
 
                   return userCreate(payload)
                 }}/>
@@ -230,33 +270,89 @@ class ProfileSignup extends Component {
         </div>
 
 
-        <Modal ref='accModal' modalStyle={contentStyle}>
+        <Modal ref='accModal' contentStyle={contentStyle}>
           <h2>Выберите программу</h2>
           <br/>
-          <Field name="programValue" id="programValue" options={[
-            { name: '#Я ГЕРОЙ', value: 1},
-            { name: '#МАМА МОЖЕТ', value: 2 },
-            { name: '#ЭКСТРИМАЛЬНАЯ СУШКА', value: 3 },
-            { name: '#Я ЗАВТРА', value: 4 }
-          ]} component={SelectProgram} />
+          {!this.props.params.program &&
+            <Field name="programValue" id="programValue" options={[
+              { name: '#Я ГЕРОЙ', value: '1'},
+              { name: '#МАМА МОЖЕТ', value: '2' },
+              { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
+              { name: '#Я ЗАВТРА', value: '4' }
+            ]} component={SelectProgram} />
+          }
           {program !== '4' &&
             <Field name="packageTypeValue" id="packageTypeValue" options={[
-              { name: '1 человек', value: 1},
-              { name: '2 человека', value: 2 },
-              { name: '3 человека', value: 3 }
+              { name: '1 человек', value: '1'},
+              { name: '2 человека', value: '2' },
+              { name: '3 человека', value: '3' }
             ]} component={SelectProgram} />
           }
           {program === '4' &&
-            <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+            <div>
+              <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
+              <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
+              <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
+            </div>
           }
-          <Field name='promoValue' id='promoValue' title='Промокод, если есть' component={CustomInput} />
+          <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
           <button className="btn btn--action" onClick={() => {
             program = !!program ? program : 1
             packageType = !!packageType ? packageType : 1
-            signup(program, undefined, packageType, promo, emailFriend, share)
-            const payload = { program, email, password, package: packageType }
-            return userCreate(payload)
+
+            return fetch(`${api}/day/package-get`, {
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              method: 'POST',
+              body: JSON.stringify({ promoName: promo })
+            })
+            .then(response => response.json())
+            .then(json => {
+              if (json.errorCode === 1) {
+                signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
+                let payload = {
+                  program,
+                  email: email ? email.replace(/ /g,'') : email,
+                  password, package:
+                  packageType }
+
+                const name = this.props.location.query.name
+
+                if (name) {
+                  payload.firstName = name
+                }
+                userCreate(payload)
+              } else {
+                this.refs.errorPromoModal.show()
+              }
+            })
           }}>
+            Продолжить
+          </button>
+        </Modal>
+        <Modal ref='loadingModal' contentStyle={contentStyle}>
+          <h2>Подождите...</h2>
+        </Modal>
+        <Modal ref='errorModal' contentStyle={contentStyle}>
+          <h2>Что-то пошло не так, попробуйте снова</h2>
+          <br/>
+          <button className="btn btn--action" onClick={() => this.refs.errorModal.hide()}>
+            Продолжить
+          </button>
+        </Modal>
+        <Modal ref='errorEmailModal' contentStyle={contentStyle}>
+          <h2>Введенный вами email уже существует</h2>
+          <br/>
+          <button className="btn btn--action" onClick={() => this.refs.errorEmailModal.hide()}>
+            Продолжить
+          </button>
+        </Modal>
+        <Modal ref='errorPromoModal' contentStyle={contentStyle}>
+          <h2>Промокод недействителен</h2>
+          <br/>
+          <button className="btn btn--action" onClick={() => this.refs.errorPromoModal.hide()}>
             Продолжить
           </button>
         </Modal>
@@ -273,12 +369,17 @@ const selector = formValueSelector('signupValidation')
 const mapStateToProps = state => {
   let { program, packageType, promo, amount, share } = state.profile
 
-  if (!program || !packageType) {
+  if (!program) {
     program = selector(state, 'programValue')
+  }
+
+  if (!packageType) {
     packageType = selector(state, 'packageTypeValue')
   }
 
   const emailFriend = selector(state, 'emailFriendValue')
+  const phoneFriend = selector(state, 'phoneFriendValue')
+  const nameFriend  = selector(state, 'nameFriendValue')
   promo = selector(state, 'promoValue')
 
   return {
@@ -287,6 +388,8 @@ const mapStateToProps = state => {
     promo,
     amount,
     emailFriend,
+    phoneFriend,
+    nameFriend,
     share
   }
 }

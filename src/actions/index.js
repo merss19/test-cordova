@@ -20,7 +20,7 @@ export const createProfile = text => ({
 //   text
 // })
 
-export const signup = (program, amount, packageType, promo, emailFriend, share) => {
+export const signup = (program, amount, packageType, promo, emailFriend, share, phoneFriend, nameFriend) => {
   return ({
     type: SIGNUP,
     program,
@@ -28,6 +28,8 @@ export const signup = (program, amount, packageType, promo, emailFriend, share) 
     amount,
     packageType,
     emailFriend,
+    phoneFriend,
+    nameFriend,
     share
   })
 }

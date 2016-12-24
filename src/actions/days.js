@@ -21,53 +21,75 @@ export const requestDays = days => ({
   days
 })
 
+const exampleJson = [{
+    id: '1',
+    number: '1',
+    customIcon: 'some-icon',
+    customName: 'GoodDay',
+    icon: 'ico-done',
+    status: 'done',
+    date: '12/12/17',
+    admin: 'Миньон',
+    completeText: 'Зачет принят',
+    day: 'Пн',
+    tasks: [
+      {
+        name: "Good",
+        description: "Good zer good",
+        exercises: [
+          {
+            count: 10,
+            description: "No",
+            video: "http://youtube.com"
+          }
+        ]
+      }
+    ],
+  }, {
+    id: '2',
+    number: '2',
+    customIcon: '',
+    customName: '',
+    status: 'waiting',
+    date: '12/12/17',
+    admin: 'Миньон',
+    completeText: 'Зачет принимается',
+    day: 'Вт',
+    tasks: []
+  }, {
+    id: '3',
+    number: '3',
+    customIcon: '',
+    customName: '',
+    icon: 'ico-cross',
+    status: 'missed',
+    date: '12/12/17',
+    admin: 'Миньон',
+    completeText: 'Зачет не сдан',
+    day: 'Ср',
+    tasks: [{
+      name: "Bad",
+      description: "Good zer good",
+      exercises: []
+    }]
+}]
+
+export const receiveDay = (days, id) => {
+  return ({
+    type: 'EDIT_DAY',
+    days,
+    json: {
+      tasks: exampleJson[id].tasks,
+      customName: exampleJson[id].customName,
+      customIcon: exampleJson[id].customIcon,
+    }
+  }
+)}
+
+export const load = data => ({ type: 'LOAD', data })
+
 export const receiveDays = (days, json) => {
-  json = [{
-      id: '1',
-      number: '1',
-      customIcon: 'some-icon',
-      customName: 'GoodDay',
-      icon: 'ico-done',
-      status: 'done',
-      date: '12/12/17',
-      admin: 'Миньон',
-      completeText: 'Зачет принят',
-      day: 'Пн',
-      tasks: [
-        {
-          name: "Good",
-          description: "Good zer good",
-          exercises: [
-            {
-              count: 10,
-              description: "No",
-              video: "http://youtube.com"
-            }
-          ]
-        }
-      ],
-    }, {
-      id: '2',
-      number: '2',
-      customIcon: '',
-      customName: '',
-      status: 'waiting',
-      date: '12/12/17',
-      admin: 'Миньон',
-      completeText: 'Зачет принимается',
-      day: 'Вт'
-    }, {
-      id: '3',
-      number: '3',
-      customIcon: '',
-      customName: '',
-      icon: 'ico-cross',
-      status: 'missed',
-      date: '12/12/17',
-      admin: 'Миньон',
-      completeText: 'Зачет не сдан',
-      day: 'Ср'
-  }]
+  json = exampleJson
   return ({
     type: RECEIVE_DAYS,
     days,

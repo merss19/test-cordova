@@ -1,13 +1,14 @@
-import React from 'react';
-import ButtonPoll from './ButtonPoll';
+import React from 'react'
+import ButtonPoll from './ButtonPoll'
 
 function select(children) {
 }
 
-const Poll = ({ children, fields }) => {
+const Poll = ({ poll }) => {
+  const { fields, description } = poll
   return (
     <div className="question-form">
-      <h4 className="h1 question-form__title">{children}</h4>
+      <h4 className="h1 question-form__title">{description}</h4>
       <ul className="options options--black mb60">
         {fields.map((field, index) => (
           <ButtonPoll onClick={select} key={index}>{field.name}</ButtonPoll>
@@ -21,12 +22,7 @@ const Poll = ({ children, fields }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-Poll.propTypes = {
-  children: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func,
-};
-
-export default Poll;
+export default Poll

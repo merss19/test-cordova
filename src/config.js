@@ -3,12 +3,10 @@ const DEVELOPMENT = 'development'
 
 const env = process.env.NODE_ENV || DEVELOPMENT
 
-const api = env === PRODUCTION
-  ? ''//add here
-  : 'https://api.todayme.ru/api'
+const api = 'https://api.todayme.ru/api'
 
 const host = env === PRODUCTION
-  ? ''//add here
-  : 'http://lk.todayme.ru'
+  ? 'https://lk.todayme.ru'
+  : 'https://lk.todayme.ru'//'https://localhost:3000'
 
 export { api, host }

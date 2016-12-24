@@ -1,42 +1,55 @@
 import React, { Component } from 'react'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import cookie from 'react-cookie'
-import Modal from 'boron/DropModal'
 import { browserHistory } from 'react-router'
-import { SubmissionError } from 'redux-form'
 import * as actions from '../../actions'
-import CustomInput from '../componentKit/CustomInput'
-import SelectProgram from '../componentKit/SelectProgram'
+import InputProfile from '../componentKit/InputProfile'
+import CheckboxAccept from '../componentKit/CheckboxAccept'
 import { api, host } from '../../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 const FB = window.FB
-let fbPayload = {}
-let fbUserId
 
 class SignupValidationForm extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+
+  componentDidMount() {
+    const { change, email } = this.props
+
+    if (email) {
+      change('email', email)
+    }
+  }
+
   render() {
-    const { error, handleSubmit, packageType, program, onSubmit, promo, setToken } = this.props
+    const { error, handleSubmit, packageType, program, onSubmit, promo } = this.props
 
     const loginVk = () => {
-      if (program && packageType) {
-        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk?type=${packageType},${program},${promo}&display=page&response_type=code`
-      } else {
-        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
-      }
+      if (packageType)
+        cookie.save('packageType', packageType, { path: '/' })
+      if (program)
+        cookie.save('program', program, { path: '/' })
+      if (promo)
+        cookie.save('promoName', promo, { path: '/' })
+
+      window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
     }
 
     const redirectFb = () => {
       let uri
 
-      if (program && packageType) {
+      if (program) {
         uri = encodeURI(`${host}/social/fb?type=${packageType},${program},${promo}`)
       } else {
         uri = encodeURI(`${host}/social/fb`)
@@ -80,15 +93,16 @@ class SignupValidationForm extends Component {
       <div className="grid grid--middle">
         <form onSubmit={handleSubmit(onSubmit)} className="1/2--desk grid__cell entry-form__email">
           <div className="input input--line">
-            <Field name='email' id='login[1]' title='Ваш e-mail' component={CustomInput} />
-            <Field name='password' id='login[2]' title='Ваш пароль' type='password' component={CustomInput} />
-            <Field name='passwordAgain' id='login[3]' title='Пароль повторно' type='password' component={CustomInput} />
+            <Field name='email' id='login[1]' placeholder='Ваш e-mail' component={InputProfile} />
+            <Field name='password' id='login[2]' placeholder='Ваш пароль' type='password' component={InputProfile} />
+            <Field name='passwordAgain' id='login[3]' placeholder='Пароль повторно' type='password' component={InputProfile} />
+            <Field name='accept' title='Принять условия оферты' id='accept' component={CheckboxAccept} />
           </div>
           {error && <strong>{error}</strong>}
           <button type='submit' className="btn btn--action">
             Зарегистрироваться
           </button>
-          <Link to="/profile">Войти</Link>
+          <Link to="/">Войти</Link>
           <br/>
           <Link to="/restore">Забыли пароль?</Link>
         </form>
@@ -120,6 +134,9 @@ class SignupValidationForm extends Component {
 const validate = data => {
   const errors = {}
 
+  if (data.email)
+    data.email = data.email.replace(/ /g,'')
+
   switch (true) {
     case !data.email:
       errors.email = 'Email должен быть заполнен'
@@ -141,8 +158,8 @@ const validate = data => {
     case data.password.length > 20:
       errors.password = 'Поле пароля должно быть короче 20 символов'
       break
-    case !/^[A-Za-z0-9!@#$%^&*()_]{6,20}$/.test(data.password):
-      errors.password = 'Поле пароля может содержать только буквы английского алфавита, цифры и какой-нибудь из знаков !@#$%^&*()_'
+    case /["]/g.test(data.password):
+      errors.password = 'Поле пароля не должно содержать знак "'
       break
     default:
       break
@@ -151,15 +168,36 @@ const validate = data => {
   if (data.password !== data.passwordAgain)
     errors.passwordAgain = 'Пароли должны совпадать'
 
+  if (!data.accept)
+    errors.accept = 'Вы должны принять условия оферты'
+
   return errors
+}
+
+const asyncValidate = values => {
+  return fetch(`${api}/user/user-check`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ email: values.email })
+  })
+  .then(response => response.json())
+  .then(json => {
+    if (json.data) {
+      throw { email: 'Такой email уже существует' }
+    }
+  })
 }
 
 SignupValidationForm = reduxForm({
   form: 'signupFormValidation',
-  validate
+  validate,
+  asyncValidate,
+  asyncBlurFields: [ 'email' ]
 })(SignupValidationForm)
 
-const selector = formValueSelector('signupFormValidation')
 const mapStateToProps = state => {
   let { program, packageType, promo } = state.profile
 

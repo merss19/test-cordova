@@ -1,0 +1,48 @@
+
+.notify {
+
+  &--alert {
+    background-color: $c-red;
+    color: #fff;
+    a {color: #f9ff47;}
+  }
+
+  &--success {
+    background-color: $c-green;
+    color: #fff;
+    a {color: #f9ff47;}
+  }
+
+  &__item {
+    padding: 20px;
+    position: relative;
+    margin-bottom: 20px;
+
+    @include av-mq(desk) {
+      border-radius: $baseRadius;
+    }
+  }
+
+  &__title {
+    font-size: $fz-h3;
+    margin-bottom: 10px;
+  }
+
+  &__desc {
+    // font-size: $fz-middle;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; height: 30px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px; top: 10px;
+    .svg-icon {
+      fill: #fff;
+    }
+  }
+
+}

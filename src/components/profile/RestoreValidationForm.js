@@ -66,8 +66,8 @@ const validate = data => {
     case data.password.length > 20:
       errors.password = 'Поле пароля должно быть короче 20 символов'
       break
-    case !/^[A-Za-z0-9!@#$%^&*()_]{6,20}$/.test(data.password):
-      errors.password = 'Поле пароля может содержать только буквы английского алфавита, цифры и какой-нибудь из знаков !@#$%^&*()_'
+    case /["]/g.test(data.password):
+      errors.password = 'Поле пароля не должно содержать знак "'
       break
     default:
       break

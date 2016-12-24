@@ -6,21 +6,28 @@ import CalendarList from './CalendarList'
 import TaskIntro from './TaskIntro'
 import Menu from './Menu'
 import Exercises from './Exercises'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import SendReportModal from './SendReportModal'
 import { connect } from 'react-redux'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 class MainComponent extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+  
   render() {
     const { taskDay, token } = this.props
+    const { intro, tasks, poll, chat } = taskDay
 
     return (
       <div className="layout">
@@ -58,12 +65,12 @@ class MainComponent extends Component {
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-              <TaskIntro/>
-              <Exercises sendReport={() => {
+              <TaskIntro text={intro} />
+              <Exercises tasks={tasks} sendReport={() => {
                 this.refs.sendReportModal.show()
               }}/>
 
-              <Modal ref='sendReportModal' modalStyle={contentStyle}>
+              <Modal ref='sendReportModal' contentStyle={contentStyle}>
                 <SendReportModal onSubmit={(data) => {
                   return fetch(`${api}/user/userTask-create`, {
                       headers: {
@@ -95,12 +102,13 @@ class MainComponent extends Component {
               </Modal>
 
 
-              <Poll fields={this.props.taskDay.task.poll.fields}>
-                {this.props.taskDay.task.poll.description}
-              </Poll>
+              {poll &&
+                <Poll poll={poll} />
+              }
 
-              <h2 className="h1">Чаты</h2>
-              <Chat>Test</Chat>
+              {chat &&
+                <Chat chat={chat} userId={1} />
+              }
             </div>
           </div>
         </div>

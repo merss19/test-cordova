@@ -40,12 +40,15 @@ export const bodyParams = (state = [], action) => {
 export function profile(state = {}, action) {
   switch (action.type) {
     case 'SIGNUP':
+      console.log(action)
       return {
         program: action.program,
         promo: action.promo,
         amount: action.amount,
         packageType: action.packageType,
         emailFriend: action.emailFriend,
+        phoneFriend: action.phoneFriend,
+        nameFriend: action.nameFriend,
         share: action.share
       }
     default:

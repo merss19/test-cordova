@@ -2,7 +2,7 @@ import React from 'react'
 import cookie from 'react-cookie'
 import { browserHistory } from 'react-router'
 
-const LoadingView = ({title, logout}) => (
+const LoadingView = ({title, logout, toSignup}) => (
   <div className="layout layout--login">
     <div className="entry entry--sign-in">
       <div className="entry__inner">
@@ -16,9 +16,18 @@ const LoadingView = ({title, logout}) => (
                 cookie.remove('token', { path: '/' })
                 cookie.remove('txId', { path: '/' })
                 cookie.remove('role', { path: '/' })
-                browserHistory.push('/')
+                cookie.remove('program', { path: '/' })
+                cookie.remove('packageType', { path: '/' })
+                cookie.remove('promoName', { path: '/' })
+                cookie.remove('share', { path: '/' })
+                cookie.remove('general', { path: '/' })
+                if (toSignup) {
+                  browserHistory.push('/signup')
+                } else {
+                  browserHistory.push('/')
+                }
               }}>
-                Выйти
+                Продолжить
               </button>
             </div>
           }

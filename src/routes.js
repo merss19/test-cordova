@@ -11,9 +11,9 @@ import ProfilePasswordForget from './containers/ProfilePasswordForget'
 import ProfilePasswordRestore from './containers/ProfilePasswordRestore'
 import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
-import SignupSocial from './components/profile/SignupSocial'
 import LoginFB from './components/profile/LoginFB'
 import SuccessProfile from './components/profile/SuccessProfile'
+import SuccessTomorrowProfile from './components/profile/SuccessTomorrowProfile'
 import DayEditor from './components/admin/DayEditor'
 import AdminLogin from './containers/AdminLogin'
 
@@ -42,6 +42,7 @@ const getToken = () => {
 }
 
 const getRole = role => {
+  const token = cookie.load('token')
   return fetch(`${api}/user/user-get`, {
     headers: {
       'Accept': 'application/json',
@@ -49,7 +50,7 @@ const getRole = role => {
     },
     method: 'POST',
     body: JSON.stringify({
-      authToken: cookie.load('token'),
+      authToken: token,
       data: {}
     })
   })
@@ -66,43 +67,58 @@ const getRole = role => {
   })
 }
 
-const requirePayAuth = () => {
-  return fetch(`${api}/user/user-get`, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      authToken: cookie.load('token'),
-      data: {}
+const requirePayAuth = fromPay => {
+  const token = cookie.load('token')
+  if (token) {
+    return fetch(`${api}/user/user-get`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        authToken: token,
+        data: {}
+      })
     })
-  })
-  .then(response => response.json())
-  .then(json => {
-    console.log('here')
-    console.log(json)
-    if (json && json.errorCode === 1 && json.data && json.data[0]) {
-      if (json.data[0].paidPackage && json.data[0].role === 3) {
-        browserHistory.push('/signup/pay/success')
+    .then(response => response.json())
+    .then(json => {
+      if (json && json.errorCode === 1 && json.data && json.data[0]) {
+        if (json.data[0].paidPackage && json.data[0].role === 3 && json.data[0].program + '' !== '4') {
+          browserHistory.push('/signup/pay/success')
+        } else {
+          browserHistory.push('/signup/pay/')
+        }
       } else {
-        browserHistory.push('/signup/pay/')
+        cookie.remove('token', { path: '/' })
+        cookie.remove('txId', { path: '/' })
+        cookie.remove('role', { path: '/' })
+        cookie.remove('program', { path: '/' })
+        cookie.remove('packageType', { path: '/' })
+        cookie.remove('promoName', { path: '/' })
+        cookie.remove('share', { path: '/' })
+        cookie.remove('general', { path: '/' })
+        browserHistory.push('/')
       }
-    }
-  })
+    })
+  } else if (fromPay) {
+    browserHistory.push('/')
+  }
 }
 
 const requireAuth = () => getRole(3)
 const requireMinionAuth = () => getRole(2)
 const requireAdminAuth = () => getRole(1)
+const requireFromPayAuth = () => requirePayAuth(true)
+const requireFromLoginAuth = () => requirePayAuth(false)
 
 export default (
   <Route path='/' onEnter={promoWatch}>
     <IndexRoute component={App} onEnter={getToken} />
-    {/* <Route path='task' component={TodayTask} onEnter={requireAuth} />
-    <Route path='faq' component={Faq} onEnter={requireAuth} />
-    <Route path='food' component={Food} onEnter={requireAuth} />
-    <Route path='reports' component={Reports} onEnter={requireAuth} />
+    {/* <Route path='task' component={TodayTask} />
+    <Route path='faq' component={Faq} />
+    <Route path='food' component={Food} />
+    <Route path='reports' component={Reports} />
     <Route path='photos' component={Photos} /> */}
     {/* <Route path='profile'>
       <IndexRoute component={App} onEnter={getToken}/>
@@ -110,16 +126,16 @@ export default (
     </Route> */}
     <Route path='social/vk' component={LoginSocial} />
     <Route path='social/fb' component={LoginFB} />
-    {/* <Route path='social/vk/second' component={SignupSocial} /> */}
     <Route path='signup'>
-      <IndexRoute component={ProfileSignup} onEnter={requirePayAuth} />
-      <Route path='pay' component={ProfilePay} onEnter={requirePayAuth} />
-      <Route path='pay/success' component={SuccessProfile} onEnter={requireAuth} />
+      <IndexRoute component={ProfileSignup} onEnter={requireFromLoginAuth} />
+      <Route path='pay' component={ProfilePay} onEnter={requireFromPayAuth} />
+      <Route path='pay/success' component={SuccessProfile} onEnter={requireFromLoginAuth} />
+      <Route path='pay/success/friend' component={SuccessTomorrowProfile} />
     </Route>
-    <Route path='signup/:program' component={ProfileSignup} onEnter={requirePayAuth} />
+    <Route path='signup/:program' component={ProfileSignup} onEnter={requireFromLoginAuth} />
     <Route path='restore'>
-      <IndexRoute component={ProfilePasswordForget} onEnter={requirePayAuth} />
-      <Route path='create' component={ProfilePasswordRestore} onEnter={requirePayAuth} />
+      <IndexRoute component={ProfilePasswordForget} onEnter={requireFromLoginAuth} />
+      <Route path='create' component={ProfilePasswordRestore} onEnter={requireFromLoginAuth} />
     </Route>
     <Route path='partner'>
       <IndexRoute component={PartnerLogin} />
@@ -135,11 +151,11 @@ export default (
       <Route path='pendingInsurance/:userId/:insuranceId' component={PendingInsuranceProfile} onEnter={requireMinionAuth} />
     </Route>
 
-    {/* <Route path='superadmin'>
+    <Route path='superadmin'>
       <IndexRoute component={AdminLogin} />
       <Route path='day' component={DayEditor} />
       <Route path='day/:program' component={DayEditor} />
       <Route path='day/:program/:id' component={DayEditor} />
-    </Route> */}
+    </Route>
   </Route>
 )
