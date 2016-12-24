@@ -130,11 +130,11 @@ export default (
       <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth} />
     </Route>
 
-    <Route path='superadmin'>
+    {/* <Route path='superadmin'>
       <IndexRoute component={AdminLogin} />
       <Route path='day' component={DayEditor} />
       <Route path='day/:program' component={DayEditor} />
       <Route path='day/:program/:id' component={DayEditor} />
-    </Route>
+    </Route> */}
   </Route>
 )

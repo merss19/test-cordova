@@ -62,22 +62,24 @@ const renderTasks = ({ fields, meta: { error } }) => (
   </ul>
 )
 
-const renderPollFields = ({ fields, meta: { error } }) => {
+const renderPollFields = ({ fields, meta: { error } }) => (
   <ul>
     <h4>Варианты опроса:</h4>
+    <br/>
     {fields.map((field, index) => (
       <li key={index}>
-        <br/>
-        <div className="gender">
-          <h4 className="low">Вариант - {index + 1}:</h4>
-          <span className="base-table__btn-del">
-            <svg className="svg-icon ico-trash" onClick={() => fields.remove(index)}>
-              <use xlinkHref="#ico-trash"></use>
-            </svg>
-          </span>
+        <div className="grid">
+          <div className="2/3--desk 1/1--pocket grid__cell">
+            <Field name={`${field}.name`} placeholder="Название" component={InputProfile} />
+          </div>
+          <div className="1/3--desk 1/1--pocket grid__cell">
+            <span className="base-table__btn-del">
+              <svg className="svg-icon ico-trash" onClick={() => fields.remove(index)}>
+                <use xlinkHref="#ico-trash"></use>
+              </svg>
+            </span>
+          </div>
         </div>
-        <br/>
-        <Field name={`${field}.name`} placeholder="Название" component={InputProfile} />
       </li>
     ))}
     <li>
@@ -85,11 +87,12 @@ const renderPollFields = ({ fields, meta: { error } }) => {
       <a href='#' onClick={() => fields.push({})}>Добавить</a>
     </li>
   </ul>
-}
+)
 
 class DayEditorValidationForm extends Component {
   onEditorChange: Function = (editorContent) => {
     htmlEditor = draftToHtml(editorContent)
+    console.log(htmlEditor)
   }
 
   uploadImageCallBack(file) {
@@ -162,6 +165,9 @@ class DayEditorValidationForm extends Component {
               </div>
             </div>
 
+            <br/>
+            <br/>
+
             <div className='home-root'>
               <Editor
                 toolbarClassName="home-toolbar"
@@ -183,7 +189,7 @@ class DayEditorValidationForm extends Component {
               <div>
                 <br/>
                 <Field name='description' placeholder="Описание опроса" component={InputProfile} />
-                {/* <FieldArray name='pollFields' component={renderPollFields} /> */}
+                <FieldArray name='pollFields' component={renderPollFields} />
               </div>
             }
           </div>

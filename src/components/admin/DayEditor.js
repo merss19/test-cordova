@@ -8,6 +8,10 @@ import LoadingView from '../componentKit/LoadingView'
 
 class DayEditor extends Component {
   componentDidMount() {
+    const fbScript = document.createElement("script")
+    fbScript.text = "fbq('track', 'PageView');"
+    document.body.appendChild(fbScript)
+
     const { dispatch, selectedDays } = this.props
     dispatch(actions.fetchDaysIfNeeded(selectedDays))
   }

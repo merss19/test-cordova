@@ -17,7 +17,7 @@ import createLogger from 'redux-logger'
 
 const middleware = [ thunk, promise ]
 if (process.env.NODE_ENV !== 'production') {
-  middleware.push(createLogger())
+  //middleware.push(createLogger())
 }
 
 const store = createStore(combineReducers({
