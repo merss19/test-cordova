@@ -93,7 +93,7 @@ class LoginFB extends Component {
     let { email, emailFriend } = this.props
 
     const signupWith = (email, program, packageType, promo, share) => {
-      if (isFetching) {
+      if (!isFetching) {
         isFetching = true
         if (email)
           email = email.replace(/ /g,'')
