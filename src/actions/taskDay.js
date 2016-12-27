@@ -31,17 +31,17 @@ const taskDayTest = {
             {
               count: 10,
               description: "TextTextTextTextTextText",
-              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
+              video: "https://www.youtube.com/embed/dQw4w9WgXcQ"
             },
             {
               count: 10,
               description: "TextTextTextTextTextText",
-              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
+              video: "https://www.youtube.com/embed/yPYZpwSpKmA"
             },
             {
               count: 10,
               description: "TextTextTextTextTextText",
-              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
+              video: "https://www.youtube.com/embed/BeyEGebJ1l4"
             }
           ]
         }, {

@@ -3,10 +3,13 @@ import { Editor } from 'react-draft-wysiwyg'
 import { connect } from 'react-redux'
 import '../../../public/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
-import { Field, FieldArray, reduxForm } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
 import Calendar from '../../stories/task/Calendar'
+import SelectProgram from '../componentKit/SelectProgram'
 import Menu from './Menu'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 let htmlEditor = ''
 
@@ -31,7 +34,10 @@ const renderExercises = ({ fields, meta: { touched, error } }) => (
       </li>
     ))}
     <li>
-      <a href='#' onClick={() => fields.push({})}>Добавить</a>
+      <a href='#' onClick={e => {
+        e.preventDefault()
+        fields.push({})
+      }}>Добавить</a>
     </li>
   </ul>
 )
@@ -57,7 +63,7 @@ const renderTasks = ({ fields, meta: { error } }) => (
     ))}
     <li>
       <br/>
-      <button type="button" className="btn btn--primary" onClick={() => fields.push({})}>+</button>
+      <button type="button" className="btn btn--primary" onClick={() => fields.push({})}>Добавить задание</button>
     </li>
   </ul>
 )
@@ -84,15 +90,18 @@ const renderPollFields = ({ fields, meta: { error } }) => (
     ))}
     <li>
       <br/>
-      <a href='#' onClick={() => fields.push({})}>Добавить</a>
+      <a href='#' onClick={e => {
+        e.preventDefault()
+        fields.push({})
+      }}>Добавить</a>
     </li>
   </ul>
 )
 
 class DayEditorValidationForm extends Component {
   onEditorChange: Function = (editorContent) => {
-    htmlEditor = draftToHtml(editorContent)
-    console.log(htmlEditor)
+    const { dispatch } = this.props
+    dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent) })
   }
 
   uploadImageCallBack(file) {
@@ -114,9 +123,41 @@ class DayEditorValidationForm extends Component {
     })
   }
 
+  componentDidMount() {
+    const { change, programs } = this.props
+    change('programs', programs)
+  }
+
   render() {
-    const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar, change } = this.props
-    console.log(hideCreatePoll)
+    const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
+      change, date, programs, programShow } = this.props
+
+    const renderPrograms = ({ fields, meta: { error } }) => (
+      <ul>
+        {fields.map((program, index) => {
+          if (index < fields.length - 1) {
+            return (
+              <li key={index}>
+                <button type="button" className="btn btn--secondary" onClick={() => {
+                  dispatch({ type: 'PROGRAM_SHOW', programShow: index + 1 })
+                }}>
+                  {programs[index].name}
+                </button>
+                {programShow === programs[index].id &&
+                  <FieldArray name={`${program}.tasks`} component={renderTasks} />
+                }
+                <hr/>
+              </li>
+            )
+          }
+        })}
+      </ul>
+    )
+
+    const handleDateChange = date => {
+      dispatch({ type: 'DAY_DATE', date: date })
+    }
+
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="grid">
         <div className="1/4--desk grid__cell layout__menu">
@@ -124,7 +165,7 @@ class DayEditorValidationForm extends Component {
             <Menu/>
             <div className="1/3 grid__cell">
               <ul className="min-calendar">
-                {calendar.map((field, index) => (
+                {calendar && calendar.map((field, index) => (
                   <Calendar onClick={() => {
                       reset()
                       change('customName', calendar[index].customName)
@@ -156,6 +197,10 @@ class DayEditorValidationForm extends Component {
               </div>
             </div>
 
+            <DatePicker selected={date} onChange={handleDateChange} />
+            <br/>
+            <br/>
+
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field name='customName' placeholder="Название дня" component={InputProfile} />
@@ -178,7 +223,17 @@ class DayEditorValidationForm extends Component {
                 uploadCallback={this.uploadImageCallBack}
               />
             </div>
-            <FieldArray name='tasks' component={renderTasks} />
+
+            <br/>
+
+            {/* <Field name="program" id="program" options={[
+              { name: '#Я ГЕРОЙ', value: '1'},
+              { name: '#МАМА МОЖЕТ', value: '2' },
+              { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
+            ]} component={SelectProgram} /> */}
+
+            <FieldArray name='programs' component={renderPrograms} />
+
             <br/>
             <button type="button" className="btn btn--secondary" onClick={() => {
               dispatch({ type: 'HIDE_POLL', hideCreatePoll: !hideCreatePoll })
@@ -201,13 +256,19 @@ class DayEditorValidationForm extends Component {
 
 DayEditorValidationForm = reduxForm({
   form: 'dayEditor',
-  fields: ['tasks', 'customName', 'customIcon']
+  fields: ['programs', 'customName', 'customIcon']
 })(DayEditorValidationForm)
 
+let selector = formValueSelector('dayEditor')
+
 const mapStateToProps = state => {
-  console.log('SSSSSSSS==========0')
-  console.log(state.hidePoll)
-  return { hideCreatePoll: state.hidePoll }
+  const { selectedPrograms, recivedPrograms, hidePoll, programShow } = state
+  const { programs } = recivedPrograms[selectedPrograms] || []
+  return {
+    hideCreatePoll: hidePoll,
+    programShow,
+    programs
+  }
 }
 
 DayEditorValidationForm = connect(

@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import Modal from 'boron/FadeModal'
 
 let contentStyle = {
-  borderRadius: '18px',
-  padding: '30px'
+  width: '794px',
+  height: '446px'
 }
-
 
 class Exercises extends Component {
   componentWillMount() {
@@ -70,13 +69,13 @@ class Exercises extends Component {
                       <p className="num-list__description">
                         <a href="#" className="video-pupup" onClick={ e => {
                           e.preventDefault()
-                          this.props.refs.videoModal.show()
+                          this.refs[`videoModal${index}${ind}`].show()
                         }}>
                           {exercise.description}
                         </a>
                       </p>
-                      <Modal ref='videoModal' contentStyle={contentStyle}>
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/E3Wq9YxqTI4" frameborder="0" allowfullscreen=""></iframe>
+                      <Modal ref={`videoModal${index}${ind}`} modalStyle={contentStyle} contentStyle={contentStyle}>
+                        <iframe width="100%" height="100%" src={exercise.video} frameBorder="0" allowFullScreen></iframe>
                       </Modal>
                     </li>
                   ))}
