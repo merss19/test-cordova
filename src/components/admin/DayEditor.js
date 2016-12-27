@@ -100,7 +100,7 @@ class DayEditor extends Component {
                     //   this.refs.loadingModal.hide()
                     // })
                 }}/>
-                <Modal ref='loadingModal' contentStyle={contentStyle}>
+                <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
                   <h2>Подождите...</h2>
                 </Modal>
                 <Modal ref='errorModal' contentStyle={contentStyle}>

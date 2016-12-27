@@ -295,7 +295,7 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="phone" type="tel" placeholder="ХХХХХХХХХХ" component={InputProfilePhone} />
+                <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХХХ" component={InputProfilePhone} />
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field disabled name="email" type="tel" placeholder="Почта" defaultValue="anna@gmail.com" component={InputProfile} />
@@ -698,9 +698,6 @@ const validate = data => {
       break
     case data.phone.length > 20:
       errors.phone = 'Поле телефона должно быть короче 20 символов'
-      break
-    case !/^[0-9]{3,20}$/.test(data.phone):
-      errors.phone = 'Поле телефона может содержать только цифры'
       break
     default:
       break

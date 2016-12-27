@@ -324,7 +324,7 @@ class ProfilePay extends Component {
                       Обновить
                     </button>
                   </Modal>
-                  <Modal ref='loadingModal' contentStyle={contentStyle}>
+                  <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
                     <h2>Подождите...</h2>
                   </Modal>
                   <Modal ref='successModal' contentStyle={contentStyle}>

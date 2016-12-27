@@ -20,6 +20,7 @@ let contentStyle = {
 
 let email
 let password
+let isFetching = false
 
 class ProfileSignup extends Component {
   componentWillMount() {
@@ -123,33 +124,37 @@ class ProfileSignup extends Component {
     }
 
     const userCreate = payload => {
-      program = !!program ? program : '1'
-      packageType = !!packageType ? packageType : '1'
-      cookie.save('program', program + '', { path: '/' })
-      signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
-      this.refs.loadingModal.show()
-      return fetch(`${api}/user/user-create`, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(json => {
-        this.refs.loadingModal.hide()
-        if (json.data && json.data.authToken) {
-          cookie.save('token', json.data.authToken, { path: '/' })
-          setToken(json.data.authToken)
-          browserHistory.push('/signup/pay')
-        } else if (json.errorCode === 129) {
-          this.refs.errorEmailModal.show()
-        } else {
-          this.refs.errorModal.show()
-          throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
-        }
-      })
+      if (!isFetching) {
+        isFetching = true
+        program = !!program ? program : '1'
+        packageType = !!packageType ? packageType : '1'
+        cookie.save('program', program + '', { path: '/' })
+        signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
+        this.refs.loadingModal.show()
+        return fetch(`${api}/user/user-create`, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(json => {
+          isFetching = false
+          this.refs.loadingModal.hide()
+          if (json.data && json.data.authToken) {
+            cookie.save('token', json.data.authToken, { path: '/' })
+            setToken(json.data.authToken)
+            browserHistory.push('/signup/pay')
+          } else if (json.errorCode === 129) {
+            this.refs.errorEmailModal.show()
+          } else {
+            this.refs.errorModal.show()
+            throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, возможно такой email уже существует' })
+          }
+        })
+      }
     }
 
     return (
@@ -332,7 +337,7 @@ class ProfileSignup extends Component {
             Продолжить
           </button>
         </Modal>
-        <Modal ref='loadingModal' contentStyle={contentStyle}>
+        <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
           <h2>Подождите...</h2>
         </Modal>
         <Modal ref='errorModal' contentStyle={contentStyle}>

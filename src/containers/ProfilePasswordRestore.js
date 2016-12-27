@@ -62,7 +62,7 @@ class ProfilePasswordRestore extends Component {
           <Link to='/'>Войти</Link>
         </Modal>
 
-        <Modal ref='loadingModal' contentStyle={contentStyle}>
+        <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
           <h2>Подождите...</h2>
         </Modal>
 

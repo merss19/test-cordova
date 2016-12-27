@@ -104,7 +104,7 @@ class ProfileCreate extends Component {
             <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
             </Modal>
-            <Modal ref='loadingModal' contentStyle={contentStyle}>
+            <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
               <h2>Подождите...</h2>
             </Modal>
           </div>

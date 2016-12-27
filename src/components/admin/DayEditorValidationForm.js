@@ -7,7 +7,8 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
 import Calendar from '../../stories/task/Calendar'
 import SelectProgram from '../componentKit/SelectProgram'
-import Menu from './Menu'
+// import Menu from './Menu'
+import MenuButton from '../../stories/MenuButton'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -134,23 +135,30 @@ class DayEditorValidationForm extends Component {
 
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
-        {fields.map((program, index) => {
-          if (index < fields.length - 1) {
-            return (
-              <li key={index}>
-                <button type="button" className="btn btn--secondary" onClick={() => {
-                  dispatch({ type: 'PROGRAM_SHOW', programShow: index + 1 })
-                }}>
-                  {programs[index].name}
-                </button>
-                {programShow === programs[index].id &&
-                  <FieldArray name={`${program}.tasks`} component={renderTasks} />
-                }
-                <hr/>
-              </li>
-            )
-          }
-        })}
+        {/* {this.props.params.program + '' === '1'
+        } */}
+        {fields.length > 0
+          ? fields.map((program, index) => {
+              if (index < fields.length - 1) {
+                return (
+                  <li key={index}>
+                    <button type="button" className="btn btn--secondary" onClick={() => {
+                      dispatch({ type: 'PROGRAM_SHOW', programShow: index + 1 })
+                    }}>
+                      {programs[index].name}
+                    </button>
+                    {programShow === programs[index].id &&
+                      <FieldArray name={`${program}.tasks`} component={renderTasks} />
+                    }
+                    <hr/>
+                  </li>
+                )
+              }
+            })
+          : <li>
+              <FieldArray name='program[0].tasks' component={renderTasks} />
+            </li>
+        }
       </ul>
     )
 
@@ -162,7 +170,20 @@ class DayEditorValidationForm extends Component {
       <form onSubmit={handleSubmit(onSubmit)} className="grid">
         <div className="1/4--desk grid__cell layout__menu">
           <div className="grid layout__menu-inner">
-            <Menu/>
+            <div className="2/3 grid__cell">
+              <ul className="main-nav">
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => change('programs', programs)} icon="ico-m-book">
+                    Тренировочный день
+                  </MenuButton>
+                </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => change('programs', [])} icon="ico-m-book">
+                    Бонусный день
+                  </MenuButton>
+                </li>
+              </ul>
+            </div>
             <div className="1/3 grid__cell">
               <ul className="min-calendar">
                 {calendar && calendar.map((field, index) => (
