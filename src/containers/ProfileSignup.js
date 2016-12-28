@@ -113,15 +113,19 @@ class ProfileSignup extends Component {
         break
       case '5':
         programName = 'TEZ-TOUR'
+        program = undefined
         break
       case '6':
         programName = 'АЛЬФА ЦЕНТР ЗДОРОВЬЯ'
+        program = undefined
         break
       case '7':
         programName = 'СМ-КЛИНИКА'
+        program = undefined
         break
       case '8':
         programName = 'AVILON'
+        program = undefined
         break
       default:
         programName = 'ЯСЕГОДНЯ'
@@ -302,7 +306,7 @@ class ProfileSignup extends Component {
         <Modal ref='accModal' contentStyle={contentStyle}>
           <h2>Выберите программу</h2>
           <br/>
-          {!this.props.params.program &&
+          {!program &&
             <Field name="programValue" id="programValue" options={[
               { name: '#Я ГЕРОЙ', value: '1'},
               { name: '#МАМА МОЖЕТ', value: '2' },
