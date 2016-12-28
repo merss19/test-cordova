@@ -1,0 +1,38 @@
+@import "../../_theme";
+
+.pending-profile {
+  display: flex;
+  text-align: left;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  &__top-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+  }
+
+  &__button {
+    margin-right: 5px;
+  }
+
+  &__close-button {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: $c-l-blue solid 1px;
+    border-radius: 50%;
+  }
+
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+}
