@@ -53,6 +53,18 @@ class ProfileSignup extends Component {
       case 'tomorrowman':
         program = '4'
         break
+      case 'teztour':
+        program = '5'
+        break
+      case 'alfazdrav':
+        program = '6'
+        break
+      case 'smclinic':
+        program = '7'
+        break
+      case 'avilon':
+        program = '8'
+        break
       default:
         break
     }
@@ -98,6 +110,18 @@ class ProfileSignup extends Component {
         break
       case '4':
         programName = '#Я ЗАВТРА'
+        break
+      case '5':
+        programName = 'TEZ-TOUR'
+        break
+      case '6':
+        programName = 'АЛЬФА ЦЕНТР ЗДОРОВЬЯ'
+        break
+      case '7':
+        programName = 'СМ-КЛИНИКА'
+        break
+      case '8':
+        programName = 'AVILON'
         break
       default:
         programName = 'ЯСЕГОДНЯ'

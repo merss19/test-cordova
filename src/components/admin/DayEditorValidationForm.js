@@ -11,6 +11,7 @@ import SelectProgram from '../componentKit/SelectProgram'
 import MenuButton from '../../stories/MenuButton'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import moment from 'moment'
 
 let htmlEditor = ''
 
@@ -126,7 +127,7 @@ class DayEditorValidationForm extends Component {
 
   componentDidMount() {
     const { change, programs } = this.props
-    change('programs', programs)
+    change('programTasks', programs)
   }
 
   render() {
@@ -139,7 +140,7 @@ class DayEditorValidationForm extends Component {
         } */}
         {fields.length > 0
           ? fields.map((program, index) => {
-              if (index < fields.length - 1) {
+              if (index < 3) {
                 return (
                   <li key={index}>
                     <button type="button" className="btn btn--secondary" onClick={() => {
@@ -173,12 +174,12 @@ class DayEditorValidationForm extends Component {
             <div className="2/3 grid__cell">
               <ul className="main-nav">
                 <li className="main-nav__item">
-                  <MenuButton onClick={() => change('programs', programs)} icon="ico-m-book">
+                  <MenuButton onClick={() => change('programTasks', programs)} icon="ico-m-book">
                     Тренировочный день
                   </MenuButton>
                 </li>
                 <li className="main-nav__item">
-                  <MenuButton onClick={() => change('programs', [])} icon="ico-m-book">
+                  <MenuButton onClick={() => change('programTasks', [])} icon="ico-m-book">
                     Бонусный день
                   </MenuButton>
                 </li>
@@ -189,19 +190,16 @@ class DayEditorValidationForm extends Component {
                 {calendar && calendar.map((field, index) => (
                   <Calendar onClick={() => {
                       reset()
+                      dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
                       change('customName', calendar[index].customName)
                       change('customIcon', calendar[index].customIcon)
-                      change('tasks', calendar[index].tasks)
+                      change('programTasks', calendar[index].programTasks)
                     }}
                     key={index}
-                    number={field.number}
-                    icon={field.icon}
-                    status={field.status}
+                    number={field.id}
                     date={field.date}
-                    admin={field.admin}
-                    completeText={field.completeText}
                   >
-                    {field.day}
+                    {moment(field.date).format('DDddd')}
                   </Calendar>
                 ))}
               </ul>
@@ -253,7 +251,7 @@ class DayEditorValidationForm extends Component {
               { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
             ]} component={SelectProgram} /> */}
 
-            <FieldArray name='programs' component={renderPrograms} />
+            <FieldArray name='programTasks' component={renderPrograms} />
 
             <br/>
             <button type="button" className="btn btn--secondary" onClick={() => {
@@ -277,7 +275,7 @@ class DayEditorValidationForm extends Component {
 
 DayEditorValidationForm = reduxForm({
   form: 'dayEditor',
-  fields: ['programs', 'customName', 'customIcon']
+  fields: ['programTasks', 'customName', 'customIcon']
 })(DayEditorValidationForm)
 
 let selector = formValueSelector('dayEditor')

@@ -64,7 +64,7 @@ export const selectedDays = (state = 'reactjs', action) => {
 const days = (state = {
   isFetching: false,
   didInvalidate: false,
-  days: {}
+  days: []
 }, action) => {
   switch (action.type) {
     case INVALIDATE_DAYS:

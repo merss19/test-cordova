@@ -38,19 +38,19 @@ class DayEditor extends Component {
 
   render() {
     const { days, token, isFetching, editDay, dayIntro, dayDate, programs } = this.props
-    const isEmpty = !programs
-    const id = this.props.params.id
-    let initialValues = {}
-
+    const isEmpty = !programs || !days
     console.log(days)
+    // const id = this.props.params.id
+    // let initialValues = {}
 
-    if (!isEmpty && !days[0] && id) {
-      initialValues = {
-        tasks: days[id].tasks || [],
-        customIcon: days[id].customIcon || '',
-        customName: days[id].customName || ''
-      }
-    }
+    //
+    // if (days && days[0] && id) {
+    //   initialValues = {
+    //     tasks: days[id].tasks || [],
+    //     customIcon: days[id].customIcon || '',
+    //     customName: days[id].customName || ''
+    //   }
+    // }
 
     return (
       <div className='layout'>
@@ -62,7 +62,7 @@ class DayEditor extends Component {
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="layout__inner">
                 <DayEditorValidationForm
-                  calendar={days.calendar}
+                  calendar={days}
                   program={this.props.params.program}
                   editDay={editDay}
                   hideCreatePoll={false}
@@ -72,6 +72,15 @@ class DayEditor extends Component {
                     this.refs.loadingModal.show()
                     console.log(this.props.params.id)
                     console.log(this.props.params.program)
+
+                    data.programTasks = data.programTasks.filter(t => {
+                      return t.id !== 4
+                    }).map(task => {
+                      const copy = { ...task, program: task.id }
+                      const {id, ...newTask} = copy
+                      return newTask
+                    })
+
                     data.intro = dayIntro
                     data.date = moment(dayDate).format('YYYY-MM-DD')
 
@@ -88,17 +97,21 @@ class DayEditor extends Component {
                     console.log(payload)
 
                     const method = 'POST'
-                    // return fetch(`${api}/data/adminday-create`, {
-                    //   headers,
-                    //   method,
-                    //   body: JSON.stringify(payload)
-                    // })
-                    // .then(response => response.json())
-                    // .then(json => {
-                    //   console.log(json)
-                    //   this.refs.successPromoModal.show()
-                    //   this.refs.loadingModal.hide()
-                    // })
+                    return fetch(`${api}/data/adminday-create`, {
+                      headers,
+                      method,
+                      body: JSON.stringify(payload)
+                    })
+                    .then(response => response.json())
+                    .then(json => {
+                      console.log(json)
+                      this.refs.loadingModal.hide()
+                      if (json.errorCode === 1) {
+                        this.refs.successPromoModal.show()
+                      } else {
+                        this.refs.errorModal.show()
+                      }
+                    })
                 }}/>
                 <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
                   <h2>Подождите...</h2>
