@@ -135,7 +135,7 @@ class SuccessTomorrowProfile extends Component {
                   }
                 })
               }}>
-                Выберите программу
+                Выберите программу себе
               </button>
               <div className="divider" />
               <button className="btn btn--action" onClick={e => {

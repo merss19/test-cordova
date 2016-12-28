@@ -44,10 +44,12 @@ $bcMaxWidth: 1280px;
             content: '';
             display: block;
             z-index: -1;
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             border-radius: $bigRadius;
             position: absolute;
-            top: -20px; right: -20px;
+            top: -20px;
+            right: -20px;
             background-color: $c-primary;
           }
         }
@@ -77,10 +79,12 @@ $bcMaxWidth: 1280px;
           content: '';
           display: block;
           z-index: -1;
-          width: 100%; height: 100%;
+          width: 100%;
+          height: 100%;
           border-radius: 0 18px 0 0;
           position: absolute;
-          top: -20px; right: 20px;
+          top: -20px;
+          right: 20px;
           background-color: $c-l-blue;
         }
       }
@@ -204,7 +208,8 @@ $bcMaxWidth: 1280px;
     display: block;
     flex-shrink: 0;
     color: #fff;
-    width: 32px; height: 32px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 2px solid transparent;
     background-color: $c-l-blue;
@@ -218,7 +223,8 @@ $bcMaxWidth: 1280px;
   .ico-done {
     position: absolute;
     display: none;
-    right: -6px; top: -6px;
+    right: -6px;
+    top: -6px;
   }
 
 }
@@ -357,11 +363,11 @@ $bcMaxWidth: 1280px;
 
   &__email {
     @include av-mq(desk) {
-     border-right: 1px solid $c-border;
-     padding-right: $baseMargin;
+      border-right: 1px solid $c-border;
+      padding-right: $baseMargin;
     }
     @include av-mq(portable) {
-     margin-bottom: $baseMargin;
+      margin-bottom: $baseMargin;
     }
   }
 
@@ -398,7 +404,11 @@ $bcMaxWidth: 1280px;
   padding: 0 $baseMargin;
 
   @include av-mq(portable) {
-   display: none;
+    display: none;
+  }
+
+  &_top-menu {
+    justify-content: flex-start;
   }
 
   &__mob-title {
@@ -428,7 +438,6 @@ $bcMaxWidth: 1280px;
   }
   &__packet {
 
-
   }
   &__packet-item {
 
@@ -437,8 +446,8 @@ $bcMaxWidth: 1280px;
 }
 
 .packet-info {
-  border-top: 1px solid rgba(255,255,255,.2);
-  border-bottom: 1px solid rgba(255,255,255,.2);
+  border-top: 1px solid rgba(255, 255, 255, .2);
+  border-bottom: 1px solid rgba(255, 255, 255, .2);
   padding: 10% 0;
   margin: 15% 0;
   &__item {
@@ -447,7 +456,7 @@ $bcMaxWidth: 1280px;
   &__name-title {
     display: inline-block;
     min-width: 50px;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, .5);
   }
   &__name {
     font-size: $fz-h1;

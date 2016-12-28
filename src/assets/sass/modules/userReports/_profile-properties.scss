@@ -1,0 +1,46 @@
+@import "../../_theme";
+
+.profile-properties {
+  width: 50%;
+  flex-basis: 50%;
+  text-align: left;
+
+  &__title {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  &__photo {
+    max-width: 50%;
+    margin-left: 5px;
+    margin-bottom: 15px;
+  }
+
+  // Definition list
+
+  &-list {
+
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &__title {
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+
+    &__title, &__definition {
+      flex: 0 1 50%;
+      text-align: left;
+      padding: 5px;
+
+      &_changed {
+        background-color: rgba($c-green, 0.2);
+      }
+    }
+
+  }
+}

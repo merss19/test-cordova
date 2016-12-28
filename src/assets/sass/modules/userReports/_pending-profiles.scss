@@ -1,0 +1,41 @@
+@import "../../_theme";
+
+.pending-profiles {
+  width: 100%;
+
+  &__item {
+    position: relative;
+    margin-bottom: 1px;
+
+    border: none;
+    list-style: none;
+    box-shadow: 0 0 0 1px $c-m-gray;
+
+    &-link {
+      margin: 0;
+      padding: 10px;
+
+      color: $c-text;
+      text-decoration: none;
+
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      &:hover, &:focus {
+        background-color: lighten($c-m-gray, 25%);
+      }
+    }
+
+    &-name {
+      text-align: left;
+    }
+
+    &-timestamp {
+      color: rgba($c-text, 0.5);
+      text-align: left;
+    }
+
+  }
+}
