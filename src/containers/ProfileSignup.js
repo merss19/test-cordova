@@ -53,18 +53,6 @@ class ProfileSignup extends Component {
       case 'tomorrowman':
         program = '4'
         break
-      case 'teztour':
-        program = '5'
-        break
-      case 'alfazdrav':
-        program = '6'
-        break
-      case 'smclinic':
-        program = '7'
-        break
-      case 'avilon':
-        program = '8'
-        break
       default:
         break
     }
@@ -111,24 +99,23 @@ class ProfileSignup extends Component {
       case '4':
         programName = '#Я ЗАВТРА'
         break
-      case '5':
-        programName = 'TEZ-TOUR'
-        program = undefined
-        break
-      case '6':
-        programName = 'АЛЬФА ЦЕНТР ЗДОРОВЬЯ'
-        program = undefined
-        break
-      case '7':
-        programName = 'СМ-КЛИНИКА'
-        program = undefined
-        break
-      case '8':
-        programName = 'AVILON'
-        program = undefined
-        break
       default:
-        programName = 'ЯСЕГОДНЯ'
+        switch(this.props.params.program) {
+          case 'teztour':
+            programName = 'TEZ-TOUR'
+            break
+          case 'alfazdrav':
+            programName = 'АЛЬФА ЦЕНТР ЗДОРОВЬЯ'
+            break
+          case 'smclinic':
+            programName = 'СМ-КЛИНИКА'
+            break
+          case 'avilon':
+            programName = 'AVILON'
+            break
+          default:
+            programName = 'ЯСЕГОДНЯ'
+        }
     }
 
     if (program + '' === '4') {
@@ -306,7 +293,7 @@ class ProfileSignup extends Component {
         <Modal ref='accModal' contentStyle={contentStyle}>
           <h2>Выберите программу</h2>
           <br/>
-          {!program &&
+          {cookie.load('general') &&
             <Field name="programValue" id="programValue" options={[
               { name: '#Я ГЕРОЙ', value: '1'},
               { name: '#МАМА МОЖЕТ', value: '2' },
