@@ -1,5 +1,6 @@
 import cookie from 'react-cookie'
 import { api } from '../config.js'
+import moment from 'moment'
 
 export const REQUEST_DAYS = 'REQUEST_DAYS'
 export const RECEIVE_DAYS = 'RECEIVE_DAYS'
@@ -89,7 +90,7 @@ export const receiveDay = (days, id) => {
 export const load = data => ({ type: 'LOAD', data })
 
 export const receiveDays = (days, json) => {
-  json = exampleJson
+  // json = exampleJson
   return ({
     type: RECEIVE_DAYS,
     days,
@@ -98,11 +99,13 @@ export const receiveDays = (days, json) => {
 }
 
 const fetchDays = partialState => dispatch => {
-  const { token, days } = partialState
+  const { token, days, program, date } = partialState
   dispatch(requestDays(days))
   const payload = {
     authToken: token ? token : cookie.load('token'),
-    data: {}
+    data: {
+      date: moment().format('YYYY-MM-DD')
+    }
   }
 
   const headers = {
@@ -111,14 +114,15 @@ const fetchDays = partialState => dispatch => {
   }
 
   const method = 'POST'
-
-  return fetch(`${api}/day/days-get`, {
+  return fetch(`${api}/data/adminday-get-info`, {
     headers,
     method,
     body: JSON.stringify(payload)
   })
   .then(response => response.json())
   .then(json => {
+    console.log('<======>===0')
+    console.log(json)
     return dispatch(receiveDays(days, json))
   })
 }
@@ -135,8 +139,8 @@ const shouldFetchDays = (state, days) => {
   return d.didInvalidate
 }
 
-export const fetchDaysIfNeeded = days => (dispatch, getState) => {
+export const fetchDaysIfNeeded = (days, program, date) => (dispatch, getState) => {
   if (shouldFetchDays(getState(), days)) {
-    return dispatch(fetchDays({ token: getState().userToken.token, days}))
+    return dispatch(fetchDays({ token: getState().userToken.token, days, program, date}))
   }
 }

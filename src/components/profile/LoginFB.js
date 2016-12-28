@@ -27,6 +27,7 @@ let userId
 let socialNetType
 let socialName
 let shareInitial
+let isFetching
 
 class LoginFB extends Component {
   componentDidMount() {
@@ -92,68 +93,74 @@ class LoginFB extends Component {
     let { email, emailFriend } = this.props
 
     const signupWith = (email, program, packageType, promo, share) => {
-      if (email)
-        email = email.replace(/ /g,'')
-      if (emailFriend)
-        emailFriend = emailFriend.replace(/ /g,'')
+      if (!isFetching) {
+        isFetching = true
+        if (email)
+          email = email.replace(/ /g,'')
+        if (emailFriend)
+          emailFriend = emailFriend.replace(/ /g,'')
 
-      this.refs.loadingModal.show()
-      const pack = program === '4' ? '1' : packageType
-      signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
+        this.refs.loadingModal.show()
+        const pack = program === '4' || !packageType ? '1' : packageType
+        signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
 
-      const payload = {
-        email: email ? email.replace(/ /g,'') : email,
-        program: program ? program : '1',
-        package: pack }
+        const payload = {
+          email: email ? email.replace(/ /g,'') : email,
+          program: program ? program : '1',
+          package: pack }
 
-      const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
+        const headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
 
-      return fetch(`${api}/user/user-create`, {
-          headers,
-          method: 'POST',
-          body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(json => {
-          if (json.data && json.data.authToken) {
-            cookie.save('token', json.data.authToken, { path: '/' })
-            setToken(json.data.authToken)
+        return fetch(`${api}/user/user-create`, {
+            headers,
+            method: 'POST',
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then(json => {
+            if (json.data && json.data.authToken) {
+              cookie.save('token', json.data.authToken, { path: '/' })
+              setToken(json.data.authToken)
 
-            const payload = {
-              authToken: json.data.authToken,
-              data: {
-                socialNetType,
-                token,
-                userId
-              }
-            }
-
-            return fetch(`${api}/user/socialNetUser-create`, {
-                headers,
-                method: 'POST',
-                body: JSON.stringify(payload)
-              })
-              .then(response => response.json())
-              .then(json => {
-                if (json && json.data) {
-                  this.refs.loadingModal.hide()
-                  browserHistory.push('/signup/pay')
-                } else {
-                  throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
+              const payload = {
+                authToken: json.data.authToken,
+                data: {
+                  socialNetType,
+                  token,
+                  userId
                 }
-              })
-          } else if (json.errorCode === 129) {
-            this.refs.loadingModal.hide()
-            this.refs.errorEmailModal.show()
-          } else {
-            this.refs.loadingModal.hide()
-            this.refs.errorModal.show()
-            throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
-          }
-        })
+              }
+
+              return fetch(`${api}/user/socialNetUser-create`, {
+                  headers,
+                  method: 'POST',
+                  body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(json => {
+                  isFetching = false
+                  if (json && json.data) {
+                    this.refs.loadingModal.hide()
+                    browserHistory.push('/signup/pay')
+                  } else {
+                    throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
+                  }
+                })
+            } else if (json.errorCode === 129) {
+              isFetching = false
+              this.refs.loadingModal.hide()
+              this.refs.errorEmailModal.show()
+            } else {
+              isFetching = false
+              this.refs.loadingModal.hide()
+              this.refs.errorModal.show()
+              throw new SubmissionError({ password: '', _error: 'Что-то пошло не так, попробуйте снова' })
+            }
+          })
+        }
     }
 
     const loginFb = () => {
@@ -236,7 +243,7 @@ class LoginFB extends Component {
                   Продолжить
                 </button>
               </Modal>
-              <Modal ref='loadingModal' contentStyle={contentStyle}>
+              <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
                 <h2>Подождите...</h2>
               </Modal>
               <Modal ref='errorModal' contentStyle={contentStyle}>

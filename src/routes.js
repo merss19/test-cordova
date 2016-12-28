@@ -3,7 +3,7 @@ import { Route, IndexRoute, browserHistory } from 'react-router'
 import { api } from './config'
 
 import App from './components/App'
-// import ProfileCreate from './containers/ProfileCreate'
+import ProfileCreate from './containers/ProfileCreate'
 import ProfileSignup from './containers/ProfileSignup'
 import PartnerLogin from './containers/PartnerLogin'
 import PartnerDataShow from './containers/PartnerDataShow'
@@ -106,6 +106,28 @@ const requirePayAuth = fromPay => {
   }
 }
 
+const requireForTest = () => {
+  const token = cookie.load('token')
+  return fetch(`${api}/user/user-get`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      authToken: token,
+      data: {}
+    })
+  })
+  .then(response => response.json())
+  .then(json => {
+    const isRegistered = json && json.errorCode === 1 && json.data && json.data[0] && json.data[0].role === 2
+
+    if (!isRegistered)
+      browserHistory.push('/')
+  })
+}
+
 const requireAuth = () => getRole(3)
 const requireMinionAuth = () => getRole(2)
 const requireAdminAuth = () => getRole(1)
@@ -115,15 +137,12 @@ const requireFromLoginAuth = () => requirePayAuth(false)
 export default (
   <Route path='/' onEnter={promoWatch}>
     <IndexRoute component={App} onEnter={getToken} />
-    {/* <Route path='task' component={TodayTask} />
-    <Route path='faq' component={Faq} />
-    <Route path='food' component={Food} />
-    <Route path='reports' component={Reports} />
-    <Route path='photos' component={Photos} /> */}
-    {/* <Route path='profile'>
-      <IndexRoute component={App} onEnter={getToken}/>
-      <Route path='create' component={ProfileCreate} onEnter={requireAuth} />
-    </Route> */}
+    <Route path='task' component={TodayTask} onEnter={requireForTest} />
+    <Route path='faq' component={Faq} onEnter={requireForTest} />
+    <Route path='food' component={Food} onEnter={requireForTest} />
+    <Route path='reports' component={Reports} onEnter={requireForTest} />
+    <Route path='photos' component={Photos} onEnter={requireForTest} />
+    <Route path='profile' component={ProfileCreate} onEnter={requireForTest} />
     <Route path='social/vk' component={LoginSocial} />
     <Route path='social/fb' component={LoginFB} />
     <Route path='signup'>
@@ -151,11 +170,11 @@ export default (
       <Route path='pendingInsurance/:userId/:insuranceId' component={PendingInsuranceProfile} onEnter={requireMinionAuth} />
     </Route>
 
-    <Route path='superadmin'>
+    {/* <Route path='superadmin'>
       <IndexRoute component={AdminLogin} />
       <Route path='day' component={DayEditor} />
       <Route path='day/:program' component={DayEditor} />
       <Route path='day/:program/:id' component={DayEditor} />
-    </Route>
+    </Route> */}
   </Route>
 )

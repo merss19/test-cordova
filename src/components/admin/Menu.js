@@ -8,22 +8,12 @@ const Menu = () => (
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/superadmin/day/1/')
-        }} icon="ico-m-book">#Я ГЕРОЙ</MenuButton>
+        }} icon="ico-m-book">Для программ</MenuButton>
       </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/superadmin/day/2/')
-        }} icon="ico-m-book">#МАМА МОЖЕТ</MenuButton>
-      </li>
-      <li className="main-nav__item">
-        <MenuButton onClick={() => {
-          browserHistory.push('/superadmin/day/3/')
-        }} icon="ico-m-book">#ЭКСТРЕМАЛЬНАЯ СУШКА</MenuButton>
-      </li>
-      <li className="main-nav__item">
-        <MenuButton onClick={() => {
-          browserHistory.push('/superadmin/day/4/')
-        }} icon="ico-m-book">#Я ЗАВТРА</MenuButton>
+        }} icon="ico-m-book">Бонус</MenuButton>
       </li>
     </ul>
     {/* <hr/>

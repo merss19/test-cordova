@@ -155,7 +155,7 @@ class SuccessTomorrowProfile extends Component {
             </div>
           </div>
         </div>
-        <Modal ref='loadingModal' contentStyle={contentStyle}>
+        <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
           <h2>Подождите...</h2>
         </Modal>
         <Modal ref='successModal' contentStyle={contentStyle}>

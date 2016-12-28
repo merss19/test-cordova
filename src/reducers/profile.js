@@ -40,7 +40,6 @@ export const bodyParams = (state = [], action) => {
 export function profile(state = {}, action) {
   switch (action.type) {
     case 'SIGNUP':
-      console.log(action)
       return {
         program: action.program,
         promo: action.promo,

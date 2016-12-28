@@ -24,7 +24,35 @@ class MainComponent extends Component {
       contentStyle.width = '300px'
     }
   }
-  
+
+  handleScroll(event) {
+    if (event.srcElement.body.scrollTop > 54) {
+      document.getElementById('menu').className = 'grid layout__menu-inner is-fixed'
+      document.getElementById('menu').style = 'width: 295px'
+    } else {
+      document.getElementById('menu').className = 'grid layout__menu-inner'
+    }
+  }
+
+  handleResize(event) {
+    const windowWidth = window.innerWidth
+    if (windowWidth < 1210 && windowWidth > 1024) {
+      const offset = (1210 - windowWidth) * 0.3
+      console.log(offset)
+      document.getElementById('menu').style = `width: ${295 - offset}px`
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener("resize", this.handleResize)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener("resize", this.handleResize)
+  }
+
   render() {
     const { taskDay, token } = this.props
     const { intro, tasks, poll, chat } = taskDay
@@ -36,7 +64,7 @@ class MainComponent extends Component {
         <div className="layout__inner">
           <div className="grid">
             <div className="1/4--desk grid__cell layout__menu">
-              <div className="grid layout__menu-inner">
+              <div id="menu" className="grid layout__menu-inner">
                 <Menu/>
                 <CalendarList calendar={[{
                     number: '1',

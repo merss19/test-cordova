@@ -3,10 +3,15 @@ import { Editor } from 'react-draft-wysiwyg'
 import { connect } from 'react-redux'
 import '../../../public/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
-import { Field, FieldArray, reduxForm } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
 import Calendar from '../../stories/task/Calendar'
-import Menu from './Menu'
+import SelectProgram from '../componentKit/SelectProgram'
+// import Menu from './Menu'
+import MenuButton from '../../stories/MenuButton'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import moment from 'moment'
 
 let htmlEditor = ''
 
@@ -31,7 +36,10 @@ const renderExercises = ({ fields, meta: { touched, error } }) => (
       </li>
     ))}
     <li>
-      <a href='#' onClick={() => fields.push({})}>Добавить</a>
+      <a href='#' onClick={e => {
+        e.preventDefault()
+        fields.push({})
+      }}>Добавить</a>
     </li>
   </ul>
 )
@@ -57,39 +65,45 @@ const renderTasks = ({ fields, meta: { error } }) => (
     ))}
     <li>
       <br/>
-      <button type="button" className="btn btn--primary" onClick={() => fields.push({})}>+</button>
+      <button type="button" className="btn btn--primary" onClick={() => fields.push({})}>Добавить задание</button>
     </li>
   </ul>
 )
 
-const renderPollFields = ({ fields, meta: { error } }) => {
+const renderPollFields = ({ fields, meta: { error } }) => (
   <ul>
     <h4>Варианты опроса:</h4>
+    <br/>
     {fields.map((field, index) => (
       <li key={index}>
-        <br/>
-        <div className="gender">
-          <h4 className="low">Вариант - {index + 1}:</h4>
-          <span className="base-table__btn-del">
-            <svg className="svg-icon ico-trash" onClick={() => fields.remove(index)}>
-              <use xlinkHref="#ico-trash"></use>
-            </svg>
-          </span>
+        <div className="grid">
+          <div className="2/3--desk 1/1--pocket grid__cell">
+            <Field name={`${field}.name`} placeholder="Название" component={InputProfile} />
+          </div>
+          <div className="1/3--desk 1/1--pocket grid__cell">
+            <span className="base-table__btn-del">
+              <svg className="svg-icon ico-trash" onClick={() => fields.remove(index)}>
+                <use xlinkHref="#ico-trash"></use>
+              </svg>
+            </span>
+          </div>
         </div>
-        <br/>
-        <Field name={`${field}.name`} placeholder="Название" component={InputProfile} />
       </li>
     ))}
     <li>
       <br/>
-      <a href='#' onClick={() => fields.push({})}>Добавить</a>
+      <a href='#' onClick={e => {
+        e.preventDefault()
+        fields.push({})
+      }}>Добавить</a>
     </li>
   </ul>
-}
+)
 
 class DayEditorValidationForm extends Component {
   onEditorChange: Function = (editorContent) => {
-    htmlEditor = draftToHtml(editorContent)
+    const { dispatch } = this.props
+    dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent) })
   }
 
   uploadImageCallBack(file) {
@@ -111,32 +125,81 @@ class DayEditorValidationForm extends Component {
     })
   }
 
+  componentDidMount() {
+    const { change, programs } = this.props
+    change('programTasks', programs)
+  }
+
   render() {
-    const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar, change } = this.props
-    console.log(hideCreatePoll)
+    const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
+      change, date, programs, programShow } = this.props
+
+    const renderPrograms = ({ fields, meta: { error } }) => (
+      <ul>
+        {/* {this.props.params.program + '' === '1'
+        } */}
+        {fields.length > 0
+          ? fields.map((program, index) => {
+              if (index < 3) {
+                return (
+                  <li key={index}>
+                    <button type="button" className="btn btn--secondary" onClick={() => {
+                      dispatch({ type: 'PROGRAM_SHOW', programShow: index + 1 })
+                    }}>
+                      {programs[index].name}
+                    </button>
+                    {programShow === programs[index].id &&
+                      <FieldArray name={`${program}.tasks`} component={renderTasks} />
+                    }
+                    <hr/>
+                  </li>
+                )
+              }
+            })
+          : <li>
+              <FieldArray name='program[0].tasks' component={renderTasks} />
+            </li>
+        }
+      </ul>
+    )
+
+    const handleDateChange = date => {
+      dispatch({ type: 'DAY_DATE', date: date })
+    }
+
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="grid">
         <div className="1/4--desk grid__cell layout__menu">
           <div className="grid layout__menu-inner">
-            <Menu/>
+            <div className="2/3 grid__cell">
+              <ul className="main-nav">
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => change('programTasks', programs)} icon="ico-m-book">
+                    Тренировочный день
+                  </MenuButton>
+                </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => change('programTasks', [])} icon="ico-m-book">
+                    Бонусный день
+                  </MenuButton>
+                </li>
+              </ul>
+            </div>
             <div className="1/3 grid__cell">
               <ul className="min-calendar">
-                {calendar.map((field, index) => (
+                {calendar && calendar.map((field, index) => (
                   <Calendar onClick={() => {
                       reset()
+                      dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
                       change('customName', calendar[index].customName)
                       change('customIcon', calendar[index].customIcon)
-                      change('tasks', calendar[index].tasks)
+                      change('programTasks', calendar[index].programTasks)
                     }}
                     key={index}
-                    number={field.number}
-                    icon={field.icon}
-                    status={field.status}
+                    number={field.id}
                     date={field.date}
-                    admin={field.admin}
-                    completeText={field.completeText}
                   >
-                    {field.day}
+                    {moment(field.date).format('DDddd')}
                   </Calendar>
                 ))}
               </ul>
@@ -153,6 +216,10 @@ class DayEditorValidationForm extends Component {
               </div>
             </div>
 
+            <DatePicker selected={date} onChange={handleDateChange} />
+            <br/>
+            <br/>
+
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field name='customName' placeholder="Название дня" component={InputProfile} />
@@ -161,6 +228,9 @@ class DayEditorValidationForm extends Component {
                 <Field name='customIcon' placeholder="Выберите иконку" component={InputProfile} />
               </div>
             </div>
+
+            <br/>
+            <br/>
 
             <div className='home-root'>
               <Editor
@@ -172,7 +242,17 @@ class DayEditorValidationForm extends Component {
                 uploadCallback={this.uploadImageCallBack}
               />
             </div>
-            <FieldArray name='tasks' component={renderTasks} />
+
+            <br/>
+
+            {/* <Field name="program" id="program" options={[
+              { name: '#Я ГЕРОЙ', value: '1'},
+              { name: '#МАМА МОЖЕТ', value: '2' },
+              { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
+            ]} component={SelectProgram} /> */}
+
+            <FieldArray name='programTasks' component={renderPrograms} />
+
             <br/>
             <button type="button" className="btn btn--secondary" onClick={() => {
               dispatch({ type: 'HIDE_POLL', hideCreatePoll: !hideCreatePoll })
@@ -183,7 +263,7 @@ class DayEditorValidationForm extends Component {
               <div>
                 <br/>
                 <Field name='description' placeholder="Описание опроса" component={InputProfile} />
-                {/* <FieldArray name='pollFields' component={renderPollFields} /> */}
+                <FieldArray name='pollFields' component={renderPollFields} />
               </div>
             }
           </div>
@@ -195,13 +275,19 @@ class DayEditorValidationForm extends Component {
 
 DayEditorValidationForm = reduxForm({
   form: 'dayEditor',
-  fields: ['tasks', 'customName', 'customIcon']
+  fields: ['programTasks', 'customName', 'customIcon']
 })(DayEditorValidationForm)
 
+let selector = formValueSelector('dayEditor')
+
 const mapStateToProps = state => {
-  console.log('SSSSSSSS==========0')
-  console.log(state.hidePoll)
-  return { hideCreatePoll: state.hidePoll }
+  const { selectedPrograms, recivedPrograms, hidePoll, programShow } = state
+  const { programs } = recivedPrograms[selectedPrograms] || []
+  return {
+    hideCreatePoll: hidePoll,
+    programShow,
+    programs
+  }
 }
 
 DayEditorValidationForm = connect(
