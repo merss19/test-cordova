@@ -84,7 +84,7 @@ const requirePayAuth = fromPay => {
     .then(response => response.json())
     .then(json => {
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
-        if (json.data[0].paidPackage && json.data[0].role === 3 && json.data[0].program + '' !== '4') {
+        if (json.data[0].paidPackage && json.data[0].program + '' !== '4') {
           browserHistory.push('/signup/pay/success')
         } else {
           browserHistory.push('/signup/pay/')

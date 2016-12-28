@@ -188,7 +188,9 @@ class ProfileSignup extends Component {
         </div>
 
         <ul className="entry-bc entry-bc--step-1">
-          <li className="entry-bc__item entry-bc__item--done">
+          <li className={program && packageType
+            ? "entry-bc__item entry-bc__item--done"
+            : "entry-bc__item entry-bc__item--active"}>
             <span className="entry-bc__step">
               <span className="entry-bc__step-num">1</span>
               <svg className="svg-icon ico-done">
@@ -197,7 +199,9 @@ class ProfileSignup extends Component {
             </span>
             <span className="entry-bc__title">План</span>
           </li>
-          <li className="entry-bc__item entry-bc__item--active">
+          <li className={program && packageType
+            ? "entry-bc__item entry-bc__item--active"
+            : "entry-bc__item"}>
             <span className="entry-bc__step">
               <span className="entry-bc__step-num">2</span>
               <svg className="svg-icon ico-done">
