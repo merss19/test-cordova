@@ -27,11 +27,11 @@ import PendingProfiles from './containers/PendingProfiles'
 import PendingInsuranceProfile from './containers/PendingInsuranceProfile'
 import PendingInsuranceProfiles from './containers/PendingInsuranceProfiles'
 
-// import TodayTask from './containers/TodayTask'
-// import Reports from './containers/Reports'
-// import Faq from './components/Faq'
-// import Food from './components/food/MainComponent'
-// import Photos from './containers/Photos'
+import TodayTask from './containers/TodayTask'
+import Reports from './containers/Reports'
+import Faq from './components/Faq'
+import Food from './components/food/MainComponent'
+import Photos from './containers/Photos'
 
 import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
@@ -128,7 +128,6 @@ const requireForTest = () => {
   })
 }
 
-const requireAuth = () => getRole(3)
 const requireMinionAuth = () => getRole(2)
 const requireAdminAuth = () => getRole(1)
 const requireFromPayAuth = () => requirePayAuth(true)
