@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="278px" height="326px" viewBox="0 0 278 326" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>success</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Регистрация-завершена" transform="translate(-827.000000, -266.000000)">
+            <g id="success" transform="translate(827.000000, 266.000000)">
+                <rect id="Rectangle-36" fill="#F3F7F9" transform="translate(109.253175, 138.232051) rotate(-300.000000) translate(-109.253175, -138.232051) " x="107.253175" y="13.2320508" width="4" height="250" rx="2"></rect>
+                <rect id="Rectangle-36-Copy" fill="#F3F7F9" transform="translate(154.650290, 259.348076) rotate(-300.000000) translate(-154.650290, -259.348076) " x="151.65029" y="129.848076" width="6" height="259" rx="3"></rect>
+                <rect id="Rectangle-36-Copy-2" fill="#F3F7F9" transform="translate(163.650290, 203.008330) rotate(-300.000000) translate(-163.650290, -203.008330) " x="150.65029" y="73.5083302" width="26" height="259" rx="13"></rect>
+                <circle id="Oval-3" stroke="#FF8858" stroke-width="2" stroke-linecap="square" fill-opacity="0" fill="#D8D8D8" cx="228" cy="116" r="5"></circle>
+                <circle id="Oval-3-Copy-3" stroke="#1F447B" stroke-width="2" stroke-linecap="square" fill-opacity="0" fill="#D8D8D8" cx="139" cy="96" r="3"></circle>
+                <circle id="Oval-3-Copy-4" stroke="#FF8858" stroke-width="2" stroke-linecap="square" fill-opacity="0" fill="#FF8858" cx="73" cy="121" r="3"></circle>
+                <circle id="Oval-3-Copy" fill="#1F447B" cx="116" cy="53" r="3"></circle>
+                <circle id="Oval-3-Copy-5" fill="#1F447B" cx="146" cy="3" r="3"></circle>
+                <circle id="Oval-3-Copy-2" stroke="#1F447B" stroke-width="2" stroke-linecap="square" fill-opacity="0" fill="#D8D8D8" cx="57" cy="174" r="5"></circle>
+                <g id="ico" transform="translate(50.000000, 72.000000)" fill="#70CFFE">
+                    <polygon id="Line" points="0 7 12 7 12 5 0 5"></polygon>
+                    <polygon id="Line-Copy-4" transform="translate(6.000000, 6.000000) rotate(-180.000000) translate(-6.000000, -6.000000) " points="5 0 5 12 7 12 7 0"></polygon>
+                </g>
+                <g id="ico" transform="translate(181.000000, 50.000000)" fill="#70CFFE">
+                    <polygon id="Line" points="0 7 12 7 12 5 0 5"></polygon>
+                    <polygon id="Line-Copy-4" transform="translate(6.000000, 6.000000) rotate(-180.000000) translate(-6.000000, -6.000000) " points="5 0 5 12 7 12 7 0"></polygon>
+                </g>
+                <g id="ico" transform="translate(224.000000, 157.000000)" fill="#70CFFE">
+                    <polygon id="Line" points="0 7 12 7 12 5 0 5"></polygon>
+                    <polygon id="Line-Copy-4" transform="translate(6.000000, 6.000000) rotate(-180.000000) translate(-6.000000, -6.000000) " points="5 0 5 12 7 12 7 0"></polygon>
+                </g>
+                <g id="success_tick" transform="translate(88.000000, 145.000000)" fill="#70CFFE">
+                    <path d="M97.0052139,23.4514172 C87.4881348,9.30603178 71.3308375,0 53,0 C23.7289083,0 0,23.7289083 0,53 C0,82.2710917 23.7289083,106 53,106 C82.2710917,106 106,82.2710917 106,53 C106,43.5441871 103.523732,34.6667376 99.1843001,26.9807558 L51,75.1650559 L50.1306755,74.2957314 L49.7989899,74.627417 L27.1715729,52 L30,49.1715729 L50.6683144,69.8398873 L96.1715729,24.3366288 L99,27.1650559 L115.165056,10 L112.336629,7.17157288 L97.0052139,23.4514172 Z" id="Combined-Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
