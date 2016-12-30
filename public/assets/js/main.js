@@ -40,7 +40,7 @@
         stickEl.classList.add('is-fixed');
       } else {
         stickEl.classList.remove('is-fixed');
-      }
+      } 
     };
 
     var calcSideBarWidth = function() {
@@ -125,7 +125,7 @@
     onOpen: function() {
 
       // -- DEMO
-
+      
       var fillReport2 = document.querySelector('.js-fill-report-2'),
           fillReport3 = document.querySelector('.js-fill-report-3');
 
