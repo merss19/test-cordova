@@ -67,6 +67,7 @@ class LoginFB extends Component {
         .then(response => response.json())
         .then(json => {
           this.refs.loadingModal.hide()
+          
           if (json.errorCode === 1 && json.data && json.data.authToken) {
             cookie.save('token', json.data.authToken, { path: '/' })
             setToken(json.data.authToken)
@@ -297,6 +298,9 @@ const validate = data => {
       break
   }
 
+  if (!data.accept)
+    errors.accept = 'Вы должны принять условия оферты'
+
   if (data.program === '4') {
     switch (true) {
       case !data.emailFriendValue:
@@ -314,11 +318,6 @@ const validate = data => {
 
     if (!data.nameFriendValue)
       errors.nameFriendValue = 'Имя друга должно быть заполнено'
-
-    console.log(data.accept)
-
-    if (!data.accept)
-      errors.accept = 'Вы должны принять условия оферты'
   }
 
   return errors
