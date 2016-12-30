@@ -2116,6 +2116,8 @@ a.btn {
   @media screen and (min-width: 1025px) {
     .entry-info__mob-title {
       display: none; } }
+  .entry-info__inner {
+    padding: 30px 0; }
   .entry-info__title {
     font-size: 3rem;
     font-family: "Exo 2", Arial, Tahoma, sans-serif; }
@@ -2143,6 +2145,9 @@ a.btn {
   .packet-info__name {
     font-size: 2.2rem;
     font-family: "Exo 2", Arial, Tahoma, sans-serif; }
+
+.entry-success__title {
+  text-transform: uppercase; }
 
 .text-center {
   text-align: center; }
