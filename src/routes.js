@@ -128,52 +128,73 @@ const requireForTest = () => {
   })
 }
 
+const forceTrailingSlash = (nextState, replace) => {
+  const path = nextState.location.pathname
+  if (path.slice(-1) === '/') {
+    replace({
+      ...nextState.location,
+      pathname: path.slice(0, path.length - 1)
+    })
+  }
+
+  var url = window.location.toString()
+  if (/www.lk/g.test(url)) {
+    window.location = url.replace(/www.lk/, 'lk')
+  }
+}
+
+const forceTrailingSlashOnChange = (prevState, nextState, replace) => {
+  forceTrailingSlash(nextState, replace)
+}
+
 const requireMinionAuth = () => getRole(2)
 const requireAdminAuth = () => getRole(1)
 const requireFromPayAuth = () => requirePayAuth(true)
 const requireFromLoginAuth = () => requirePayAuth(false)
 
 export default (
-  <Route path='/' onEnter={promoWatch}>
-    <IndexRoute component={App} onEnter={getToken} />
-    <Route path='task' component={TodayTask} onEnter={requireForTest} />
-    <Route path='faq' component={Faq} onEnter={requireForTest} />
-    <Route path='food' component={Food} onEnter={requireForTest} />
-    <Route path='reports' component={Reports} onEnter={requireForTest} />
-    <Route path='photos' component={Photos} onEnter={requireForTest} />
-    <Route path='profile' component={ProfileCreate} onEnter={requireForTest} />
-    <Route path='social/vk' component={LoginSocial} />
-    <Route path='social/fb' component={LoginFB} />
-    <Route path='signup'>
-      <IndexRoute component={ProfileSignup} onEnter={requireFromLoginAuth} />
-      <Route path='pay' component={ProfilePay} onEnter={requireFromPayAuth} />
-      <Route path='pay/success' component={SuccessProfile} onEnter={requireFromLoginAuth} />
-      <Route path='pay/success/friend' component={SuccessTomorrowProfile} />
-    </Route>
-    <Route path='signup/:program' component={ProfileSignup} onEnter={requireFromLoginAuth} />
-    <Route path='restore'>
-      <IndexRoute component={ProfilePasswordForget} onEnter={requireFromLoginAuth} />
-      <Route path='create' component={ProfilePasswordRestore} onEnter={requireFromLoginAuth} />
-    </Route>
-    <Route path='partner'>
-      <IndexRoute component={PartnerLogin} />
-      <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth} />
-    </Route>
-    <Route path='userReports'>
-      <IndexRoute component={MinionLogin} onEnter={requireMinionAuth} />
+    <Route path='/' onEnter={promoWatch}>
+      <IndexRoute component={App} onEnter={getToken} />
+      <Route onEnter={forceTrailingSlash} onChange={forceTrailingSlashOnChange}>
+        <Route path='task' component={TodayTask} onEnter={requireForTest} />
+        <Route path='faq' component={Faq} onEnter={requireForTest} />
+        <Route path='food' component={Food} onEnter={requireForTest} />
+        <Route path='reports' component={Reports} onEnter={requireForTest} />
+        <Route path='photos' component={Photos} onEnter={requireForTest} />
+        <Route path='profile' component={ProfileCreate} onEnter={requireForTest} />
+        <Route path='social/vk' component={LoginSocial} />
+        <Route path='social/fb' component={LoginFB} />
+        <Route path='signup'>
+          <IndexRoute component={ProfileSignup} onEnter={requireFromLoginAuth} />
+          <Route path='pay' component={ProfilePay} onEnter={requireFromPayAuth} />
+          <Route path='pay/success' component={SuccessProfile} />
+          <Route path='pay/success/friend' component={SuccessTomorrowProfile} />
+        </Route>
+        <Route path='signup/:program' component={ProfileSignup} onEnter={requireFromLoginAuth} />
+        <Route path='restore'>
+          <IndexRoute component={ProfilePasswordForget} onEnter={requireFromLoginAuth} />
+          <Route path='create' component={ProfilePasswordRestore} onEnter={requireFromLoginAuth} />
+        </Route>
+        <Route path='partner'>
+          <IndexRoute component={PartnerLogin} />
+          <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth} />
+        </Route>
+        <Route path='userReports'>
+          <IndexRoute component={MinionLogin} onEnter={requireMinionAuth} />
 
-      <Route path='pendingProfiles' component={PendingProfiles} onEnter={requireMinionAuth} />
-      <Route path='pendingProfiles/:userId' component={PendingProfile} onEnter={requireMinionAuth} />
+          <Route path='pendingProfiles' component={PendingProfiles} onEnter={requireMinionAuth} />
+          <Route path='pendingProfiles/:userId' component={PendingProfile} onEnter={requireMinionAuth} />
 
-      <Route path='pendingInsurance' component={PendingInsuranceProfiles} onEnter={requireMinionAuth} />
-      <Route path='pendingInsurance/:userId/:insuranceId' component={PendingInsuranceProfile} onEnter={requireMinionAuth} />
+          <Route path='pendingInsurance' component={PendingInsuranceProfiles} onEnter={requireMinionAuth} />
+          <Route path='pendingInsurance/:userId/:insuranceId' component={PendingInsuranceProfile} onEnter={requireMinionAuth} />
+        </Route>
+
+        {/* <Route path='superadmin'>
+          <IndexRoute component={AdminLogin} />
+          <Route path='day' component={DayEditor} />
+          <Route path='day/:program' component={DayEditor} />
+          <Route path='day/:program/:id' component={DayEditor} />
+        </Route> */}
+      </Route>
     </Route>
-
-    {/* <Route path='superadmin'>
-      <IndexRoute component={AdminLogin} />
-      <Route path='day' component={DayEditor} />
-      <Route path='day/:program' component={DayEditor} />
-      <Route path='day/:program/:id' component={DayEditor} />
-    </Route> */}
-  </Route>
 )

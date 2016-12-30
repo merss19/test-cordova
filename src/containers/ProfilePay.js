@@ -142,10 +142,9 @@ class ProfilePay extends Component {
         default:
           packageName = 'Не выбран'
       }
+
       if (amount > 0) {
-        const frameScript = document.createElement("script")
-        frameScript.type  = "text/javascript"
-        const data = JSON.stringify({
+        const data = {
           parent_id: "iframe_parent",
           api_key: "57d156d0-dacf-464d-bcd3-c7f01b0c1a35",
           tx_id: payment.data.txId,
@@ -157,10 +156,9 @@ class ProfilePay extends Component {
           rebill: {},
           extra: {},
           version: "2.0.0"
-        })
+        }
 
-        frameScript.text = 'PaymoFrame.set(' + data + ');'
-        document.body.appendChild(frameScript)
+        window.PaymoFrame.set(data)
       }
     }
 
@@ -233,7 +231,10 @@ class ProfilePay extends Component {
                       <use xlinkHref="#ico-done"></use>
                     </svg>
                   </span>
-                  <span className="entry-bc__title">План</span>
+                  {cookie.load('packageType')
+                    ? <span className="entry-bc__title">План</span>
+                    : <span className="entry-bc__title">Регистрация/Вход</span>
+                  }
                 </li>
                 <li className="entry-bc__item entry-bc__item--done">
                   <span className="entry-bc__step">
@@ -242,7 +243,10 @@ class ProfilePay extends Component {
                       <use xlinkHref="#ico-done"></use>
                     </svg>
                   </span>
-                  <span className="entry-bc__title">Регистрация/Вход</span>
+                  {cookie.load('packageType')
+                    ? <span className="entry-bc__title">Регистрация/Вход</span>
+                    : <span className="entry-bc__title">План</span>
+                  }
                 </li>
                 <li className="entry-bc__item entry-bc__item--active">
                   <span className="entry-bc__step">
@@ -263,7 +267,7 @@ class ProfilePay extends Component {
                   <span className="entry-bc__title">Успех</span>
                 </li>
               </ul>
-              
+
               <div id="payment-entry" className="entry entry--sign-up">
                 <div className="entry__inner mb60">
                   <div className="entry-info">
@@ -297,24 +301,51 @@ class ProfilePay extends Component {
                     </div>
                   </div>
 
-                  {amount === 0
-                    ? <div className="entry__box">
-                      <button id="pay-free" className="btn btn--action" onClick={() => {
-                        if (payment.data.program + '' === '4') {
-                          browserHistory.push('/signup/pay/success/friend')
-                        } else {
-                          browserHistory.push('/signup/pay/success')
-                        }
-                      }}>
-                        Продолжить
-                      </button>
+                  <div className="entry__box">
+                    <div className="entry-form">
+                      {amount > 0
+                        ? <span id="iframe_parent"/>
+                        : <div className="entry-success">
+                            <div className="entry-success__img-wrap">
+                              <img src="/assets/img/success.svg" alt=""/>
+                            </div>
+                            <h5 className="h1 entry-success__title">Молодец!</h5>
+                            <div id="pay-free" className="btn btn--action" onClick={() => {
+                              this.refs.loadingModal.show()
+                              const payload = {
+                                authToken: cookie.load('token'),
+                                data: {
+                                  txId: payment.data.txId
+                                }
+                              }
+
+                              return fetch(`${api}/payment/payment-setpaid-manual`, {
+                                headers: {
+                                  'Accept': 'application/json',
+                                  'Content-Type': 'application/json'
+                                },
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                this.refs.loadingModal.hide()
+                                if (json.errorCode === 1 && json.data) {
+                                  if (payment.data.program + '' === '4') {
+                                    browserHistory.push('/signup/pay/success/friend')
+                                  } else {
+                                    browserHistory.push('/signup/pay/success')
+                                  }
+                                }
+                              })
+
+                            }}>
+                              Продолжить
+                            </div>
+                          </div>
+                      }
                     </div>
-                    : <div className="entry__box">
-                        <div className="entry-form">
-                          <div id="iframe_parent"/>
-                        </div>
-                    </div>
-                  }
+                  </div>
 
                   <Modal ref='accModal' contentStyle={contentStyle}>
                     <h2>{ program === '4' ? 'Введите новые данные о друге' : 'Выберите количество человек' }</h2>

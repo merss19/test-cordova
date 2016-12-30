@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import LoadingView from '../componentKit/LoadingView'
+import cookie from 'react-cookie'
 
 class SuccessProfile extends Component {
   componentWillMount() {
@@ -27,7 +28,10 @@ class SuccessProfile extends Component {
                 <use xlinkHref="#ico-done"></use>
               </svg>
             </span>
-            <span className="entry-bc__title">План</span>
+            {cookie.load('packageType')
+              ? <span className="entry-bc__title">План</span>
+              : <span className="entry-bc__title">Регистрация/Вход</span>
+            }
           </li>
           <li className="entry-bc__item entry-bc__item--done">
             <span className="entry-bc__step">
@@ -36,7 +40,10 @@ class SuccessProfile extends Component {
                 <use xlinkHref="#ico-done"></use>
               </svg>
             </span>
-            <span className="entry-bc__title">Регистрация/Вход</span>
+            {cookie.load('packageType')
+              ? <span className="entry-bc__title">Регистрация/Вход</span>
+              : <span className="entry-bc__title">План</span>
+            }
           </li>
           <li className="entry-bc__item entry-bc__item--done">
             <span className="entry-bc__step">
