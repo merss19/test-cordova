@@ -9,6 +9,7 @@ import Modal from 'boron/FadeModal'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
 
+import CheckboxOfert from '../componentKit/CheckboxOfert'
 import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
 import InputProfilePhone from '../componentKit/InputProfilePhone'
@@ -107,7 +108,8 @@ class LoginFB extends Component {
         const payload = {
           email: email ? email.replace(/ /g,'') : email,
           program: program ? program : '1',
-          package: pack }
+          package: pack
+        }
 
         const headers = {
           'Accept': 'application/json',
@@ -205,8 +207,13 @@ class LoginFB extends Component {
                 <br/>
                 <Field name='emailValue' id='emailValue' placeholder='Email' component={InputProfile} />
                 {program === '4' &&
-                  <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+                  <div>
+                    <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
+                    <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
+                    <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
+                  </div>
                 }
+                <Field name='accept' title='Принять условия ' id='accept' component={CheckboxOfert} />
                 <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>
@@ -239,6 +246,7 @@ class LoginFB extends Component {
                   </div>
                 }
                 <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
+                <Field name='accept' title='Принять условия ' id='accept' component={CheckboxOfert} />
                 <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>
@@ -306,6 +314,11 @@ const validate = data => {
 
     if (!data.nameFriendValue)
       errors.nameFriendValue = 'Имя друга должно быть заполнено'
+
+    console.log(data.accept)
+
+    if (!data.accept)
+      errors.accept = 'Вы должны принять условия оферты'
   }
 
   return errors

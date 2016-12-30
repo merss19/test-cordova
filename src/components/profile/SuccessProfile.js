@@ -11,6 +11,14 @@ class SuccessProfile extends Component {
   render() {
     return (
       <div>
+        <div className="header">
+          <div className="grid header__inner">
+            <h1 className="grid__cell header__logo">
+              Ясегодня
+              <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
+            </h1>
+          </div>
+        </div>
         <ul className="entry-bc entry-bc--step-1">
           <li className="entry-bc__item entry-bc__item--done">
             <span className="entry-bc__step">

@@ -9,6 +9,7 @@ import Modal from 'boron/FadeModal'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
 
+import CheckboxOfert from '../componentKit/CheckboxOfert'
 import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
 import InputProfilePhone from '../componentKit/InputProfilePhone'
@@ -26,7 +27,7 @@ let code
 let socialNetType
 let socialName
 let shareInitial
-let isFetching
+let isFetching = false
 
 class LoginSocial extends Component {
   componentDidMount() {
@@ -77,7 +78,8 @@ class LoginSocial extends Component {
     const { packageType, handleSubmit, program, promo, setToken, signup, share, phoneFriend, nameFriend } = this.props
     let { email, emailFriend } = this.props
 
-    const signupWith = (email, program, packageType, promo) => {
+    const signupWith = (email, program, packageType, promo, share) => {
+      console.log(isFetching)
       if (!isFetching) {
         isFetching = true
         if (email)
@@ -85,9 +87,10 @@ class LoginSocial extends Component {
         if (emailFriend)
           emailFriend = emailFriend.replace(/ /g,'')
 
-        const pack = program === '4' || !packageType ? '1' : packageType
         this.refs.loadingModal.show()
+        const pack = program === '4' || !packageType ? '1' : packageType
         signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
+
         const payload = {
           email: email ? email.replace(/ /g,'') : email,
           program: program ? program : '1',
@@ -148,11 +151,11 @@ class LoginSocial extends Component {
     }
 
     const loginVk = () => {
-      signupWith(email, program, packageType, promo, emailFriend)
-    }
-
-    const loginVkInitial = () => {
-      signupWith(email, programInitial, packageTypeInitial, promoInitial, emailFriend)
+      if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
+        signupWith(email, program, packageType, promo, share)
+      } else {
+        signupWith(email, programInitial, packageTypeInitial, promoInitial, shareInitial)
+      }
     }
 
     return (
@@ -189,11 +192,16 @@ class LoginSocial extends Component {
               <Modal ref='emailModal' contentStyle={contentStyle}>
                 <h2>Введите ваш email</h2>
                 <br/>
-                <Field name='emailValue' id='emailValue' title='Email' component={CustomInput} />
+                <Field name='emailValue' id='emailValue' placeholder='Email' component={InputProfile} />
                 {program === '4' &&
-                  <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+                  <div>
+                    <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
+                    <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
+                    <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
+                  </div>
                 }
-                <button className="btn btn--action" onClick={loginVkInitial}>
+                <Field name='accept' title='Принять условия ' id='accept' component={CheckboxOfert} />
+                <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>
               </Modal>
@@ -225,6 +233,7 @@ class LoginSocial extends Component {
                   </div>
                 }
                 <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
+                <Field name='accept' title='Принять условия ' id='accept' component={CheckboxOfert} />
                 <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>
@@ -292,12 +301,16 @@ const validate = data => {
 
     if (!data.nameFriendValue)
       errors.nameFriendValue = 'Имя друга должно быть заполнено'
+
+    if (!data.accept)
+      errors.accept = 'Вы должны принять условия оферты'
   }
 
   return errors
 }
 
 const asyncValidate = values => {
+  console.log(values.promoValue)
   return fetch(`${api}/user/user-check`, {
     headers: {
       'Accept': 'application/json',
@@ -320,10 +333,12 @@ const asyncValidate = values => {
     .then(response => response.json())
     .then(json => {
       let error = {}
-      if (json.errorCode !== 1)
+      if (json.errorCode !== 1 && values.promoValue !== '')
         error.promoValue = 'Промокод недействителен'
       if (emailExists)
         error.emailValue = 'Такой email уже существует'
+
+      console.log(error)
 
       if (Object.keys(error).length > 0)
         throw error
@@ -350,11 +365,11 @@ const mapStateToProps = state => {
     packageType = selector(state, 'packageTypeValue')
   }
 
-  if (!programInitial && !packageTypeInitial) {
+  if (!programInitial && !program) {
     program = 1
   }
 
-  if (!programInitial && !packageType) {
+  if (!packageTypeInitial && !packageType) {
     packageType = 1
   }
 
