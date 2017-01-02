@@ -42,6 +42,7 @@
     "redux-promise": "^0.5.3",
     "redux-router": "^2.1.2",
     "redux-thunk": "^2.1.0",
+    "resolve-url": "^0.2.1",
     "whatwg-fetch": "^1.0.0"
   },
   "scripts": {

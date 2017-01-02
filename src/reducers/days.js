@@ -46,6 +46,8 @@ export const dayIntro = (state = '', action) => {
 export const dayDate = (state = moment(), action) => {
   switch (action.type) {
     case 'DAY_DATE':
+      console.log('0===(========>')
+      console.log(action.date)
       return action.date
     default:
       return state

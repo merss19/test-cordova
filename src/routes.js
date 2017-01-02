@@ -35,6 +35,7 @@ import Photos from './containers/Photos'
 
 import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
+import resolveUrl from 'resolve-url'
 
 const getToken = () => {
   if (cookie.load('token') && !cookie.load('role'))
@@ -139,7 +140,7 @@ const forceTrailingSlash = (nextState, replace) => {
 
   var url = window.location.toString()
   if (/www.lk/g.test(url)) {
-    window.location = url.replace(/www.lk/, 'lk')
+    resolveUrl(url.replace(/www.lk/, 'lk'))
   }
 }
 

@@ -2,16 +2,19 @@ import React, { Component } from 'react'
 import { Editor } from 'react-draft-wysiwyg'
 import { connect } from 'react-redux'
 import '../../../public/react-draft-wysiwyg.css'
+import * as actions from '../../actions'
 import draftToHtml from 'draftjs-to-html'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
-import Calendar from '../../stories/task/Calendar'
+import Calendar from './Calendar'
 import SelectProgram from '../componentKit/SelectProgram'
 // import Menu from './Menu'
 import MenuButton from '../../stories/MenuButton'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
+import cookie from 'react-cookie'
+import { api } from '../../config.js'
 
 let htmlEditor = ''
 
@@ -132,7 +135,7 @@ class DayEditorValidationForm extends Component {
 
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
-      change, date, programs, programShow } = this.props
+      change, date, programs, programShow , selectedDays} = this.props
 
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
@@ -165,6 +168,7 @@ class DayEditorValidationForm extends Component {
 
     const handleDateChange = date => {
       dispatch({ type: 'DAY_DATE', date: date })
+      dispatch(actions.fetchDaysIfNeeded(selectedDays))
     }
 
     return (
@@ -194,6 +198,32 @@ class DayEditorValidationForm extends Component {
                       change('customName', calendar[index].customName)
                       change('customIcon', calendar[index].customIcon)
                       change('programTasks', calendar[index].programTasks)
+                    }}
+                    onTrashClick={() => {
+                      const payload = {
+                        authToken: cookie.load('token'),
+                        data: {
+                          id: field.id
+                        }
+                      }
+
+                      const headers = {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      }
+
+                      const method = 'POST'
+                      return fetch(`${api}/data/adminday-delete`, {
+                        headers,
+                        method,
+                        body: JSON.stringify(payload)
+                      })
+                      .then(response => response.json())
+                      .then(json => {
+                        if (json.errorCode === 1) {
+                          dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                        }
+                      })
                     }}
                     key={index}
                     number={field.id}
@@ -281,12 +311,13 @@ DayEditorValidationForm = reduxForm({
 let selector = formValueSelector('dayEditor')
 
 const mapStateToProps = state => {
-  const { selectedPrograms, recivedPrograms, hidePoll, programShow } = state
+  const { selectedDays, selectedPrograms, electedPrograms, recivedPrograms, hidePoll, programShow } = state
   const { programs } = recivedPrograms[selectedPrograms] || []
   return {
     hideCreatePoll: hidePoll,
     programShow,
-    programs
+    programs,
+    selectedDays
   }
 }
 

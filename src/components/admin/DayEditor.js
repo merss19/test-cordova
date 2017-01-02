@@ -139,7 +139,8 @@ class DayEditor extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedPrograms, recivedPrograms, selectedDays, recivedDays, userToken, editDay, dayIntro, dayDate } = state
+  const { selectedPrograms, recivedPrograms, selectedDays, recivedDays,
+    userToken, editDay, dayIntro, dayDate } = state
   const {
     isFetching,
     days,
