@@ -2,6 +2,7 @@ export * from './taskDay'
 export * from './signupPayment'
 export * from './profile'
 export * from './days'
+export * from './chats'
 export * from './pendingProfiles'
 export * from './pendingInsuranceProfiles'
 

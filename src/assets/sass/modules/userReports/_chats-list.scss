@@ -1,0 +1,50 @@
+@import "../../_theme";
+
+.chats-list {
+  width: 100%;
+
+  &__item {
+    position: relative;
+    padding: 10px 15px;
+    margin-bottom: 1px;
+
+    border: none;
+    cursor: pointer;
+    list-style: none;
+    box-shadow: 0 0 0 1px $c-m-gray;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &:hover, &:focus {
+      background-color: lighten($c-m-gray, 25%);
+    }
+
+    &_selected, &_selected:hover {
+      background: lighten($c-green, 25%);
+    }
+  }
+
+  &__unread {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  &__counter {
+    width: 35px;
+    height: 35px;
+    margin-left: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: $c-l-blue solid 1px;
+    border-radius: 50%;
+  }
+}
