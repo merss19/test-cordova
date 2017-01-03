@@ -87,6 +87,8 @@ const requirePayAuth = fromPay => {
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
         if (json.data[0].paidPackage && json.data[0].program + '' !== '4') {
           browserHistory.push('/signup/pay/success')
+        } else if (json.data[0].paidPackage && json.data[0].program + '' === '4') {
+          browserHistory.push('/signup/pay/success/friend')
         } else {
           browserHistory.push('/signup/pay/')
         }
@@ -155,7 +157,7 @@ const requireFromLoginAuth = () => requirePayAuth(false)
 
 export default (
     <Route path='/' onEnter={promoWatch}>
-      <IndexRoute component={App} onEnter={getToken} />
+      <IndexRoute component={App} onEnter={requireFromLoginAuth} />
       <Route path='task' component={TodayTask} onEnter={requireForTest} />
       <Route path='faq' component={Faq} onEnter={requireForTest} />
       <Route path='food' component={Food} onEnter={requireForTest} />

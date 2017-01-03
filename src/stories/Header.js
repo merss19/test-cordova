@@ -20,12 +20,10 @@ const Header = props => (
         <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
       </h1>
 
-      <div className='grid'>
-        <div className="1/4--portable grid__cell header__right-side"/>
-        <div className="1/4--portable grid__cell"/>
-        <div className="1/4--portable grid__cell"/>
-        <div className="1/4--portable grid__cell"/>
-      </div>
+      <div className="1/4--portable grid__cell header__right-side"/>
+      <div className="1/4--portable grid__cell"/>
+      <div className="1/4--portable grid__cell"/>
+      <div className="1/4--portable grid__cell"/>
 
       {props.alpha &&
         <div className="1/4--portable grid__cell header__right-side">
