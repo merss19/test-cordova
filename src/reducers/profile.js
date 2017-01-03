@@ -3,6 +3,8 @@ import {
   REQUEST_PROFILE, RECEIVE_PROFILE
 } from '../actions'
 
+import moment from 'moment'
+
 const bodyParam = (state, action) => {
   switch (action.type) {
     case 'ADD_BODY_PARAM':
@@ -50,6 +52,24 @@ export function profile(state = {}, action) {
         nameFriend: action.nameFriend,
         share: action.share
       }
+    default:
+      return state
+  }
+}
+
+export const birthday = (state = '', action) => {
+  switch (action.type) {
+    case 'BIRTHDAY':
+      return action.birthday
+    default:
+      return state
+  }
+}
+
+export const injuriesHidden = (state = false, action) => {
+  switch (action.type) {
+    case 'INJURIES_HIDDEN':
+      return action.injuriesHidden
     default:
       return state
   }

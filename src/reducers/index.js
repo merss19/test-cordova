@@ -1,4 +1,4 @@
-export { profile, bodyParams, selectedProfile, recivedProfile } from './profile'
+export { injuriesHidden, birthday, profile, bodyParams, selectedProfile, recivedProfile } from './profile'
 export { menuMobLeft } from './menuMobLeft'
 export { userToken } from './userToken'
 export { selectedTaskDay, recivedTaskDay } from './taskDay'

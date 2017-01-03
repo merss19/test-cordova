@@ -19,33 +19,43 @@ const Header = props => (
         Ясегодня
         <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
       </h1>
-      <div className="1/4--portable grid__cell header__right-side"/>
-      <div className="1/4--portable grid__cell"/>
-      <div className="1/4--portable grid__cell"/>
-      <div className="1/4--portable grid__cell"/>
-      <div className="1/4--portable grid__cell header__right-side">
-        <div className="header__banner">
-          <a href="#" className="header__banner-link">
-            <img src="/tmp/banner-1.png" alt=""/>
-          </a>
+
+      <div className='grid'>
+        <div className="1/4--portable grid__cell header__right-side"/>
+        <div className="1/4--portable grid__cell"/>
+        <div className="1/4--portable grid__cell"/>
+        <div className="1/4--portable grid__cell"/>
+      </div>
+
+      {props.alpha &&
+        <div className="1/4--portable grid__cell header__right-side">
+          <div className="header__banner">
+            <a href="#" className="header__banner-link">
+              <img src="/tmp/banner-1.png" alt=""/>
+            </a>
+          </div>
         </div>
-      </div>
-      <div className="1/4--portable grid__cell">
-        <button className="btn btn--action" onClick={e => {
-          e.preventDefault()
-          cookie.remove('token', { path: '/' })
-          cookie.remove('txId', { path: '/' })
-          cookie.remove('role', { path: '/' })
-          cookie.remove('program', { path: '/' })
-          cookie.remove('packageType', { path: '/' })
-          cookie.remove('promoName', { path: '/' })
-          cookie.remove('share', { path: '/' })
-          cookie.remove('general', { path: '/' })
-          browserHistory.push('/')
-        }}>
-          Выйти
-        </button>
-      </div>
+      }
+
+      {!window.mobilecheck() &&
+        <div className="1/4--portable grid__cell">
+          <button className="btn btn--action" onClick={e => {
+            e.preventDefault()
+            cookie.remove('token', { path: '/' })
+            cookie.remove('txId', { path: '/' })
+            cookie.remove('role', { path: '/' })
+            cookie.remove('program', { path: '/' })
+            cookie.remove('packageType', { path: '/' })
+            cookie.remove('promoName', { path: '/' })
+            cookie.remove('share', { path: '/' })
+            cookie.remove('general', { path: '/' })
+            browserHistory.push('/')
+          }}>
+            Выйти
+          </button>
+        </div>
+      }
+
     </div>
   </div>
 )

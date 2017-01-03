@@ -73,7 +73,7 @@ class InsuranceValidationForm extends Component {
             <ul className="upload-list mb20">
               {insuranceDocs.map((doc, index) => (
                 <li key={index} className="upload-list__item">
-                  <span className="upload-list__title">{doc.name}</span>
+                  <span className="upload-list__title">{doc.name.slice(0,20)}</span>
                   <span className="upload-list__btn-del">
                     <svg className="svg-icon ico-trash" onClick={e => {
                       e.preventDefault()
@@ -112,7 +112,7 @@ class InsuranceValidationForm extends Component {
           </div>
           <div className="2/3--desk grid__cell">
             <div className="input input--box input--btn">
-              <span className="input__text">{docsString}</span>
+              <span className="input__text" style={{ width: '100%' }}>{docsString}</span>
               <input multiple id="file-upload" type="file" className="input__field" placeholder="" onChange={input => {
                 const { target } = input
                 if (target.files && target.files[0]) {
@@ -162,7 +162,7 @@ class InsuranceValidationForm extends Component {
         </div>
 
         <div className="text-center mb30">
-          <div className="btn btn--primary" onClick={data => {
+          <div className="btn btn--primary" onClick={e => {
             const payload = {
               authToken: cookie.load('token'),
               data: {
@@ -188,7 +188,10 @@ class InsuranceValidationForm extends Component {
               })
               .then(response => response.json())
               .then(json => {
-                if (json.errorCode === 1 && json.data) {
+                if (json.errorCode === 1 && json.data && insuranceFiles[0]
+                  && this.refs.fullName.value && this.refs.birthday.value
+                  && this.refs.profession.value && this.refs.passport.value
+                  && this.refs.address.value) {
                   insuranceFiles.map(uid => {
                     const payload = {
                       authToken: cookie.load('token'),
@@ -207,9 +210,14 @@ class InsuranceValidationForm extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
+                        console.log(json)
+                        if (json.errorCode === 1) {
+                          this.refs.successModal.show()
+                        } else {
+                          this.refs.failModal.show()
+                        }
                       })
                   })
-                  this.refs.successModal.show()
                 } else {
                   this.refs.failModal.show()
                 }
@@ -222,10 +230,18 @@ class InsuranceValidationForm extends Component {
         <hr/>
 
         <Modal ref='failModal' contentStyle={contentStyle}>
-          <h2>Что-то пошло не так, поробуйте чуть позже</h2>
+          <h2>Что-то пошло не так, возможно не все данные заполнены</h2>
+          <br/>
+          <div className="btn btn--action" onClick={() => this.refs.failModal.hide()}>
+            Продолжить
+          </div>
         </Modal>
         <Modal ref='successModal' contentStyle={contentStyle}>
-          <h2>Данные отправлены!</h2>
+          <h2>Данные отправлены! В течение суток на почту придет письмо с подтверждением одобрения страхования. Убедительно просим указывать реальные данные</h2>
+          <br/>
+          <div className="btn btn--action" onClick={e => this.refs.successModal.hide()}>
+            Продолжить
+          </div>
         </Modal>
       </div>
     )

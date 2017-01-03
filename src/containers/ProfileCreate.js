@@ -43,9 +43,11 @@ class ProfileCreate extends Component {
   }
 
   render() {
-    const { profileData, insurance, bodyParams, token, isFetching } = this.props
+    const { profileData, insurance, bodyParams, token, isFetching, birthday } = this.props
     const isEmpty = !profileData || !profileData.email
     const insuranceIsEmpty = !insurance || !insurance[insurance.length - 1]
+
+    console.log(profileData)
 
     return (
       <div className="entry__inner">
@@ -56,9 +58,10 @@ class ProfileCreate extends Component {
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
             <SubmitValidationForm
               bodyMeasure={bodyParams}
+              date={moment(profileData.birthday).format('DD.MM.YYYY')}
+              injuriesEx={profileData.injuriesExist}
               initialValues={{
                 ...profileData,
-                birthday: moment(profileData.birthday).format('DD/MM/YYYY'),
                 country: !profileData.country ? 'Россия' : profileData.country,
                 city: !profileData.city ? 'Москва' : profileData.city,
                 fullName: !insuranceIsEmpty && insurance[insurance.length - 1].fullName
@@ -75,6 +78,7 @@ class ProfileCreate extends Component {
               }}
               onSubmit={ data => {
                 this.refs.loadingModal.show()
+                data.birthday = birthday
                 delete data.password
                 const payload = {
                   authToken: token ? token : cookie.load('token'),
@@ -103,6 +107,10 @@ class ProfileCreate extends Component {
             />
             <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
+              <br/>
+              <div className="btn btn--action" onClick={() => this.refs.successModal.hide()}>
+                Продолжить
+              </div>
             </Modal>
             <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
               <h2>Подождите...</h2>
@@ -114,9 +122,8 @@ class ProfileCreate extends Component {
   }
 }
 
-
 const mapStateToProps = state => {
-  const { selectedProfile, recivedProfile, userToken } = state
+  const { selectedProfile, recivedProfile, userToken, birthday } = state
   const {
     isFetching,
     lastUpdated,
@@ -135,6 +142,7 @@ const mapStateToProps = state => {
     profileData,
     insurance,
     bodyParams,
+    birthday,
     token: userToken.token
   }
 }
