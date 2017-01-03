@@ -161,7 +161,7 @@ export default (
       <Route path='food' component={Food} onEnter={requireForTest} />
       <Route path='reports' component={Reports} onEnter={requireForTest} />
       <Route path='photos' component={Photos} onEnter={requireForTest} />
-      <Route path='profile' component={ProfileCreate} />
+      <Route path='profile' component={ProfileCreate} onEnter={requireForTest} />
       <Route path='social/vk' component={LoginSocial} />
       <Route path='social/fb' component={LoginFB} />
       <Route path='signup'>
