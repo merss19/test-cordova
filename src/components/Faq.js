@@ -3,6 +3,8 @@ import Menu from './todayTask/Menu'
 import CalendarList from './todayTask/CalendarList'
 import Header from '../stories/Header'
 
+const offset = { left: '-45px' }
+
 const Faq = () => (
   <div className="layout">
     <Header/>
@@ -242,42 +244,42 @@ const Faq = () => (
                       </p>
                     </li>
                     <li className="num-list__item">
-                      <span className="num-list__number">10</span>
+                      <span className="num-list__number" style={offset}>10</span>
                       <h6 className="num-list__title">Если я не буду менять свой обычный режим питания, будут ли тренировки эффективными?</h6>
                       <p className="num-list__description">
                         То что вы начали регулярно заниматься физическими нагрузками - уже большой шаг вперед, но мы не знаем какой рацион питания был у вас ранее. По этому, советуем следовать советам наших диетологов, чтобы добиться наилучших результатов.
                       </p>
                     </li>
                     <li className="num-list__item">
-                      <span className="num-list__number">11</span>
+                      <span className="num-list__number" style={offset}>11</span>
                       <h6 className="num-list__title">Что если я не согласен с тренером?</h6>
                       <p className="num-list__description">
                         Вы всегда можете написать письмо в технчиескую поддержку, ваша жалоба будет рассмотрена.
                       </p>
                     </li>
                     <li className="num-list__item">
-                      <span className="num-list__number">12</span>
+                      <span className="num-list__number" style={offset}>12</span>
                       <h6 className="num-list__title">Кто проверяет мои видео - у этих людей есть спортивная подготовка?</h6>
                       <p className="num-list__description">
                         Все ваши видео отсматривают наши тренеры.
                       </p>
                     </li>
                     <li className="num-list__item">
-                      <span className="num-list__number">13</span>
+                      <span className="num-list__number" style={offset}>13</span>
                       <h6 className="num-list__title">Возможно ли участие в проекте при полной занятости?</h6>
                       <p className="num-list__description">
                         Все задания расчитаны на выполнение дома и не займут более 30-40 минут.
                       </p>
                     </li>
                     <li className="num-list__item">
-                      <span className="num-list__number">14</span>
+                      <span className="num-list__number" style={offset}>14</span>
                       <h6 className="num-list__title">Можно ли принимать участие в марафоне при Грудном Вскармливании?</h6>
                       <p className="num-list__description">
                         Можно, только если вы проконсультировались со своим врачом и он согласовал ваше участие в марафоне.
                       </p>
                     </li>
                     <li className="num-list__item">
-                      <span className="num-list__number">15</span>
+                      <span className="num-list__number" style={offset}>15</span>
                       <h6 className="num-list__title">Что если у меня критические дни/ограничения по здоровью и т.д.?</h6>
                       <p className="num-list__description">
                         Решение о начале тренировок и о нагрузках на собственное тело вы принимаете самостоятельно. Мы предоставляем задания, если вы не можете их выполнять - это ваше личное решение.
@@ -311,7 +313,7 @@ const Faq = () => (
                       <span className="num-list__number">3</span>
                       <h6 className="num-list__title">По каким телефонам/почте писать в службу поддержки?</h6>
                       <p className="num-list__description">
-                        8 800 707 02 53; rc@todayme.ru
+                        8 800 707 02 53; you@todayme.ru
                       </p>
                     </li>
                   </ul>

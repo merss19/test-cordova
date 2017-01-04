@@ -681,6 +681,8 @@ class SubmitValidationForm extends Component {
               {error && <strong>{error}</strong>}
             </div>
 
+            <hr/>
+
             <InsuranceValidationForm docs={initialValues.insuranceFile}/>
 
           </div>

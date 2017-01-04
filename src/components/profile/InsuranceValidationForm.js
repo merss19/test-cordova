@@ -227,8 +227,6 @@ class InsuranceValidationForm extends Component {
           </div>
         </div>
 
-        <hr/>
-
         <Modal ref='failModal' contentStyle={contentStyle}>
           <h2>Что-то пошло не так, возможно не все данные заполнены</h2>
           <br/>
