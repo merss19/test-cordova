@@ -21,7 +21,9 @@ let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId }) => (
         return (
           <Calendar
             onClick={() => {
-              console.log(field.id)
+              console.log('field.id')
+              console.log(field.dayId)
+              dispatch({ type: 'SELECT_DAY_ID', id: field.dayId })
               dispatch({ type: 'SELECT_DAY_DATE', date: field.date })
               dispatch(actions.fetchTaskDayIfNeeded(selectedTaskDay))
             }}

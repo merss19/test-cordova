@@ -1,7 +1,7 @@
 export { injuriesHidden, birthday, profile, bodyParams, selectedProfile, recivedProfile } from './profile'
 export { menuMobLeft } from './menuMobLeft'
 export { userToken } from './userToken'
-export { selectedDayDate, selectedTaskDay, recivedTaskDay } from './taskDay'
+export { selectedDayId, selectedDayDate, selectedTaskDay, recivedTaskDay } from './taskDay'
 export { selectedPayment, recivedPayment } from './signupPayment'
 export { timer } from './timer'
 export { insuranceDocs } from './insurance'

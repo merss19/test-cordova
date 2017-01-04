@@ -55,7 +55,7 @@ class MainComponent extends Component {
 
   render() {
     const { taskDay, token } = this.props
-    const { intro, tasks, poll, chat, calendar, id } = taskDay
+    const { introHTML, tasks, poll, chat, calendar, id } = taskDay
 
     return (
       <div className="layout">
@@ -70,7 +70,7 @@ class MainComponent extends Component {
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-              <TaskIntro text={intro} />
+              <TaskIntro text={introHTML} />
               <Exercises tasks={tasks} sendReport={() => {
                 this.refs.sendReportModal.show()
               }}/>

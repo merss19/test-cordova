@@ -22,6 +22,7 @@ let htmlEditor = ''
 class FoodEditorValidationForm extends Component {
   onEditorChange: Function = (editorContent) => {
     const { dispatch } = this.props
+    dispatch({ type: 'CONTENT', content: editorContent })
     dispatch({ type: 'FOOD_DESCRIPTION', description: draftToHtml(editorContent) })
   }
 
@@ -51,7 +52,39 @@ class FoodEditorValidationForm extends Component {
 
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, food,
-      change, programs, selectedFood, editor } = this.props
+      change, programs, selectedFood, editor, foodProgram } = this.props
+
+    let contentEditor
+    if (foodProgram && editor) {
+      contentEditor = (
+        <div className='home-root'>
+          <Editor ref='introEditor'
+            toolbarClassName="home-toolbar"
+            wrapperClassName="home-wrapper"
+            editorClassName="home-editor"
+            placeholder="Вставьте текст..."
+            onChange={this.onEditorChange}
+            contentState={editor}
+            uploadCallback={this.uploadImageCallBack}
+          />
+        </div>
+      )
+    } else if (foodProgram && !editor) {
+      contentEditor = (
+        <div className='home-root'>
+          <Editor ref='introEditor'
+            toolbarClassName="home-toolbar"
+            wrapperClassName="home-wrapper"
+            editorClassName="home-editor"
+            placeholder="Вставьте текст..."
+            onChange={this.onEditorChange}
+            uploadCallback={this.uploadImageCallBack}
+          />
+        </div>
+      )
+    }
+
+    console.log(contentEditor)
 
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="grid">
@@ -93,12 +126,13 @@ class FoodEditorValidationForm extends Component {
                 {programs.map((program, index) => {
                   if (program.id !== 4) {
                     return (
-                      <li key={index} className="btn-social__item btn-social__item--vk">
+                      <li key={index} className={foodProgram + '' !== program.id + ''
+                        ? "btn-social__item btn-social__item--vk"
+                        : "btn-social__item btn-social__item--odnoklassniki"}>
                         <span className="btn-social__title" onClick={() => {
-                          if (food[index])
-                            dispatch({ type: 'EDITOR', editor: JSON.parse(food[index].description) })
-
                           dispatch({ type: 'FOOD_PROGRAM', program: program.id })
+                          if (food[index] && food[index].content)
+                            dispatch({ type: 'EDITOR', editor: JSON.parse(food[index].content) })
                         }}>
                           {program.name}
                         </span>
@@ -109,29 +143,7 @@ class FoodEditorValidationForm extends Component {
               </ul>
             </div>
 
-            {editor
-              ? <div className='home-root'>
-                <Editor ref='introEditor'
-                  toolbarClassName="home-toolbar"
-                  wrapperClassName="home-wrapper"
-                  editorClassName="home-editor"
-                  placeholder="Вставьте текст..."
-                  onChange={this.onEditorChange}
-                  contentState={editor}
-                  uploadCallback={this.uploadImageCallBack}
-                />
-              </div>
-              : <div className='home-root'>
-                <Editor ref='introEditor'
-                  toolbarClassName="home-toolbar"
-                  wrapperClassName="home-wrapper"
-                  editorClassName="home-editor"
-                  placeholder="Вставьте текст..."
-                  onChange={this.onEditorChange}
-                  uploadCallback={this.uploadImageCallBack}
-                />
-              </div>
-            }
+            {contentEditor}
 
           </div>
         </div>

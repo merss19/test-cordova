@@ -38,7 +38,7 @@ class FoodEditor extends Component {
 
   render() {
     const { food, token, isFetching, editDay, dayIntro, dayDate,
-      programs, program, foodDescription, selectedFood, dispatch, editor } = this.props
+      programs, program, foodDescription, selectedFood, dispatch, editor, content } = this.props
     const isEmpty = !programs || !food
     console.log(food)
     // const id = this.props.params.id
@@ -57,17 +57,20 @@ class FoodEditor extends Component {
                   food={food}
                   program={this.props.params.program}
                   programs={programs}
+                  foodProgram={program}
                   editor={editor}
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
                     console.log('<------===')
                     console.log(data)
+                    console.log(content)
 
                     const payload = {
                       authToken: token ? token : cookie.load('token'),
                       data: {
                         id: program,
-                        description: foodDescription
+                        description: foodDescription,
+                        content: JSON.stringify(content)
                       }
                     }
 
@@ -123,7 +126,7 @@ class FoodEditor extends Component {
 
 const mapStateToProps = state => {
   const { selectedPrograms, recivedPrograms, selectedFood, recivedFood,
-    userToken, foodProgram, foodDescription, editor } = state
+    userToken, foodProgram, foodDescription, editor, content } = state
   const {
     isFetching,
     food,
@@ -145,6 +148,7 @@ const mapStateToProps = state => {
     foodDescription,
     programs,
     editor,
+    content,
     token: userToken.token
   }
 }
