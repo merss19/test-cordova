@@ -21,9 +21,10 @@ let AdminLogin = setToken => {
         })
         .then(response => response.json())
         .then(json => {
-          if (json.data && json.data.authToken && json.data.role === 1) {
+          console.log(json)
+          if (json.data && json.data.authToken && json.data.role === 2) {
             cookie.save('token', json.data.authToken, { path: '/' })
-            setToken(json.data.authToken)
+            cookie.save('role', json.data.role, { path: '/' })
             browserHistory.push('/superadmin/day')
           } else {
             throw new SubmissionError({

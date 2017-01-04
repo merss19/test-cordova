@@ -1,8 +1,11 @@
 import React, { PropTypes } from 'react'
+import moment from 'moment'
 
-const Calendar = ({ children, onClick, number, completeText, icon, status, date, admin }) => {
+const Calendar = ({ children, onClick, number, completeText, icon, status,
+  date, admin, isSelected }) => {
     let calendarIcon
     let calendarToolip
+    let calendarClass = "min-calendar__item"
 
     if (icon) {
       calendarIcon = (
@@ -25,8 +28,14 @@ const Calendar = ({ children, onClick, number, completeText, icon, status, date,
       )
     }
 
+    if (moment(date).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')) {
+      calendarClass = "min-calendar__item today"
+    } else if (isSelected) {
+      calendarClass = "min-calendar__item is-select"
+    }
+
     return (
-      <li className="min-calendar__item" onClick={onClick}>
+      <li className={calendarClass} onClick={onClick}>
         <span className="min-calendar__date-wrap">
           <span className="min-calendar__day">{children}</span>
           <span className="min-calendar__date">{number}</span>

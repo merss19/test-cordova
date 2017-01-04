@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../../actions'
 import Header from '../../stories/Header'
 import Menu from './Menu'
-import DayEditorValidationForm from './DayEditorValidationForm'
+import FoodEditorValidationForm from './FoodEditorValidationForm'
 import LoadingView from '../componentKit/LoadingView'
 import cookie from 'react-cookie'
 import moment from 'moment'
@@ -15,42 +15,34 @@ let contentStyle = {
   padding: '30px'
 }
 
-class DayEditor extends Component {
+class FoodEditor extends Component {
   componentDidMount() {
     const fbScript = document.createElement("script")
     fbScript.text = "fbq('track', 'PageView');"
     document.body.appendChild(fbScript)
 
-    const { dispatch, selectedDays, selectedPrograms } = this.props
-    dispatch(actions.fetchDaysIfNeeded(selectedDays))
+    const { dispatch, selectedFood, selectedPrograms } = this.props
+    dispatch(actions.fetchFoodIfNeeded(selectedFood))
     dispatch(actions.fetchProgramsIfNeeded(selectedPrograms))
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, selectedDays, selectedPrograms } = nextProps
+    const { dispatch, selectedFood, selectedPrograms } = nextProps
 
-    if (nextProps.selectedDays !== this.props.selectedDays)
-      dispatch(actions.fetchDaysIfNeeded(selectedDays))
+    if (nextProps.selectedFood !== this.props.selectedFood)
+      dispatch(actions.fetchFoodIfNeeded(selectedFood))
 
     if (nextProps.selectedPrograms !== this.props.selectedPrograms)
       dispatch(actions.fetchProgramsIfNeeded(selectedPrograms))
   }
 
   render() {
-    const { days, token, isFetching, editDay, dayIntro, dayDate,
-      programs, editor, content } = this.props
-    const isEmpty = !programs || !days
+    const { food, token, isFetching, editDay, dayIntro, dayDate,
+      programs, program, foodDescription, selectedFood, dispatch, editor } = this.props
+    const isEmpty = !programs || !food
+    console.log(food)
     // const id = this.props.params.id
     // let initialValues = {}
-
-    //
-    // if (days && days[0] && id) {
-    //   initialValues = {
-    //     tasks: days[id].tasks || [],
-    //     customIcon: days[id].customIcon || '',
-    //     customName: days[id].customName || ''
-    //   }
-    // }
 
     return (
       <div className='layout'>
@@ -61,36 +53,22 @@ class DayEditor extends Component {
             : <LoadingView title="Ничего не найдено"/>
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="layout__inner">
-                <DayEditorValidationForm
-                  calendar={days}
+                <FoodEditorValidationForm
+                  food={food}
                   program={this.props.params.program}
-                  editDay={editDay}
-                  hideCreatePoll={false}
-                  date={dayDate}
                   programs={programs}
                   editor={editor}
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
-                    console.log(this.props.params.id)
-                    console.log(this.props.params.program)
                     console.log('<------===')
                     console.log(data)
 
-                    data.programTasks = data.programTasks.filter(t => {
-                      return t.id !== 4
-                    }).map(task => {
-                      const copy = { ...task, program: task.id }
-                      const {id, ...newTask} = copy
-                      return newTask
-                    })
-
-                    data.intro = JSON.stringify(content)
-                    data.introHTML = dayIntro
-                    data.date = moment(dayDate).format('YYYY-MM-DD')
-
                     const payload = {
                       authToken: token ? token : cookie.load('token'),
-                      data
+                      data: {
+                        id: program,
+                        description: foodDescription
+                      }
                     }
 
                     const headers = {
@@ -101,7 +79,7 @@ class DayEditor extends Component {
                     console.log(payload)
 
                     const method = 'POST'
-                    return fetch(`${api}/data/adminday-create`, {
+                    return fetch(`${api}/day/food-update`, {
                       headers,
                       method,
                       body: JSON.stringify(payload)
@@ -111,6 +89,7 @@ class DayEditor extends Component {
                       console.log(json)
                       this.refs.loadingModal.hide()
                       if (json.errorCode === 1) {
+                        dispatch(actions.fetchFoodIfNeeded(selectedFood))
                         this.refs.successPromoModal.show()
                       } else {
                         this.refs.errorModal.show()
@@ -143,35 +122,35 @@ class DayEditor extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedPrograms, recivedPrograms, selectedDays, recivedDays,
-    userToken, editDay, dayIntro, dayDate, editor, content } = state
+  const { selectedPrograms, recivedPrograms, selectedFood, recivedFood,
+    userToken, foodProgram, foodDescription, editor } = state
   const {
     isFetching,
-    days,
-  } = recivedDays[selectedDays] || {
+    food,
+  } = recivedFood[selectedFood] || {
     isFetching: true,
-    days: []
+    food: []
   }
 
   const { programs } = recivedPrograms[selectedPrograms] || []
 
+  console.log(foodProgram)
+
   return {
-    selectedDays,
+    selectedFood,
     selectedPrograms,
     isFetching,
-    days,
-    editDay,
-    dayIntro,
-    dayDate,
+    food,
+    program: foodProgram,
+    foodDescription,
     programs,
     editor,
-    content,
     token: userToken.token
   }
 }
 
-DayEditor = connect(
+FoodEditor = connect(
   mapStateToProps
-)(DayEditor)
+)(FoodEditor)
 
-export default DayEditor
+export default FoodEditor

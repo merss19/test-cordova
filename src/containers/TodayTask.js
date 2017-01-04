@@ -38,6 +38,7 @@ class TodayTask extends Component {
 
   render() {
     const { taskDay, token, isFetching } = this.props
+    console.log('<====)==0')
     console.log(taskDay)
     const isEmpty = !taskDay|| !taskDay.data || taskDay.data.length === 0
     return (

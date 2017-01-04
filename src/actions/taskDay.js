@@ -1,5 +1,6 @@
 import cookie from 'react-cookie'
 import { api } from '../config.js'
+import moment from 'moment'
 
 export const REQUEST_TASKDAY = 'REQUEST_TASKDAY'
 export const RECEIVE_TASKDAY = 'RECEIVE_TASKDAY'
@@ -84,20 +85,25 @@ export const receiveTaskDay = (taskDay, json) => {
   return ({
     type: RECEIVE_TASKDAY,
     taskDay,
-    json: taskDayTest,
+    json,
     receivedAt: Date.now()
   })
 }
 
 const fetchTaskDay = partialState => dispatch => {
-  const { token, taskDay } = partialState
+  const { token, taskDay, profile, selectedDayDate } = partialState
   dispatch(requestTaskDay(taskDay))
-  const payload = { authToken: token ? token : cookie.load('token') }
+  const payload = {
+    authToken: token ? token : cookie.load('token'),
+    data: {
+      program: 1,
+      date: selectedDayDate
+    }
+   }
 
   let data = new FormData()
   data.append("json", JSON.stringify(payload))
-
-  return fetch(`${api}/data/day-get-info`, {
+  return fetch(`${api}/data/userday-get-info`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -123,6 +129,10 @@ const shouldFetchTaskDay = (state, taskDay) => {
 
 export const fetchTaskDayIfNeeded = taskDay => (dispatch, getState) => {
   if (shouldFetchTaskDay(getState(), taskDay)) {
-    return dispatch(fetchTaskDay({ token: getState().userToken.token, taskDay}))
+    return dispatch(fetchTaskDay({
+      token: getState().userToken.token,
+      taskDay,
+      selectedDayDate: getState().selectedDayDate})
+    )
   }
 }

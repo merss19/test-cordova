@@ -54,7 +54,7 @@ class LoginSocial extends Component {
       .then(response => response.json())
       .then(json => {
         this.refs.loadingModal.hide()
-        
+
         if (json.errorCode === 1 && json.data && json.data.authToken) {
           cookie.save('token', json.data.authToken, { path: '/' })
           setToken(json.data.authToken)
@@ -88,7 +88,8 @@ class LoginSocial extends Component {
           emailFriend = emailFriend.replace(/ /g,'')
 
         this.refs.loadingModal.show()
-        const pack = program === '4' || !packageType ? '1' : packageType
+        const pack = program === '4' || !packageType || packageType === 'undefined'
+          ? '1' : packageType
         signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
 
         const payload = {

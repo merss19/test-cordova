@@ -2,11 +2,21 @@ import {
   SELECT_TASKDAY, INVALIDATE_TASKDAY,
   REQUEST_TASKDAY, RECEIVE_TASKDAY
 } from '../actions'
+import moment from 'moment'
 
 export const selectedTaskDay = (state = 'reactjs', action) => {
   switch (action.type) {
     case SELECT_TASKDAY:
       return action.taskDay
+    default:
+      return state
+  }
+}
+
+export const selectedDayDate = (state = moment().format('YYYY-MM-DD'), action) => {
+  switch (action.type) {
+    case 'SELECT_DAY_DATE':
+      return action.date
     default:
       return state
   }

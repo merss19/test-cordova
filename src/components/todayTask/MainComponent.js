@@ -43,19 +43,19 @@ class MainComponent extends Component {
     }
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
-    window.addEventListener("resize", this.handleResize)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
-    window.removeEventListener("resize", this.handleResize)
-  }
+  // componentDidMount() {
+  //   window.addEventListener('scroll', this.handleScroll)
+  //   window.addEventListener("resize", this.handleResize)
+  // }
+  //
+  // componentWillUnmount() {
+  //   window.removeEventListener('scroll', this.handleScroll)
+  //   window.removeEventListener("resize", this.handleResize)
+  // }
 
   render() {
     const { taskDay, token } = this.props
-    const { intro, tasks, poll, chat } = taskDay
+    const { intro, tasks, poll, chat, calendar, id } = taskDay
 
     return (
       <div className="layout">
@@ -66,30 +66,7 @@ class MainComponent extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div id="menu" className="grid layout__menu-inner">
                 <Menu/>
-                <CalendarList calendar={[{
-                    number: '1',
-                    icon: 'ico-done',
-                    status: 'done',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет принят',
-                    day: 'Пн'
-                  }, {
-                    number: '2',
-                    status: 'waiting',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет принимается',
-                    day: 'Вт'
-                  }, {
-                    number: '3',
-                    icon: 'ico-cross',
-                    status: 'missed',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет не сдан',
-                    day: 'Ср'
-                }]}/>
+                <CalendarList calendar={calendar} dayId={id}/>
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
@@ -130,11 +107,11 @@ class MainComponent extends Component {
               </Modal>
 
 
-              {poll &&
+              {poll && poll.description &&
                 <Poll poll={poll} />
               }
 
-              {chat &&
+              {chat && chat[0] &&
                 <Chat chat={chat} userId={1} />
               }
             </div>

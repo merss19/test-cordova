@@ -15,6 +15,7 @@ import LoginFB from './components/profile/LoginFB'
 import SuccessProfile from './components/profile/SuccessProfile'
 import SuccessTomorrowProfile from './components/profile/SuccessTomorrowProfile'
 import DayEditor from './components/admin/DayEditor'
+import FoodEditor from './components/admin/FoodEditor'
 import AdminLogin from './containers/AdminLogin'
 
 // Minion containers
@@ -30,7 +31,7 @@ import PendingInsuranceProfiles from './containers/PendingInsuranceProfiles'
 import TodayTask from './containers/TodayTask'
 import Reports from './containers/Reports'
 import Faq from './components/Faq'
-import Food from './components/food/MainComponent'
+import Food from './containers/Food'
 import Photos from './containers/Photos'
 
 import cookie from 'react-cookie'
@@ -191,11 +192,12 @@ export default (
         <Route path='pendingInsurance/:userId/:insuranceId' component={PendingInsuranceProfile} onEnter={requireMinionAuth} />
       </Route>
 
-      {/* <Route path='superadmin'>
+      <Route path='superadmin'>
         <IndexRoute component={AdminLogin} />
-        <Route path='day' component={DayEditor} />
-        <Route path='day/:program' component={DayEditor} />
-        <Route path='day/:program/:id' component={DayEditor} />
-      </Route> */}
+        <Route path='day' component={DayEditor} onEnter={requireMinionAuth} />
+        <Route path='day/:program' component={DayEditor} onEnter={requireMinionAuth} />
+        <Route path='day/:program/:id' component={DayEditor} onEnter={requireMinionAuth} />
+        <Route path='food' component={FoodEditor} onEnter={requireMinionAuth} />
+      </Route>
     </Route>
 )

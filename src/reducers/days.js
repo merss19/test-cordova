@@ -43,6 +43,24 @@ export const dayIntro = (state = '', action) => {
   }
 }
 
+export const editor = (state = '', action) => {
+  switch (action.type) {
+    case 'EDITOR':
+      return action.editor
+    default:
+      return state
+  }
+}
+
+export const content = (state = '', action) => {
+  switch (action.type) {
+    case 'CONTENT':
+      return action.content
+    default:
+      return state
+  }
+}
+
 export const dayDate = (state = moment(), action) => {
   switch (action.type) {
     case 'DAY_DATE':

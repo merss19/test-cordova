@@ -670,8 +670,6 @@ class SubmitValidationForm extends Component {
 
             <hr/> */}
 
-            <InsuranceValidationForm docs={initialValues.insuranceFile}/>
-
             <div className="text-center">
               <button type='submit' className="btn btn--primary" onClick={() => {
                 if (!valid) {
@@ -682,6 +680,8 @@ class SubmitValidationForm extends Component {
               </button>
               {error && <strong>{error}</strong>}
             </div>
+
+            <InsuranceValidationForm docs={initialValues.insuranceFile}/>
 
           </div>
         </div>

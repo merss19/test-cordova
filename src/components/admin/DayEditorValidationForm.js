@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import { Editor } from 'react-draft-wysiwyg'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import '../../../public/react-draft-wysiwyg.css'
 import * as actions from '../../actions'
+import { convertFromHTML, convertToRaw, convertFromRaw, ContentState, EditorState } from 'draft-js'
+import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor'
 import draftToHtml from 'draftjs-to-html'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
 import Calendar from './Calendar'
 import SelectProgram from '../componentKit/SelectProgram'
-// import Menu from './Menu'
 import MenuButton from '../../stories/MenuButton'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -106,6 +108,7 @@ const renderPollFields = ({ fields, meta: { error } }) => (
 class DayEditorValidationForm extends Component {
   onEditorChange: Function = (editorContent) => {
     const { dispatch } = this.props
+    dispatch({ type: 'CONTENT', content: editorContent })
     dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent) })
   }
 
@@ -135,7 +138,11 @@ class DayEditorValidationForm extends Component {
 
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
-      change, date, programs, programShow , selectedDays} = this.props
+      change, date, programs, programShow, selectedDays, editor } = this.props
+
+    console.log('lllllllllllllllllllll')
+    console.log(editor)
+    console.log(calendar)
 
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
@@ -187,6 +194,16 @@ class DayEditorValidationForm extends Component {
                     Бонусный день
                   </MenuButton>
                 </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => {
+                    browserHistory.push('/userReports/pendingProfiles')
+                  }} icon="ico-m-tasks">Отчеты</MenuButton>
+                </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => {
+                    browserHistory.push('/superadmin/food')
+                  }} icon="ico-m-food">Питание</MenuButton>
+                </li>
               </ul>
             </div>
             <div className="1/3 grid__cell">
@@ -194,6 +211,11 @@ class DayEditorValidationForm extends Component {
                 {calendar && calendar.map((field, index) => (
                   <Calendar onClick={() => {
                       reset()
+
+                      // this.refs.introEditor.changeEditorState(editorState)//JSON.parse(calendar[index].intro)
+                      dispatch({ type: 'EDITOR', editor: JSON.parse(calendar[index].intro) })
+                      // dispatch({ type: 'EDITOR_STATE', editorState: editorState })
+
                       dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
                       change('customName', calendar[index].customName)
                       change('customIcon', calendar[index].customIcon)
@@ -262,16 +284,29 @@ class DayEditorValidationForm extends Component {
             <br/>
             <br/>
 
-            <div className='home-root'>
-              <Editor
-                toolbarClassName="home-toolbar"
-                wrapperClassName="home-wrapper"
-                editorClassName="home-editor"
-                placeholder="Вставьте текст..."
-                onChange={this.onEditorChange}
-                uploadCallback={this.uploadImageCallBack}
-              />
-            </div>
+            {editor
+              ? <div className='home-root'>
+                <Editor ref='introEditor'
+                  toolbarClassName="home-toolbar"
+                  wrapperClassName="home-wrapper"
+                  editorClassName="home-editor"
+                  placeholder="Вставьте текст..."
+                  onChange={this.onEditorChange}
+                  contentState={editor}
+                  uploadCallback={this.uploadImageCallBack}
+                />
+              </div>
+              : <div className='home-root'>
+                <Editor ref='introEditor'
+                  toolbarClassName="home-toolbar"
+                  wrapperClassName="home-wrapper"
+                  editorClassName="home-editor"
+                  placeholder="Вставьте текст..."
+                  onChange={this.onEditorChange}
+                  uploadCallback={this.uploadImageCallBack}
+                />
+              </div>
+            }
 
             <br/>
 
