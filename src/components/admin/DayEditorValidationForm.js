@@ -140,10 +140,6 @@ class DayEditorValidationForm extends Component {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
       change, date, programs, programShow, selectedDays, editor } = this.props
 
-    console.log('lllllllllllllllllllll')
-    console.log(editor)
-    console.log(calendar)
-
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
         {/* {this.props.params.program + '' === '1'

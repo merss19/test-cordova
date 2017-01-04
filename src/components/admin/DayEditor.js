@@ -71,18 +71,23 @@ class DayEditor extends Component {
                   editor={editor}
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
-                    console.log(this.props.params.id)
-                    console.log(this.props.params.program)
-                    console.log('<------===')
-                    console.log(data)
 
-                    data.programTasks = data.programTasks.filter(t => {
-                      return t.id !== 4
-                    }).map(task => {
-                      const copy = { ...task, program: task.id }
-                      const {id, ...newTask} = copy
-                      return newTask
-                    })
+                    if (data.programTasks && data.programTasks[0]) {
+                      data.programTasks = data.programTasks.filter(t => {
+                        return t.id !== 4
+                      }).map(task => {
+                        const copy = { ...task, program: task.id }
+                        const {id, ...newTask} = copy
+                        return newTask
+                      })
+                    }
+
+                    if (data.program && data.program[0] && data.program[0].tasks && data.program[0].tasks[0]) {
+                      data.programTasks[0] = data.program[0]
+                      data.programTasks[0].tasks = data.programTasks[0].tasks.map(t => {
+                        return { ...t, program: 0 }
+                      })
+                    }
 
                     data.intro = JSON.stringify(content)
                     data.introHTML = dayIntro
@@ -98,8 +103,6 @@ class DayEditor extends Component {
                       'Content-Type': 'application/json'
                     }
 
-                    console.log(payload)
-
                     const method = 'POST'
                     return fetch(`${api}/data/adminday-create`, {
                       headers,
@@ -108,7 +111,6 @@ class DayEditor extends Component {
                     })
                     .then(response => response.json())
                     .then(json => {
-                      console.log(json)
                       this.refs.loadingModal.hide()
                       if (json.errorCode === 1) {
                         this.refs.successPromoModal.show()

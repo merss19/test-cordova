@@ -38,7 +38,6 @@ class MainComponent extends Component {
     const windowWidth = window.innerWidth
     if (windowWidth < 1210 && windowWidth > 1024) {
       const offset = (1210 - windowWidth) * 0.3
-      console.log(offset)
       document.getElementById('menu').style = `width: ${295 - offset}px`
     }
   }
@@ -71,9 +70,11 @@ class MainComponent extends Component {
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
               <TaskIntro text={introHTML} />
-              <Exercises tasks={tasks} sendReport={() => {
-                this.refs.sendReportModal.show()
-              }}/>
+              {tasks && tasks[0] &&
+                <Exercises tasks={tasks} sendReport={() => {
+                  this.refs.sendReportModal.show()
+                }}/>
+              }
 
               <Modal ref='sendReportModal' contentStyle={contentStyle}>
                 <SendReportModal onSubmit={(data) => {

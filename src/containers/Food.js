@@ -32,8 +32,6 @@ class Food extends Component {
 
   render() {
     const { food, token, isFetching } = this.props
-    console.log('<====)==0')
-    console.log(food)
     const isEmpty = !food || !food[0]
     return (
       <div className={isEmpty ? 'entry__inner' : 'layout'}>

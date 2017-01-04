@@ -53,8 +53,6 @@ const fetchFood = partialState => dispatch => {
   })
   .then(response => response.json())
   .then(json => {
-    console.log('<======>===0')
-    console.log(json)
     return dispatch(receiveFood(food, json))
   })
 }

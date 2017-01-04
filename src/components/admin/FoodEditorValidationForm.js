@@ -84,8 +84,6 @@ class FoodEditorValidationForm extends Component {
       )
     }
 
-    console.log(contentEditor)
-
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="grid">
         <div className="1/4--desk grid__cell layout__menu">

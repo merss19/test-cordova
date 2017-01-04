@@ -34,7 +34,6 @@ export const receiveTaskDay = (taskDay, json) => {
 const fetchTaskDay = partialState => dispatch => {
   const { token, taskDay, profile, selectedDayDate, selectedDayId } = partialState
   dispatch(requestTaskDay(taskDay))
-  console.log(selectedDayId)
   let payload = {
     authToken: token ? token : cookie.load('token'),
     data: {

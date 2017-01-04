@@ -25,7 +25,6 @@ export const selectedDayDate = (state = moment().format('YYYY-MM-DD'), action) =
 export const selectedDayId = (state = '', action) => {
   switch (action.type) {
     case 'SELECT_DAY_ID':
-      console.log(action)
       return action.id
     default:
       return state

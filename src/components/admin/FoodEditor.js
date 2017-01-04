@@ -40,9 +40,6 @@ class FoodEditor extends Component {
     const { food, token, isFetching, editDay, dayIntro, dayDate,
       programs, program, foodDescription, selectedFood, dispatch, editor, content } = this.props
     const isEmpty = !programs || !food
-    console.log(food)
-    // const id = this.props.params.id
-    // let initialValues = {}
 
     return (
       <div className='layout'>
@@ -61,9 +58,6 @@ class FoodEditor extends Component {
                   editor={editor}
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
-                    console.log('<------===')
-                    console.log(data)
-                    console.log(content)
 
                     const payload = {
                       authToken: token ? token : cookie.load('token'),
@@ -79,8 +73,6 @@ class FoodEditor extends Component {
                       'Content-Type': 'application/json'
                     }
 
-                    console.log(payload)
-
                     const method = 'POST'
                     return fetch(`${api}/day/food-update`, {
                       headers,
@@ -89,7 +81,6 @@ class FoodEditor extends Component {
                     })
                     .then(response => response.json())
                     .then(json => {
-                      console.log(json)
                       this.refs.loadingModal.hide()
                       if (json.errorCode === 1) {
                         dispatch(actions.fetchFoodIfNeeded(selectedFood))
@@ -136,8 +127,6 @@ const mapStateToProps = state => {
   }
 
   const { programs } = recivedPrograms[selectedPrograms] || []
-
-  console.log(foodProgram)
 
   return {
     selectedFood,
