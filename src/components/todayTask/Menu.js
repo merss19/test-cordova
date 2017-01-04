@@ -34,7 +34,7 @@ const Menu = () => (
     </ul>
     <hr/>
     <div className="profile">
-      <Link to="/profile/create">
+      <Link to="/profile">
         <p className="profile__name">Анна Иванова</p>
         <p className="profile__sub-text">Профиль</p>
       </Link>

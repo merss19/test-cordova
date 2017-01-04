@@ -38,7 +38,7 @@ const fetchTaskDay = partialState => dispatch => {
   let payload = {
     authToken: token ? token : cookie.load('token'),
     data: {
-      program: 1,
+      program: cookie.load('userProgram') ? cookie.load('userProgram') : 1,
     }
   }
 

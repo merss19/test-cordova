@@ -85,7 +85,7 @@ export const fetchFoodProgramIfNeeded = food => (dispatch, getState) => {
     return dispatch(fetchFood({
       token: getState().userToken.token,
       food,
-      program: 1
+      program: cookie.load('userProgram') ? cookie.load('userProgram') : 1
     }))
   }
 }
