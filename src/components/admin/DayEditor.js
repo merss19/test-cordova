@@ -69,6 +69,7 @@ class DayEditor extends Component {
                   date={dayDate}
                   programs={programs}
                   editor={editor}
+                  content={content}
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
 

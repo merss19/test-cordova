@@ -138,18 +138,17 @@ class DayEditorValidationForm extends Component {
 
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
-      change, date, programs, programShow, selectedDays, editor, dayId } = this.props
+      change, date, programs, programShow, selectedDays, editor, dayId, content } = this.props
 
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
-        {/* {this.props.params.program + '' === '1'
-        } */}
         {fields.length > 0
           ? fields.map((program, index) => {
               if (index < 3) {
                 return (
                   <li key={index}>
                     <button type="button" className="btn btn--secondary" onClick={() => {
+                      dispatch({ type: 'SAVE_EDITOR', editor: content })
                       dispatch({ type: 'PROGRAM_SHOW', programShow: index + 1 })
                     }}>
                       {programs[index].name}
@@ -271,12 +270,22 @@ class DayEditorValidationForm extends Component {
             <div className="2/3 grid__cell">
               <ul className="main-nav">
                 <li className="main-nav__item">
-                  <MenuButton onClick={() => change('programTasks', programs)} icon="ico-m-book">
+                  <MenuButton onClick={() => {
+                    dispatch({ type: 'CONTENT_RESET' })
+                    dispatch({ type: 'DAY_INTRO_RESET' })
+                    dispatch({ type: 'EDITOR_RESET' })
+                    change('programTasks', programs)
+                  }} icon="ico-m-book">
                     Тренировочный день
                   </MenuButton>
                 </li>
                 <li className="main-nav__item">
-                  <MenuButton onClick={() => change('programTasks', [])} icon="ico-m-book">
+                  <MenuButton onClick={() => {
+                    dispatch({ type: 'CONTENT_RESET' })
+                    dispatch({ type: 'DAY_INTRO_RESET' })
+                    dispatch({ type: 'EDITOR_RESET' })
+                    change('programTasks', [])
+                  }} icon="ico-m-book">
                     Бонусный день
                   </MenuButton>
                 </li>

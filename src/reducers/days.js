@@ -44,10 +44,13 @@ export const editDay = (state = {}, action) => {
 }
 
 export const dayIntro = (state = [], action) => {
+  console.log(state)
   switch (action.type) {
     case 'DAY_INTRO':
       state[action.index] = action.intro
       return state
+    case 'DAY_INTRO_RESET':
+      return []
     default:
       return state
   }
@@ -58,6 +61,8 @@ export const editor = (state = [], action) => {
     case 'EDITOR':
       state[action.index] = action.editor
       return state
+    case 'EDITOR_RESET':
+      return []
     case 'SAVE_EDITOR':
       return action.editor
     default:
@@ -70,6 +75,8 @@ export const content = (state = [], action) => {
     case 'CONTENT':
       state[action.index] = action.content
       return state
+    case 'CONTENT_RESET':
+      return []
     default:
       return state
   }
@@ -78,8 +85,6 @@ export const content = (state = [], action) => {
 export const dayDate = (state = moment(), action) => {
   switch (action.type) {
     case 'DAY_DATE':
-      console.log('0===(========>')
-      console.log(action.date)
       return action.date
     default:
       return state
