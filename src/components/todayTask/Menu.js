@@ -39,7 +39,7 @@ const Menu = () => (
         <p className="profile__sub-text">Профиль</p>
       </Link>
     </div>
-    <hr/>
+    {/* <hr/>
     <ul className="banner-ls">
       <li className="banner-ls__item">
         <a href="#">
@@ -49,7 +49,7 @@ const Menu = () => (
           <p className="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
         </a>
       </li>
-    </ul>
+    </ul> */}
   </div>
 )
 

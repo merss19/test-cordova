@@ -6,6 +6,15 @@ import Menu from '../components/todayTask/Menu'
 import CalendarList from '../components/todayTask/CalendarList'
 import Header from '../stories/Header'
 
+let photoBeforeFront
+let photoBeforeBack
+let photoBeforeLeft
+let photoBeforeRight
+let photoAfterFront
+let photoAfterBack
+let photoAfterLeft
+let photoAfterRight
+
 class Photos extends Component {
 
   render() {
@@ -74,8 +83,22 @@ class Photos extends Component {
                   {/* {before.map(gallery => {
 
                   })} */}
-                  <li className="upload-gallery__item upload-gallery__item--uploaded">
+                  <li ref="liBeforeFront" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
+                      <input ref="inputBeforeFront" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
+
+                          reader.onload = e => {
+                            this.refs.liBeforeFront.className='upload-gallery__item upload-gallery__item--uploaded'
+                            this.refs.beforeFront.src = e.target.result
+                            photoBeforeFront = reader.result.replace(/data:image\/\w+;base64,/, '')
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
                       <span className="upload-gallery__ico">
                         <svg className="svg-icon ico-gallery">
                           <use xlinkHref="#ico-gallery"></use>
@@ -83,13 +106,32 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Спереди</span>
                       <span className="upload-gallery__img_wrap">
-                        <img className="upload-gallery__img" src="tmp/photo-before.png" alt=""/>
+                        <img ref='beforeFront' className="upload-gallery__img" src="" alt=""/>
                       </span>
                     </span>
-                    <a href="#">Удалить</a>
+                    <a href="#" onClick={e => {
+                      e.preventDefault()
+                      this.refs.inputBeforeFront.click()
+                    }}>
+                      Загрузить
+                    </a>
                   </li>
-                  <li className="upload-gallery__item">
+                  <li ref="liBeforeBack" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
+                      <input ref="inputBeforeBack" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
+
+                          reader.onload = e => {
+                            this.refs.liBeforeBack.className='upload-gallery__item upload-gallery__item--uploaded'
+                            this.refs.beforeBack.src = e.target.result
+                            photoBeforeBack = reader.result.replace(/data:image\/\w+;base64,/, '')
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
                       <span className="upload-gallery__ico">
                         <svg className="svg-icon ico-gallery">
                           <use xlinkHref="#ico-gallery"></use>
@@ -97,13 +139,32 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Сзади</span>
                       <span className="upload-gallery__img_wrap">
-                        <img className="upload-gallery__img" src="" alt=""/>
+                        <img ref='beforeBack' className="upload-gallery__img" src="" alt=""/>
                       </span>
                     </span>
-                    <a href="#">Загрузить</a>
+                    <a href="#" onClick={e => {
+                      e.preventDefault()
+                      this.refs.inputBeforeBack.click()
+                    }}>
+                      Загрузить
+                    </a>
                   </li>
-                  <li className="upload-gallery__item">
+                  <li ref="liBeforeLeft" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
+                      <input ref="inputBeforeLeft" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
+
+                          reader.onload = e => {
+                            this.refs.liBeforeLeft.className='upload-gallery__item upload-gallery__item--uploaded'
+                            this.refs.beforeLeft.src = e.target.result
+                            photoBeforeLeft = reader.result.replace(/data:image\/\w+;base64,/, '')
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
                       <span className="upload-gallery__ico">
                         <svg className="svg-icon ico-gallery">
                           <use xlinkHref="#ico-gallery"></use>
@@ -111,13 +172,33 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Слева</span>
                       <span className="upload-gallery__img_wrap">
-                        <img className="upload-gallery__img" src="" alt=""/>
+                        <img ref='beforeLeft' className="upload-gallery__img" src="" alt=""/>
                       </span>
                     </span>
-                    <a href="#">Загрузить</a>
+                    <a href="#" onClick={e => {
+                      e.preventDefault()
+                      this.refs.inputBeforeLeft.click()
+                    }}>
+                      Загрузить
+                    </a>
                   </li>
-                  <li className="upload-gallery__item">
+
+                  <li ref="liBeforeRight" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
+                      <input ref="inputBeforeRight" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
+
+                          reader.onload = e => {
+                            this.refs.liBeforeRight.className='upload-gallery__item upload-gallery__item--uploaded'
+                            this.refs.beforeRight.src = e.target.result
+                            photoBeforeRight = reader.result.replace(/data:image\/\w+;base64,/, '')
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
                       <span className="upload-gallery__ico">
                         <svg className="svg-icon ico-gallery">
                           <use xlinkHref="#ico-gallery"></use>
@@ -125,16 +206,23 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Справа</span>
                       <span className="upload-gallery__img_wrap">
-                        <img className="upload-gallery__img" src="" alt=""/>
+                        <img ref='beforeRight' className="upload-gallery__img" src="" alt=""/>
                       </span>
                     </span>
-                    <a href="#">Загрузить</a>
+                    <a href="#" onClick={e => {
+                      e.preventDefault()
+                      this.refs.inputBeforeRight.click()
+                    }}>
+                      Загрузить
+                    </a>
                   </li>
                 </ul>
 
-                <div className="input input--box input--btn mb30">
-                  <input type="text" className="input__field" placeholder="http://youtube.com"/>
-                  <div className="btn btn--secondary">Прикрепить файл</div>
+                <br/>
+
+                <div className="input input--box">
+                  <input ref="videoBefore" type="text" className="input__field" placeholder="http://youtube.com"/>
+                  {/* <div className="btn btn--secondary">Прикрепить файл</div> */}
                 </div>
 
                 <div className="btn btn--primary">Отправить на проверку</div>
@@ -146,8 +234,25 @@ class Photos extends Component {
                 <p className="base-parag">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat blanditiis quo porro nesciunt consequuntur est dolore accusamus commodi dolorem. Vel nobis architecto perspiciatis eligendi libero odit nisi iure natus, repellendus laboriosam voluptates excepturi magni vero, dolorum reiciendis. Iusto, excepturi tenetur, quisquam unde voluptatibus adipisci iure, impedit modi ipsa consequatur iste.</p>
 
                 <ul className="upload-gallery">
-                  <li className="upload-gallery__item upload-gallery__item--uploaded">
+                  {/* {before.map(gallery => {
+
+                  })} */}
+                  <li ref="liAfterFront" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
+                      <input ref="inputAfterFront" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
+
+                          reader.onload = e => {
+                            this.refs.liAfterFront.className='upload-gallery__item upload-gallery__item--uploaded'
+                            this.refs.afterFront.src = e.target.result
+                            photoAfterFront = reader.result.replace(/data:image\/\w+;base64,/, '')
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
                       <span className="upload-gallery__ico">
                         <svg className="svg-icon ico-gallery">
                           <use xlinkHref="#ico-gallery"></use>
@@ -155,13 +260,32 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Спереди</span>
                       <span className="upload-gallery__img_wrap">
-                        <img className="upload-gallery__img" src="tmp/photo-before.png" alt=""/>
+                        <img ref='afterFront' className="upload-gallery__img" src="" alt=""/>
                       </span>
                     </span>
-                    <a href="#">Удалить</a>
+                    <a href="#" onClick={e => {
+                      e.preventDefault()
+                      this.refs.inputAfterFront.click()
+                    }}>
+                      Загрузить
+                    </a>
                   </li>
-                  <li className="upload-gallery__item">
+                  <li ref="liAfterBack" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
+                      <input ref="inputAfterBack" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
+
+                          reader.onload = e => {
+                            this.refs.liAfterBack.className='upload-gallery__item upload-gallery__item--uploaded'
+                            this.refs.afterBack.src = e.target.result
+                            photoAfterBack = reader.result.replace(/data:image\/\w+;base64,/, '')
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
                       <span className="upload-gallery__ico">
                         <svg className="svg-icon ico-gallery">
                           <use xlinkHref="#ico-gallery"></use>
@@ -169,13 +293,32 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Сзади</span>
                       <span className="upload-gallery__img_wrap">
-                        <img className="upload-gallery__img" src="" alt=""/>
+                        <img ref='afterBack' className="upload-gallery__img" src="" alt=""/>
                       </span>
                     </span>
-                    <a href="#">Загрузить</a>
+                    <a href="#" onClick={e => {
+                      e.preventDefault()
+                      this.refs.inputAfterBack.click()
+                    }}>
+                      Загрузить
+                    </a>
                   </li>
-                  <li className="upload-gallery__item">
+                  <li ref="liAfterLeft" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
+                      <input ref="inputAfterLeft" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
+
+                          reader.onload = e => {
+                            this.refs.liAfterLeft.className='upload-gallery__item upload-gallery__item--uploaded'
+                            this.refs.afterLeft.src = e.target.result
+                            photoAfterLeft = reader.result.replace(/data:image\/\w+;base64,/, '')
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
                       <span className="upload-gallery__ico">
                         <svg className="svg-icon ico-gallery">
                           <use xlinkHref="#ico-gallery"></use>
@@ -183,13 +326,33 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Слева</span>
                       <span className="upload-gallery__img_wrap">
-                        <img className="upload-gallery__img" src="" alt=""/>
+                        <img ref='afterLeft' className="upload-gallery__img" src="" alt=""/>
                       </span>
                     </span>
-                    <a href="#">Загрузить</a>
+                    <a href="#" onClick={e => {
+                      e.preventDefault()
+                      this.refs.inputAfterLeft.click()
+                    }}>
+                      Загрузить
+                    </a>
                   </li>
-                  <li className="upload-gallery__item">
+
+                  <li ref="liAfterRight" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
+                      <input ref="inputAfterRight" type="file" accept="image/*" className="upload-file__input" onChange={input => {
+                        const { target } = input
+                        if (target.files && target.files[0]) {
+                          var reader = new FileReader()
+
+                          reader.onload = e => {
+                            this.refs.liAfterRight.className='upload-gallery__item upload-gallery__item--uploaded'
+                            this.refs.afterRight.src = e.target.result
+                            photoAfterRight = reader.result.replace(/data:image\/\w+;base64,/, '')
+                          }
+
+                          reader.readAsDataURL(target.files[0])
+                        }
+                      }}/>
                       <span className="upload-gallery__ico">
                         <svg className="svg-icon ico-gallery">
                           <use xlinkHref="#ico-gallery"></use>
@@ -197,16 +360,23 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Справа</span>
                       <span className="upload-gallery__img_wrap">
-                        <img className="upload-gallery__img" src="" alt=""/>
+                        <img ref='afterRight' className="upload-gallery__img" src="" alt=""/>
                       </span>
                     </span>
-                    <a href="#">Загрузить</a>
+                    <a href="#" onClick={e => {
+                      e.preventDefault()
+                      this.refs.inputAfterRight.click()
+                    }}>
+                      Загрузить
+                    </a>
                   </li>
                 </ul>
 
-                <div className="input input--box input--btn mb30">
-                  <input type="text" className="input__field" placeholder="http://youtube.com"/>
-                  <div className="btn btn--secondary">Прикрепить файл</div>
+                <br/>
+
+                <div className="input input--box">
+                  <input ref="videoAfter" type="text" className="input__field" placeholder="http://youtube.com"/>
+                  {/* <div className="btn btn--secondary">Прикрепить файл</div> */}
                 </div>
 
                 <div className="btn btn--primary">Отправить на проверку</div>

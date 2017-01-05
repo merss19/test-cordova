@@ -29,6 +29,7 @@ class ProfileSignup extends Component {
     document.body.appendChild(fbScript)
 
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
 
