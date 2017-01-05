@@ -34,6 +34,7 @@ class LoginFB extends Component {
   componentDidMount() {
     this.refs.loadingModal.show()
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
 
