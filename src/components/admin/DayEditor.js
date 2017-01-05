@@ -72,11 +72,17 @@ class DayEditor extends Component {
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
 
+                    console.log(data)
+
                     if (data.programTasks && data.programTasks[0]) {
                       data.programTasks = data.programTasks.filter(t => {
                         return t.id !== 4
-                      }).map(task => {
-                        const copy = { ...task, program: task.id }
+                      }).map((task, i) => {
+                        const copy = { ...task,
+                          program: task.id,
+                          intro: JSON.stringify(content[i]),
+                          introHTML: dayIntro[i]
+                        }
                         const {id, ...newTask} = copy
                         return newTask
                       })
@@ -85,12 +91,22 @@ class DayEditor extends Component {
                     if (data.program && data.program[0] && data.program[0].tasks && data.program[0].tasks[0]) {
                       data.programTasks[0] = data.program[0]
                       data.programTasks[0].tasks = data.programTasks[0].tasks.map(t => {
-                        return { ...t, program: 0 }
+                        return { ...t,
+                          program: 0,
+                          intro: JSON.stringify(content[0]),
+                          introHTML: dayIntro[0]
+                        }
                       })
+                    } else if (content[0] && dayIntro[0]) {
+                      data.programTasks[0] = {
+                        program: 0,
+                        intro: JSON.stringify(content[0]),
+                        introHTML: dayIntro[0]
+                      }
                     }
 
-                    data.intro = JSON.stringify(content)
-                    data.introHTML = dayIntro
+                    // data.intro = JSON.stringify(content)
+                    // data.introHTML = dayIntro
                     data.date = moment(dayDate).format('YYYY-MM-DD')
 
                     const payload = {

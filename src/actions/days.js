@@ -120,8 +120,6 @@ const fetchDays = partialState => dispatch => {
   })
   .then(response => response.json())
   .then(json => {
-    console.log('<======>===0')
-    console.log(json)
     return dispatch(receiveDays(days, json))
   })
 }

@@ -54,7 +54,9 @@ class MainComponent extends Component {
 
   render() {
     const { taskDay, token } = this.props
-    const { introHTML, tasks, poll, chat, calendar, id } = taskDay
+    const { intro, tasks, poll, chat, calendar, id } = taskDay
+    console.log(taskDay)
+    const introHTML = intro[0].introHTML
 
     return (
       <div className="layout">

@@ -138,7 +138,7 @@ class DayEditorValidationForm extends Component {
 
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
-      change, date, programs, programShow, selectedDays, editor } = this.props
+      change, date, programs, programShow, selectedDays, editor, dayId } = this.props
 
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
@@ -155,7 +155,54 @@ class DayEditorValidationForm extends Component {
                       {programs[index].name}
                     </button>
                     {programShow === programs[index].id &&
-                      <FieldArray name={`${program}.tasks`} component={renderTasks} />
+                      <div>
+                        <br/>
+                        <div className="grid">
+                          <div className="1/2--desk 1/1--pocket grid__cell">
+                            <Field name={`${program}.customName`} placeholder="Название дня" component={InputProfile} />
+                          </div>
+                          <div className="1/2--desk 1/1--pocket grid__cell">
+                            <Field name={`${program}.customIcon`} placeholder="Выберите иконку" component={InputProfile} />
+                          </div>
+                        </div>
+
+                        {editor
+                          ? <div className='home-root'>
+                            <Editor
+                              toolbarClassName="home-toolbar"
+                              wrapperClassName="home-wrapper"
+                              editorClassName="home-editor"
+                              placeholder="Вставьте текст..."
+                              onChange={editorContent => {
+                                const { dispatch } = this.props
+                                dispatch({ type: 'CONTENT', content: editorContent, index })
+                                dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index })
+                              }}
+                              contentState={editor[index]}
+                              uploadCallback={this.uploadImageCallBack}
+                            />
+                          </div>
+                          : <div className='home-root'>
+                            <Editor
+                              toolbarClassName="home-toolbar"
+                              wrapperClassName="home-wrapper"
+                              editorClassName="home-editor"
+                              placeholder="Вставьте текст..."
+                              onChange={editorContent => {
+                                const { dispatch } = this.props
+                                dispatch({ type: 'CONTENT', content: editorContent, index })
+                                dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index })
+                              }}
+                              uploadCallback={this.uploadImageCallBack}
+                            />
+                          </div>
+                        }
+
+                        <br/>
+                        <br/>
+
+                        <FieldArray name={`${program}.tasks`} component={renderTasks} />
+                      </div>
                     }
                     <hr/>
                   </li>
@@ -163,6 +210,49 @@ class DayEditorValidationForm extends Component {
               }
             })
           : <li>
+              <br/>
+              <div className="grid">
+                <div className="1/2--desk 1/1--pocket grid__cell">
+                  <Field name='program[0].customName' placeholder="Название дня" component={InputProfile} />
+                </div>
+                <div className="1/2--desk 1/1--pocket grid__cell">
+                  <Field name='program[0].customIcon' placeholder="Выберите иконку" component={InputProfile} />
+                </div>
+              </div>
+
+              {editor
+                ? <div className='home-root'>
+                  <Editor
+                    toolbarClassName="home-toolbar"
+                    wrapperClassName="home-wrapper"
+                    editorClassName="home-editor"
+                    placeholder="Вставьте текст..."
+                    onChange={(editorContent) => {
+                      const { dispatch } = this.props
+                      dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
+                      dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
+                    }}
+                    contentState={editor[0]}
+                    uploadCallback={this.uploadImageCallBack}
+                  />
+                </div>
+                : <div className='home-root'>
+                  <Editor
+                    toolbarClassName="home-toolbar"
+                    wrapperClassName="home-wrapper"
+                    editorClassName="home-editor"
+                    placeholder="Вставьте текст..."
+                    onChange={(editorContent) => {
+                      const { dispatch } = this.props
+                      dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
+                      dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
+                    }}
+                    uploadCallback={this.uploadImageCallBack}
+                  />
+                </div>
+              }
+              <br/>
+              <br/>
               <FieldArray name='program[0].tasks' component={renderTasks} />
             </li>
         }
@@ -208,9 +298,13 @@ class DayEditorValidationForm extends Component {
                   <Calendar onClick={() => {
                       reset()
 
-                      // this.refs.introEditor.changeEditorState(editorState)//JSON.parse(calendar[index].intro)
-                      dispatch({ type: 'EDITOR', editor: JSON.parse(calendar[index].intro) })
-                      // dispatch({ type: 'EDITOR_STATE', editorState: editorState })
+                      console.log(calendar[index])
+
+                      dispatch({ type: 'DAY_ID', id: calendar[index].id })
+
+                      calendar[index].intro.forEach((i, index) => {
+                        dispatch({ type: 'EDITOR', editor: JSON.parse(i.intro), index })
+                      })
 
                       dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
                       change('customName', calendar[index].customName)
@@ -264,46 +358,11 @@ class DayEditorValidationForm extends Component {
               </div>
             </div>
 
+            <h2 className='h2'>Id: {dayId}</h2>
+            <span>Дата:</span>
+            <div className="divider" />
             <DatePicker selected={date} onChange={handleDateChange} />
             <br/>
-            <br/>
-
-            <div className="grid">
-              <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name='customName' placeholder="Название дня" component={InputProfile} />
-              </div>
-              <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name='customIcon' placeholder="Выберите иконку" component={InputProfile} />
-              </div>
-            </div>
-
-            <br/>
-            <br/>
-
-            {editor
-              ? <div className='home-root'>
-                <Editor ref='introEditor'
-                  toolbarClassName="home-toolbar"
-                  wrapperClassName="home-wrapper"
-                  editorClassName="home-editor"
-                  placeholder="Вставьте текст..."
-                  onChange={this.onEditorChange}
-                  contentState={editor}
-                  uploadCallback={this.uploadImageCallBack}
-                />
-              </div>
-              : <div className='home-root'>
-                <Editor ref='introEditor'
-                  toolbarClassName="home-toolbar"
-                  wrapperClassName="home-wrapper"
-                  editorClassName="home-editor"
-                  placeholder="Вставьте текст..."
-                  onChange={this.onEditorChange}
-                  uploadCallback={this.uploadImageCallBack}
-                />
-              </div>
-            }
-
             <br/>
 
             {/* <Field name="program" id="program" options={[
@@ -342,11 +401,12 @@ DayEditorValidationForm = reduxForm({
 let selector = formValueSelector('dayEditor')
 
 const mapStateToProps = state => {
-  const { selectedDays, selectedPrograms, electedPrograms, recivedPrograms, hidePoll, programShow } = state
+  const { selectedDays, selectedPrograms, electedPrograms, recivedPrograms, hidePoll, programShow, dayId } = state
   const { programs } = recivedPrograms[selectedPrograms] || []
   return {
     hideCreatePoll: hidePoll,
     programShow,
+    dayId,
     programs,
     selectedDays
   }
