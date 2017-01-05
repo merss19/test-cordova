@@ -45,7 +45,9 @@ class ProfileCreate extends Component {
   render() {
     const { profileData, insurance, bodyParams, token, isFetching, birthday } = this.props
     const isEmpty = !profileData || !profileData.email
-    const insuranceIsEmpty = !insurance || !insurance[insurance.length - 1]
+    console.log('<----')
+    console.log(insurance)
+    const insuranceIsEmpty = !insurance
 
     console.log(profileData)
 
@@ -64,16 +66,16 @@ class ProfileCreate extends Component {
                 ...profileData,
                 country: !profileData.country ? 'Россия' : profileData.country,
                 city: !profileData.city ? 'Москва' : profileData.city,
-                fullName: !insuranceIsEmpty && insurance[insurance.length - 1].fullName
-                  ? insurance[insurance.length - 1].fullName : '' ,
-                profession: !insuranceIsEmpty && insurance[insurance.length - 1].profession
-                  ? insurance[insurance.length - 1].profession : '',
-                passport: !insuranceIsEmpty && insurance[insurance.length - 1].passport
-                  ? insurance[insurance.length - 1].passport : '',
-                address: !insuranceIsEmpty && insurance[insurance.length - 1].address
-                  ? insurance[insurance.length - 1].address : '',
-                insuranceFile: !insuranceIsEmpty && insurance[insurance.length - 1].insuranceFile
-                  ? insurance[insurance.length - 1].insuranceFile : []
+                fullName: !insuranceIsEmpty && insurance.fullName
+                  ? insurance.fullName : '' ,
+                profession: !insuranceIsEmpty && insurance.profession
+                  ? insurance.profession : '',
+                passport: !insuranceIsEmpty && insurance.passport
+                  ? insurance.passport : '',
+                address: !insuranceIsEmpty && insurance.address
+                  ? insurance.address : '',
+                insuranceFile: !insuranceIsEmpty && insurance.insuranceFile
+                  ? insurance.insuranceFile : []
 
               }}
               onSubmit={ data => {
@@ -107,6 +109,8 @@ class ProfileCreate extends Component {
             />
             <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
+              <br/>
+              <h4>Мы проверим анкету на наличие опечаток и пришлём подтверждение по почте. Ознакомьтесь с разделом ЧАВО!</h4>
               <br/>
               <div className="btn btn--action" onClick={() => this.refs.successModal.hide()}>
                 Продолжить

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 // import { bindActionCreators } from 'redux'
-// import { connect } from 'react-redux'
-// import * as actions from '../actions'
+import { connect } from 'react-redux'
+import * as actions from '../actions'
+import { api } from '../config.js'
+import cookie from 'react-cookie'
 import Menu from '../components/todayTask/Menu'
 import CalendarList from '../components/todayTask/CalendarList'
 import Header from '../stories/Header'
@@ -15,9 +17,49 @@ let photoAfterBack
 let photoAfterLeft
 let photoAfterRight
 
+let photoBeforeFrontUrl
+let photoBeforeBackUrl
+let photoBeforeLeftUrl
+let photoBeforeRightUrl
+let photoAfterFrontUrl
+let photoAfterBackUrl
+let photoAfterLeftUrl
+let photoAfterRightUrl
+
+let photoBeforeVideoUrl
+let photoAfterVideoUrl
+
 class Photos extends Component {
+  componentDidMount() {
+    const { dispatch, selectedPhotos } = this.props
+    dispatch(actions.fetchPhotosIfNeeded(selectedPhotos))
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedPhotos !== this.props.selectedPhotos) {
+      const { dispatch, selectedPhotos } = nextProps
+      dispatch(actions.fetchPhotosIfNeeded(selectedPhotos))
+    }
+  }
 
   render() {
+    const { photos, isFetching, dispatch } = this.props
+    console.log('<====)==0')
+    console.log(photos)
+    const isEmpty = !photos || !photos.data
+    if (!isEmpty) {
+      photoBeforeFrontUrl = photos.data.photoBeforeFrontUrl
+      photoBeforeBackUrl = photos.data.photoBeforeBackUrl
+      photoBeforeLeftUrl = photos.data.photoBeforeLeftUrl
+      photoBeforeRightUrl = photos.data.photoBeforeRightUrl
+      photoAfterFrontUrl = photos.data.photoAfterFrontUrl
+      photoAfterBackUrl = photos.data.photoAfterBackUrl
+      photoAfterLeftUrl = photos.data.photoAfterLeftUrl
+      photoAfterRightUrl = photos.data.photoAfterRightUrl
+
+      photoBeforeVideoUrl = photos.data.photoBeforeVideoUrl
+      photoAfterVideoUrl = photos.data.photoAfterVideoUrl
+    }
     // const galleries = {
     //   before: {
     //     photos: ['tmp/photo-before.png', '', '', ''],
@@ -41,7 +83,7 @@ class Photos extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div className="grid layout__menu-inner">
                 <Menu/>
-                <CalendarList calendar={[{
+                {/* <CalendarList calendar={[{
                     number: '1',
                     icon: 'ico-done',
                     status: 'done',
@@ -64,7 +106,7 @@ class Photos extends Component {
                     admin: 'Миньон',
                     completeText: 'Зачет не сдан',
                     day: 'Ср'
-                }]}/>
+                }]}/> */}
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
@@ -80,9 +122,6 @@ class Photos extends Component {
                 <p className="base-parag">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat blanditiis quo porro nesciunt consequuntur est dolore accusamus commodi dolorem. Vel nobis architecto perspiciatis eligendi libero odit nisi iure natus, repellendus laboriosam voluptates excepturi magni vero, dolorum reiciendis. Iusto, excepturi tenetur, quisquam unde voluptatibus adipisci iure, impedit modi ipsa consequatur iste.</p>
 
                 <ul className="upload-gallery">
-                  {/* {before.map(gallery => {
-
-                  })} */}
                   <li ref="liBeforeFront" className="upload-gallery__item">
                     <span className="upload-gallery__item-inner">
                       <input ref="inputBeforeFront" type="file" accept="image/*" className="upload-file__input" onChange={input => {
@@ -106,7 +145,7 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Спереди</span>
                       <span className="upload-gallery__img_wrap">
-                        <img ref='beforeFront' className="upload-gallery__img" src="" alt=""/>
+                        <img ref='beforeFront' className="upload-gallery__img" src={photoBeforeFrontUrl} alt=""/>
                       </span>
                     </span>
                     <a href="#" onClick={e => {
@@ -139,7 +178,7 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Сзади</span>
                       <span className="upload-gallery__img_wrap">
-                        <img ref='beforeBack' className="upload-gallery__img" src="" alt=""/>
+                        <img ref='beforeBack' className="upload-gallery__img" src={photoBeforeBackUrl} alt=""/>
                       </span>
                     </span>
                     <a href="#" onClick={e => {
@@ -172,7 +211,7 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Слева</span>
                       <span className="upload-gallery__img_wrap">
-                        <img ref='beforeLeft' className="upload-gallery__img" src="" alt=""/>
+                        <img ref='beforeLeft' className="upload-gallery__img" src={photoBeforeLeftUrl} alt=""/>
                       </span>
                     </span>
                     <a href="#" onClick={e => {
@@ -206,7 +245,7 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Справа</span>
                       <span className="upload-gallery__img_wrap">
-                        <img ref='beforeRight' className="upload-gallery__img" src="" alt=""/>
+                        <img ref='beforeRight' className="upload-gallery__img" src={photoBeforeRightUrl} alt=""/>
                       </span>
                     </span>
                     <a href="#" onClick={e => {
@@ -225,7 +264,44 @@ class Photos extends Component {
                   {/* <div className="btn btn--secondary">Прикрепить файл</div> */}
                 </div>
 
-                <div className="btn btn--primary">Отправить на проверку</div>
+                <div className="btn btn--primary" onClick={() => {
+                  const payload = {
+                    authToken: cookie.load('token'),
+                    data: {
+                      program: cookie.load('userProgram') ? cookie.load('userProgram') : 1,
+                      photoBeforeFront,
+                      photoBeforeBack,
+                      photoBeforeLeft,
+                      photoBeforeRight,
+                      photoAfterFront,
+                      photoAfterBack,
+                      photoAfterLeft,
+                      photoAfterRight,
+                      photoBeforeVideoUrl,
+                      photoAfterVideoUrl
+                    }
+                  }
+
+                  let url = `${api}/user/userPhoto-update`
+
+                  if (isEmpty)
+                    url = `${api}/user/userPhoto-create`
+
+                  return fetch(url, {
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                  })
+                  .then(response => response.json())
+                  .then(json => {
+                    console.log(json)
+                  })
+                }}>
+                  Отправить на проверку
+                </div>
 
                 <hr/>
 
@@ -260,7 +336,7 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Спереди</span>
                       <span className="upload-gallery__img_wrap">
-                        <img ref='afterFront' className="upload-gallery__img" src="" alt=""/>
+                        <img ref='afterFront' className="upload-gallery__img" src={photoAfterFrontUrl} alt=""/>
                       </span>
                     </span>
                     <a href="#" onClick={e => {
@@ -293,7 +369,7 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Сзади</span>
                       <span className="upload-gallery__img_wrap">
-                        <img ref='afterBack' className="upload-gallery__img" src="" alt=""/>
+                        <img ref='afterBack' className="upload-gallery__img" src={photoAfterBackUrl} alt=""/>
                       </span>
                     </span>
                     <a href="#" onClick={e => {
@@ -326,7 +402,7 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Слева</span>
                       <span className="upload-gallery__img_wrap">
-                        <img ref='afterLeft' className="upload-gallery__img" src="" alt=""/>
+                        <img ref='afterLeft' className="upload-gallery__img" src={photoAfterLeftUrl} alt=""/>
                       </span>
                     </span>
                     <a href="#" onClick={e => {
@@ -360,7 +436,7 @@ class Photos extends Component {
                       </span>
                       <span className="upload-gallery__title">Справа</span>
                       <span className="upload-gallery__img_wrap">
-                        <img ref='afterRight' className="upload-gallery__img" src="" alt=""/>
+                        <img ref='afterRight' className="upload-gallery__img" src={photoAfterRightUrl} alt=""/>
                       </span>
                     </span>
                     <a href="#" onClick={e => {
@@ -516,5 +592,28 @@ class Photos extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  const { selectedPhotos, recivedPhotos, userToken } = state
+
+  const {
+    isFetching,
+    photos
+  } = recivedPhotos[selectedPhotos] || {
+    isFetching: true,
+    photos: {}
+  }
+
+  return {
+    selectedPhotos,
+    isFetching,
+    photos,
+    token: userToken.token
+  }
+}
+
+Photos = connect(
+  mapStateToProps
+)(Photos)
 
 export default Photos

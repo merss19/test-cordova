@@ -9,6 +9,15 @@ const currentYear = (new Date()).getFullYear();
 const fromMonth = new Date(currentYear - 67, 0, 1, 0, 0);
 const toMonth = new Date(currentYear - 15, 11, 31, 23, 59);
 
+const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май',
+  'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+  'Декабрь'];
+
+const WEEKDAYS_LONG = ['Понедельник', 'Вторник', 'Среда',
+  'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+
+const WEEKDAYS_SHORT = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
 const overlayStyle = {
   position: 'absolute',
   background: 'white',
@@ -17,7 +26,7 @@ const overlayStyle = {
 };
 
 function YearMonthForm({ date, localeUtils, onChange }) {
-  const months = localeUtils.getMonths();
+  const months = MONTHS
 
   const years = [];
   for (let i = fromMonth.getFullYear(); i <= toMonth.getFullYear(); i += 1) {
@@ -155,6 +164,10 @@ class InputDayPicker extends Component {
               <div className="YearNavigation">
                 <DayPicker
                   ref={ (el) => { this.daypicker = el; } }
+                  locale="ru"
+                  months={ MONTHS }
+                  weekdaysLong={ WEEKDAYS_LONG }
+                  weekdaysShort={ WEEKDAYS_SHORT }
                   onDayClick={ this.handleDayClick }
                   selectedDays={ day => DateUtils.isSameDay(this.state.selectedDay, day) }
                   initialMonth={ this.state.initialMonth }

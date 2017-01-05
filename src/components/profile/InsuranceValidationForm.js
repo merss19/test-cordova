@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import InputProfile from '../componentKit/InputProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
+import InputDayPicker from './InputDayPicker'
 import cookie from 'react-cookie'
 import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
@@ -29,9 +30,11 @@ class InsuranceValidationForm extends Component {
   }
 
   render() {
-    const { dispatch, insuranceDocs } = this.props
+    const { dispatch, insuranceDocs, birthday } = this.props
     const docsNames = insuranceDocs.map(doc => doc.name)
     const docsString = docsNames.join()
+
+    console.log(insuranceDocs)
 
     return (
       <div>
@@ -40,28 +43,32 @@ class InsuranceValidationForm extends Component {
 
         <div className="grid">
           <div className="2/3--desk 1/1--pocket grid__cell">
-            <p className="label">ФИО</p>
+            <h3 className="h3">ФИО</h3>
             <Field ref="fullName" name="fullName" placeholder="" component={InputProfile} />
           </div>
           <div className="1/3--desk 1/1--pocket grid__cell">
-            <p className="label">Дата рождения</p>
-            <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} />
+            <h3 className="h3">Дата рождения</h3>
+            {/* <div className="input input--box mb30">
+              <input ref="birthday" name="birthday" value={birthday} placeholder="д/М/гггг" type='text' className="input__field input__field--date"/>
+            </div> */}
+            <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputDayPicker} />
+            {/* <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} /> */}
             {/* <Field val={insurance.birthday} name="insuranceBirthday" placeholder="д/М/гггг" component={InputProfile} /> */}
           </div>
         </div>
 
-        <p className="label">Профессия/Должность</p>
+        <h3 className="h3">Профессия/Должность</h3>
         <Field ref="profession" name="profession" placeholder="" component={InputProfile} />
 
-        <p className="label">Паспортные данные</p>
+        <h3 className="h3">Паспортные данные</h3>
         <Field ref="passport" name="passport" placeholder="" component={InputProfile} />
 
-        <p className="label">Адрес Регистрации</p>
+        <h3 className="h3">Адрес регистрации</h3>
         <Field ref="address" name="address" placeholder="" component={InputProfile} />
 
-        <p className="label">Индивидуальная страховая сумма по рискам, указанным в п.п. ___. - ___. Договора руб.</p>
+        <h3 className="h3">Индивидуальная страховая сумма по рискам, указанным в п.п. ___. - ___. Договора руб.</h3>
         <div className="input input--box">
-          <input disabled type="text" className="input__field" placeholder="" value="100 000"/>
+          <input disabled type="text" className="input__field" placeholder="" value="100 000 руб."/>
         </div>
 
         <hr/>
@@ -167,7 +174,7 @@ class InsuranceValidationForm extends Component {
               authToken: cookie.load('token'),
               data: {
                 fullName: this.refs.fullName.value,
-                birthday: this.refs.birthday.value,
+                birthday,
                 profession: this.refs.profession.value,
                 passport: this.refs.passport.value,
                 address: this.refs.address.value,
@@ -247,7 +254,11 @@ class InsuranceValidationForm extends Component {
 }
 
 const mapStateToProps = state => {
-  return { insuranceDocs: state.insuranceDocs }
+  const { insuranceDocs, birthday } = state
+  return {
+    insuranceDocs,
+    birthday
+   }
 }
 
 InsuranceValidationForm = connect(

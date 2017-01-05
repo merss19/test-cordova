@@ -102,13 +102,15 @@ const profileData = (state = {
         didInvalidate: false
       }
     case RECEIVE_PROFILE:
+      console.log('^^^^^^^^^^^^=====0')
+      console.log(action)
       return {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        profileData: action.profile,
-        insurance: action.insurance,
-        bodyParams: action.bodyParams,
+        profileData: action.json.data[0],
+        insurance: action.json.data[0].insurance,
+        bodyParams: action.json.data[0].bodyMeasures,
         lastUpdated: action.receivedAt
       }
     default:

@@ -16,7 +16,7 @@ class MainComponent extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div className="grid layout__menu-inner">
                 <Menu/>
-                <CalendarList calendar={[{
+                {/* <CalendarList calendar={[{
                     number: '1',
                     icon: 'ico-done',
                     status: 'done',
@@ -39,7 +39,7 @@ class MainComponent extends Component {
                     admin: 'Миньон',
                     completeText: 'Зачет не сдан',
                     day: 'Ср'
-                }]}/>
+                }]}/> */}
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">

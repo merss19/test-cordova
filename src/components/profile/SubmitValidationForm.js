@@ -54,6 +54,7 @@ class SubmitValidationForm extends Component {
     const { bodyMeasure, dispatch, date, injuriesEx } = this.props
 
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
     // const script = document.createElement("script")
@@ -311,7 +312,7 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХХХ" component={InputProfilePhone} />
+                <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХХХ" component={InputProfile} />
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field disabled name="email" type="tel" placeholder="Почта" defaultValue="anna@gmail.com" component={InputProfile} />
@@ -319,26 +320,26 @@ class SubmitValidationForm extends Component {
             </div>
 
             <Field name="timezone" options={[
-              { name: 'Восточноавстралийское время UTC+10', value: 10 },
-              { name: 'Аляскинское время UTC−9', value: -9 },
-              { name: 'Аргентинское время UTC-3', value: -3 },
-              { name: 'Атлантическое время UTC-4', value: -4 },
-              { name: 'Западноавстралийское время UTC+8', value: 8 },
-              { name: 'Бангладешское время UTC+6', value: 6 },
-              { name: 'Центральноафриканское время UTC+2', value: 2 },
-              { name: 'Центральноевропейское время UTC+1', value: 1 },
-              { name: 'Центральноамериканское время UTC−6', value: -6 },
-              { name: 'Рождественское островное время UTC+7', value: 7 },
-              { name: 'Североамериканское восточное время UTC−5', value: -5 },
-              { name: 'Среднее время по Гринвичу UTC', value: 0 },
+              { name: 'Самоаское время UTC−11', value: -11 },
               { name: 'Гавайско-Алеутское время UTC−10', value: -10 },
-              { name: 'Японское время UTC+9', value: 9 },
-              { name: 'Горное время UTC−7', value: -7 },
-              { name: 'Московское время UTC+3', value: 3 },
-              { name: 'Норфолкское островное время UTC+11', value: 11 },
-              { name: 'Пакистанское время UTC+5', value: 5 },
+              { name: 'Аляскинское время UTC−9', value: -9 },
               { name: 'Тихоокеанское время UTC-8', value: -8 },
-              { name: 'Самоаское время UTC−11', value: -11 }
+              { name: 'Горное время UTC−7', value: -7 },
+              { name: 'Центральноамериканское время UTC−6', value: -6 },
+              { name: 'Североамериканское восточное время UTC−5', value: -5 },
+              { name: 'Атлантическое время UTC-4', value: -4 },
+              { name: 'Аргентинское время UTC-3', value: -3 },
+              { name: 'Среднее время по Гринвичу UTC', value: 0 },
+              { name: 'Центральноевропейское время UTC+1', value: 1 },
+              { name: 'Центральноафриканское время UTC+2', value: 2 },
+              { name: 'Московское время UTC+3', value: 3 },
+              { name: 'Пакистанское время UTC+5', value: 5 },
+              { name: 'Бангладешское время UTC+6', value: 6 },
+              { name: 'Рождественское островное время UTC+7', value: 7 },
+              { name: 'Западноавстралийское время UTC+8', value: 8 },
+              { name: 'Японское время UTC+9', value: 9 },
+              { name: 'Восточноавстралийское время UTC+10', value: 10 },
+              { name: 'Норфолкское островное время UTC+11', value: 11 },
             ]} component={SelectProgram} />
 
             <hr/>
@@ -365,28 +366,27 @@ class SubmitValidationForm extends Component {
                       <td>{param.hips}</td>
                       <td>{param.thigh}</td>
                       <td>
-                        <span className="base-table__btn-del">
-                          <svg className="svg-icon ico-trash" onClick={e => {
-                            e.preventDefault()
-                            const payload = {
-                              authToken: cookie.load('token'),
-                              data: { id: param.id}
-                            }
+                        <span className="base-table__btn-del" onClick={e => {
+                          dispatch({ id: param.id, type: 'REMOVE_BODY_PARAM' })
 
-                            dispatch({ id: param.id, type: 'REMOVE_BODY_PARAM' })
+                          const payload = {
+                            authToken: cookie.load('token'),
+                            data: { id: param.id}
+                          }
 
-                            return fetch(`${api}/user/bodyMeasure-delete`, {
-                                headers: {
-                                  'Accept': 'application/json',
-                                  'Content-Type': 'application/json'
-                                },
-                                method: 'POST',
-                                body: JSON.stringify(payload)
-                              })
-                              .then(response => response.json())
-                              .then(json => {
-                              })
-                          }}>
+                          return fetch(`${api}/user/bodyMeasure-delete`, {
+                            headers: {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            },
+                            method: 'POST',
+                            body: JSON.stringify(payload)
+                          })
+                          .then(response => response.json())
+                          .then(json => {
+                          })
+                        }}>
+                          <svg className="svg-icon ico-trash">
                             <use xlinkHref="#ico-trash"></use>
                           </svg>
                         </span>
@@ -405,6 +405,7 @@ class SubmitValidationForm extends Component {
               </table>
               <div className="text-center">
                 <div onClick={() => {
+                  this.refs.loadingModal.show()
                   const data = {
                     date: moment().format('YYYY-MM-DD'),
                     weight: this.refs.weight.value,
@@ -435,6 +436,7 @@ class SubmitValidationForm extends Component {
                     })
                     .then(response => response.json())
                     .then(json => {
+                      this.refs.loadingModal.hide()
                       if (json.errorCode === 1 && json.data) {
                         dispatch({ ...data, type: 'ADD_BODY_PARAM' })
                         this.refs.successModal.show()
@@ -445,6 +447,10 @@ class SubmitValidationForm extends Component {
                 }} className="btn btn--primary">
                   Добавить
                 </div>
+
+                <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
+                  <h2>Подождите...</h2>
+                </Modal>
                 <Modal ref='failModal' contentStyle={contentStyle}>
                   <h2>Что-то пошло не так, поробуйте снова</h2>
                   <br/>
@@ -681,10 +687,10 @@ class SubmitValidationForm extends Component {
               {error && <strong>{error}</strong>}
             </div>
 
-            <hr/>
-
+          </div>
+          <div className="stage-box stage-box--small-padding">
+            {console.log(initialValues)}
             <InsuranceValidationForm docs={initialValues.insuranceFile}/>
-
           </div>
         </div>
       </form>
