@@ -54,7 +54,7 @@ class MainComponent extends Component {
 
   render() {
     const { taskDay, token } = this.props
-    const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName } } = taskDay
+    const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName, role } } = taskDay
     console.log(taskDay)
     const introJSON = intro && intro[0] && intro[0].intro ? JSON.parse(intro[0].intro) : null
     const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
@@ -68,7 +68,7 @@ class MainComponent extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div id="menu" className="grid layout__menu-inner">
                 <Menu fullName={`${firstName} ${lastName}`}/>
-                <CalendarList calendar={calendar} dayId={id}/>
+                <CalendarList calendar={calendar} dayId={id} role={role}/>
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">

@@ -30,6 +30,14 @@ class ProfileCreate extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { profileData, dispatch } = this.props
+    console.log('herer')
+    console.log(profileData)
+    if (profileData && profileData.isFirstEdit)
+      dispatch({ type: 'IS_READY_TO_TASKS', isReadyToTasks: true })
+  }
+
   componentDidMount() {
     const { dispatch, selectedProfile } = this.props
     dispatch(actions.fetchProfileIfNeeded(selectedProfile))

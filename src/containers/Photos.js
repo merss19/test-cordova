@@ -49,17 +49,17 @@ class Photos extends Component {
     const isEmpty = !photos || !photos.data || !photos.data[0]
     console.log(isEmpty)
     if (!isEmpty) {
-      photoBeforeFrontUrl = photos.data.photoBeforeFrontUrl
-      photoBeforeBackUrl = photos.data.photoBeforeBackUrl
-      photoBeforeLeftUrl = photos.data.photoBeforeLeftUrl
-      photoBeforeRightUrl = photos.data.photoBeforeRightUrl
-      photoAfterFrontUrl = photos.data.photoAfterFrontUrl
-      photoAfterBackUrl = photos.data.photoAfterBackUrl
-      photoAfterLeftUrl = photos.data.photoAfterLeftUrl
-      photoAfterRightUrl = photos.data.photoAfterRightUrl
+      photoBeforeFrontUrl = photos.data[0].photoBeforeFrontUrl
+      photoBeforeBackUrl = photos.data[0].photoBeforeBackUrl
+      photoBeforeLeftUrl = photos.data[0].photoBeforeLeftUrl
+      photoBeforeRightUrl = photos.data[0].photoBeforeRightUrl
+      photoAfterFrontUrl = photos.data[0].photoAfterFrontUrl
+      photoAfterBackUrl = photos.data[0].photoAfterBackUrl
+      photoAfterLeftUrl = photos.data[0].photoAfterLeftUrl
+      photoAfterRightUrl = photos.data[0].photoAfterRightUrl
 
-      photoBeforeVideoUrl = photos.data.photoBeforeVideoUrl
-      photoAfterVideoUrl = photos.data.photoAfterVideoUrl
+      photoBeforeVideoUrl = photos.data[0].photoBeforeVideoUrl
+      photoAfterVideoUrl = photos.data[0].photoAfterVideoUrl
     }
     // const galleries = {
     //   before: {
