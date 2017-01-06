@@ -43,7 +43,7 @@ class InsuranceValidationForm extends Component {
 
         <div className="grid">
           <div className="2/3--desk 1/1--pocket grid__cell">
-            <h3 className="h3">ФИО</h3>
+            <p className="h3">ФИО</p>
             <Field ref="fullName" name="fullName" placeholder="" component={InputProfile} />
           </div>
           <div className="1/3--desk 1/1--pocket grid__cell">
@@ -57,16 +57,16 @@ class InsuranceValidationForm extends Component {
           </div>
         </div>
 
-        <h3 className="h3">Профессия/Должность</h3>
+        <p className="h3">Профессия/Должность</p>
         <Field ref="profession" name="profession" placeholder="" component={InputProfile} />
 
-        <h3 className="h3">Паспортные данные</h3>
+        <p className="h3">Паспортные данные</p>
         <Field ref="passport" name="passport" placeholder="" component={InputProfile} />
 
-        <h3 className="h3">Адрес регистрации</h3>
+        <p className="h3">Адрес регистрации</p>
         <Field ref="address" name="address" placeholder="" component={InputProfile} />
 
-        <h3 className="h3">Индивидуальная страховая сумма по договору:</h3>
+        <p className="h3">Индивидуальная страховая сумма по договору:</p>
         <div className="input input--box">
           <input disabled type="text" className="input__field" placeholder="" value="100 000 руб."/>
         </div>

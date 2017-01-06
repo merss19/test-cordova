@@ -94,6 +94,8 @@ class DayEditor extends Component {
                       }
                     }
 
+                    delete data.program
+
                     // data.intro = JSON.stringify(content)
                     // data.introHTML = dayIntro
                     let url = `${api}/data/adminday-create`
