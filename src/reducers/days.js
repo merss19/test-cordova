@@ -4,7 +4,6 @@ import {
 } from '../actions'
 
 import moment from 'moment'
-import {editorStateFromRaw} from "megadraft"
 
 export const hidePoll = (state = false, action) => {
   switch (action.type) {
@@ -77,15 +76,6 @@ export const content = (state = [], action) => {
       return state
     case 'CONTENT_RESET':
       return []
-    default:
-      return state
-  }
-}
-
-export const editorState = (state = editorStateFromRaw(null), action) => {
-  switch (action.type) {
-    case 'EDITOR_STATE':
-      return action.editorState
     default:
       return state
   }
