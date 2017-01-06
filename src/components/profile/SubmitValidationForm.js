@@ -18,6 +18,7 @@ import moment from 'moment'
 import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
 import InputDayPicker from './InputDayPicker'
+import InputElement from 'react-input-mask'
 
 let injuries = []
 let diseases = []
@@ -401,12 +402,12 @@ class SubmitValidationForm extends Component {
                   ))}
                   <tr>
                     <td>{moment().format('YYYY-MM-DD')}</td>
-                    <td><input ref="height" type="text" className="base-table__input"/></td>
-                    <td><input ref="weight" type="text" className="base-table__input"/></td>
-                    <td><input ref="chest" type="text" className="base-table__input"/></td>
-                    <td><input ref="waist" type="text" className="base-table__input"/></td>
-                    <td><input ref="hips" type="text" className="base-table__input"/></td>
-                    <td><input ref="thigh" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="height" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="weight" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="chest" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="waist" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="hips" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="thigh" type="text" className="base-table__input"/></td>
                   </tr>
                 </tbody>
               </table>

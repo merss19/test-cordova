@@ -45,11 +45,7 @@ class ProfileCreate extends Component {
   render() {
     const { profileData, insurance, bodyParams, token, isFetching, birthday } = this.props
     const isEmpty = !profileData || !profileData.email
-    console.log('<----')
-    console.log(insurance)
     const insuranceIsEmpty = !insurance
-
-    console.log(profileData)
 
     return (
       <div className="entry__inner">
