@@ -56,7 +56,7 @@ class MainComponent extends Component {
     const { taskDay, token } = this.props
     const { intro, tasks, poll, chat, calendar, id } = taskDay
     console.log(taskDay)
-    const introHTML = intro[0].introHTML
+    const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
 
     return (
       <div className="layout">
