@@ -56,7 +56,8 @@ class MainComponent extends Component {
     const { taskDay, token } = this.props
     const { intro, tasks, poll, chat, calendar, id } = taskDay
     console.log(taskDay)
-    const introHTML = intro && intro[0] && intro[0].intro ? intro[0].intro : ''
+    const introJSON = intro && intro[0] && intro[0].intro ? JSON.parse(intro[0].intro) : null
+    const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
 
     return (
       <div className="layout">
@@ -71,7 +72,7 @@ class MainComponent extends Component {
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-              <TaskIntro text={introHTML} />
+              <TaskIntro text={introHTML} json={introJSON} />
               {tasks && tasks[0] &&
                 <Exercises tasks={tasks} sendReport={() => {
                   this.refs.sendReportModal.show()
