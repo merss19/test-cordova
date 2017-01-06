@@ -38,7 +38,7 @@ class DayEditor extends Component {
 
   render() {
     const { days, token, isFetching, editDay, dayIntro, dayDate,
-      programs, editor, content, programShow, selectedDays, dispatch } = this.props
+      programs, editor, content, programShow, selectedDays, dispatch, dayId } = this.props
     const isEmpty = !programs || !days
 
     console.log(days)
@@ -96,7 +96,12 @@ class DayEditor extends Component {
 
                     // data.intro = JSON.stringify(content)
                     // data.introHTML = dayIntro
+                    let url = `${api}/data/adminday-create`
                     data.date = moment(dayDate).format('YYYY-MM-DD')
+                    if (dayId) {
+                      data.id = dayId
+                      url = `${api}/data/adminday-update`
+                    }
 
                     const payload = {
                       authToken: token ? token : cookie.load('token'),
@@ -109,7 +114,7 @@ class DayEditor extends Component {
                     }
 
                     const method = 'POST'
-                    return fetch(`${api}/data/adminday-create`, {
+                    return fetch(url, {
                       headers,
                       method,
                       body: JSON.stringify(payload)
@@ -154,7 +159,7 @@ class DayEditor extends Component {
 
 const mapStateToProps = state => {
   const { selectedPrograms, recivedPrograms, selectedDays, recivedDays,
-    userToken, editDay, dayIntro, dayDate, editor, content, programShow } = state
+    userToken, editDay, dayIntro, dayDate, editor, content, programShow, dayId } = state
   const {
     isFetching,
     days,
@@ -177,6 +182,7 @@ const mapStateToProps = state => {
     programShow,
     editor,
     content,
+    dayId,
     token: userToken.token
   }
 }
