@@ -14,6 +14,10 @@ let contentStyle = {
   padding: '30px'
 }
 
+const labelStyle = {
+  marginBottom: '10px'
+}
+
 let insuranceFiles = []
 
 class InsuranceValidationForm extends Component {
@@ -43,11 +47,11 @@ class InsuranceValidationForm extends Component {
 
         <div className="grid">
           <div className="2/3--desk 1/1--pocket grid__cell">
-            <p className="h3">ФИО</p>
+            <p className="h3" style={labelStyle}>ФИО</p>
             <Field ref="fullName" name="fullName" placeholder="" component={InputProfile} />
           </div>
           <div className="1/3--desk 1/1--pocket grid__cell">
-            <p className="h3">Дата рождения</p>
+            <p className="h3" style={labelStyle}>Дата рождения</p>
             {/* <div className="input input--box mb30">
               <input ref="birthday" name="birthday" value={birthday} placeholder="д/М/гггг" type='text' className="input__field input__field--date"/>
             </div> */}
@@ -57,16 +61,16 @@ class InsuranceValidationForm extends Component {
           </div>
         </div>
 
-        <p className="h3">Профессия/Должность</p>
+        <p className="h3" style={labelStyle}>Профессия/Должность</p>
         <Field ref="profession" name="profession" placeholder="" component={InputProfile} />
 
-        <p className="h3">Паспортные данные</p>
+        <p className="h3" style={labelStyle}>Паспортные данные</p>
         <Field ref="passport" name="passport" placeholder="" component={InputProfile} />
 
-        <p className="h3">Адрес регистрации</p>
+        <p className="h3" style={labelStyle}>Адрес регистрации</p>
         <Field ref="address" name="address" placeholder="" component={InputProfile} />
 
-        <p className="h3">Индивидуальная страховая сумма по договору:</p>
+        <p className="h3" style={labelStyle}>Индивидуальная страховая сумма по договору:</p>
         <div className="input input--box">
           <input disabled type="text" className="input__field" placeholder="" value="100 000 руб."/>
         </div>
