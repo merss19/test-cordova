@@ -98,7 +98,7 @@ class DayEditor extends Component {
                     // data.introHTML = dayIntro
                     let url = `${api}/data/adminday-create`
                     data.date = moment(dayDate).format('YYYY-MM-DD')
-                    if (dayId) {
+                    if (dayId && dayId !== '-') {
                       data.id = dayId
                       url = `${api}/data/adminday-update`
                     }
