@@ -134,7 +134,6 @@ class Photos extends Component {
                             this.refs.beforeFront.src = e.target.result
                             const content = reader.result.replace(/data:image\/\w+;base64,/, '')
                             const name = target.files[0].name
-                            //upload(photoBeforeFront, target.files[0].name)
                             const payload = {
                               authToken: cookie.load('token'),
                               data: {
@@ -156,6 +155,7 @@ class Photos extends Component {
                               .then(response => response.json())
                               .then(json => {
                                 console.log(json)
+                                photoBeforeFront = json.uid
                               })
                           }
 

@@ -121,6 +121,9 @@ class SubmitValidationForm extends Component {
       dispatch({ type: 'DAY_DATE', date: date })
     }
 
+    console.log('photo')
+    console.log(initialValues.photo)
+
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="layout">
 
@@ -166,11 +169,12 @@ class SubmitValidationForm extends Component {
                             })
                             .then(response => response.json())
                             .then(json => {
+                              console.log(json)
                               if (json.errorCode === 1 && json.data) {
                                 const photoPayload = {
                                   authToken: cookie.load('token'),
                                   data: {
-                                    photo: `${api}/files/${json.data.uid}.${json.data.extension}`,
+                                    photo: `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, ''),
                                   }
                                 }
 
