@@ -1,4 +1,8 @@
 import React from 'react'
+const style = {
+  color: 'red',
+  fontSize: '12'
+}
 
 const InputProfile = ({ input, title, placeholder, type, meta: { touched, error } }) => (
   <div className="input input--box">
@@ -7,7 +11,7 @@ const InputProfile = ({ input, title, placeholder, type, meta: { touched, error 
     }} onBlur={e => {
       e.target.placeholder = placeholder
     }} />
-    {touched && error && <span>{error}</span>}
+    {touched && error && <span style={style}>{error}</span>}
   </div>
 )
 

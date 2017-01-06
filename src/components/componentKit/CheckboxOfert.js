@@ -1,5 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router'
+const style = {
+  color: 'red',
+  fontSize: '12'
+}
 
 const CheckboxOfert = ({ input, title, id, meta: { touched, error } }) => (
   <div className="checkboxes__item">
@@ -18,7 +22,7 @@ const CheckboxOfert = ({ input, title, id, meta: { touched, error } }) => (
         </div>
       </label>
     </span>
-    {touched && error && <span>{error}</span>}
+    {touched && error && <span style={style}>{error}</span>}
   </div>
 )
 

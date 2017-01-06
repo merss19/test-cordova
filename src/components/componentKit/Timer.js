@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 let localMinutes = 1
-let localSeconds = 0
+let localSeconds = 5
 let refreshTimer
 
 const getSecondDigit = digits => {
@@ -25,7 +25,7 @@ class Timer extends Component {
           <button className="btn btn--secondary" onClick={e => {
             e.preventDefault()
             localMinutes = 1
-            localSeconds = 0
+            localSeconds = 5
             clearInterval(refreshTimer)
             refreshTimer = setInterval(() => {
               if (localMinutes > 0 || localSeconds > 0) {

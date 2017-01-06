@@ -90,8 +90,8 @@ export const receiveDay = (days, id) => {
 export const load = data => ({ type: 'LOAD', data })
 
 export const receiveDays = (days, json) => {
-  // console.log('rrrrrrrrrr')
-  // console.log(json)
+  console.log('rrrrrrrrrr')
+  console.log(json)
   return ({
     type: RECEIVE_DAYS,
     days,

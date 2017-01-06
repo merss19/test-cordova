@@ -1,4 +1,8 @@
 import React from 'react'
+const style = {
+  color: 'red',
+  fontSize: '12'
+}
 
 const CheckboxProfile = ({ input, title, onChange, id, meta: { touched, error } }) => (
   <li className="checkboxes__item">
@@ -13,7 +17,7 @@ const CheckboxProfile = ({ input, title, onChange, id, meta: { touched, error } 
         <span className="checkbox__title">{title}</span>
       </label>
     </span>
-    {touched && error && <span>{error}</span>}
+    {touched && error && <span style={style}>{error}</span>}
   </li>
 )
 

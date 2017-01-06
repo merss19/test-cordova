@@ -351,6 +351,7 @@ class SubmitValidationForm extends Component {
                 <tbody>
                   <tr>
                     <th>Дата</th>
+                    <th>Рост, см</th>
                     <th>Вес, кг</th>
                     <th>Грудь, см</th>
                     <th>Талия, см</th>
@@ -360,6 +361,7 @@ class SubmitValidationForm extends Component {
                   {bodyParams.map((param, index) => (
                     <tr key={index}>
                       <td>{moment(param.date).format('YYYY-MM-DD')}</td>
+                      <td>{param.height}</td>
                       <td>{param.weight}</td>
                       <td>{param.chest}</td>
                       <td>{param.waist}</td>
@@ -395,6 +397,7 @@ class SubmitValidationForm extends Component {
                   ))}
                   <tr>
                     <td>{moment().format('YYYY-MM-DD')}</td>
+                    <td><input ref="height" type="text" className="base-table__input"/></td>
                     <td><input ref="weight" type="text" className="base-table__input"/></td>
                     <td><input ref="chest" type="text" className="base-table__input"/></td>
                     <td><input ref="waist" type="text" className="base-table__input"/></td>
@@ -408,6 +411,7 @@ class SubmitValidationForm extends Component {
                   this.refs.loadingModal.show()
                   const data = {
                     date: moment().format('YYYY-MM-DD'),
+                    height: this.refs.height.value,
                     weight: this.refs.weight.value,
                     chest: this.refs.chest.value,
                     waist: this.refs.waist.value,
@@ -415,6 +419,7 @@ class SubmitValidationForm extends Component {
                     thigh: this.refs.thigh.value
                   }
 
+                  this.refs.height.value = ''
                   this.refs.weight.value = ''
                   this.refs.chest.value = ''
                   this.refs.waist.value = ''
@@ -760,6 +765,9 @@ const validate = data => {
     case data.phone.length > 20:
       errors.phone = 'Поле телефона должно быть короче 20 символов'
       break
+    case !/^[+\s0-9]{6,20}$/.test(data.phone):
+      errors.phone = 'Поле должно содержать только цифры, знак +'
+      break
     default:
       break
   }
@@ -791,8 +799,6 @@ const validate = data => {
     errors.didSports = 'Поле спорт должно быть отмечено'
   }
 
-  console.log(injuries)
-  console.log(data.injuries)
   if (data.injuriesExist === undefined) {
     errors.injuriesExist = 'Поле травмы должно быть отмечено'
   } else if (data.injuriesExist + '' === 'true' && injuries.length === 0 && !data.injuriesAnother) {

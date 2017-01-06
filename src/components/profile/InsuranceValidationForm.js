@@ -47,7 +47,7 @@ class InsuranceValidationForm extends Component {
             <Field ref="fullName" name="fullName" placeholder="" component={InputProfile} />
           </div>
           <div className="1/3--desk 1/1--pocket grid__cell">
-            <h3 className="h3">Дата рождения</h3>
+            <p className="h3">Дата рождения</p>
             {/* <div className="input input--box mb30">
               <input ref="birthday" name="birthday" value={birthday} placeholder="д/М/гггг" type='text' className="input__field input__field--date"/>
             </div> */}
@@ -66,7 +66,7 @@ class InsuranceValidationForm extends Component {
         <h3 className="h3">Адрес регистрации</h3>
         <Field ref="address" name="address" placeholder="" component={InputProfile} />
 
-        <h3 className="h3">Индивидуальная страховая сумма по рискам, указанным в п.п. ___. - ___. Договора руб.</h3>
+        <h3 className="h3">Индивидуальная страховая сумма по договору:</h3>
         <div className="input input--box">
           <input disabled type="text" className="input__field" placeholder="" value="100 000 руб."/>
         </div>

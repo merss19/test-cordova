@@ -3,6 +3,10 @@ import React from 'react'
 const styles = {
   pointerEvents: 'none'
 }
+const style = {
+  color: 'red',
+  fontSize: '12'
+}
 
 const SelectProfile = ({ input, options, type, meta: { touched, error } }) => (
   <div className="select">
@@ -14,7 +18,7 @@ const SelectProfile = ({ input, options, type, meta: { touched, error } }) => (
     <svg className="svg-icon ico-arrow-accordion" style={styles}>
       <use xlinkHref="#ico-arrow-accordion"></use>
     </svg>
-    {touched && error && <span>{error}</span>}
+    {touched && error && <span style={style}>{error}</span>}
   </div>
 )
 

@@ -10,6 +10,7 @@ const bodyParam = (state, action) => {
     case 'ADD_BODY_PARAM':
       return {
         date: action.date,
+        height: action.height,
         weight: action.weight,
         chest: action.chest,
         waist: action.waist,
