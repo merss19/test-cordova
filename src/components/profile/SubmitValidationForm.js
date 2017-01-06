@@ -806,8 +806,6 @@ const validate = data => {
 
   if (data.injuriesExist === undefined) {
     errors.injuriesExist = 'Поле травмы должно быть отмечено'
-  } else if (data.injuriesExist + '' === 'true' && injuries.length === 0 && !data.injuriesAnother) {
-    errors.injuriesAnother = 'Выберите травмы'
   }
 
   // if (!data.diseasesExist) {

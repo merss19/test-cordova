@@ -24,6 +24,7 @@ let insuranceFiles = []
 class InsuranceValidationForm extends Component {
   componentWillMount() {
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
 
