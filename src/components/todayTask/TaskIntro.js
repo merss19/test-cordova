@@ -32,6 +32,34 @@ const decorator = new CompositeDecorator([
   },
 ])
 
+const Image = (props) => {
+  return <img src={props.src} style={{maxWidth: '100%'}} />;
+};
+
+const Atomic = (props) => {
+  const entity = Entity.get(props.block.getEntityAt(0));
+  const {src} = entity.getData();
+  const type = entity.getType();
+
+  let media;
+  if (type === 'IMAGE') {
+    media = <Image src={src} />;
+  }
+
+  return media;
+};
+
+function mediaBlockRenderer(block) {
+  if (block.getType() === 'atomic') {
+    return {
+      component: Atomic,
+      editable: false,
+    };
+  }
+
+  return null;
+}
+
 const TaskIntro = ({text = '', json}) => {
   const editorState = json ? EditorState.createWithContent(convertFromRaw(json), decorator) : EditorState.createEmpty()
 
@@ -39,7 +67,8 @@ const TaskIntro = ({text = '', json}) => {
     <div className="stage-box stage-box--big-padding">
       <Editor
         readOnly={true}
-        editorState={editorState}/>
+        editorState={editorState}
+        blockRendererFn={mediaBlockRenderer}/>
     </div>
   )
 }
