@@ -191,6 +191,12 @@ class DayEditorValidationForm extends Component {
     )
 
     const handleDateChange = date => {
+      dispatch({ type: 'CONTENT_RESET' })
+      dispatch({ type: 'DAY_INTRO_RESET' })
+      dispatch({ type: 'EDITOR_RESET' })
+      dispatch({ type: 'DAY_ID', id: '-' })
+      change('programTasks', programs)
+      dispatch({ type: 'PROGRAM_SHOW', programShow: 0 })
       dispatch({ type: 'DAY_DATE', date: date })
       dispatch(actions.fetchDaysIfNeeded(selectedDays))
     }
