@@ -4,6 +4,7 @@ import cookie from 'react-cookie'
 
 const Header = props => (
   <div className="header">
+    {console.log(props)}
     <div className="grid header__inner">
       {props.burger
         ? <div className="1/4--portable grid__cell header__burger">
@@ -36,8 +37,22 @@ const Header = props => (
       }
 
       {!window.mobilecheck() &&
+        props.isReadyToTasks &&
+          props.isProfile &&(
+            <div className="1/4--portable grid__cell header__right-side">
+              <button className="btn btn--primary" onClick={e => {
+                e.preventDefault()
+                browserHistory.push('/task')
+              }}>
+                К заданиям
+              </button>
+            </div>
+          )
+      }
+
+      {!window.mobilecheck() &&
         <div className="1/4--portable grid__cell">
-          <button className="btn btn--action" onClick={e => {
+          <button className="btn btn--action" style={props.isTask ? {marginLeft: '77px'} : {}} onClick={e => {
             e.preventDefault()
             cookie.remove('token', { path: '/' })
             cookie.remove('txId', { path: '/' })

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 
 const Calendar = ({ children, onClick, number, completeText, icon, status,
-  date, admin, isSelected }) => {
+  date, admin, isSelected, isTooSoon }) => {
     let calendarIcon
     let calendarToolip
     let calendarClass = "min-calendar__item"
@@ -34,11 +34,13 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
       calendarClass = "min-calendar__item is-select"
     }
 
+    const style = isTooSoon ? { color: '#C8C9CF' } : {}
+
     return (
       <li className={calendarClass} onClick={onClick}>
         <span className="min-calendar__date-wrap">
           <span className="min-calendar__day">{children}</span>
-          <span className="min-calendar__date">{number}</span>
+          <span className="min-calendar__date" style={style}>{number}</span>
         </span>
         {calendarIcon}
         {calendarToolip}

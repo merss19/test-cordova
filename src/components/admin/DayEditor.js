@@ -56,15 +56,13 @@ class DayEditor extends Component {
 
     return (
       <div className='layout'>
-        <Header burger={false} />
+        <Header burger={false} isTask={true}/>
         {isFetching
           ? <LoadingView title="Загружается..."/>
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="layout__inner">
                 <DayEditorValidationForm
-                  calendar={days.filter(d => {
-                    return d.intro && d.intro[0] && d.intro[0].program === programShow
-                  })}
+                  calendar={days}
                   program={this.props.params.program}
                   editDay={editDay}
                   hideCreatePoll={false}
@@ -103,6 +101,8 @@ class DayEditor extends Component {
                     if (dayId && dayId !== '-') {
                       data.id = dayId
                       url = `${api}/data/adminday-update`
+                    } else {
+                      data.forceNew = true
                     }
 
                     const payload = {
@@ -114,6 +114,8 @@ class DayEditor extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     }
+
+                    console.log(payload)
 
                     const method = 'POST'
                     if (content[0] && dayIntro[0] && programShow) {

@@ -78,7 +78,7 @@ class SubmitValidationForm extends Component {
 
   render() {
     const { error, valid, handleSubmit, bodyParams,
-      dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
+      dispatch, onSubmit, initialValues, cities, injuriesHidden, isReadyToTasks } = this.props
 
     // console.log(initialValues.injuries)
     // const sports = [
@@ -124,13 +124,10 @@ class SubmitValidationForm extends Component {
       dispatch({ type: 'DAY_DATE', date: date })
     }
 
-    console.log('photo')
-    console.log(initialValues.photo)
-
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="layout">
 
-        <Header burger={false} />
+        <Header burger={false} isReadyToTasks={isReadyToTasks} isProfile={true}/>
 
         <div className="layout__inner layout__inner--profile">
           <div className="stage-box stage-box--small-padding">

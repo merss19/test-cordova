@@ -46,7 +46,8 @@ class Photos extends Component {
     const { photos, isFetching, dispatch } = this.props
     console.log('<====)==0')
     console.log(photos)
-    const isEmpty = !photos || !photos.data
+    const isEmpty = !photos || !photos.data || !photos.data[0]
+    console.log(isEmpty)
     if (!isEmpty) {
       photoBeforeFrontUrl = photos.data.photoBeforeFrontUrl
       photoBeforeBackUrl = photos.data.photoBeforeBackUrl
@@ -76,7 +77,7 @@ class Photos extends Component {
     return (
       <div className="layout">
 
-        <Header closeMobMenu={() => {}}/>
+        <Header closeMobMenu={() => {}} isTask={true}/>
 
         <div className="layout__inner">
           <div className="grid">
@@ -155,7 +156,8 @@ class Photos extends Component {
                               .then(response => response.json())
                               .then(json => {
                                 console.log(json)
-                                photoBeforeFront = json.uid
+                                photoBeforeFront = json.data.uid
+                                photoBeforeFrontUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
                               })
                           }
 
@@ -189,7 +191,33 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liBeforeBack.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.beforeBack.src = e.target.result
-                            photoBeforeBack = reader.result.replace(/data:image\/\w+;base64,/, '')
+
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                console.log(json)
+                                photoBeforeBack = json.data.uid
+                                photoBeforeBackUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -301,6 +329,14 @@ class Photos extends Component {
                       photoAfterBack,
                       photoAfterLeft,
                       photoAfterRight,
+                      photoBeforeFrontUrl,
+                      photoBeforeBackUrl,
+                      photoBeforeLeftUrl,
+                      photoBeforeRightUrl,
+                      photoAfterFrontUrl,
+                      photoAfterBackUrl,
+                      photoAfterLeftUrl,
+                      photoAfterRightUrl,
                       photoBeforeVideoUrl,
                       photoAfterVideoUrl
                     }
@@ -310,6 +346,8 @@ class Photos extends Component {
 
                   if (isEmpty)
                     url = `${api}/user/userPhoto-create`
+
+                  console.log(payload)
 
                   return fetch(url, {
                     headers: {

@@ -43,7 +43,8 @@ class ProfileCreate extends Component {
   }
 
   render() {
-    const { profileData, insurance, bodyParams, token, isFetching, birthday } = this.props
+    const { profileData, insurance, bodyParams, token, isFetching,
+      birthday, isReadyToTasks, dispatch } = this.props
     const isEmpty = !profileData || !profileData.email
     const insuranceIsEmpty = !insurance
 
@@ -56,6 +57,7 @@ class ProfileCreate extends Component {
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
             <SubmitValidationForm
               bodyMeasure={bodyParams}
+              isReadyToTasks={isReadyToTasks}
               date={moment(profileData.birthday).format('DD.MM.YYYY')}
               injuriesEx={profileData.injuriesExist}
               initialValues={{
@@ -108,7 +110,10 @@ class ProfileCreate extends Component {
               <br/>
               <h4>Мы проверим анкету на наличие опечаток и пришлём подтверждение по почте. Ознакомьтесь с разделом ЧАВО!</h4>
               <br/>
-              <div className="btn btn--action" onClick={() => this.refs.successModal.hide()}>
+              <div className="btn btn--action" onClick={() => {
+                this.refs.successModal.hide()
+                dispatch({ type: 'IS_READY_TO_TASKS', isReadyToTasks: true })
+              }}>
                 Продолжить
               </div>
             </Modal>
@@ -123,7 +128,7 @@ class ProfileCreate extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedProfile, recivedProfile, userToken, birthday } = state
+  const { selectedProfile, recivedProfile, userToken, birthday, isReadyToTasks } = state
   const {
     isFetching,
     lastUpdated,
@@ -143,6 +148,7 @@ const mapStateToProps = state => {
     insurance,
     bodyParams,
     birthday,
+    isReadyToTasks,
     token: userToken.token
   }
 }
