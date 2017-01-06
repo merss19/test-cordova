@@ -15,7 +15,8 @@ let contentStyle = {
 }
 
 const labelStyle = {
-  marginBottom: '10px'
+  marginBottom: '10px',
+  fontSize: '1.6rem'
 }
 
 let insuranceFiles = []
