@@ -22,6 +22,7 @@ import InputElement from 'react-input-mask'
 
 let injuries = []
 let diseases = []
+let checkInjuries = []
 
 const contentStyle = {
   borderRadius: '18px',
@@ -79,6 +80,7 @@ class SubmitValidationForm extends Component {
     const { error, valid, handleSubmit, bodyParams,
       dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
 
+    // console.log(initialValues.injuries)
     // const sports = [
     //   'Сложно',
     //   'Нормально',
