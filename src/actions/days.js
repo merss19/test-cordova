@@ -98,14 +98,17 @@ export const receiveDays = (days, json) => {
 }
 
 const fetchDays = partialState => dispatch => {
-  const { token, days, date } = partialState
+  const { token, days, date, program } = partialState
   dispatch(requestDays(days))
   const payload = {
     authToken: token ? token : cookie.load('token'),
     data: {
-      date: date ? moment(date).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')
+      date: date ? moment(date).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
+      program
     }
   }
+
+  console.log(payload)
 
   const headers = {
     'Accept': 'application/json',
@@ -141,6 +144,8 @@ export const fetchDaysIfNeeded = days => (dispatch, getState) => {
     return dispatch(fetchDays({
       token: getState().userToken.token,
       days,
-      date: getState().dayDate}))
+      date: getState().dayDate,
+      program: getState().programShow
+    }))
   }
 }

@@ -38,8 +38,10 @@ class DayEditor extends Component {
 
   render() {
     const { days, token, isFetching, editDay, dayIntro, dayDate,
-      programs, editor, content } = this.props
+      programs, editor, content, programShow, selectedDays, dispatch } = this.props
     const isEmpty = !programs || !days
+
+    console.log(days)
     // const id = this.props.params.id
     // let initialValues = {}
 
@@ -55,14 +57,14 @@ class DayEditor extends Component {
     return (
       <div className='layout'>
         <Header burger={false} />
-        {isEmpty
-          ? isFetching
-            ? <LoadingView title="Загружается..."/>
-            : <LoadingView title="Ничего не найдено"/>
+        {isFetching
+          ? <LoadingView title="Загружается..."/>
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="layout__inner">
                 <DayEditorValidationForm
-                  calendar={days}
+                  calendar={days.filter(d => {
+                    return d.intro && d.intro[0] && d.intro[0].program === programShow
+                  })}
                   program={this.props.params.program}
                   editDay={editDay}
                   hideCreatePoll={false}
@@ -75,32 +77,18 @@ class DayEditor extends Component {
 
                     console.log(data)
 
-                    if (data.programTasks && data.programTasks[0]) {
-                      data.programTasks = data.programTasks.filter(t => {
-                        return t.id !== 4
-                      }).map((task, i) => {
-                        const copy = { ...task,
-                          program: task.id,
-                          intro: JSON.stringify(content[i]),
-                          introHTML: dayIntro[i]
-                        }
-                        const {id, ...newTask} = copy
-                        return newTask
-                      })
-                    }
-
                     if (data.program && data.program[0] && data.program[0].tasks && data.program[0].tasks[0]) {
                       data.programTasks[0] = data.program[0]
                       data.programTasks[0].tasks = data.programTasks[0].tasks.map(t => {
                         return { ...t,
-                          program: 0,
+                          program: programShow,
                           intro: JSON.stringify(content[0]),
                           introHTML: dayIntro[0]
                         }
                       })
                     } else if (content[0] && dayIntro[0]) {
                       data.programTasks[0] = {
-                        program: 0,
+                        program: programShow,
                         intro: JSON.stringify(content[0]),
                         introHTML: dayIntro[0]
                       }
@@ -149,7 +137,10 @@ class DayEditor extends Component {
                 <Modal ref='successPromoModal' contentStyle={contentStyle}>
                   <h2>Изменения сохранены</h2>
                   <br/>
-                  <button className="btn btn--action" onClick={() => this.refs.successPromoModal.hide()}>
+                  <button className="btn btn--action" onClick={() => {
+                    dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                    this.refs.successPromoModal.hide()
+                  }}>
                     Продолжить
                   </button>
                 </Modal>
@@ -163,7 +154,7 @@ class DayEditor extends Component {
 
 const mapStateToProps = state => {
   const { selectedPrograms, recivedPrograms, selectedDays, recivedDays,
-    userToken, editDay, dayIntro, dayDate, editor, content } = state
+    userToken, editDay, dayIntro, dayDate, editor, content, programShow } = state
   const {
     isFetching,
     days,
@@ -183,6 +174,7 @@ const mapStateToProps = state => {
     dayIntro,
     dayDate,
     programs,
+    programShow,
     editor,
     content,
     token: userToken.token

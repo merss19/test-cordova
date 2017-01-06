@@ -44,7 +44,6 @@ export const editDay = (state = {}, action) => {
 }
 
 export const dayIntro = (state = [], action) => {
-  console.log(state)
   switch (action.type) {
     case 'DAY_INTRO':
       state[action.index] = action.intro

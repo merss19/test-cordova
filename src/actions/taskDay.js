@@ -23,6 +23,8 @@ export const requestTaskDay = taskDay => ({
 })
 
 export const receiveTaskDay = (taskDay, json) => {
+  console.log('<<<')
+  console.log(json)
   return ({
     type: RECEIVE_TASKDAY,
     taskDay,

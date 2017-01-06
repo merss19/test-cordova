@@ -40,8 +40,8 @@ class ProfilePay extends Component {
       let payload = {
         authToken: cookie.load('token'),
         data: {
-          program: program ? program : '1',
-          package: packageType ? packageType : '1',
+          program: program || program === 'undefined' ? program : '1',
+          package: packageType || packageType === 'undefined' ? packageType : '1',
           isShare: share ? share : false
         }
       }
@@ -169,8 +169,8 @@ class ProfilePay extends Component {
       let payload = {
         authToken: cookie.load('token'),
         data: {
-          program: program ? program : '1',
-          package: packageType ? packageType : '1',
+          program: program || program === 'undefined' ? program : '1',
+          package: packageType || packageType === 'undefined' ? packageType : '1',
           isShare: share ? share : false
         }
       }

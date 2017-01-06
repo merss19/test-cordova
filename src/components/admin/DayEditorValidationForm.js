@@ -5,7 +5,6 @@ import { browserHistory } from 'react-router'
 import '../../../public/react-draft-wysiwyg.css'
 import * as actions from '../../actions'
 import { convertFromHTML, convertToRaw, convertFromRaw, ContentState, EditorState } from 'draft-js'
-import DraftPasteProcessor from 'draft-js/lib/DraftPasteProcessor'
 import draftToHtml from 'draftjs-to-html'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
@@ -142,119 +141,52 @@ class DayEditorValidationForm extends Component {
 
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
-        {fields.length > 0
-          ? fields.map((program, index) => {
-              if (index < 3) {
-                return (
-                  <li key={index}>
-                    <button type="button" className="btn btn--secondary" onClick={() => {
-                      dispatch({ type: 'SAVE_EDITOR', editor: content })
-                      dispatch({ type: 'PROGRAM_SHOW', programShow: index + 1 })
-                    }}>
-                      {programs[index].name}
-                    </button>
-                    {programShow === programs[index].id &&
-                      <div>
-                        <br/>
-                        <div className="grid">
-                          <div className="1/2--desk 1/1--pocket grid__cell">
-                            <Field name={`${program}.customName`} placeholder="Название дня" component={InputProfile} />
-                          </div>
-                          <div className="1/2--desk 1/1--pocket grid__cell">
-                            <Field name={`${program}.customIcon`} placeholder="Выберите иконку" component={InputProfile} />
-                          </div>
-                        </div>
+       <li>
+          <br/>
+          <div className="grid">
+            <div className="1/2--desk 1/1--pocket grid__cell">
+              <Field name='program[0].customName' placeholder="Название дня" component={InputProfile} />
+            </div>
+            <div className="1/2--desk 1/1--pocket grid__cell">
+              <Field name='program[0].customIcon' placeholder="Выберите иконку" component={InputProfile} />
+            </div>
+          </div>
 
-                        {editor
-                          ? <div className='home-root'>
-                            <Editor
-                              toolbarClassName="home-toolbar"
-                              wrapperClassName="home-wrapper"
-                              editorClassName="home-editor"
-                              placeholder="Вставьте текст..."
-                              onChange={editorContent => {
-                                const { dispatch } = this.props
-                                dispatch({ type: 'CONTENT', content: editorContent, index })
-                                dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index })
-                              }}
-                              contentState={editor[index]}
-                              uploadCallback={this.uploadImageCallBack}
-                            />
-                          </div>
-                          : <div className='home-root'>
-                            <Editor
-                              toolbarClassName="home-toolbar"
-                              wrapperClassName="home-wrapper"
-                              editorClassName="home-editor"
-                              placeholder="Вставьте текст..."
-                              onChange={editorContent => {
-                                const { dispatch } = this.props
-                                dispatch({ type: 'CONTENT', content: editorContent, index })
-                                dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index })
-                              }}
-                              uploadCallback={this.uploadImageCallBack}
-                            />
-                          </div>
-                        }
-
-                        <br/>
-                        <br/>
-
-                        <FieldArray name={`${program}.tasks`} component={renderTasks} />
-                      </div>
-                    }
-                    <hr/>
-                  </li>
-                )
-              }
-            })
-          : <li>
-              <br/>
-              <div className="grid">
-                <div className="1/2--desk 1/1--pocket grid__cell">
-                  <Field name='program[0].customName' placeholder="Название дня" component={InputProfile} />
-                </div>
-                <div className="1/2--desk 1/1--pocket grid__cell">
-                  <Field name='program[0].customIcon' placeholder="Выберите иконку" component={InputProfile} />
-                </div>
-              </div>
-
-              {editor
-                ? <div className='home-root'>
-                  <Editor
-                    toolbarClassName="home-toolbar"
-                    wrapperClassName="home-wrapper"
-                    editorClassName="home-editor"
-                    placeholder="Вставьте текст..."
-                    onChange={(editorContent) => {
-                      const { dispatch } = this.props
-                      dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
-                      dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
-                    }}
-                    contentState={editor[0]}
-                    uploadCallback={this.uploadImageCallBack}
-                  />
-                </div>
-                : <div className='home-root'>
-                  <Editor
-                    toolbarClassName="home-toolbar"
-                    wrapperClassName="home-wrapper"
-                    editorClassName="home-editor"
-                    placeholder="Вставьте текст..."
-                    onChange={(editorContent) => {
-                      const { dispatch } = this.props
-                      dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
-                      dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
-                    }}
-                    uploadCallback={this.uploadImageCallBack}
-                  />
-                </div>
-              }
-              <br/>
-              <br/>
-              <FieldArray name='program[0].tasks' component={renderTasks} />
-            </li>
-        }
+          {editor
+            ? <div className='home-root'>
+              <Editor
+                toolbarClassName="home-toolbar"
+                wrapperClassName="home-wrapper"
+                editorClassName="home-editor"
+                placeholder="Вставьте текст..."
+                onChange={(editorContent) => {
+                  const { dispatch } = this.props
+                  dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
+                  dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
+                }}
+                contentState={editor[0]}
+                uploadCallback={this.uploadImageCallBack}
+              />
+            </div>
+            : <div className='home-root'>
+              <Editor
+                toolbarClassName="home-toolbar"
+                wrapperClassName="home-wrapper"
+                editorClassName="home-editor"
+                placeholder="Вставьте текст..."
+                onChange={(editorContent) => {
+                  const { dispatch } = this.props
+                  dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
+                  dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
+                }}
+                uploadCallback={this.uploadImageCallBack}
+              />
+            </div>
+          }
+          <br/>
+          <br/>
+          <FieldArray name='program[0].tasks' component={renderTasks} />
+        </li>
       </ul>
     )
 
@@ -275,8 +207,10 @@ class DayEditorValidationForm extends Component {
                     dispatch({ type: 'DAY_INTRO_RESET' })
                     dispatch({ type: 'EDITOR_RESET' })
                     change('programTasks', programs)
+                    dispatch({ type: 'PROGRAM_SHOW', programShow: 1 })
+                    dispatch(actions.fetchDaysIfNeeded(selectedDays))
                   }} icon="ico-m-book">
-                    Тренировочный день
+                    #Я ГЕРОЙ
                   </MenuButton>
                 </li>
                 <li className="main-nav__item">
@@ -285,8 +219,22 @@ class DayEditorValidationForm extends Component {
                     dispatch({ type: 'DAY_INTRO_RESET' })
                     dispatch({ type: 'EDITOR_RESET' })
                     change('programTasks', [])
+                    dispatch({ type: 'PROGRAM_SHOW', programShow: 2 })
+                    dispatch(actions.fetchDaysIfNeeded(selectedDays))
                   }} icon="ico-m-book">
-                    Бонусный день
+                    #МАМА МОЖЕТ
+                  </MenuButton>
+                </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => {
+                    dispatch({ type: 'CONTENT_RESET' })
+                    dispatch({ type: 'DAY_INTRO_RESET' })
+                    dispatch({ type: 'EDITOR_RESET' })
+                    change('programTasks', [])
+                    dispatch({ type: 'PROGRAM_SHOW', programShow: 3 })
+                    dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                  }} icon="ico-m-book">
+                    #ЭКСТРЕМАЛЬНАЯ СУШКА
                   </MenuButton>
                 </li>
                 <li className="main-nav__item">
@@ -367,7 +315,7 @@ class DayEditorValidationForm extends Component {
               </div>
             </div>
 
-            <h2 className='h2'>Id: {dayId}</h2>
+            <h2 className='h2'>Id: {dayId} Program: {programShow}</h2>
             <span>Дата:</span>
             <div className="divider" />
             <DatePicker selected={date} onChange={handleDateChange} />
