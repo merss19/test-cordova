@@ -132,7 +132,31 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liBeforeFront.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.beforeFront.src = e.target.result
-                            photoBeforeFront = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            //upload(photoBeforeFront, target.files[0].name)
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                console.log(json)
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
