@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import * as actions from '../../actions'
 import Header from '../../stories/Header'
 import Menu from './Menu'
@@ -8,6 +9,9 @@ import cookie from 'react-cookie'
 import moment from 'moment'
 import { api } from '../../config.js'
 import Modal from 'boron/FadeModal'
+import MenuButton from '../../stories/MenuButton'
+import { Editor } from 'react-draft-wysiwyg'
+import '../../../public/react-draft-wysiwyg.css'
 
 let contentStyle = {
   borderRadius: '18px',
@@ -20,23 +24,22 @@ class PhotosIntro extends Component {
     fbScript.text = "fbq('track', 'PageView');"
     document.body.appendChild(fbScript)
 
-    const { dispatch, selectedPhotos } = this.props
-    dispatch(actions.fetchPhotosIfNeeded(selectedPhotos))
+    const { dispatch, selectedPhotosIntro } = this.props
+    dispatch(actions.fetchPhotosIntroIfNeeded(selectedPhotosIntro))
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, selectedPhotos, selectedPrograms } = nextProps
+    const { dispatch, selectedPhotosIntro, selectedPrograms } = nextProps
 
-    if (nextProps.selectedPhotos !== this.props.selectedPhotos)
-      dispatch(actions.fetchPhotosIfNeeded(selectedPhotos))
+    if (nextProps.selectedPhotosIntro !== this.props.selectedPhotosIntro)
+      dispatch(actions.fetchPhotosIntroIfNeeded(selectedPhotosIntro))
   }
 
   render() {
-    const { photos, token, isFetching, editDay, dayIntro, dayDate,
-      programs, editor, content, programShow, selectedPhotos, dispatch, dayId } = this.props
-    const isEmpty = !photos
+    const { photosIntro, token, isFetching, programs, editor, content, selectedPhotosIntro, dispatch } = this.props
+    const isEmpty = !photosIntro
 
-    console.log(photos)
+    console.log(photosIntro)
 
     return (
       <div className='layout'>
@@ -45,7 +48,7 @@ class PhotosIntro extends Component {
           ? <LoadingView title="Загружается..."/>
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="layout__inner">
-                <form onSubmit={handleSubmit(onSubmit)} className="grid">
+                <div className="grid">
                   <div className="1/4--desk grid__cell layout__menu">
                     <div className="grid layout__menu-inner">
                       <div className="2/3 grid__cell">
@@ -82,7 +85,10 @@ class PhotosIntro extends Component {
 
                             const payload = {
                               authToken: token ? token : cookie.load('token'),
-                              data
+                              data: {
+                                paramName: "UserPhotoCaption",
+                                paramValue: JSON.stringify(content[0])
+                              }
                             }
 
                             const headers = {
@@ -93,24 +99,20 @@ class PhotosIntro extends Component {
                             console.log(payload)
 
                             const method = 'POST'
-                            if (content[0] && dayIntro[0] && programShow) {
-                              return fetch(url, {
-                                headers,
-                                method,
-                                body: JSON.stringify(payload)
-                              })
-                              .then(response => response.json())
-                              .then(json => {
-                                this.refs.loadingModal.hide()
-                                if (json.errorCode === 1) {
-                                  this.refs.successPromoModal.show()
-                                } else {
-                                  this.refs.errorModal.show()
-                                }
-                              })
-                            } else {
-                              this.refs.errorModal.show()
-                            }
+                            return fetch(`${api}/data/siteParam-set`, {
+                              headers,
+                              method,
+                              body: JSON.stringify(payload)
+                            })
+                            .then(response => response.json())
+                            .then(json => {
+                              this.refs.loadingModal.hide()
+                              if (json.errorCode === 1) {
+                                this.refs.successPromoModal.show()
+                              } else {
+                                this.refs.errorModal.show()
+                              }
+                            })
                         }}>
                             Сохранить
                           </button>
@@ -127,12 +129,15 @@ class PhotosIntro extends Component {
                           console.log(JSON.stringify(editorContent))
                           dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
                         }}
-                        contentState={editor[programShow - 1]}
+                        contentState={photosIntro.data.paramValue && photosIntro.data.paramValue !== 'html'
+                          ? JSON.parse(photosIntro.data.paramValue)
+                          : editor[0]
+                        }
                         uploadCallback={this.uploadImageCallBack}
                       />
                     </div>
                   </div>
-                </form>
+                </div>
                 <Modal ref='loadingModal' contentStyle={contentStyle}>
                   <h2>Подождите...</h2>
                 </Modal>
@@ -151,7 +156,7 @@ class PhotosIntro extends Component {
                   <br/>
                   <button className="btn btn--action" onClick={() => {
                     this.refs.loadingModal.hide()
-                    dispatch(actions.fetchPhotosIfNeeded(selectedPhotos))
+                    dispatch(actions.fetchPhotosIntroIfNeeded(selectedPhotosIntro))
                   }}>
                     Продолжить
                   </button>
@@ -165,26 +170,21 @@ class PhotosIntro extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedPhotos, recivedPhotos,
-    userToken, editDay, dayIntro, dayDate, editor, content, programShow, dayId } = state
+  const { selectedPhotosIntro, recivedPhotosIntro, editor, content } = state
   const {
     isFetching,
-    photos,
-  } = recivedPhotos[selectedPhotos] || {
+    photosIntro,
+  } = recivedPhotosIntro[selectedPhotosIntro] || {
     isFetching: true,
-    photos: []
+    photosIntro: {}
   }
 
-  const { programs } = recivedPrograms[selectedPrograms] || []
-
   return {
-    selectedPhotos,
-    selectedPrograms,
+    selectedPhotosIntro,
     isFetching,
-    photos,
+    photosIntro,
     editor,
     content,
-    token: userToken.token
   }
 }
 

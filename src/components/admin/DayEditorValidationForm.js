@@ -265,6 +265,11 @@ class DayEditorValidationForm extends Component {
                     browserHistory.push('/superadmin/food')
                   }} icon="ico-m-food">Питание</MenuButton>
                 </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => {
+                    browserHistory.push('/superadmin/photos')
+                  }} icon="ico-m-faq">Инструкция фото</MenuButton>
+                </li>
               </ul>
             </div>
             <div className="1/3 grid__cell">

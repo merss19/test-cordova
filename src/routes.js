@@ -16,6 +16,7 @@ import SuccessProfile from './components/profile/SuccessProfile'
 import SuccessTomorrowProfile from './components/profile/SuccessTomorrowProfile'
 import DayEditor from './components/admin/DayEditor'
 import FoodEditor from './components/admin/FoodEditor'
+import PhotosIntro from './components/admin/PhotosIntro'
 import AdminLogin from './containers/AdminLogin'
 
 // Minion containers
@@ -200,6 +201,7 @@ export default (
         <Route path='day/:program' component={DayEditor} onEnter={requireMinionAuth} />
         <Route path='day/:program/:id' component={DayEditor} onEnter={requireMinionAuth} />
         <Route path='food' component={FoodEditor} onEnter={requireMinionAuth} />
+        <Route path='photos' component={PhotosIntro} onEnter={requireMinionAuth} />
       </Route>
     </Route>
 )

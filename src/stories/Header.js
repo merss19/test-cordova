@@ -4,7 +4,6 @@ import cookie from 'react-cookie'
 
 const Header = props => (
   <div className="header">
-    {console.log(props)}
     <div className="grid header__inner">
       {props.burger
         ? <div className="1/4--portable grid__cell header__burger">

@@ -10,3 +10,4 @@ export { dayId, content, editor, programShow, dayDate, dayIntro, hidePoll, editD
 export { recivedPrograms } from './programs'
 export { foodDescription, foodProgram, selectedFood, recivedFood } from './food'
 export { selectedPhotos, recivedPhotos } from './photos'
+export { selectedPhotosIntro, recivedPhotosIntro } from './photosIntro'
