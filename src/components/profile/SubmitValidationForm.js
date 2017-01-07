@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import Header from '../../stories/Header'
+import { browserHistory } from 'react-router'
 
 import RadioProfile from '../componentKit/RadioProfile'
 import Timer from '../componentKit/Timer'
@@ -77,8 +78,8 @@ class SubmitValidationForm extends Component {
   }
 
   render() {
-    const { error, valid, handleSubmit, bodyParams,
-      dispatch, onSubmit, initialValues, cities, injuriesHidden, isReadyToTasks } = this.props
+    const { error, valid, handleSubmit, bodyParams, isReadyToTasks,
+      dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
 
     // console.log(initialValues.injuries)
     // const sports = [
@@ -695,6 +696,18 @@ class SubmitValidationForm extends Component {
               </button>
               {error && <strong>{error}</strong>}
             </div>
+
+            <br/>
+
+            {window.mobilecheck() &&
+              isReadyToTasks && (
+                <div className="btn btn--primary" style={{ backgroundColor: '#1F447B' }} onClick={() => {
+                  browserHistory.push('/task')
+                }}>
+                  К заданиям
+                </div>
+              )
+            }
 
           </div>
           <div className="stage-box stage-box--small-padding">

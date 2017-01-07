@@ -15,10 +15,25 @@ const Header = props => (
           </div>
         : <div className="1/4--portable grid__cell header__burger"/>
       }
-      <h1 className="2/4--portable 1/2-desk grid__cell header__logo">
+      <h1 className="2/4--portable 1/2-desk grid__cell header__logo" style={window.mobilecheck()
+        ? props.isReadyToTasks && props.isProfile
+          ? {marginLeft: '60px'}
+          : {margin: '-60px'}
+        : {}}>
         Ясегодня
         <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
       </h1>
+
+      {window.mobilecheck() &&
+        props.isReadyToTasks &&
+          props.isProfile &&
+            <button className="btn btn--primary" style={{ backgroundColor: '#1F447B', marginLeft: '60px' }} onClick={e => {
+              e.preventDefault()
+              browserHistory.push('/task')
+            }}>
+              К заданиям
+            </button>
+      }
 
       <div className="1/4--portable grid__cell header__right-side"/>
       <div className="1/4--portable grid__cell"/>

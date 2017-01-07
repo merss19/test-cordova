@@ -70,6 +70,7 @@ class ProfileCreate extends Component {
               isReadyToTasks={isReadyToTasks}
               date={moment(profileData.birthday).format('DD.MM.YYYY')}
               injuriesEx={profileData.injuriesExist}
+              isReadyToTasks={isReadyToTasks}
               initialValues={{
                 ...profileData,
                 country: !profileData.country ? 'Россия' : profileData.country,
