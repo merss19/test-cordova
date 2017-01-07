@@ -89,20 +89,24 @@ class ProfileCreate extends Component {
               }}
               onSubmit={ data => {
                 this.refs.loadingModal.show()
-                console.log('CATS')
-                console.log(birthday)
 
-                data.birthday = birthday
+                console.log(data)
+                if (!window.mobilecheck) {
+                  console.log('CATS')
+                  console.log(birthday)
 
-                console.log(babyBirthday)
+                  data.birthday = birthday
 
-                if (babyBirthday)
-                  data.babyBirthday = babyBirthday
+                  console.log(babyBirthday)
 
-                console.log(babyFeed)
+                  if (babyBirthday)
+                    data.babyBirthday = babyBirthday
 
-                if (babyFeed)
-                  data.lastBabyFeedMonth = babyFeed
+                  console.log(babyFeed)
+
+                  if (babyFeed)
+                    data.lastBabyFeedMonth = babyFeed
+                }
 
                 delete data.password
                 const payload = {
