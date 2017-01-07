@@ -40,7 +40,7 @@ const Header = props => (
         props.isReadyToTasks &&
           props.isProfile &&(
             <div className="1/4--portable grid__cell header__right-side">
-              <button className="btn btn--primary" onClick={e => {
+              <button className="btn btn--primary" style={{ backgroundColor: '#1F447B' }} onClick={e => {
                 e.preventDefault()
                 browserHistory.push('/task')
               }}>

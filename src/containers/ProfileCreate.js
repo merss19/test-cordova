@@ -1,5 +1,6 @@
 import React , { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import * as actions from '../actions'
 import { SubmissionError } from 'redux-form'
 import SubmitValidationForm from '../components/profile/SubmitValidationForm'
@@ -118,6 +119,12 @@ class ProfileCreate extends Component {
               <br/>
               <h4>Мы проверим анкету на наличие опечаток и пришлём подтверждение по почте. Ознакомьтесь с разделом ЧАВО!</h4>
               <br/>
+              <div className="btn btn--primary" onClick={() => {
+                browserHistory.push('/task')
+              }}>
+                К заданиям
+              </div>
+              <div className="divider" />
               <div className="btn btn--action" onClick={() => {
                 this.refs.successModal.hide()
                 dispatch({ type: 'IS_READY_TO_TASKS', isReadyToTasks: true })
