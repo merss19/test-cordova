@@ -37,21 +37,18 @@ const Header = props => (
       }
 
       {!window.mobilecheck() &&
-        props.isReadyToTasks &&
-          props.isProfile &&(
-            <div className="1/4--portable grid__cell header__right-side">
+        <div className="1/4--portable grid__cell" style={props.isReadyToTasks && props.isProfile ? { width: '2000px' } : {}}>
+          {props.isReadyToTasks &&
+            props.isProfile &&(
               <button className="btn btn--primary" style={{ backgroundColor: '#1F447B' }} onClick={e => {
                 e.preventDefault()
                 browserHistory.push('/task')
               }}>
                 К заданиям
               </button>
-            </div>
-          )
-      }
-
-      {!window.mobilecheck() &&
-        <div className="1/4--portable grid__cell">
+            )
+          }
+          <div className="divider" />
           <button className="btn btn--action" style={props.isTask ? {marginLeft: '77px'} : {}} onClick={e => {
             e.preventDefault()
             cookie.remove('token', { path: '/' })

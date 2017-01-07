@@ -15,6 +15,12 @@ import {
   CompositeDecorator
 } from 'draft-js'
 import {getCustomStyleMap} from 'draftjs-utils'
+import Modal from 'boron/FadeModal'
+
+let contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
 
 // const customStyleMap = getCustomStyleMap()
 
@@ -126,6 +132,8 @@ class Photos extends Component {
 
       photoBeforeVideoUrl = p.photoBeforeVideoUrl ? url + p.photoBeforeVideoUrl : ''
       photoAfterVideoUrl = p.photoAfterVideoUrl ? url + p.photoAfterVideoUrl : ''
+
+      this.refs.videoBefore.value = photoBeforeVideoUrl
     }
 
     const json = {
@@ -931,7 +939,7 @@ class Photos extends Component {
                 </div>
 
                 <div className="btn btn--primary" onClick={() => {
-                  console.log(photoBeforeFrontUrl)
+                  this.refs.loadingModal.show()
                   const payload = {
                     authToken: cookie.load('token'),
                     data: {
@@ -974,11 +982,38 @@ class Photos extends Component {
                   })
                   .then(response => response.json())
                   .then(json => {
-                    console.log(json)
+                    this.refs.loadingModal.hide()
+                    if (json.errorCode === 1) {
+                      this.refs.successModal.show()
+                    } else {
+                      this.refs.errorModal.show()
+                    }
                   })
                 }}>
                   Отправить на проверку
                 </div>
+
+                <Modal ref='loadingModal' contentStyle={contentStyle}>
+                  <h2>Подождите...</h2>
+                </Modal>
+                <Modal ref='errorModal' contentStyle={contentStyle}>
+                  <h2>Что-то пошло не так, попробуйте снова</h2>
+                  <br/>
+                  <button className="btn btn--action" onClick={() => {
+                    this.refs.errorModal.hide()
+                  }}>
+                    Продолжить
+                  </button>
+                </Modal>
+                <Modal ref='successModal' contentStyle={contentStyle}>
+                  <h2>Изменения сохранены</h2>
+                  <br/>
+                  <button className="btn btn--action" onClick={() => {
+                    this.refs.successModal.hide()
+                  }}>
+                    Продолжить
+                  </button>
+                </Modal>
 
                 <hr/>
 
