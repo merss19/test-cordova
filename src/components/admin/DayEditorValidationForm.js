@@ -168,6 +168,7 @@ class DayEditorValidationForm extends Component {
                 placeholder="Вставьте текст..."
                 onChange={(editorContent) => {
                   const { dispatch } = this.props
+                  console.log(JSON.stringify(editorContent))
                   dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
                   dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
                 }}
@@ -183,6 +184,7 @@ class DayEditorValidationForm extends Component {
                 placeholder="Вставьте текст..."
                 onChange={(editorContent) => {
                   const { dispatch } = this.props
+                  console.log(editorContent)
                   dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
                   dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
                 }}
