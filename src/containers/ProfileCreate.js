@@ -88,33 +88,35 @@ class ProfileCreate extends Component {
 
               }}
               onSubmit={ data => {
-                this.refs.loadingModal.show()
+                let isValidBirthday = true
+                let isValidBabyBirhday = true
+                let isValidBabyFeed = true
 
-                console.log(data)
                 if (!window.mobilecheck) {
-                  console.log('CATS')
-                  console.log(birthday)
-
                   data.birthday = birthday
-
-                  console.log(babyBirthday)
 
                   if (babyBirthday)
                     data.babyBirthday = babyBirthday
 
-                  console.log(babyFeed)
-
                   if (babyFeed)
                     data.lastBabyFeedMonth = babyFeed
+                } else {
+                  isValidBirthday = moment(data.birthday, 'YYYY-MM-DD', true).isValid()
+                  if (data.program === 2) {
+                    isValidBabyBirhday = moment(data.babyBirthday, 'YYYY-MM-DD', true).isValid()
+                    isValidBabyFeed = moment(data.lastBabyFeedMonth, 'YYYY-MM-DD', true).isValid()
+                  }
                 }
 
-                delete data.password
-                const payload = {
-                  authToken: token ? token : cookie.load('token'),
-                  data
-                }
+                if (isValidBirthday && isValidBabyBirhday && isValidBabyFeed) {
+                  this.refs.loadingModal.show()
+                  delete data.password
+                  const payload = {
+                    authToken: token ? token : cookie.load('token'),
+                    data
+                  }
 
-                return fetch(`${api}/user/user-update`, {
+                  return fetch(`${api}/user/user-update`, {
                     headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
@@ -131,8 +133,12 @@ class ProfileCreate extends Component {
                       this.refs.successModal.show()
                     }
                   })
+                } else if (data.program === 2) {
+                  this.refs.failDatesModal.show()
+                } else {
+                  this.refs.failBirthdayModal.show()
                 }
-              }
+              }}
             />
             <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
@@ -152,6 +158,27 @@ class ProfileCreate extends Component {
                 Продолжить
               </div>
             </Modal>
+
+            <Modal ref='failBirthdayModal' contentStyle={contentStyle}>
+              <h2>Дата вашего рождения не верна, проверьте формат даты</h2>
+              <br/>
+              <div className="btn btn--action" onClick={() => {
+                this.refs.failBirthdayModal.hide()
+              }}>
+                Продолжить
+              </div>
+            </Modal>
+
+            <Modal ref='failDatesModal' contentStyle={contentStyle}>
+              <h2>Дата вашего рождения, рождения вашего ребенка или последнего месяца кормления грудью не верны</h2>
+              <br/>
+              <div className="btn btn--action" onClick={() => {
+                this.refs.failDatesModal.hide()
+              }}>
+                Продолжить
+              </div>
+            </Modal>
+
             <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
               <h2>Подождите...</h2>
             </Modal>
