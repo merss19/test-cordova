@@ -16,8 +16,14 @@ import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
+import Modal from 'boron/FadeModal'
 
 let htmlEditor = ''
+
+let contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
 
 const renderExercises = ({ fields, meta: { touched, error } }) => (
   <ul>
@@ -139,6 +145,7 @@ class DayEditorValidationForm extends Component {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
       change, date, programs, programShow, selectedDays, editor, dayId, content } = this.props
 
+    console.log(calendar)
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
        <li>
@@ -164,7 +171,7 @@ class DayEditorValidationForm extends Component {
                   dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
                   dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
                 }}
-                contentState={editor[0]}
+                contentState={editor[programShow - 1]}
                 uploadCallback={this.uploadImageCallBack}
               />
             </div>
@@ -191,6 +198,12 @@ class DayEditorValidationForm extends Component {
     )
 
     const handleDateChange = date => {
+      dispatch({ type: 'CONTENT_RESET' })
+      dispatch({ type: 'DAY_INTRO_RESET' })
+      dispatch({ type: 'EDITOR_RESET' })
+      dispatch({ type: 'DAY_ID', id: '-' })
+      change('programTasks', programs)
+      dispatch({ type: 'PROGRAM_SHOW', programShow: 0 })
       dispatch({ type: 'DAY_DATE', date: date })
       dispatch(actions.fetchDaysIfNeeded(selectedDays))
     }
@@ -207,7 +220,7 @@ class DayEditorValidationForm extends Component {
                     dispatch({ type: 'DAY_INTRO_RESET' })
                     dispatch({ type: 'EDITOR_RESET' })
                     dispatch({ type: 'DAY_ID', id: '-' })
-                    change('programTasks', programs)
+                    change('programTasks', [])
                     dispatch({ type: 'PROGRAM_SHOW', programShow: 1 })
                     dispatch(actions.fetchDaysIfNeeded(selectedDays))
                   }} icon="ico-m-book">
@@ -255,54 +268,65 @@ class DayEditorValidationForm extends Component {
             <div className="1/3 grid__cell">
               <ul className="min-calendar">
                 {calendar && calendar.map((field, index) => (
-                  <Calendar onClick={() => {
-                      reset()
+                  <li key={index}>
+                    <Calendar onClick={() => {
+                        reset()
 
-                      console.log(calendar[index])
+                        console.log(calendar[index])
 
-                      dispatch({ type: 'DAY_ID', id: calendar[index].id })
+                        dispatch({ type: 'DAY_ID', id: calendar[index].id })
 
-                      calendar[index].intro.forEach((i, index) => {
-                        dispatch({ type: 'EDITOR', editor: JSON.parse(i.intro), index })
-                      })
+                        calendar[index].intro.forEach((i, index) => {
+                          dispatch({ type: 'EDITOR', editor: JSON.parse(i.intro), index })
+                        })
 
-                      dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
-                      change('customName', calendar[index].customName)
-                      change('customIcon', calendar[index].customIcon)
-                      change('programTasks', calendar[index].programTasks)
-                    }}
-                    onTrashClick={() => {
-                      const payload = {
-                        authToken: cookie.load('token'),
-                        data: {
-                          id: field.id
+                        dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
+                        change('customName', calendar[index].customName)
+                        change('customIcon', calendar[index].customIcon)
+                        change('programTasks', calendar[index].programTasks)
+                      }}
+                      onTrashClick={() => {
+                        this.refs[`deleteModal${index}`].show()
+                      }}
+                      key={index}
+                      number={field.id}
+                      date={field.date}
+                    >
+                      {moment(field.date).format('DDddd')}
+                    </Calendar>
+                    <Modal ref={`deleteModal${index}`} contentStyle={contentStyle}>
+                      <h2>Хотите удалить запись?</h2>
+                      <br/>
+                      <button className="btn btn--action" onClick={() => {
+                        const payload = {
+                          authToken: cookie.load('token'),
+                          data: {
+                            id: field.id
+                          }
                         }
-                      }
 
-                      const headers = {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                      }
-
-                      const method = 'POST'
-                      return fetch(`${api}/data/adminday-delete`, {
-                        headers,
-                        method,
-                        body: JSON.stringify(payload)
-                      })
-                      .then(response => response.json())
-                      .then(json => {
-                        if (json.errorCode === 1) {
-                          dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                        const headers = {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json'
                         }
-                      })
-                    }}
-                    key={index}
-                    number={field.id}
-                    date={field.date}
-                  >
-                    {moment(field.date).format('DDddd')}
-                  </Calendar>
+
+                        const method = 'POST'
+                        return fetch(`${api}/data/adminday-delete`, {
+                          headers,
+                          method,
+                          body: JSON.stringify(payload)
+                        })
+                        .then(response => response.json())
+                        .then(json => {
+                          if (json.errorCode === 1) {
+                            dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                          }
+                        })
+                      }}>
+                        Удалить
+                      </button>
+                    </Modal>
+                  </li>
                 ))}
               </ul>
             </div>

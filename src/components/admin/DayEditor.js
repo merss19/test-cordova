@@ -56,15 +56,13 @@ class DayEditor extends Component {
 
     return (
       <div className='layout'>
-        <Header burger={false} />
+        <Header burger={false} isTask={true}/>
         {isFetching
           ? <LoadingView title="Загружается..."/>
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="layout__inner">
                 <DayEditorValidationForm
-                  calendar={days.filter(d => {
-                    return d.intro && d.intro[0] && d.intro[0].program === programShow
-                  })}
+                  calendar={days}
                   program={this.props.params.program}
                   editDay={editDay}
                   hideCreatePoll={false}
@@ -103,6 +101,8 @@ class DayEditor extends Component {
                     if (dayId && dayId !== '-') {
                       data.id = dayId
                       url = `${api}/data/adminday-update`
+                    } else {
+                      data.forceNew = true
                     }
 
                     const payload = {
@@ -115,29 +115,38 @@ class DayEditor extends Component {
                       'Content-Type': 'application/json'
                     }
 
+                    console.log(payload)
+
                     const method = 'POST'
-                    return fetch(url, {
-                      headers,
-                      method,
-                      body: JSON.stringify(payload)
-                    })
-                    .then(response => response.json())
-                    .then(json => {
-                      this.refs.loadingModal.hide()
-                      if (json.errorCode === 1) {
-                        this.refs.successPromoModal.show()
-                      } else {
-                        this.refs.errorModal.show()
-                      }
-                    })
+                    if (content[0] && dayIntro[0] && programShow) {
+                      return fetch(url, {
+                        headers,
+                        method,
+                        body: JSON.stringify(payload)
+                      })
+                      .then(response => response.json())
+                      .then(json => {
+                        this.refs.loadingModal.hide()
+                        if (json.errorCode === 1) {
+                          this.refs.successPromoModal.show()
+                        } else {
+                          this.refs.errorModal.show()
+                        }
+                      })
+                    } else {
+                      this.refs.errorModal.show()
+                    }
                 }}/>
-                <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
+                <Modal ref='loadingModal' contentStyle={contentStyle}>
                   <h2>Подождите...</h2>
                 </Modal>
                 <Modal ref='errorModal' contentStyle={contentStyle}>
                   <h2>Что-то пошло не так, попробуйте снова</h2>
                   <br/>
-                  <button className="btn btn--action" onClick={() => this.refs.errorModal.hide()}>
+                  <button className="btn btn--action" onClick={() => {
+                    this.refs.loadingModal.hide()
+                    this.refs.errorModal.hide()
+                  }}>
                     Продолжить
                   </button>
                 </Modal>
@@ -145,8 +154,13 @@ class DayEditor extends Component {
                   <h2>Изменения сохранены</h2>
                   <br/>
                   <button className="btn btn--action" onClick={() => {
+                    this.refs.loadingModal.hide()
+                    dispatch({ type: 'CONTENT_RESET' })
+                    dispatch({ type: 'DAY_INTRO_RESET' })
+                    dispatch({ type: 'EDITOR_RESET' })
+                    dispatch({ type: 'DAY_ID', id: '-' })
+                    dispatch({ type: 'PROGRAM_SHOW', programShow: 0 })
                     dispatch(actions.fetchDaysIfNeeded(selectedDays))
-                    this.refs.successPromoModal.hide()
                   }}>
                     Продолжить
                   </button>

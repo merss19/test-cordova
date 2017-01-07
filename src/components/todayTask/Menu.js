@@ -3,7 +3,7 @@ import MenuButton from '../../stories/MenuButton'
 import { browserHistory } from 'react-router'
 import { Link } from 'react-router'
 
-const Menu = () => (
+const Menu = ({fullName}) => (
   <div className="2/3 grid__cell">
     <ul className="main-nav">
       <li className="main-nav__item">
@@ -11,7 +11,7 @@ const Menu = () => (
           browserHistory.push('/task')
         }} icon="ico-m-tasks">Задания</MenuButton>
       </li>
-      <li className="main-nav__item">
+      {/* <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/reports')
         }} icon="ico-m-book">Зачетка</MenuButton>
@@ -20,7 +20,7 @@ const Menu = () => (
         <MenuButton onClick={() => {
           browserHistory.push('/food')
         }} icon="ico-m-food">Питание</MenuButton>
-      </li>
+      </li> */}
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/faq')
@@ -35,7 +35,7 @@ const Menu = () => (
     <hr/>
     <div className="profile">
       <Link to="/profile">
-        <p className="profile__name">Анна Иванова</p>
+        <p className="profile__name">{fullName && fullName !== ' undefined' && fullName !== ' ' ? fullName : 'Участник'}</p>
         <p className="profile__sub-text">Профиль</p>
       </Link>
     </div>

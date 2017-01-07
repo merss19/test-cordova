@@ -46,19 +46,23 @@ class Photos extends Component {
     const { photos, isFetching, dispatch } = this.props
     console.log('<====)==0')
     console.log(photos)
-    const isEmpty = !photos || !photos.data
+    const isEmpty = !photos || !photos.data || !photos.data[0]
+    const url = 'https://api.todayme.ru'
+    console.log(url)
+    console.log(isEmpty)
     if (!isEmpty) {
-      photoBeforeFrontUrl = photos.data.photoBeforeFrontUrl
-      photoBeforeBackUrl = photos.data.photoBeforeBackUrl
-      photoBeforeLeftUrl = photos.data.photoBeforeLeftUrl
-      photoBeforeRightUrl = photos.data.photoBeforeRightUrl
-      photoAfterFrontUrl = photos.data.photoAfterFrontUrl
-      photoAfterBackUrl = photos.data.photoAfterBackUrl
-      photoAfterLeftUrl = photos.data.photoAfterLeftUrl
-      photoAfterRightUrl = photos.data.photoAfterRightUrl
+      const p = photos.data[0]
+      photoBeforeFrontUrl = p.photoBeforeFrontUrl ? url + p.photoBeforeFrontUrl : ''
+      photoBeforeBackUrl = p.photoBeforeBackUrl ? url + p.photoBeforeBackUrl : ''
+      photoBeforeLeftUrl = p.photoBeforeLeftUrl ? url + p.photoBeforeLeftUrl : ''
+      photoBeforeRightUrl = p.photoBeforeRightUrl ? url + p.photoBeforeRightUrl : ''
+      photoAfterFrontUrl = p.photoAfterFrontUrl ? url + p.photoAfterFrontUrl : ''
+      photoAfterBackUrl = p.photoAfterBackUrl ? url + p.photoAfterBackUrl : ''
+      photoAfterLeftUrl = p.photoAfterLeftUrl ? url + p.photoAfterLeftUrl : ''
+      photoAfterRightUrl = p.photoAfterRightUrl ? url + p.photoAfterRightUrl : ''
 
-      photoBeforeVideoUrl = photos.data.photoBeforeVideoUrl
-      photoAfterVideoUrl = photos.data.photoAfterVideoUrl
+      photoBeforeVideoUrl = p.photoBeforeVideoUrl ? url + p.photoBeforeVideoUrl : ''
+      photoAfterVideoUrl = p.photoAfterVideoUrl ? url + p.photoAfterVideoUrl : ''
     }
     // const galleries = {
     //   before: {
@@ -76,7 +80,7 @@ class Photos extends Component {
     return (
       <div className="layout">
 
-        <Header closeMobMenu={() => {}}/>
+        <Header closeMobMenu={() => {}} isTask={true}/>
 
         <div className="layout__inner">
           <div className="grid">
@@ -122,7 +126,7 @@ class Photos extends Component {
                 <p className="base-parag">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat blanditiis quo porro nesciunt consequuntur est dolore accusamus commodi dolorem. Vel nobis architecto perspiciatis eligendi libero odit nisi iure natus, repellendus laboriosam voluptates excepturi magni vero, dolorum reiciendis. Iusto, excepturi tenetur, quisquam unde voluptatibus adipisci iure, impedit modi ipsa consequatur iste.</p>
 
                 <ul className="upload-gallery">
-                  <li ref="liBeforeFront" className="upload-gallery__item">
+                  <li ref="liBeforeFront" className={ photoBeforeFrontUrl ? 'upload-gallery__item upload-gallery__item--uploaded' : "upload-gallery__item" }>
                     <span className="upload-gallery__item-inner">
                       <input ref="inputBeforeFront" type="file" accept="image/*" className="upload-file__input" onChange={input => {
                         const { target } = input
@@ -132,7 +136,33 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liBeforeFront.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.beforeFront.src = e.target.result
-                            photoBeforeFront = reader.result.replace(/data:image\/\w+;base64,/, '')
+
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                console.log(json)
+                                photoBeforeFront = json.data.uid
+                                photoBeforeFrontUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -155,7 +185,7 @@ class Photos extends Component {
                       Загрузить
                     </a>
                   </li>
-                  <li ref="liBeforeBack" className="upload-gallery__item">
+                  <li ref="liBeforeBack" className={ photoBeforeBackUrl ? 'upload-gallery__item upload-gallery__item--uploaded' : "upload-gallery__item" }>
                     <span className="upload-gallery__item-inner">
                       <input ref="inputBeforeBack" type="file" accept="image/*" className="upload-file__input" onChange={input => {
                         const { target } = input
@@ -165,7 +195,32 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liBeforeBack.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.beforeBack.src = e.target.result
-                            photoBeforeBack = reader.result.replace(/data:image\/\w+;base64,/, '')
+
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                photoBeforeBack = json.data.uid
+                                photoBeforeBackUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -188,7 +243,7 @@ class Photos extends Component {
                       Загрузить
                     </a>
                   </li>
-                  <li ref="liBeforeLeft" className="upload-gallery__item">
+                  <li ref="liBeforeLeft" className={ photoBeforeLeftUrl ? 'upload-gallery__item upload-gallery__item--uploaded' : "upload-gallery__item" }>
                     <span className="upload-gallery__item-inner">
                       <input ref="inputBeforeLeft" type="file" accept="image/*" className="upload-file__input" onChange={input => {
                         const { target } = input
@@ -198,7 +253,32 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liBeforeLeft.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.beforeLeft.src = e.target.result
-                            photoBeforeLeft = reader.result.replace(/data:image\/\w+;base64,/, '')
+
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                photoBeforeLeft = json.data.uid
+                                photoBeforeLeftUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -222,7 +302,7 @@ class Photos extends Component {
                     </a>
                   </li>
 
-                  <li ref="liBeforeRight" className="upload-gallery__item">
+                  <li ref="liBeforeRight" className={ photoBeforeRightUrl ? 'upload-gallery__item upload-gallery__item--uploaded' : "upload-gallery__item" }>
                     <span className="upload-gallery__item-inner">
                       <input ref="inputBeforeRight" type="file" accept="image/*" className="upload-file__input" onChange={input => {
                         const { target } = input
@@ -232,7 +312,32 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liBeforeRight.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.beforeRight.src = e.target.result
-                            photoBeforeRight = reader.result.replace(/data:image\/\w+;base64,/, '')
+
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                photoBeforeRight = json.data.uid
+                                photoBeforeRightUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -265,6 +370,7 @@ class Photos extends Component {
                 </div>
 
                 <div className="btn btn--primary" onClick={() => {
+                  console.log(photoBeforeFrontUrl)
                   const payload = {
                     authToken: cookie.load('token'),
                     data: {
@@ -277,6 +383,14 @@ class Photos extends Component {
                       photoAfterBack,
                       photoAfterLeft,
                       photoAfterRight,
+                      photoBeforeFrontUrl,
+                      photoBeforeBackUrl,
+                      photoBeforeLeftUrl,
+                      photoBeforeRightUrl,
+                      photoAfterFrontUrl,
+                      photoAfterBackUrl,
+                      photoAfterLeftUrl,
+                      photoAfterRightUrl,
                       photoBeforeVideoUrl,
                       photoAfterVideoUrl
                     }
@@ -286,6 +400,8 @@ class Photos extends Component {
 
                   if (isEmpty)
                     url = `${api}/user/userPhoto-create`
+
+                  console.log(payload)
 
                   return fetch(url, {
                     headers: {
@@ -313,7 +429,7 @@ class Photos extends Component {
                   {/* {before.map(gallery => {
 
                   })} */}
-                  <li ref="liAfterFront" className="upload-gallery__item">
+                  <li ref="liAfterFront" className={ photoAfterFrontUrl ? 'upload-gallery__item upload-gallery__item--uploaded' : "upload-gallery__item" }>
                     <span className="upload-gallery__item-inner">
                       <input ref="inputAfterFront" type="file" accept="image/*" className="upload-file__input" onChange={input => {
                         const { target } = input
@@ -323,7 +439,32 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liAfterFront.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.afterFront.src = e.target.result
-                            photoAfterFront = reader.result.replace(/data:image\/\w+;base64,/, '')
+
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                photoAfterFront = json.data.uid
+                                photoAfterFrontUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -346,7 +487,7 @@ class Photos extends Component {
                       Загрузить
                     </a>
                   </li>
-                  <li ref="liAfterBack" className="upload-gallery__item">
+                  <li ref="liAfterBack" className={ photoAfterBackUrl ? 'upload-gallery__item upload-gallery__item--uploaded' : "upload-gallery__item" }>
                     <span className="upload-gallery__item-inner">
                       <input ref="inputAfterBack" type="file" accept="image/*" className="upload-file__input" onChange={input => {
                         const { target } = input
@@ -356,7 +497,31 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liAfterBack.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.afterBack.src = e.target.result
-                            photoAfterBack = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                photoAfterBack = json.data.uid
+                                photoAfterBackUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -379,7 +544,7 @@ class Photos extends Component {
                       Загрузить
                     </a>
                   </li>
-                  <li ref="liAfterLeft" className="upload-gallery__item">
+                  <li ref="liAfterLeft" className={ photoAfterLeftUrl ? 'upload-gallery__item upload-gallery__item--uploaded' : "upload-gallery__item" }>
                     <span className="upload-gallery__item-inner">
                       <input ref="inputAfterLeft" type="file" accept="image/*" className="upload-file__input" onChange={input => {
                         const { target } = input
@@ -389,7 +554,32 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liAfterLeft.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.afterLeft.src = e.target.result
-                            photoAfterLeft = reader.result.replace(/data:image\/\w+;base64,/, '')
+
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                photoAfterLeft = json.data.uid
+                                photoAfterLeftUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -413,7 +603,7 @@ class Photos extends Component {
                     </a>
                   </li>
 
-                  <li ref="liAfterRight" className="upload-gallery__item">
+                  <li ref="liAfterRight" className={ photoAfterRightUrl ? 'upload-gallery__item upload-gallery__item--uploaded' : "upload-gallery__item" }>
                     <span className="upload-gallery__item-inner">
                       <input ref="inputAfterRight" type="file" accept="image/*" className="upload-file__input" onChange={input => {
                         const { target } = input
@@ -423,7 +613,32 @@ class Photos extends Component {
                           reader.onload = e => {
                             this.refs.liAfterRight.className='upload-gallery__item upload-gallery__item--uploaded'
                             this.refs.afterRight.src = e.target.result
-                            photoAfterRight = reader.result.replace(/data:image\/\w+;base64,/, '')
+
+                            const content = reader.result.replace(/data:image\/\w+;base64,/, '')
+                            const name = target.files[0].name
+                            const payload = {
+                              authToken: cookie.load('token'),
+                              data: {
+                                name,
+                                content
+                              }
+                            }
+
+                            const headers = {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            }
+
+                            return fetch(`${api}/data/file-upload`, {
+                                headers,
+                                method: 'POST',
+                                body: JSON.stringify(payload)
+                              })
+                              .then(response => response.json())
+                              .then(json => {
+                                photoAfterRight = json.data.uid
+                                photoAfterRightUrl = `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, '')
+                              })
                           }
 
                           reader.readAsDataURL(target.files[0])
@@ -455,7 +670,55 @@ class Photos extends Component {
                   {/* <div className="btn btn--secondary">Прикрепить файл</div> */}
                 </div>
 
-                <div className="btn btn--primary">Отправить на проверку</div>
+                <div className="btn btn--primary" onClick={() => {
+                  console.log(photoBeforeFrontUrl)
+                  const payload = {
+                    authToken: cookie.load('token'),
+                    data: {
+                      program: cookie.load('userProgram') ? cookie.load('userProgram') : 1,
+                      photoBeforeFront,
+                      photoBeforeBack,
+                      photoBeforeLeft,
+                      photoBeforeRight,
+                      photoAfterFront,
+                      photoAfterBack,
+                      photoAfterLeft,
+                      photoAfterRight,
+                      photoBeforeFrontUrl,
+                      photoBeforeBackUrl,
+                      photoBeforeLeftUrl,
+                      photoBeforeRightUrl,
+                      photoAfterFrontUrl,
+                      photoAfterBackUrl,
+                      photoAfterLeftUrl,
+                      photoAfterRightUrl,
+                      photoBeforeVideoUrl,
+                      photoAfterVideoUrl
+                    }
+                  }
+
+                  let url = `${api}/user/userPhoto-update`
+
+                  if (isEmpty)
+                    url = `${api}/user/userPhoto-create`
+
+                  console.log(payload)
+
+                  return fetch(url, {
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                  })
+                  .then(response => response.json())
+                  .then(json => {
+                    console.log(json)
+                  })
+                }}>
+                  Отправить на проверку
+                </div>
 
                 <hr/>
 

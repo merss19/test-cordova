@@ -128,7 +128,7 @@ const requireForTest = () => {
     const isRegistered = json && json.errorCode === 1 && json.data && json.data[0] && json.data[0].role === 2
     if (!isRegistered) {
       browserHistory.push('/')
-    } else if (!cookie.load('userProgram')) {
+    } else {
       cookie.save('userProgram', json.data[0].program, { path: '/' })
     }
   })

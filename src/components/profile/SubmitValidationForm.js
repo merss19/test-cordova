@@ -18,9 +18,11 @@ import moment from 'moment'
 import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
 import InputDayPicker from './InputDayPicker'
+import InputElement from 'react-input-mask'
 
 let injuries = []
 let diseases = []
+let checkInjuries = []
 
 const contentStyle = {
   borderRadius: '18px',
@@ -76,8 +78,9 @@ class SubmitValidationForm extends Component {
 
   render() {
     const { error, valid, handleSubmit, bodyParams,
-      dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
+      dispatch, onSubmit, initialValues, cities, injuriesHidden, isReadyToTasks } = this.props
 
+    // console.log(initialValues.injuries)
     // const sports = [
     //   'Сложно',
     //   'Нормально',
@@ -124,7 +127,7 @@ class SubmitValidationForm extends Component {
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="layout">
 
-        <Header burger={false} />
+        <Header burger={false} isReadyToTasks={isReadyToTasks} isProfile={true}/>
 
         <div className="layout__inner layout__inner--profile">
           <div className="stage-box stage-box--small-padding">
@@ -166,11 +169,12 @@ class SubmitValidationForm extends Component {
                             })
                             .then(response => response.json())
                             .then(json => {
+                              console.log(json)
                               if (json.errorCode === 1 && json.data) {
                                 const photoPayload = {
                                   authToken: cookie.load('token'),
                                   data: {
-                                    photo: `${api}/files/${json.data.uid}.${json.data.extension}`,
+                                    photo: `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, ''),
                                   }
                                 }
 
@@ -397,12 +401,12 @@ class SubmitValidationForm extends Component {
                   ))}
                   <tr>
                     <td>{moment().format('YYYY-MM-DD')}</td>
-                    <td><input ref="height" type="text" className="base-table__input"/></td>
-                    <td><input ref="weight" type="text" className="base-table__input"/></td>
-                    <td><input ref="chest" type="text" className="base-table__input"/></td>
-                    <td><input ref="waist" type="text" className="base-table__input"/></td>
-                    <td><input ref="hips" type="text" className="base-table__input"/></td>
-                    <td><input ref="thigh" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="height" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="weight" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="chest" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="waist" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="hips" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="thigh" type="text" className="base-table__input"/></td>
                   </tr>
                 </tbody>
               </table>
@@ -801,8 +805,6 @@ const validate = data => {
 
   if (data.injuriesExist === undefined) {
     errors.injuriesExist = 'Поле травмы должно быть отмечено'
-  } else if (data.injuriesExist + '' === 'true' && injuries.length === 0 && !data.injuriesAnother) {
-    errors.injuriesAnother = 'Выберите травмы'
   }
 
   // if (!data.diseasesExist) {

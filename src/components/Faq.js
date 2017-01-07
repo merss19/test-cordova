@@ -7,7 +7,7 @@ const offset = { left: '-45px' }
 
 const Faq = () => (
   <div className="layout">
-    <Header/>
+    <Header isTask={true}/>
     <div className="layout__inner">
       <div className="grid">
         <div className="1/4--desk grid__cell layout__menu">

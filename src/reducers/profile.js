@@ -67,6 +67,15 @@ export const birthday = (state = '', action) => {
   }
 }
 
+export const isReadyToTasks = (state = false, action) => {
+  switch (action.type) {
+    case 'IS_READY_TO_TASKS':
+      return action.isReadyToTasks
+    default:
+      return state
+  }
+}
+
 export const injuriesHidden = (state = false, action) => {
   switch (action.type) {
     case 'INJURIES_HIDDEN':
