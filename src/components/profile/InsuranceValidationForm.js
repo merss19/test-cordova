@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Field } from 'redux-form'
 import { connect } from 'react-redux'
+import InputDayPicker from './InputDayPicker'
 
 import InputProfile from '../componentKit/InputProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
