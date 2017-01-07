@@ -19,7 +19,11 @@ import Modal from 'boron/FadeModal'
 
 let contentStyle = {
   borderRadius: '18px',
-  padding: '30px'
+  padding: '30px',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  width: '450px',
+  textAlign: 'center'
 }
 
 const customStyleMap = getCustomStyleMap()
@@ -72,7 +76,7 @@ const decorator = new CompositeDecorator([
 
 const Image = (props) => {
   return <img src={props.src} style={{
-    maxWidth: '100%', 
+    maxWidth: '100%',
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto' }} />;
@@ -508,7 +512,7 @@ class Photos extends Component {
                   </button>
                 </Modal>
                 <Modal ref='successModal' contentStyle={contentStyle}>
-                  <h2>Изменения сохранены</h2>
+                  <h2>Фотографии и видео отправлены на проверку!</h2>
                   <br/>
                   <button className="btn btn--action" onClick={() => {
                     this.refs.successModal.hide()

@@ -77,14 +77,10 @@ function mediaBlockRenderer(block) {
 class Faq extends Component {
   componentDidMount() {
     window.location.hash = window.decodeURIComponent(window.location.hash);
-    console.log(window.location.hash)
     const scrollToAnchor = () => {
       const hashParts = window.location.hash.split('#');
-      console.log(hashParts)
       if (hashParts.length > 2) {
         const hash = hashParts.slice(-1)[0];
-        console.log(document.querySelector(`#${hash}`))
-        // document.querySelector(`#${hash}`).className = "accordion__item accordion__item--active"
         document.querySelector(`#${hash}`).scrollIntoView();
       }
     };
@@ -93,6 +89,8 @@ class Faq extends Component {
   }
 
   render () {
+    console.log(this.props)
+    const { location: hash } = this.props
     const json = {
         "entityMap": {
             "0": {
@@ -1250,7 +1248,7 @@ class Faq extends Component {
                     </div>
                   </li>
 
-                  <li id='youtube' className="accordion__item">
+                  <li id='youtube' className={ hash.hash === '#youtube' ? "accordion__item accordion__item--active" : "accordion__item"}>
                     <div className="accordion__header">
                       <h4 className="h3 accordion__header-title">Как выложить видео в Youtube</h4>
                     </div>
