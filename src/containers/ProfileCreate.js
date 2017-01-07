@@ -66,9 +66,9 @@ class ProfileCreate extends Component {
             <SubmitValidationForm
               bodyMeasure={bodyParams}
               isReadyToTasks={isReadyToTasks}
-              date={moment(profileData.birthday).format('DD.MM.YYYY')}
-              babyDate={moment(profileData.babyBirthday).format('DD.MM.YYYY')}
-              feedDate={moment(profileData.lastBabyFeedMonth).format('DD.MM.YYYY')}
+              date={moment(profileData.birthday).format('YYYY-MM-DD')}
+              babyDate={moment(profileData.babyBirthday).format('YYYY-MM-DD')}
+              feedDate={moment(profileData.lastBabyFeedMonth).format('YYYY-MM-DD')}
               injuriesEx={profileData.injuriesExist}
               isReadyToTasks={isReadyToTasks}
               initialValues={{

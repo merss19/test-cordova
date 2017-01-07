@@ -292,7 +292,7 @@ class SubmitValidationForm extends Component {
                 <p className="base-parag">Дата рождения</p>
 
                 {/* <DatePicker selected={date} onChange={handleDateChange} /> */}
-                <Field name="birthday" placeholder="дд/ММ/гггг" component={InputDayPicker} />
+                <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <p className="base-parag">Ссылка на Instagram</p>
@@ -495,11 +495,11 @@ class SubmitValidationForm extends Component {
                 <div className="grid mb30">
                   <div className="1/2--desk 1/1-pocket grid__cell">
                     <p className="base-parag">Дата рождения последнего ребёнка</p>
-                    <Field name="babyBirthday" placeholder="дд/ММ/гггг" component={InputDayPicker} />
+                    <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
                   </div>
                   <div className="1/2--desk 1/1-pocket grid__cell">
                     <p className="base-parag">Месяц когда перестали кормить грудью</p>
-                    <Field name="lastBabyFeedMonth" placeholder="дд/ММ/гггг" component={InputDayPicker} />
+                    <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDayPicker} />
                   </div>
                 </div>
               </div>

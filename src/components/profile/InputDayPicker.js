@@ -181,16 +181,16 @@ class InputDayPicker extends Component {
                     this.input.blur();
                     switch (name) {
                       case 'birthday':
-                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD.MM.YYYY') })
+                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('YYYY-MM-DD') })
                         break
                       case 'babyBirthday':
-                        this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(day).format('DD.MM.YYYY') })
+                        this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(day).format('YYYY-MM-DD') })
                         break
                       case 'lastBabyFeedMonth':
-                        this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(day).format('DD.MM.YYYY') })
+                        this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(day).format('YYYY-MM-DD') })
                         break
                       default:
-                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD.MM.YYYY') })
+                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('YYYY-MM-DD') })
                     }
                   }}
                   selectedDays={ day => DateUtils.isSameDay(this.state.selectedDay, day) }
