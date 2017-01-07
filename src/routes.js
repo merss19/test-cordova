@@ -39,11 +39,6 @@ import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
 import resolveUrl from 'resolve-url'
 
-const getToken = () => {
-  if (cookie.load('token') && !cookie.load('role'))
-    browserHistory.push('/signup/pay/success')
-}
-
 const getRole = role => {
   const token = cookie.load('token')
   return fetch(`${api}/user/user-get`, {
@@ -88,7 +83,7 @@ const requirePayAuth = fromPay => {
     .then(json => {
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
         if (json.data[0].paidPackage && json.data[0].program + '' !== '4') {
-          browserHistory.push('/signup/pay/success')
+          browserHistory.push('/profile')//browserHistory.push('/signup/pay/success')
         } else if (json.data[0].paidPackage && json.data[0].program + '' === '4') {
           browserHistory.push('/signup/pay/success/friend')
         } else {
@@ -126,7 +121,7 @@ const requireForTest = () => {
   })
   .then(response => response.json())
   .then(json => {
-    const isRegistered = json && json.errorCode === 1 && json.data && json.data[0] && json.data[0].role === 2
+    const isRegistered = json && json.errorCode === 1 && json.data && json.data[0]
     if (!isRegistered) {
       browserHistory.push('/')
     } else {
