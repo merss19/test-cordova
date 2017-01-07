@@ -237,12 +237,12 @@ class InsuranceValidationForm extends Component {
                 }
               })
           }}>
-            Активировать
+            Активировать страховку
           </div>
         </div>
 
         <Modal ref='failModal' contentStyle={contentStyle}>
-          <h2>Что-то пошло не так, возможно не все данные заполнены</h2>
+          <h2>Что-то пошло не так, возможно не все данные по старховке заполнены</h2>
           <br/>
           <div className="btn btn--action" onClick={() => this.refs.failModal.hide()}>
             Продолжить
