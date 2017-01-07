@@ -79,7 +79,8 @@ class InsuranceValidationForm extends Component {
 
         <hr/>
 
-        <h3 className="h3">Дополнительные документы</h3>
+        <h3 className="h3">Подтверждающие документы. Скан паспорта</h3>
+        <p className="sub-title">Необходимо прикрепить сканы 1 и 2 страницы, а так же ВСЕХ заполненных страниц в паспорте!</p>
 
         <div className="grid grid--center">
           <div className="1/3--desk grid__cell">
