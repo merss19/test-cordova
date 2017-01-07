@@ -13,7 +13,6 @@ import SelectProfile from '../componentKit/SelectProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
 import ErrorField from '../componentKit/ErrorField'
-import InputMotherBabyDate from '../componentKit/InputMotherBabyDate'
 import InsuranceValidationForm from '../profile/InsuranceValidationForm'
 import cookie from 'react-cookie'
 import moment from 'moment'
@@ -728,6 +727,9 @@ const validate = data => {
 
   data.injuries = injuries.join()
   data.diseases = diseases.join()
+
+  data.firstName.replace(/ /g, '')
+  data.lastName.replace(/ /g, '')
 
   switch (true) {
     case !data.firstName:
