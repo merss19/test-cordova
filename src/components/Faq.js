@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Menu from './todayTask/Menu'
 import CalendarList from './todayTask/CalendarList'
 import Header from '../stories/Header'
+import cookie from 'react-cookie'
 import {
   Entity,
   Editor,
@@ -11,7 +12,12 @@ import {
 } from 'draft-js'
 import {getCustomStyleMap} from 'draftjs-utils'
 
-// const customStyleMap = getCustomStyleMap()
+let contentStyle = {
+  width: '754px',
+  height: '423px'
+}
+
+const customStyleMap = getCustomStyleMap()
 
 const offset = { left: '-45px' }
 
@@ -835,6 +841,7 @@ class Faq extends Component {
             "data": {}
         }]
     }
+
     const editorState = json ? EditorState.createWithContent(convertFromRaw(json), decorator) : EditorState.createEmpty()
     return (
       <div className="layout">
@@ -843,7 +850,7 @@ class Faq extends Component {
           <div className="grid">
             <div className="1/4--desk grid__cell layout__menu">
               <div className="grid layout__menu-inner">
-                <Menu/>
+                <Menu fullName={cookie.load('fullName')}/>
                 {/* <CalendarList calendar={[{
                     number: '1',
                     icon: 'ico-done',
@@ -1250,9 +1257,16 @@ class Faq extends Component {
                     <div className="accordion__content">
                       <Editor
                         readOnly={true}
-                        // customStyleMap={customStyleMap}
+                        customStyleMap={customStyleMap}
                         editorState={editorState}
                         blockRendererFn={mediaBlockRenderer}/>
+
+                      <br/>
+                      <iframe width="100%" height="100%" src='https://www.youtube.com/embed/1iI0TxfzqxA' style={contentStyle} frameBorder="0" allowFullScreen></iframe>
+                      <br/>
+                      <br/>
+                      <iframe width="100%" height="100%" src='https://www.youtube.com/embed/4OT7tspcmLc' style={contentStyle} frameBorder="0" allowFullScreen></iframe>
+
                     </div>
                   </li>
 

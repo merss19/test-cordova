@@ -131,6 +131,7 @@ const requireForTest = () => {
       browserHistory.push('/')
     } else {
       cookie.save('userProgram', json.data[0].program, { path: '/' })
+      cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
     }
   })
 }
