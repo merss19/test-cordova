@@ -7,7 +7,7 @@ import 'react-day-picker/lib/style.css';
 
 const currentYear = (new Date()).getFullYear();
 const fromMonth = new Date(currentYear - 67, 0, 1, 0, 0);
-const toMonth = new Date(currentYear - 15, 11, 31, 23, 59);
+const toMonth = new Date(currentYear, 11, 31, 23, 59);
 
 const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май',
   'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
@@ -62,7 +62,6 @@ class InputDayPicker extends Component {
 
   constructor(props) {
     super(props);
-    this.handleDayClick = this.handleDayClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputFocus = this.handleInputFocus.bind(this);
     this.handleInputBlur = this.handleInputBlur.bind(this);
@@ -128,19 +127,24 @@ class InputDayPicker extends Component {
     }
   }
 
-
-  handleDayClick(e, day) {
-    this.setState({
-      value: moment(day).format('L'),
-      selectedDay: day,
-      showOverlay: false,
-    });
-    this.input.blur();
-    this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD.MM.YYYY') })
-  }
-
   render() {
-    const { input, name, placeholder, meta: { touched, error }, birthday } = this.props
+    const { input, name, placeholder, meta: { touched, error }, birthday, babyBirthday, babyFeed } = this.props
+    let value
+
+    switch (name) {
+      case 'birthday':
+        value = birthday
+        break
+      case 'babyBirthday':
+        value = babyBirthday
+        break
+      case 'lastBabyFeedMonth':
+        value = babyFeed
+        break
+      default:
+        value = birthday
+    }
+
     return (
       <div onMouseDown={ this.handleContainerMouseDown }>
         <div className="input input--box">
@@ -151,7 +155,7 @@ class InputDayPicker extends Component {
             type="text"
             ref={ (el) => { this.input = el; } }
             placeholder={placeholder}
-            value={birthday}
+            value={value}
             onChange={ this.handleInputChange }
             onFocus={ this.handleInputFocus }
             onBlur={ this.handleInputBlur }
@@ -168,7 +172,27 @@ class InputDayPicker extends Component {
                   months={ MONTHS }
                   weekdaysLong={ WEEKDAYS_LONG }
                   weekdaysShort={ WEEKDAYS_SHORT }
-                  onDayClick={ this.handleDayClick }
+                  onDayClick={(e, day) => {
+                    this.setState({
+                      value: moment(day).format('L'),
+                      selectedDay: day,
+                      showOverlay: false,
+                    });
+                    this.input.blur();
+                    switch (name) {
+                      case 'birthday':
+                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD.MM.YYYY') })
+                        break
+                      case 'babyBirthday':
+                        this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(day).format('DD.MM.YYYY') })
+                        break
+                      case 'lastBabyFeedMonth':
+                        this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(day).format('DD.MM.YYYY') })
+                        break
+                      default:
+                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD.MM.YYYY') })
+                    }
+                  }}
                   selectedDays={ day => DateUtils.isSameDay(this.state.selectedDay, day) }
                   initialMonth={ this.state.initialMonth }
                   fromMonth={ fromMonth }
@@ -187,9 +211,11 @@ class InputDayPicker extends Component {
 }
 
 const mapStateToProps = state => {
-  const { birthday } = state
+  const { birthday, babyBirthday, babyFeed } = state
   return {
-    birthday
+    birthday,
+    babyBirthday,
+    babyFeed
   }
 }
 

@@ -34,8 +34,6 @@ class ProfileCreate extends Component {
 
   componentDidUpdate() {
     const { profileData, dispatch } = this.props
-    console.log('herer')
-    console.log(profileData)
     if (profileData && profileData.isFirstEdit)
       dispatch({ type: 'IS_READY_TO_TASKS', isReadyToTasks: true })
   }
@@ -54,7 +52,7 @@ class ProfileCreate extends Component {
 
   render() {
     const { profileData, insurance, bodyParams, token, isFetching,
-      birthday, isReadyToTasks, dispatch } = this.props
+      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch } = this.props
     const isEmpty = !profileData || !profileData.email
     const insuranceIsEmpty = !insurance
 
@@ -69,6 +67,8 @@ class ProfileCreate extends Component {
               bodyMeasure={bodyParams}
               isReadyToTasks={isReadyToTasks}
               date={moment(profileData.birthday).format('DD.MM.YYYY')}
+              babyDate={moment(profileData.babyBirthday).format('DD.MM.YYYY')}
+              feedDate={moment(profileData.lastBabyFeedMonth).format('DD.MM.YYYY')}
               injuriesEx={profileData.injuriesExist}
               isReadyToTasks={isReadyToTasks}
               initialValues={{
@@ -89,7 +89,21 @@ class ProfileCreate extends Component {
               }}
               onSubmit={ data => {
                 this.refs.loadingModal.show()
+                console.log('CATS')
+                console.log(birthday)
+
                 data.birthday = birthday
+
+                console.log(babyBirthday)
+
+                if (babyBirthday)
+                  data.babyBirthday = babyBirthday
+
+                console.log(babyFeed)
+
+                if (babyFeed)
+                  data.lastBabyFeedMonth = babyFeed
+
                 delete data.password
                 const payload = {
                   authToken: token ? token : cookie.load('token'),
@@ -145,7 +159,8 @@ class ProfileCreate extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedProfile, recivedProfile, userToken, birthday, isReadyToTasks } = state
+  const { selectedProfile, recivedProfile, userToken, birthday,
+    babyBirthday, babyFeed, isReadyToTasks } = state
   const {
     isFetching,
     lastUpdated,
@@ -165,6 +180,8 @@ const mapStateToProps = state => {
     insurance,
     bodyParams,
     birthday,
+    babyBirthday,
+    babyFeed,
     isReadyToTasks,
     token: userToken.token
   }
