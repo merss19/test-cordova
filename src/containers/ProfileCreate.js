@@ -27,7 +27,8 @@ class ProfileCreate extends Component {
 
   componentWillMount() {
     if (window.mobilecheck()) {
-      contentStyle.width = '300px'
+      contentStyle.margin = '80px'
+      contentStyle.width = '340px'
     }
   }
 

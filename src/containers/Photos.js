@@ -143,7 +143,7 @@ class Photos extends Component {
       photoAfterVideoUrl = p.photoAfterVideoUrl ? url + p.photoAfterVideoUrl : ''
 
       json = JSON.parse(p.userPhotoCaption)
-      this.refs.videoBefore.value = photoBeforeVideoUrl
+      this.refs.videoBefore.value = photoBeforeVideoUrl ? photoBeforeVideoUrl : ''
     }
 
     const editorState = json ? EditorState.createWithContent(convertFromRaw(json), decorator) : EditorState.createEmpty()
@@ -473,10 +473,13 @@ class Photos extends Component {
 
                   let url = `${api}/user/userPhoto-update`
 
-                  if (isEmpty)
+                  if (isEmpty
+                    || (!photos.data[photos.data.length - 1].photoBeforeFrontUrl
+                      && !photos.data[photos.data.length - 1].photoBeforeBackUrl
+                      && !photos.data[photos.data.length - 1].photoBeforeLeftUrl
+                      && !photos.data[photos.data.length - 1].photoBeforeRightUrl
+                      && !photos.data[photos.data.length - 1].photoBeforeVideoUrl))
                     url = `${api}/user/userPhoto-create`
-
-                  console.log(payload)
 
                   return fetch(url, {
                     headers: {
