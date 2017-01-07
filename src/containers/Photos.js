@@ -121,7 +121,7 @@ class Photos extends Component {
     console.log(isEmpty)
     let json
     if (!isEmpty) {
-      const p = photos.data[0]
+      const p = photos.data[photos.data.length - 1]
       photoBeforeFrontUrl = p.photoBeforeFrontUrl ? url + p.photoBeforeFrontUrl : ''
       photoBeforeBackUrl = p.photoBeforeBackUrl ? url + p.photoBeforeBackUrl : ''
       photoBeforeLeftUrl = p.photoBeforeLeftUrl ? url + p.photoBeforeLeftUrl : ''
@@ -137,7 +137,6 @@ class Photos extends Component {
       json = JSON.parse(p.userPhotoCaption)
       this.refs.videoBefore.value = photoBeforeVideoUrl
     }
-
 
     // const json = {
     //     "entityMap": {
