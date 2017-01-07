@@ -57,7 +57,10 @@ class InsuranceValidationForm extends Component {
             {/* <div className="input input--box mb30">
               <input ref="birthday" name="birthday" value={birthday} placeholder="д/М/гггг" type='text' className="input__field input__field--date"/>
             </div> */}
-            <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputDayPicker} />
+            {window.mobilecheck()
+              ? <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
+              : <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+            }
             {/* <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} /> */}
             {/* <Field val={insurance.birthday} name="insuranceBirthday" placeholder="д/М/гггг" component={InputProfile} /> */}
           </div>

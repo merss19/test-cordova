@@ -293,7 +293,7 @@ class SubmitValidationForm extends Component {
                 <p className="base-parag">Дата рождения</p>
 
                 {/* <DatePicker selected={date} onChange={handleDateChange} /> */}
-                {window.mobilecheck
+                {window.mobilecheck()
                   ? <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
                   : <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
                 }
