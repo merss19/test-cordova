@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import Chat from '../../stories/chat/Chat'
 import Poll from '../../stories/poll/Poll'
 import Header from '../../stories/Header'
@@ -123,8 +124,10 @@ class MainComponent extends Component {
         </div>
 
         <ul className="menu-mob-bottom">
-          <li className="menu-mob-bottom__item menu-mob-bottom__item--active">
-            <a href="#" className="menu-mob-bottom__item-inner">
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/task')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-tasks">
                   <use xlinkHref="#ico-m-tasks"></use>
@@ -133,8 +136,10 @@ class MainComponent extends Component {
               <span className="menu-mob-bottom__title">Задания</span>
             </a>
           </li>
-          <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+          {/* <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/reports')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-book">
                   <use xlinkHref="#ico-m-book"></use>
@@ -144,7 +149,9 @@ class MainComponent extends Component {
             </a>
           </li>
           <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/food')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-food">
                   <use xlinkHref="#ico-m-food"></use>
@@ -152,15 +159,29 @@ class MainComponent extends Component {
               </span>
               <span className="menu-mob-bottom__title">Питание</span>
             </a>
-          </li>
+          </li> */}
           <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/faq')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-faq">
                   <use xlinkHref="#ico-m-faq"></use>
                 </svg>
               </span>
               <span className="menu-mob-bottom__title">ЧАВО</span>
+            </a>
+          </li>
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/photos')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-faq">
+                  <use xlinkHref="#ico-m-faq"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">Фото</span>
             </a>
           </li>
         </ul>
