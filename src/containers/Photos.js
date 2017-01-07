@@ -14,6 +14,9 @@ import {
   convertFromRaw,
   CompositeDecorator
 } from 'draft-js'
+import {getCustomStyleMap} from 'draftjs-utils'
+
+// const customStyleMap = getCustomStyleMap()
 
 let photoBeforeFront
 let photoBeforeBack
@@ -679,6 +682,7 @@ class Photos extends Component {
 
                 <Editor
                   readOnly={true}
+                  // customStyleMap={customStyleMap}
                   editorState={editorState}
                   blockRendererFn={mediaBlockRenderer}/>
 

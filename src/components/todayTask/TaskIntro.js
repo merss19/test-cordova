@@ -8,7 +8,7 @@ import {
 } from 'draft-js'
 import {getCustomStyleMap} from 'draftjs-utils'
 
-const customStyleMap = getCustomStyleMap()
+// const customStyleMap = getCustomStyleMap()
 
 const decorator = new CompositeDecorator([
   {
@@ -70,7 +70,7 @@ const TaskIntro = ({text = '', json}) => {
     <div className="stage-box stage-box--big-padding">
       <Editor
         readOnly={true}
-        customStyleMap={customStyleMap}
+        // customStyleMap={customStyleMap}
         editorState={editorState}
         blockRendererFn={mediaBlockRenderer}/>
     </div>

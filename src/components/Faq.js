@@ -9,6 +9,9 @@ import {
   convertFromRaw,
   CompositeDecorator
 } from 'draft-js'
+import {getCustomStyleMap} from 'draftjs-utils'
+
+// const customStyleMap = getCustomStyleMap()
 
 const offset = { left: '-45px' }
 
@@ -1247,6 +1250,7 @@ class Faq extends Component {
                     <div className="accordion__content">
                       <Editor
                         readOnly={true}
+                        // customStyleMap={customStyleMap}
                         editorState={editorState}
                         blockRendererFn={mediaBlockRenderer}/>
                     </div>
