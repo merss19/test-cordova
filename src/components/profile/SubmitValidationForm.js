@@ -198,7 +198,7 @@ class SubmitValidationForm extends Component {
                 </div>
               </div>
               <div className="1/2--desk grid__cell">
-                <h3 className="h3">Привязка к социальным сетям</h3>
+                <h3 className="h3">Взять аватарку из социальной сети</h3>
                 <ul className="btn-social btn-social--profile">
                   <li className="btn-social__item btn-social__item--vk" onClick={() => {
                     const self = this
