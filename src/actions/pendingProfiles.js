@@ -92,8 +92,7 @@ const formatProfileFields = (fields) => {
     const value = fields[key]
     const isDate = ~datesKeysList.indexOf(key)
 
-    if (value)
-      filteredFields[key] = isDate ? moment(value).format('YYYY-MM-DD') : value
+    filteredFields[key] = isDate ? moment(value).format('YYYY-MM-DD') : value
 
     return filteredFields
   }, {})
