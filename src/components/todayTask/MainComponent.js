@@ -116,9 +116,9 @@ class MainComponent extends Component {
                 <Poll poll={poll} />
               }
 
-              {chat && chat[0] &&
+              {/* {chat && chat[0] &&
                 <Chat chat={chat} userId={1} />
-              }
+              } */}
             </div>
           </div>
         </div>

@@ -84,6 +84,8 @@ class SubmitValidationForm extends Component {
     const { error, valid, handleSubmit, bodyParams, isReadyToTasks,
       dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
 
+    console.log('program')
+    console.log(initialValues.program)
     // const sports = [
     //   'Сложно',
     //   'Нормально',
@@ -491,7 +493,7 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            {cookie.load('userProgram') === 2 &&
+            {initialValues.program === 2 &&
               <div>
                 <h3 className="h3">Для программы "Мама может"</h3>
                 <div className="grid mb30">

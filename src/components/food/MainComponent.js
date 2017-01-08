@@ -46,9 +46,9 @@ class MainComponent extends Component {
 
               <TaskIntro text={food.description} />
 
-              {food.chat && food.chat[0] &&
+              {/* {food.chat && food.chat[0] &&
                 <Chat chat={food.chat} userId={1} />
-              }
+              } */}
 
             </div>
           </div>
