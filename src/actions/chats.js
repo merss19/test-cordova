@@ -76,6 +76,7 @@ export const fetchChats = (...types) => () => (dispatch, getState) => {
     .all(types.map(type => commentGetInfo(token, {type})))
     .then((chatsArray) => {
       const flatChats = Array.prototype.concat.apply([], chatsArray)
+        .map(({userStarter, ...chat}) => ({...chat, userStarter: userStarter || {}})) // Баг с null в userStarter
         .map(chat => {
           const title = getChatTitle(chat)
           const unread = chat.comments.length // TODO: Убрать когда придумаем способ чекать прочитанные
