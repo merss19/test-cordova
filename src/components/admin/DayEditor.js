@@ -73,9 +73,6 @@ class DayEditor extends Component {
 
                     console.log('<-==-==-=-==)==0')
                     console.log(data)
-                    console.log(JSON.stringify(content[0]))
-                    console.log(dayIntro[0])
-                    console.log(editor[0])
 
                     if (data && data.tasks && data.tasks[0]) {
                       console.log('1')
@@ -88,6 +85,7 @@ class DayEditor extends Component {
                       data.programTasks[0].tasks = data.tasks
                       console.log('3')
                     } else {
+                      data.programTasks = [{}]
                       data.programTasks[0] = {
                         program: programShow,
                         intro: content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0]),
