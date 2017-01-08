@@ -1,5 +1,6 @@
 import cookie from 'react-cookie'
 import { api } from '../config.js'
+import moment from 'moment'
 
 export const REQUEST_TASKDAY = 'REQUEST_TASKDAY'
 export const RECEIVE_TASKDAY = 'RECEIVE_TASKDAY'
@@ -21,83 +22,36 @@ export const requestTaskDay = taskDay => ({
   taskDay
 })
 
-const taskDayTest = {
-  data: [{
-    intro: '<p>hero</p><p>asdasd</p><p></p><img src="http://i.imgur.com/HEqIll1.png" style="float:none;height: auto;width: 100%"/><p>Here is <strong>asdasdsadsad </strong><del><strong>asdsadsadsad</strong></del><del><em>asdasdasdsadasd</em></del></p>',
-    tasks: [{
-          name: "TextTextTextTextText",
-          description: "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText",
-          exercises: [
-            {
-              count: 10,
-              description: "TextTextTextTextTextText",
-              video: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-            },
-            {
-              count: 10,
-              description: "TextTextTextTextTextText",
-              video: "https://www.youtube.com/embed/yPYZpwSpKmA"
-            },
-            {
-              count: 10,
-              description: "TextTextTextTextTextText",
-              video: "https://www.youtube.com/embed/BeyEGebJ1l4"
-            }
-          ]
-        }, {
-          name: "GoodGoodGoodGoodGood",
-          description: "GoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGood",
-          exercises: [
-            {
-              count: 14,
-              description: "GoodGoodGoodGoodGoodGood",
-              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
-            },
-            {
-              count: 14,
-              description: "GoodGoodGoodGoodGoodGood",
-              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
-            }
-          ]
-        }, {
-          name: "BadBadBadBadBad",
-          description: "BadBadBadBadBadBadBadBadBadBadBadBadBadBadBadBadBadBad",
-          exercises: [
-            {
-              count: 200,
-              description: "BadBadBadBadBadBad",
-              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
-            },
-            {
-              count: 200,
-              description: "BadBadBadBadBadBad",
-              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
 export const receiveTaskDay = (taskDay, json) => {
+  console.log('<<<')
+  console.log(json)
   return ({
     type: RECEIVE_TASKDAY,
     taskDay,
-    json: taskDayTest,
+    json,
     receivedAt: Date.now()
   })
 }
 
 const fetchTaskDay = partialState => dispatch => {
-  const { token, taskDay } = partialState
+  const { token, taskDay, profile, selectedDayDate, selectedDayId } = partialState
   dispatch(requestTaskDay(taskDay))
-  const payload = { authToken: token ? token : cookie.load('token') }
+  let payload = {
+    authToken: token ? token : cookie.load('token'),
+    data: {
+      program: cookie.load('userProgram') ? cookie.load('userProgram') : 1,
+    }
+  }
+
+  if (selectedDayId) {
+    payload.data.id = selectedDayId
+  } else {
+    payload.data.date = selectedDayDate
+  }
 
   let data = new FormData()
   data.append("json", JSON.stringify(payload))
-
-  return fetch(`${api}/data/day-get-info`, {
+  return fetch(`${api}/data/userday-get-info`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -123,6 +77,11 @@ const shouldFetchTaskDay = (state, taskDay) => {
 
 export const fetchTaskDayIfNeeded = taskDay => (dispatch, getState) => {
   if (shouldFetchTaskDay(getState(), taskDay)) {
-    return dispatch(fetchTaskDay({ token: getState().userToken.token, taskDay}))
+    return dispatch(fetchTaskDay({
+      token: getState().userToken.token,
+      taskDay,
+      selectedDayDate: getState().selectedDayDate,
+      selectedDayId: getState().selectedDayId
+    }))
   }
 }

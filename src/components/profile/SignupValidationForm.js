@@ -7,7 +7,7 @@ import cookie from 'react-cookie'
 import { browserHistory } from 'react-router'
 import * as actions from '../../actions'
 import InputProfile from '../componentKit/InputProfile'
-import CheckboxAccept from '../componentKit/CheckboxAccept'
+import CheckboxOfert from '../componentKit/CheckboxOfert'
 import { api, host } from '../../config.js'
 
 let contentStyle = {
@@ -96,11 +96,7 @@ class SignupValidationForm extends Component {
             <Field name='email' id='login[1]' placeholder='Ваш e-mail' component={InputProfile} />
             <Field name='password' id='login[2]' placeholder='Ваш пароль' type='password' component={InputProfile} />
             <Field name='passwordAgain' id='login[3]' placeholder='Пароль повторно' type='password' component={InputProfile} />
-            <div className='gender'>
-              <Field name='accept' title='Принять условия ' id='accept' component={CheckboxAccept} />
-              <div className="divider" />
-              <Link to="chart" target="_blank" to="http://todayme.ru/dogovor-oferty#.WGFQqrZ95E4">оферты</Link>
-            </div>
+            <Field name='accept' title='Принять условия ' id='accept' component={CheckboxOfert} />
           </div>
           {error && <strong>{error}</strong>}
           <button type='submit' className="btn btn--action">

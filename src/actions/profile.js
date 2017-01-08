@@ -22,32 +22,10 @@ export const requestProfile = profileData => ({
 })
 
 export const receiveProfile = (profileData, json) => {
-  let profile = {
-    profileData,
-    receivedAt: Date.now()
-  }
-
-  json.forEach(j => {
-    if (j && j.data && j.data.length > 0) {
-      switch (true) {
-        case !!j.data[0].email:
-          profile = { ...profile, profile: j.data[0] }
-          break
-        case !!j.data[0].chest:
-          profile = { ...profile, bodyParams: j.data }
-          break
-        case !!j.data[0].passport:
-          profile = { ...profile, insurance: j.data }
-          break
-        default:
-          break
-      }
-    }
-  })
-
   return ({
     type: RECEIVE_PROFILE,
-    ...profile
+    profileData,
+    json
   })
 }
 
@@ -65,19 +43,14 @@ const fetchProfile = partialState => dispatch => {
   }
 
   const method = 'POST'
-  const urls = [
-    `${api}/user/user-get`,
-    `${api}/user/bodyMeasure-get`,
-    `${api}/user/insurance-get`
-  ]
 
-  return Promise.all(urls.map(url =>
-    fetch(url, {
-      headers,
-      method,
-      body: JSON.stringify(payload)
-    }).then(response => response.json())
-  )).then(json => dispatch(receiveProfile(profileData, json)))
+  return fetch(`${api}/user/user-get`, {
+    headers,
+    method,
+    body: JSON.stringify(payload)
+  })
+  .then(response => response.json())
+  .then(json => dispatch(receiveProfile(profileData, json)))
 }
 
 const shouldFetchProfile = (state, profileData) => {

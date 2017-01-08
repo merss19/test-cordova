@@ -3,11 +3,14 @@ import {
   REQUEST_PROFILE, RECEIVE_PROFILE
 } from '../actions'
 
+import moment from 'moment'
+
 const bodyParam = (state, action) => {
   switch (action.type) {
     case 'ADD_BODY_PARAM':
       return {
         date: action.date,
+        height: action.height,
         weight: action.weight,
         chest: action.chest,
         waist: action.waist,
@@ -55,6 +58,60 @@ export function profile(state = {}, action) {
   }
 }
 
+export const birthday = (state = '', action) => {
+  switch (action.type) {
+    case 'BIRTHDAY':
+      return action.birthday
+    default:
+      return state
+  }
+}
+
+export const babyBirthday = (state = '', action) => {
+  switch (action.type) {
+    case 'BABY_BIRTHDAY':
+      return action.babyBirthday
+    default:
+      return state
+  }
+}
+
+export const babyFeed = (state = '', action) => {
+  switch (action.type) {
+    case 'BABY_FEED':
+      return action.babyFeed
+    default:
+      return state
+  }
+}
+
+export const isReadyToTasks = (state = false, action) => {
+  switch (action.type) {
+    case 'IS_READY_TO_TASKS':
+      return action.isReadyToTasks
+    default:
+      return state
+  }
+}
+
+export const injuriesHidden = (state = false, action) => {
+  switch (action.type) {
+    case 'INJURIES_HIDDEN':
+      return action.injuriesHidden
+    default:
+      return state
+  }
+}
+
+export const injuries = (state = [], action) => {
+  switch (action.type) {
+    case 'INJURIES_SET':
+      return action.injuries
+    default:
+      return state
+  }
+}
+
 export const selectedProfile = (state = 'reactjs', action) => {
   switch (action.type) {
     case SELECT_PROFILE:
@@ -86,9 +143,9 @@ const profileData = (state = {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        profileData: action.profile,
-        insurance: action.insurance,
-        bodyParams: action.bodyParams,
+        profileData: action.json.data[0],
+        insurance: action.json.data[0].insurance,
+        bodyParams: action.json.data[0].bodyMeasures,
         lastUpdated: action.receivedAt
       }
     default:

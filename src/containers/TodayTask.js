@@ -38,7 +38,6 @@ class TodayTask extends Component {
 
   render() {
     const { taskDay, token, isFetching } = this.props
-    console.log(taskDay)
     const isEmpty = !taskDay|| !taskDay.data || taskDay.data.length === 0
     return (
       <div className={isEmpty ? 'entry__inner' : 'layout'}>

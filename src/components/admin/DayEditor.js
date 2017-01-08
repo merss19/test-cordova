@@ -37,8 +37,10 @@ class DayEditor extends Component {
   }
 
   render() {
-    const { days, token, isFetching, editDay, dayIntro, dayDate, programs } = this.props
+    const { days, token, isFetching, editDay, dayIntro, dayDate,
+      programs, editor, content, programShow, selectedDays, dispatch, dayId } = this.props
     const isEmpty = !programs || !days
+
     console.log(days)
     // const id = this.props.params.id
     // let initialValues = {}
@@ -54,11 +56,9 @@ class DayEditor extends Component {
 
     return (
       <div className='layout'>
-        <Header burger={false} />
-        {isEmpty
-          ? isFetching
-            ? <LoadingView title="Загружается..."/>
-            : <LoadingView title="Ничего не найдено"/>
+        <Header burger={false} isTask={true}/>
+        {isFetching
+          ? <LoadingView title="Загружается..."/>
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
               <div className="layout__inner">
                 <DayEditorValidationForm
@@ -68,21 +68,42 @@ class DayEditor extends Component {
                   hideCreatePoll={false}
                   date={dayDate}
                   programs={programs}
+                  editor={editor}
+                  content={content}
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
-                    console.log(this.props.params.id)
-                    console.log(this.props.params.program)
 
-                    data.programTasks = data.programTasks.filter(t => {
-                      return t.id !== 4
-                    }).map(task => {
-                      const copy = { ...task, program: task.id }
-                      const {id, ...newTask} = copy
-                      return newTask
-                    })
+                    console.log(data)
 
-                    data.intro = dayIntro
+                    if (data.program && data.program[0] && data.program[0].tasks && data.program[0].tasks[0]) {
+                      data.programTasks[0] = data.program[0]
+                      data.programTasks[0].tasks = data.programTasks[0].tasks.map(t => {
+                        return { ...t,
+                          program: programShow,
+                          intro: JSON.stringify(content[0]),
+                          introHTML: dayIntro[0]
+                        }
+                      })
+                    } else if (content[0] && dayIntro[0]) {
+                      data.programTasks[0] = {
+                        program: programShow,
+                        intro: JSON.stringify(content[0]),
+                        introHTML: dayIntro[0]
+                      }
+                    }
+
+                    delete data.program
+
+                    // data.intro = JSON.stringify(content)
+                    // data.introHTML = dayIntro
+                    let url = `${api}/data/adminday-create`
                     data.date = moment(dayDate).format('YYYY-MM-DD')
+                    if (dayId && dayId !== '-') {
+                      data.id = dayId
+                      url = `${api}/data/adminday-update`
+                    } else {
+                      data.forceNew = true
+                    }
 
                     const payload = {
                       authToken: token ? token : cookie.load('token'),
@@ -97,36 +118,50 @@ class DayEditor extends Component {
                     console.log(payload)
 
                     const method = 'POST'
-                    return fetch(`${api}/data/adminday-create`, {
-                      headers,
-                      method,
-                      body: JSON.stringify(payload)
-                    })
-                    .then(response => response.json())
-                    .then(json => {
-                      console.log(json)
-                      this.refs.loadingModal.hide()
-                      if (json.errorCode === 1) {
-                        this.refs.successPromoModal.show()
-                      } else {
-                        this.refs.errorModal.show()
-                      }
-                    })
+                    if (content[0] && dayIntro[0] && programShow) {
+                      return fetch(url, {
+                        headers,
+                        method,
+                        body: JSON.stringify(payload)
+                      })
+                      .then(response => response.json())
+                      .then(json => {
+                        this.refs.loadingModal.hide()
+                        if (json.errorCode === 1) {
+                          this.refs.successPromoModal.show()
+                        } else {
+                          this.refs.errorModal.show()
+                        }
+                      })
+                    } else {
+                      this.refs.errorModal.show()
+                    }
                 }}/>
-                <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
+                <Modal ref='loadingModal' contentStyle={contentStyle}>
                   <h2>Подождите...</h2>
                 </Modal>
                 <Modal ref='errorModal' contentStyle={contentStyle}>
                   <h2>Что-то пошло не так, попробуйте снова</h2>
                   <br/>
-                  <button className="btn btn--action" onClick={() => this.refs.errorModal.hide()}>
+                  <button className="btn btn--action" onClick={() => {
+                    this.refs.loadingModal.hide()
+                    this.refs.errorModal.hide()
+                  }}>
                     Продолжить
                   </button>
                 </Modal>
                 <Modal ref='successPromoModal' contentStyle={contentStyle}>
                   <h2>Изменения сохранены</h2>
                   <br/>
-                  <button className="btn btn--action" onClick={() => this.refs.successPromoModal.hide()}>
+                  <button className="btn btn--action" onClick={() => {
+                    this.refs.loadingModal.hide()
+                    dispatch({ type: 'CONTENT_RESET' })
+                    dispatch({ type: 'DAY_INTRO_RESET' })
+                    dispatch({ type: 'EDITOR_RESET' })
+                    dispatch({ type: 'DAY_ID', id: '-' })
+                    dispatch({ type: 'PROGRAM_SHOW', programShow: 0 })
+                    dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                  }}>
                     Продолжить
                   </button>
                 </Modal>
@@ -139,7 +174,8 @@ class DayEditor extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedPrograms, recivedPrograms, selectedDays, recivedDays, userToken, editDay, dayIntro, dayDate } = state
+  const { selectedPrograms, recivedPrograms, selectedDays, recivedDays,
+    userToken, editDay, dayIntro, dayDate, editor, content, programShow, dayId } = state
   const {
     isFetching,
     days,
@@ -159,6 +195,10 @@ const mapStateToProps = state => {
     dayIntro,
     dayDate,
     programs,
+    programShow,
+    editor,
+    content,
+    dayId,
     token: userToken.token
   }
 }

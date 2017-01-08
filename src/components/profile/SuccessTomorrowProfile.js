@@ -32,8 +32,8 @@ class SuccessTomorrowProfile extends Component {
       let payload = {
         authToken: cookie.load('token'),
         data: {
-          program: program ? program : '1',
-          package: packageType ? packageType : '1',
+          program: program || program === 'undefined' ? program : '1',
+          package: packageType || packageType === 'undefined' ? packageType : '1',
           isShare: share ? share : false
         }
       }
@@ -61,9 +61,6 @@ class SuccessTomorrowProfile extends Component {
       let data = new FormData()
       data.append("json", JSON.stringify(payload))
 
-      console.log('Payme')
-      console.log(payload)
-
       return fetch(`${api}/payment/payment-create`, {
         headers: {
           'Accept': 'application/json',
@@ -74,7 +71,6 @@ class SuccessTomorrowProfile extends Component {
       })
       .then(response => response.json())
       .then(json => {
-        console.log(json)
         if (json.errorCode === 1 && json.data) {
           dispatch(receivePayment('reactjs', json))
           browserHistory.push('/signup/pay')
@@ -84,13 +80,23 @@ class SuccessTomorrowProfile extends Component {
       })
     }
 
-    console.log(this.props)
     return (
-      <form className="layout layout--login">
+      <form className='layout'>
+        <div className="header">
+          <div className="grid header__inner">
+            <h1 className="grid__cell header__logo">
+              Ясегодня
+              <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
+            </h1>
+          </div>
+        </div>
+
         <div className="entry entry--sign-in">
           <div className="entry__inner">
             <div className="entry__box">
-              <h2>Оплата прошла успешно. Скоро вам и вашему другу придут уведомления на указанные email</h2>
+              <h2>Подтверждение об оплате скоро придет на ваш email!</h2>
+              <br/>
+              <h4>В ближайшее время мы отправим на указанную почту Вашего друга письмо-сюрприз, которое откроется в день старта проекта! Мы оповестим тебя о его решении : )</h4>
               <br/>
               {!this.props.params.program &&
                 <Field name="program" id="program" options={[
@@ -135,7 +141,7 @@ class SuccessTomorrowProfile extends Component {
                   }
                 })
               }}>
-                Выберите программу
+                Выберите программу себе
               </button>
               <div className="divider" />
               <button className="btn btn--action" onClick={e => {

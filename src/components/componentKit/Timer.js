@@ -3,8 +3,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 let localMinutes = 1
-let localSeconds = 20
+let localSeconds = 5
 let refreshTimer
+
+const getSecondDigit = digits => {
+  return ('' + digits)[1] ? digits : '0' + digits
+}
 
 class Timer extends Component {
   render() {
@@ -13,15 +17,15 @@ class Timer extends Component {
     return (
       <div>
         <div className="timer">
-          <input ref="timerMin" type="text" className="timer__min" value={minutes} onChange={()=>{}}/>
-          <input ref="timerSec" type="text" className="timer__sec" value={seconds} onChange={()=>{}}/>
+          <input ref="timerMin" type="text" className="timer__min" value={getSecondDigit(minutes)} onChange={()=>{}}/>
+          <input ref="timerSec" type="text" className="timer__sec" value={getSecondDigit(seconds)} onChange={()=>{}}/>
         </div>
 
         <div className="text-center mb30">
           <button className="btn btn--secondary" onClick={e => {
             e.preventDefault()
             localMinutes = 1
-            localSeconds = 20
+            localSeconds = 5
             clearInterval(refreshTimer)
             refreshTimer = setInterval(() => {
               if (localMinutes > 0 || localSeconds > 0) {

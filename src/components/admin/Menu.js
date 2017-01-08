@@ -7,13 +7,18 @@ const Menu = () => (
     <ul className="main-nav">
       <li className="main-nav__item">
         <MenuButton onClick={() => {
-          browserHistory.push('/superadmin/day/1/')
-        }} icon="ico-m-book">Для программ</MenuButton>
+          browserHistory.push('/superadmin/day/1')
+        }} icon="ico-m-book">Создать для программ</MenuButton>
       </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {
-          browserHistory.push('/superadmin/day/2/')
-        }} icon="ico-m-book">Бонус</MenuButton>
+          browserHistory.push('/superadmin/day/2')
+        }} icon="ico-m-book">Создать бонусный день</MenuButton>
+      </li>
+      <li className="main-nav__item">
+        <MenuButton onClick={() => {
+          browserHistory.push('/userReports/pendingProfiles')
+        }} icon="ico-m-tasks">Отчеты</MenuButton>
       </li>
     </ul>
     {/* <hr/>

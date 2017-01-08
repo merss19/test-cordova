@@ -9,6 +9,7 @@ import Modal from 'boron/FadeModal'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
 
+import CheckboxOfert from '../componentKit/CheckboxOfert'
 import CustomInput from '../componentKit/CustomInput'
 import InputProfile from '../componentKit/InputProfile'
 import InputProfilePhone from '../componentKit/InputProfilePhone'
@@ -33,6 +34,7 @@ class LoginFB extends Component {
   componentDidMount() {
     this.refs.loadingModal.show()
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
 
@@ -66,6 +68,7 @@ class LoginFB extends Component {
         .then(response => response.json())
         .then(json => {
           this.refs.loadingModal.hide()
+
           if (json.errorCode === 1 && json.data && json.data.authToken) {
             cookie.save('token', json.data.authToken, { path: '/' })
             setToken(json.data.authToken)
@@ -101,13 +104,15 @@ class LoginFB extends Component {
           emailFriend = emailFriend.replace(/ /g,'')
 
         this.refs.loadingModal.show()
-        const pack = program === '4' || !packageType ? '1' : packageType
+        const pack = program === '4' || !packageType || packageType === 'undefined'
+          ? '1' : packageType
         signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
 
         const payload = {
           email: email ? email.replace(/ /g,'') : email,
           program: program ? program : '1',
-          package: pack }
+          package: pack
+        }
 
         const headers = {
           'Accept': 'application/json',
@@ -205,8 +210,13 @@ class LoginFB extends Component {
                 <br/>
                 <Field name='emailValue' id='emailValue' placeholder='Email' component={InputProfile} />
                 {program === '4' &&
-                  <Field name='emailFriendValue' id='emailFriendValue' title='Email друга' component={CustomInput} />
+                  <div>
+                    <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
+                    <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
+                    <Field name='nameFriendValue' id='nameFriendValue' placeholder='Имя друга' component={InputProfile} />
+                  </div>
                 }
+                <Field name='accept' title='Принять условия ' id='accept' component={CheckboxOfert} />
                 <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>
@@ -239,6 +249,7 @@ class LoginFB extends Component {
                   </div>
                 }
                 <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
+                <Field name='accept' title='Принять условия ' id='accept' component={CheckboxOfert} />
                 <button type="submit" className="btn btn--action">
                   Продолжить
                 </button>
@@ -288,6 +299,9 @@ const validate = data => {
     default:
       break
   }
+
+  if (!data.accept)
+    errors.accept = 'Вы должны принять условия оферты'
 
   if (data.program === '4') {
     switch (true) {

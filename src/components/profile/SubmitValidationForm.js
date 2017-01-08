@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import Header from '../../stories/Header'
+import { browserHistory } from 'react-router'
 
 import RadioProfile from '../componentKit/RadioProfile'
 import Timer from '../componentKit/Timer'
@@ -11,19 +12,29 @@ import CheckboxProfile from '../componentKit/CheckboxProfile'
 import SelectProfile from '../componentKit/SelectProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
+import InputDateMask from '../componentKit/InputDateMask'
 import ErrorField from '../componentKit/ErrorField'
 import InsuranceValidationForm from '../profile/InsuranceValidationForm'
 import cookie from 'react-cookie'
 import moment from 'moment'
 import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
+import InputDayPicker from './InputDayPicker'
+import InputElement from 'react-input-mask'
 
-let injuries = []
+let injuriesLocal = []
 let diseases = []
+let checkInjuries = []
 
-let contentStyle = {
+const contentStyle = {
   borderRadius: '18px',
   padding: '30px'
+}
+
+const overlayStyle = {
+  position: 'absolute',
+  background: 'white',
+  boxShadow: '0 2px 5px rgba(0, 0, 0, .15)',
 }
 
 const FB = window.FB
@@ -44,9 +55,10 @@ class SubmitValidationForm extends Component {
   }
 
   componentWillMount() {
-    const { bodyMeasure, dispatch } = this.props
+    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx, injuriesFirst } = this.props
 
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
     // const script = document.createElement("script")
@@ -54,6 +66,11 @@ class SubmitValidationForm extends Component {
     // script.type  = "text/javascript"
     // script.text = 'http://api.ok.ru/js/fapi5.js'
     // document.body.appendChild(script)
+
+    dispatch({ type: 'BIRTHDAY', birthday: date })
+    dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: babyDate })
+    dispatch({ type: 'BABY_FEED', babyFeed: feedDate })
+    dispatch({ type: 'INJURIES_HIDDEN', injuriesHidden: injuriesEx })
 
     if (bodyMeasure) {
       dispatch({
@@ -64,9 +81,11 @@ class SubmitValidationForm extends Component {
   }
 
   render() {
-    const { error, valid, handleSubmit, bodyParams,
-      dispatch, onSubmit, initialValues, cities } = this.props
+    const { error, valid, handleSubmit, bodyParams, isReadyToTasks,
+      dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
 
+    console.log('program')
+    console.log(initialValues.program)
     // const sports = [
     //   'Сложно',
     //   'Нормально',
@@ -106,10 +125,14 @@ class SubmitValidationForm extends Component {
     //   'Повышенное'
     // ]
 
+    const handleDateChange = date => {
+      dispatch({ type: 'DAY_DATE', date: date })
+    }
+
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="layout">
 
-        <Header burger={false} />
+        <Header burger={false} isReadyToTasks={isReadyToTasks} isProfile={true}/>
 
         <div className="layout__inner layout__inner--profile">
           <div className="stage-box stage-box--small-padding">
@@ -155,7 +178,7 @@ class SubmitValidationForm extends Component {
                                 const photoPayload = {
                                   authToken: cookie.load('token'),
                                   data: {
-                                    photo: `${api}/files/${json.data.uid}.${json.data.extension}`,
+                                    photo: `${api}/files/${json.data.uid}.${json.data.extension}`.replace(/api\//, ''),
                                   }
                                 }
 
@@ -175,7 +198,7 @@ class SubmitValidationForm extends Component {
                 </div>
               </div>
               <div className="1/2--desk grid__cell">
-                <h3 className="h3">Привязка к социальным сетям</h3>
+                <h3 className="h3">Взять аватарку из социальной сети</h3>
                 <ul className="btn-social btn-social--profile">
                   <li className="btn-social__item btn-social__item--vk" onClick={() => {
                     const self = this
@@ -267,8 +290,13 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <p className="base-parag">Дата рождения</p>
-                <Field name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} />
+                <p className="base-parag">Дата рождения (гггг-ММ-дд)</p>
+
+                {/* <DatePicker selected={date} onChange={handleDateChange} /> */}
+                {window.mobilecheck()
+                  ? <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
+                  : <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                }
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <p className="base-parag">Ссылка на Instagram</p>
@@ -286,16 +314,16 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="country" id="country" options={['Россия', 'Украина', 'США']} component={SelectProfile} />
+                <Field name="country" id="country" placeholder='Страна' component={InputProfile} />
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="city" options={cities ? cities : []} component={SelectProfile} />
+                <Field name="city" placeholder='Город' component={InputProfile} />
               </div>
             </div>
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХХХ" component={InputProfilePhone} />
+                <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХХХ" component={InputProfile} />
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field disabled name="email" type="tel" placeholder="Почта" defaultValue="anna@gmail.com" component={InputProfile} />
@@ -303,18 +331,26 @@ class SubmitValidationForm extends Component {
             </div>
 
             <Field name="timezone" options={[
-              { name: 'Часовой пояс Минск+1', value: 1 },
-              { name: 'Часовой пояс Киев+2', value: 2 },
-              { name: 'Часовой пояс Москва+3', value: 3 },
-              { name: 'Часовой пояс Самара+4', value: 4 },
-              { name: 'Часовой пояс Екатеринбург+5', value: 5 },
-              { name: 'Часовой пояс Омск+6', value: 6 },
-              { name: 'Часовой пояс Красноярск+7', value: 7 },
-              { name: 'Часовой пояс Иркутск+8', value: 8 },
-              { name: 'Часовой пояс Якутия+9', value: 9 },
-              { name: 'Часовой пояс Владивосток+10', value: 10 },
-              { name: 'Часовой пояс Сахалин+11', value: 11 },
-              { name: 'Часовой пояс Камчатский край+12', value: 12 }
+              { name: 'Самоаское время UTC−11', value: -11 },
+              { name: 'Гавайско-Алеутское время UTC−10', value: -10 },
+              { name: 'Аляскинское время UTC−9', value: -9 },
+              { name: 'Тихоокеанское время UTC-8', value: -8 },
+              { name: 'Горное время UTC−7', value: -7 },
+              { name: 'Центральноамериканское время UTC−6', value: -6 },
+              { name: 'Североамериканское восточное время UTC−5', value: -5 },
+              { name: 'Атлантическое время UTC-4', value: -4 },
+              { name: 'Аргентинское время UTC-3', value: -3 },
+              { name: 'Среднее время по Гринвичу UTC', value: 0 },
+              { name: 'Центральноевропейское время UTC+1', value: 1 },
+              { name: 'Центральноафриканское время UTC+2', value: 2 },
+              { name: 'Московское время UTC+3', value: 3 },
+              { name: 'Пакистанское время UTC+5', value: 5 },
+              { name: 'Бангладешское время UTC+6', value: 6 },
+              { name: 'Рождественское островное время UTC+7', value: 7 },
+              { name: 'Западноавстралийское время UTC+8', value: 8 },
+              { name: 'Японское время UTC+9', value: 9 },
+              { name: 'Восточноавстралийское время UTC+10', value: 10 },
+              { name: 'Норфолкское островное время UTC+11', value: 11 },
             ]} component={SelectProgram} />
 
             <hr/>
@@ -326,6 +362,7 @@ class SubmitValidationForm extends Component {
                 <tbody>
                   <tr>
                     <th>Дата</th>
+                    <th>Рост, см</th>
                     <th>Вес, кг</th>
                     <th>Грудь, см</th>
                     <th>Талия, см</th>
@@ -334,35 +371,35 @@ class SubmitValidationForm extends Component {
                   </tr>
                   {bodyParams.map((param, index) => (
                     <tr key={index}>
-                      <td>{param.date}</td>
+                      <td>{moment(param.date).format('YYYY-MM-DD')}</td>
+                      <td>{param.height}</td>
                       <td>{param.weight}</td>
                       <td>{param.chest}</td>
                       <td>{param.waist}</td>
                       <td>{param.hips}</td>
                       <td>{param.thigh}</td>
                       <td>
-                        <span className="base-table__btn-del">
-                          <svg className="svg-icon ico-trash" onClick={e => {
-                            e.preventDefault()
-                            const payload = {
-                              authToken: cookie.load('token'),
-                              data: { id: param.id}
-                            }
+                        <span className="base-table__btn-del" onClick={e => {
+                          dispatch({ id: param.id, type: 'REMOVE_BODY_PARAM' })
 
-                            dispatch({ id: param.id, type: 'REMOVE_BODY_PARAM' })
+                          const payload = {
+                            authToken: cookie.load('token'),
+                            data: { id: param.id}
+                          }
 
-                            return fetch(`${api}/user/bodyMeasure-delete`, {
-                                headers: {
-                                  'Accept': 'application/json',
-                                  'Content-Type': 'application/json'
-                                },
-                                method: 'POST',
-                                body: JSON.stringify(payload)
-                              })
-                              .then(response => response.json())
-                              .then(json => {
-                              })
-                          }}>
+                          return fetch(`${api}/user/bodyMeasure-delete`, {
+                            headers: {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json'
+                            },
+                            method: 'POST',
+                            body: JSON.stringify(payload)
+                          })
+                          .then(response => response.json())
+                          .then(json => {
+                          })
+                        }}>
+                          <svg className="svg-icon ico-trash">
                             <use xlinkHref="#ico-trash"></use>
                           </svg>
                         </span>
@@ -370,25 +407,35 @@ class SubmitValidationForm extends Component {
                     </tr>
                   ))}
                   <tr>
-                    <td></td>
-                    <td><input ref="weight" type="text" className="base-table__input"/></td>
-                    <td><input ref="chest" type="text" className="base-table__input"/></td>
-                    <td><input ref="waist" type="text" className="base-table__input"/></td>
-                    <td><input ref="hips" type="text" className="base-table__input"/></td>
-                    <td><input ref="thigh" type="text" className="base-table__input"/></td>
+                    <td>{moment().format('YYYY-MM-DD')}</td>
+                    <td><InputElement mask="999" maskChar=" " ref="height" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="weight" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="chest" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="waist" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="hips" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999" maskChar=" " ref="thigh" type="text" className="base-table__input"/></td>
                   </tr>
                 </tbody>
               </table>
               <div className="text-center">
                 <div onClick={() => {
+                  this.refs.loadingModal.show()
                   const data = {
-                    date: moment().format('YYYY-DD-MM, HH:mm:ss'),
+                    date: moment().format('YYYY-MM-DD'),
+                    height: this.refs.height.value,
                     weight: this.refs.weight.value,
                     chest: this.refs.chest.value,
                     waist: this.refs.waist.value,
                     hips: this.refs.hips.value,
                     thigh: this.refs.thigh.value
                   }
+
+                  this.refs.height.value = ''
+                  this.refs.weight.value = ''
+                  this.refs.chest.value = ''
+                  this.refs.waist.value = ''
+                  this.refs.hips.value = ''
+                  this.refs.thigh.value = ''
 
                   const payload = {
                     authToken: cookie.load('token'),
@@ -405,6 +452,7 @@ class SubmitValidationForm extends Component {
                     })
                     .then(response => response.json())
                     .then(json => {
+                      this.refs.loadingModal.hide()
                       if (json.errorCode === 1 && json.data) {
                         dispatch({ ...data, type: 'ADD_BODY_PARAM' })
                         this.refs.successModal.show()
@@ -415,14 +463,30 @@ class SubmitValidationForm extends Component {
                 }} className="btn btn--primary">
                   Добавить
                 </div>
+
+                <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
+                  <h2>Подождите...</h2>
+                </Modal>
                 <Modal ref='failModal' contentStyle={contentStyle}>
                   <h2>Что-то пошло не так, поробуйте снова</h2>
+                  <br/>
+                  <div className="btn btn--action" onClick={() => this.refs.failModal.hide()}>
+                    Продолжить
+                  </div>
                 </Modal>
                 <Modal ref='submitFailModal' contentStyle={contentStyle}>
                   <h2>Одно или несколько полей были заполнены не правильно, проверьте вашу анкету еще раз</h2>
+                  <br/>
+                  <div className="btn btn--action" onClick={() => this.refs.submitFailModal.hide()}>
+                    Продолжить
+                  </div>
                 </Modal>
                 <Modal ref='successModal' contentStyle={contentStyle}>
                   <h2>Данные добавлены!</h2>
+                  <br/>
+                  <div className="btn btn--action" onClick={() => this.refs.successModal.hide()}>
+                    Продолжить
+                  </div>
                 </Modal>
               </div>
             </div>
@@ -434,31 +498,35 @@ class SubmitValidationForm extends Component {
                 <h3 className="h3">Для программы "Мама может"</h3>
                 <div className="grid mb30">
                   <div className="1/2--desk 1/1-pocket grid__cell">
-                    <p className="base-parag">Дата рождения последнего ребёнка</p>
-                    <Field name="babyBirthday" placeholder="д/М/гггг" component={InputProfile} />
+                    <p className="base-parag">Дата рождения последнего ребёнка (гггг-ММ-дд)</p>
+                    {window.mobilecheck()
+                      ? <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
+                      : <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                    }
                   </div>
                   <div className="1/2--desk 1/1-pocket grid__cell">
-                    <p className="base-parag">Месяц когда перестали кормить грудью</p>
-                    <Field name="lastBabyFeedMonth" placeholder="д/М/гггг" component={InputProfile} />
+                    <p className="base-parag">Месяц когда перестали кормить грудью (гггг-ММ-дд)</p>
+                    {window.mobilecheck()
+                      ? <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDateMask} />
+                      : <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                    }
                   </div>
                 </div>
               </div>
             }
 
-            <InsuranceValidationForm docs={initialValues.insuranceFile}/>
-
             <p className="sub-title">Для того, чтобы добиться быстрых и качественных результатов тренеру важно знать некоторые особенности твоего организма. Это поможет ему правильно распределить нагрузку на мышцы и организовать последовательность тренировок, не навредив твоему организму</p>
 
             <hr/>
 
-            <h3 className="h3">Осталось решить всего 1 вопрос и бонусы будут у тебя в копилочке!</h3>
+            <h3 className="h3">Осталось решить всего несколько вопросов и бонусы будут у тебя в копилочке!</h3>
             <p className="sub-title">Посчитай сколько раз ты приседаешь за 1 минуту и запиши цифру</p>
             <Field name="squatsCount" placeholder="Впиши свой результат сюда" component={InputProfile} />
             <p className="base-rapag text-center">Вот тебе таймер обратного отсчета. Запускай и начинай приседать</p>
 
             <Timer timer={{
               minutes: 1,
-              seconds: 20
+              seconds: 0
             }}/>
 
             <hr/>
@@ -523,8 +591,15 @@ class SubmitValidationForm extends Component {
                         document.getElementById(`injuriesExist[${i}]`).className = "options__item"
                     })
                   }}>
-                    {/* <Field component={RadioCustom} name="injuriesExist" val={val.val}/> */}
-                    <Field component='input' type='radio' name="injuriesExist" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                    <Field
+                      component='input'
+                      type='radio'
+                      name="injuriesExist"
+                      style={{visibility: 'hidden', margin: -5}}
+                      value={val.val}
+                      onClick={() => {
+                        dispatch({ type: 'INJURIES_HIDDEN', injuriesHidden: val.val })
+                      }}/>
                     {val.text}
                   </li>
                   <span/>
@@ -533,15 +608,32 @@ class SubmitValidationForm extends Component {
             </ul>
             <Field name="injuriesExist" component={ErrorField} />
 
-            <ul className="checkboxes">
-              {injuriesList.map((val, index) => (
-                <Field key={index} name={`injuries[${index}]`} title={val} id={`injuries[${index}]`} component={CheckboxProfile} onChange={e =>
-                  e.target.checked ? injuries.push(val) : injuries.splice(injuries.indexOf(val), 1)
-                }/>
-              ))}
-            </ul>
+            {injuriesHidden &&
+              // <div>
+              //   <ul className="checkboxes">
+              //     {injuriesList.map((val, index) => (
+              //       <Field key={index} name={`injuries[${index}]`} checker={injuriesLocal.find(i => {
+              //         return i === val
+              //       })} title={val} id={`injuries[${index}]`} component={CheckboxProfile} onChange={e => {
+              //           const exist = injuriesLocal.find(i => {
+              //             return i === val
+              //           })
+              //
+              //           console.log(exist)
+              //
+              //           !exist//e.target.checked
+              //             ? injuriesLocal.push(val)
+              //             : injuriesLocal.splice(injuriesLocal.indexOf(val), 1)
+              //
+              //           dispatch({ type: 'INJURIES_SET', injuries: injuriesLocal })
+              //         }
+              //       }/>
+              //     ))}
+              //   </ul>
 
-            <Field name="injuriesAnother" placeholder="Другое" component={InputProfile} />
+              <Field name="diseases" placeholder="Перечислите ваши проблемные зоны через запятую" component={InputProfile} />
+              // </div>
+            }
 
             <hr/>
 
@@ -630,6 +722,21 @@ class SubmitValidationForm extends Component {
               {error && <strong>{error}</strong>}
             </div>
 
+            <br/>
+
+            {window.mobilecheck() &&
+              isReadyToTasks && (
+                <div className="btn btn--primary" style={{ backgroundColor: '#1F447B' }} onClick={() => {
+                  browserHistory.push('/task')
+                }}>
+                  К заданиям
+                </div>
+              )
+            }
+
+          </div>
+          <div className="stage-box stage-box--small-padding">
+            <InsuranceValidationForm docs={initialValues.insuranceFile}/>
           </div>
         </div>
       </form>
@@ -640,8 +747,11 @@ class SubmitValidationForm extends Component {
 const validate = data => {
   const errors = {}
 
-  data.injuries = injuries.join()
-  data.diseases = diseases.join()
+  // data.injuries = injuries.join()
+  // data.diseases = diseases.join()
+
+  data.firstName.replace(/ /g, '')
+  data.lastName.replace(/ /g, '')
 
   switch (true) {
     case !data.firstName:
@@ -699,6 +809,9 @@ const validate = data => {
     case data.phone.length > 20:
       errors.phone = 'Поле телефона должно быть короче 20 символов'
       break
+    case !/^[+\s0-9]{6,20}$/.test(data.phone):
+      errors.phone = 'Поле должно содержать только цифры, знак +'
+      break
     default:
       break
   }
@@ -718,9 +831,6 @@ const validate = data => {
     case !data.birthday:
       errors.birthday = 'День Рождения должен быть заполнен'
       break
-    case !/^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$/.test(data.birthday):
-      errors.birthday = 'Поле День Рождения не соответствует формату 02/01/2017'
-      break
     default:
       break
   }
@@ -735,8 +845,6 @@ const validate = data => {
 
   if (data.injuriesExist === undefined) {
     errors.injuriesExist = 'Поле травмы должно быть отмечено'
-  } else if (data.injuriesExist === 'true' && data.injuries.length === 0 && !data.injuriesAnother) {
-    errors.injuriesAnother = 'Выберите травмы'
   }
 
   // if (!data.diseasesExist) {
@@ -764,177 +872,11 @@ SubmitValidationForm = reduxForm({
 const selector = formValueSelector('submitValidation')
 
 const mapStateToProps = state => {
-  const country = selector(state, 'country')
-  let cities
-  switch (country) {
-    case 'Россия':
-      cities = ['Адыгея',
-      'Алтайский край',
-      'Амурская обл.',
-      'Архангельская обл.',
-      'Астраханская обл.',
-      'Башкортостан(Башкирия)',
-      'Белгородская обл.',
-      'Брянская обл.',
-      'Бурятия',
-      'Владимирская обл.',
-      'Волгоградская обл.',
-      'Вологодская обл.',
-      'Воронежская обл.',
-      'Дагестан',
-      'Еврейская обл.',
-      'Ивановская обл.',
-      'Иркутская обл.',
-      'Кабардино-Балкария',
-      'Калининградская обл.',
-      'Калмыкия',
-      'Калужская обл.',
-      'Камчатская обл.',
-      'Карелия',
-      'Кемеровская обл.',
-      'Кировская обл.',
-      'Коми',
-      'Костромская обл.',
-      'Краснодарский край',
-      'Красноярский край',
-      'Курганская обл.',
-      'Курская обл.',
-      'Ленинградская обл.',
-      'Липецкая обл.',
-      'Магаданская обл.',
-      'Марий Эл',
-      'Мордовия',
-      'Москва и Московская обл',
-      'Мурманская обл.',
-      'Нижегородская обл.',
-      'Новгородская обл.',
-      'Новосибирская обл.',
-      'Омская обл.',
-      'Оренбургская обл.',
-      'Орловская обл.',
-      'Пензенская обл.',
-      'Пермская обл.',
-      'Приморский край',
-      'Псковская обл.',
-      'Ростовская обл.',
-      'Рязанская обл.',
-      'Самарская обл.',
-      'Саратовская обл.',
-      'Саха (Якутия)',
-      'Сахалин',
-      'Свердловская обл.',
-      'Северная Осетия',
-      'Смоленская обл.',
-      'Ставропольский край',
-      'Тамбовская обл.',
-      'Татарстан',
-      'Тверская обл.',
-      'Томская обл.',
-      'Тульская обл.',
-      'Тыва (Тувинская Респ.)',
-      'Тюменская обл.',
-      'Удмуртия',
-      'Ульяновская обл.',
-      'Хабаровский край',
-      'Хакасия',
-      'Ханты-Мансийский АО',
-      'Челябинская обл.',
-      'Чечено-Ингушетия',
-      'Читинская обл.',
-      'Чувашия',
-      'Чукотский АО',
-      'Ямало-Ненецкий АО',
-      'Ярославская обл.']
-      break
-    case 'Украина':
-      cities = ['Винницкая обл.',
-      'Волынская обл.',
-      'Днепропетровская обл.',
-      'Донецкая обл.',
-      'Житомирская обл.',
-      'Закарпатская обл.',
-      'Запорожская обл.',
-      'Ивано-Франковская обл.',
-      'Киевская обл.',
-      'Кировоградская обл.',
-      'Крымская обл.',
-      'Луганская обл.',
-      'Львовская обл.',
-      'Николаевская обл.',
-      'Одесская обл.',
-      'Полтавская обл.',
-      'Ровенская обл.',
-      'Сумская обл.',
-      'Тернопольская обл.',
-      'Украина',
-      'Харьковская обл.',
-      'Херсонская обл.',
-      'Хмельницкая обл.',
-      'Черкасская обл.',
-      'Черниговская обл.',
-      'Черновицкая обл.']
-      break
-    case 'США':
-      cities = ['Айдахо',
-      'Айова',
-      'Алабама',
-      'Аляска',
-      'Аризона',
-      'Арканзас',
-      'Вайоминг',
-      'Вашингтон',
-      'Вермонт',
-      'Виргиния',
-      'Висконсин',
-      'Гаваи',
-      'Делавар',
-      'Джорджия',
-      'Западная Виргиния',
-      'Иллинойс',
-      'Индиана',
-      'Калифорния',
-      'Канзас',
-      'Кентукки',
-      'Колорадо',
-      'Коннектикут',
-      'Луизиана',
-      'Массачусетс',
-      'Миннесота',
-      'Миссисипи',
-      'Миссури',
-      'Мичиган',
-      'Монтана',
-      'Мэн',
-      'Мэриленд',
-      'Небраска',
-      'Невада',
-      'Нью-Гэмпшир',
-      'Нью-Джерси',
-      'Нью-Йорк',
-      'Нью-Мексико',
-      'Огайо',
-      'Оклахома',
-      'окр.Колумбия',
-      'Орегон',
-      'Пенсильвания',
-      'Род-Айленд',
-      'Северная Дакота',
-      'Северная Каролина',
-      'США',
-      'Теннесси',
-      'Техас',
-      'Флорида',
-      'Южная Дакота',
-      'Южная Каролина',
-      'Юта']
-      break
-      default:
-        break
-  }
+  const { bodyParams, injuriesHidden, injuries } = state
   return {
-    country,
-    cities,
-    bodyParams: state.bodyParams
+    bodyParams,
+    injuriesHidden,
+    injuries
   }
 }
 

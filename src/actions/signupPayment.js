@@ -53,8 +53,8 @@ const fetchPayment = partialState => dispatch => {
       let payload = {
         authToken: token ? token : cookie.load('token'),
         data: {
-          program,
-          package: packageType,
+          program: program || program === 'undefined' ? program : 1,
+          package: packageType || packageType === 'ubdefined' ? packageType: 1,
           isShare: share ? share : false
         }
       }

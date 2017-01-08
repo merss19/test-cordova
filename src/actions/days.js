@@ -90,7 +90,8 @@ export const receiveDay = (days, id) => {
 export const load = data => ({ type: 'LOAD', data })
 
 export const receiveDays = (days, json) => {
-  // json = exampleJson
+  console.log('rrrrrrrrrr')
+  console.log(json)
   return ({
     type: RECEIVE_DAYS,
     days,
@@ -99,12 +100,13 @@ export const receiveDays = (days, json) => {
 }
 
 const fetchDays = partialState => dispatch => {
-  const { token, days, program, date } = partialState
+  const { token, days, date, program } = partialState
   dispatch(requestDays(days))
   const payload = {
     authToken: token ? token : cookie.load('token'),
     data: {
-      date: moment().format('YYYY-MM-DD')
+      date: date ? moment(date).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
+      program
     }
   }
 
@@ -121,8 +123,6 @@ const fetchDays = partialState => dispatch => {
   })
   .then(response => response.json())
   .then(json => {
-    console.log('<======>===0')
-    console.log(json)
     return dispatch(receiveDays(days, json))
   })
 }
@@ -139,8 +139,13 @@ const shouldFetchDays = (state, days) => {
   return d.didInvalidate
 }
 
-export const fetchDaysIfNeeded = (days, program, date) => (dispatch, getState) => {
+export const fetchDaysIfNeeded = days => (dispatch, getState) => {
   if (shouldFetchDays(getState(), days)) {
-    return dispatch(fetchDays({ token: getState().userToken.token, days, program, date}))
+    return dispatch(fetchDays({
+      token: getState().userToken.token,
+      days,
+      date: getState().dayDate,
+      program: getState().programShow
+    }))
   }
 }

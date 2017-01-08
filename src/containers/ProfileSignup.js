@@ -29,6 +29,7 @@ class ProfileSignup extends Component {
     document.body.appendChild(fbScript)
 
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
 
@@ -57,11 +58,18 @@ class ProfileSignup extends Component {
         break
     }
 
-    if (program) {
+    if (program && packageType) {
       cookie.save('program', program, { path: '/' })
+      cookie.save('packageType', packageType, { path: '/' })
+      cookie.remove('general', { path: '/' })
+    } else if (program && !packageType) {
+      cookie.save('program', program, { path: '/' })
+      cookie.remove('packageType', { path: '/' })
       cookie.remove('general', { path: '/' })
     } else {
       cookie.save('general', true, { path: '/' })
+      cookie.remove('program', { path: '/' })
+      cookie.remove('packageType', { path: '/' })
     }
 
     const { signup } = this.props
@@ -188,23 +196,33 @@ class ProfileSignup extends Component {
         </div>
 
         <ul className="entry-bc entry-bc--step-1">
-          <li className="entry-bc__item entry-bc__item--done">
+          <li className={program && packageType
+            ? "entry-bc__item entry-bc__item--done"
+            : "entry-bc__item entry-bc__item--active"}>
             <span className="entry-bc__step">
               <span className="entry-bc__step-num">1</span>
               <svg className="svg-icon ico-done">
                 <use xlinkHref="#ico-done"></use>
               </svg>
             </span>
-            <span className="entry-bc__title">План</span>
+            {cookie.load('packageType')
+              ? <span className="entry-bc__title">План</span>
+              : <span className="entry-bc__title">Регистрация/Вход</span>
+            }
           </li>
-          <li className="entry-bc__item entry-bc__item--active">
+          <li className={program && packageType
+            ? "entry-bc__item entry-bc__item--active"
+            : "entry-bc__item"}>
             <span className="entry-bc__step">
               <span className="entry-bc__step-num">2</span>
               <svg className="svg-icon ico-done">
                 <use xlinkHref="#ico-done"></use>
               </svg>
             </span>
-            <span className="entry-bc__title">Регистрация/Вход</span>
+            {cookie.load('packageType')
+              ? <span className="entry-bc__title">Регистрация/Вход</span>
+              : <span className="entry-bc__title">План</span>
+            }
           </li>
           <li className="entry-bc__item">
             <span className="entry-bc__step">

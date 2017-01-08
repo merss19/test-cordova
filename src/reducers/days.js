@@ -23,6 +23,15 @@ export const programShow = (state = 0, action) => {
   }
 }
 
+export const dayId = (state = '-', action) => {
+  switch (action.type) {
+    case 'DAY_ID':
+      return action.id
+    default:
+      return state
+  }
+}
+
 export const editDay = (state = {}, action) => {
   switch (action.type) {
     case 'EDIT_DAY':
@@ -34,10 +43,39 @@ export const editDay = (state = {}, action) => {
   }
 }
 
-export const dayIntro = (state = '', action) => {
+export const dayIntro = (state = [], action) => {
   switch (action.type) {
     case 'DAY_INTRO':
-      return action.intro
+      state[action.index] = action.intro
+      return state
+    case 'DAY_INTRO_RESET':
+      return []
+    default:
+      return state
+  }
+}
+
+export const editor = (state = [], action) => {
+  switch (action.type) {
+    case 'EDITOR':
+      state[action.index] = action.editor
+      return state
+    case 'EDITOR_RESET':
+      return []
+    case 'SAVE_EDITOR':
+      return action.editor
+    default:
+      return state
+  }
+}
+
+export const content = (state = [], action) => {
+  switch (action.type) {
+    case 'CONTENT':
+      state[action.index] = action.content
+      return state
+    case 'CONTENT_RESET':
+      return []
     default:
       return state
   }

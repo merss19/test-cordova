@@ -1,5 +1,6 @@
 import React , { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import * as actions from '../actions'
 import { SubmissionError } from 'redux-form'
 import SubmitValidationForm from '../components/profile/SubmitValidationForm'
@@ -14,6 +15,8 @@ let contentStyle = {
   padding: '30px'
 }
 
+let firstTime = true
+
 class ProfileCreate extends Component {
   static propTypes = {
     token: PropTypes.string,
@@ -26,12 +29,19 @@ class ProfileCreate extends Component {
 
   componentWillMount() {
     if (window.mobilecheck()) {
-      contentStyle.width = '300px'
+      contentStyle.margin = '80px'
+      contentStyle.width = '340px'
     }
   }
 
+  componentDidUpdate() {
+    const { profileData, dispatch } = this.props
+    if (profileData && profileData.isFirstEdit)
+      dispatch({ type: 'IS_READY_TO_TASKS', isReadyToTasks: true })
+  }
+
   componentDidMount() {
-    const { dispatch, selectedProfile } = this.props
+    const { dispatch, selectedProfile, profileData } = this.props
     dispatch(actions.fetchProfileIfNeeded(selectedProfile))
   }
 
@@ -43,9 +53,11 @@ class ProfileCreate extends Component {
   }
 
   render() {
-    const { profileData, insurance, bodyParams, token, isFetching } = this.props
+    const { profileData, insurance, bodyParams, token, isFetching,
+      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch } = this.props
+    let { injuries } = this.props
     const isEmpty = !profileData || !profileData.email
-    const insuranceIsEmpty = !insurance || !insurance[insurance.length - 1]
+    const insuranceIsEmpty = !insurance
 
     return (
       <div className="entry__inner">
@@ -56,32 +68,68 @@ class ProfileCreate extends Component {
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
             <SubmitValidationForm
               bodyMeasure={bodyParams}
+              isReadyToTasks={isReadyToTasks}
+              date={moment(profileData.birthday).format('YYYY-MM-DD')}
+              babyDate={moment(profileData.babyBirthday).format('YYYY-MM-DD')}
+              feedDate={moment(profileData.lastBabyFeedMonth).format('YYYY-MM-DD')}
+              injuriesEx={profileData.injuriesExist}
+              isReadyToTasks={isReadyToTasks}
               initialValues={{
                 ...profileData,
-                birthday: moment(profileData.birthday).format('DD/MM/YYYY'),
                 country: !profileData.country ? 'Россия' : profileData.country,
                 city: !profileData.city ? 'Москва' : profileData.city,
-                fullName: !insuranceIsEmpty && insurance[insurance.length - 1].fullName
-                  ? insurance[insurance.length - 1].fullName : '' ,
-                profession: !insuranceIsEmpty && insurance[insurance.length - 1].profession
-                  ? insurance[insurance.length - 1].profession : '',
-                passport: !insuranceIsEmpty && insurance[insurance.length - 1].passport
-                  ? insurance[insurance.length - 1].passport : '',
-                address: !insuranceIsEmpty && insurance[insurance.length - 1].address
-                  ? insurance[insurance.length - 1].address : '',
-                insuranceFile: !insuranceIsEmpty && insurance[insurance.length - 1].insuranceFile
-                  ? insurance[insurance.length - 1].insuranceFile : []
-
+                fullName: !insuranceIsEmpty && insurance.fullName
+                  ? insurance.fullName : '' ,
+                profession: !insuranceIsEmpty && insurance.profession
+                  ? insurance.profession : '',
+                passport: !insuranceIsEmpty && insurance.passport
+                  ? insurance.passport : '',
+                address: !insuranceIsEmpty && insurance.address
+                  ? insurance.address : '',
+                insuranceFile: !insuranceIsEmpty && insurance.insuranceFile
+                  ? insurance.insuranceFile : []
               }}
               onSubmit={ data => {
-                this.refs.loadingModal.show()
-                delete data.password
-                const payload = {
-                  authToken: token ? token : cookie.load('token'),
-                  data
+                let isValidBirthday = true
+                let isValidBabyBirhday = true
+                let isValidBabyFeed = true
+
+                if (!window.mobilecheck()) {
+                  console.log('MOBILE')
+                  data.birthday = birthday
+
+                  if (babyBirthday)
+                    data.babyBirthday = babyBirthday
+
+                  if (babyFeed)
+                    data.lastBabyFeedMonth = babyFeed
+                } else {
+                  console.log('check')
+                  console.log(data)
+                  data.birthday = moment(data.birthday).format('YYYY-MM-DD')
+                  console.log(data.birthday)
+                  console.log(moment(data.birthday, 'YYYY-MM-DD', true).isValid())
+                  isValidBirthday = moment(data.birthday, 'YYYY-MM-DD', true).isValid()
+                  if (data.program === 2) {
+                    console.log(data.babyBirthday)
+                    console.log(data.lastBabyFeedMonth)
+                    data.babyBirthday = moment(data.babyBirthday).format('YYYY-MM-DD')
+                    data.lastBabyFeedMonth = moment(data.lastBabyFeedMonth).format('YYYY-MM-DD')
+                    isValidBabyBirhday = moment(data.babyBirthday, 'YYYY-MM-DD', true).isValid()
+                    isValidBabyFeed = moment(data.lastBabyFeedMonth, 'YYYY-MM-DD', true).isValid()
+                  }
                 }
 
-                return fetch(`${api}/user/user-update`, {
+                if (isValidBirthday && isValidBabyBirhday && isValidBabyFeed) {
+                  this.refs.loadingModal.show()
+                  data.injuries = injuries.join()
+                  delete data.password
+                  const payload = {
+                    authToken: token ? token : cookie.load('token'),
+                    data
+                  }
+
+                  return fetch(`${api}/user/user-update`, {
                     headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
@@ -98,12 +146,52 @@ class ProfileCreate extends Component {
                       this.refs.successModal.show()
                     }
                   })
+                } else if (data.program === 2) {
+                  this.refs.failDatesModal.show()
+                } else {
+                  this.refs.failBirthdayModal.show()
                 }
-              }
+              }}
             />
             <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
+              <br/>
+              <h4>Мы проверим анкету на наличие опечаток и пришлём подтверждение по почте. Ознакомьтесь с разделом ЧАВО!</h4>
+              <br/>
+              <div className="btn btn--primary" onClick={() => {
+                browserHistory.push('/task')
+              }}>
+                К заданиям
+              </div>
+              <div className="divider" />
+              <div className="btn btn--action" onClick={() => {
+                this.refs.successModal.hide()
+                dispatch({ type: 'IS_READY_TO_TASKS', isReadyToTasks: true })
+              }}>
+                Продолжить
+              </div>
             </Modal>
+
+            <Modal ref='failBirthdayModal' contentStyle={contentStyle}>
+              <h2>Дата вашего рождения не верна, проверьте формат даты</h2>
+              <br/>
+              <div className="btn btn--action" onClick={() => {
+                this.refs.failBirthdayModal.hide()
+              }}>
+                Продолжить
+              </div>
+            </Modal>
+
+            <Modal ref='failDatesModal' contentStyle={contentStyle}>
+              <h2>Дата вашего рождения, рождения вашего ребенка или последнего месяца кормления грудью не верны</h2>
+              <br/>
+              <div className="btn btn--action" onClick={() => {
+                this.refs.failDatesModal.hide()
+              }}>
+                Продолжить
+              </div>
+            </Modal>
+
             <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
               <h2>Подождите...</h2>
             </Modal>
@@ -114,9 +202,9 @@ class ProfileCreate extends Component {
   }
 }
 
-
 const mapStateToProps = state => {
-  const { selectedProfile, recivedProfile, userToken } = state
+  const { selectedProfile, recivedProfile, userToken, birthday,
+    babyBirthday, babyFeed, isReadyToTasks, injuries } = state
   const {
     isFetching,
     lastUpdated,
@@ -135,6 +223,11 @@ const mapStateToProps = state => {
     profileData,
     insurance,
     bodyParams,
+    birthday,
+    babyBirthday,
+    babyFeed,
+    isReadyToTasks,
+    injuries,
     token: userToken.token
   }
 }

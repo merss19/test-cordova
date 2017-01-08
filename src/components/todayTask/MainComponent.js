@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import Chat from '../../stories/chat/Chat'
 import Poll from '../../stories/poll/Poll'
 import Header from '../../stories/Header'
@@ -38,65 +39,46 @@ class MainComponent extends Component {
     const windowWidth = window.innerWidth
     if (windowWidth < 1210 && windowWidth > 1024) {
       const offset = (1210 - windowWidth) * 0.3
-      console.log(offset)
       document.getElementById('menu').style = `width: ${295 - offset}px`
     }
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
-    window.addEventListener("resize", this.handleResize)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
-    window.removeEventListener("resize", this.handleResize)
-  }
+  // componentDidMount() {
+  //   window.addEventListener('scroll', this.handleScroll)
+  //   window.addEventListener("resize", this.handleResize)
+  // }
+  //
+  // componentWillUnmount() {
+  //   window.removeEventListener('scroll', this.handleScroll)
+  //   window.removeEventListener("resize", this.handleResize)
+  // }
 
   render() {
     const { taskDay, token } = this.props
-    const { intro, tasks, poll, chat } = taskDay
+    const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName, role } } = taskDay
+    console.log(taskDay)
+    const introJSON = intro && intro[0] && intro[0].intro ? JSON.parse(intro[0].intro) : null
+    const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
 
     return (
       <div className="layout">
-        <Header closeMobMenu={() => {}}/>
+        <Header closeMobMenu={() => {}} isTask={true}/>
 
         <div className="layout__inner">
           <div className="grid">
             <div className="1/4--desk grid__cell layout__menu">
               <div id="menu" className="grid layout__menu-inner">
-                <Menu/>
-                <CalendarList calendar={[{
-                    number: '1',
-                    icon: 'ico-done',
-                    status: 'done',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет принят',
-                    day: 'Пн'
-                  }, {
-                    number: '2',
-                    status: 'waiting',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет принимается',
-                    day: 'Вт'
-                  }, {
-                    number: '3',
-                    icon: 'ico-cross',
-                    status: 'missed',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет не сдан',
-                    day: 'Ср'
-                }]}/>
+                <Menu fullName={`${firstName} ${lastName}`}/>
+                <CalendarList calendar={calendar} dayId={id} role={role}/>
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-              <TaskIntro text={intro} />
-              <Exercises tasks={tasks} sendReport={() => {
-                this.refs.sendReportModal.show()
-              }}/>
+              <TaskIntro text={introHTML} json={introJSON} />
+              {tasks && tasks[0] &&
+                <Exercises tasks={tasks} sendReport={() => {
+                  this.refs.sendReportModal.show()
+                }}/>
+              }
 
               <Modal ref='sendReportModal' contentStyle={contentStyle}>
                 <SendReportModal onSubmit={(data) => {
@@ -130,20 +112,22 @@ class MainComponent extends Component {
               </Modal>
 
 
-              {poll &&
+              {poll && poll.description &&
                 <Poll poll={poll} />
               }
 
-              {chat &&
+              {/* {chat && chat[0] &&
                 <Chat chat={chat} userId={1} />
-              }
+              } */}
             </div>
           </div>
         </div>
 
         <ul className="menu-mob-bottom">
-          <li className="menu-mob-bottom__item menu-mob-bottom__item--active">
-            <a href="#" className="menu-mob-bottom__item-inner">
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/task')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-tasks">
                   <use xlinkHref="#ico-m-tasks"></use>
@@ -152,8 +136,10 @@ class MainComponent extends Component {
               <span className="menu-mob-bottom__title">Задания</span>
             </a>
           </li>
-          <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+          {/* <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/reports')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-book">
                   <use xlinkHref="#ico-m-book"></use>
@@ -163,7 +149,9 @@ class MainComponent extends Component {
             </a>
           </li>
           <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/food')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-food">
                   <use xlinkHref="#ico-m-food"></use>
@@ -171,15 +159,29 @@ class MainComponent extends Component {
               </span>
               <span className="menu-mob-bottom__title">Питание</span>
             </a>
-          </li>
+          </li> */}
           <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/faq')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-faq">
                   <use xlinkHref="#ico-m-faq"></use>
                 </svg>
               </span>
               <span className="menu-mob-bottom__title">ЧАВО</span>
+            </a>
+          </li>
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/photos')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-faq">
+                  <use xlinkHref="#ico-m-faq"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">Фото</span>
             </a>
           </li>
         </ul>

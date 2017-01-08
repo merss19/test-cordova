@@ -1,19 +1,29 @@
 import React, { Component } from 'react'
 import { Editor } from 'react-draft-wysiwyg'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import '../../../public/react-draft-wysiwyg.css'
+import * as actions from '../../actions'
+import { convertFromHTML, convertToRaw, convertFromRaw, ContentState, EditorState } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
-import Calendar from '../../stories/task/Calendar'
+import Calendar from './Calendar'
 import SelectProgram from '../componentKit/SelectProgram'
-// import Menu from './Menu'
 import MenuButton from '../../stories/MenuButton'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
+import cookie from 'react-cookie'
+import { api } from '../../config.js'
+import Modal from 'boron/FadeModal'
 
 let htmlEditor = ''
+
+let contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
 
 const renderExercises = ({ fields, meta: { touched, error } }) => (
   <ul>
@@ -103,6 +113,7 @@ const renderPollFields = ({ fields, meta: { error } }) => (
 class DayEditorValidationForm extends Component {
   onEditorChange: Function = (editorContent) => {
     const { dispatch } = this.props
+    dispatch({ type: 'CONTENT', content: editorContent })
     dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent) })
   }
 
@@ -132,39 +143,71 @@ class DayEditorValidationForm extends Component {
 
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
-      change, date, programs, programShow } = this.props
+      change, date, programs, programShow, selectedDays, editor, dayId, content } = this.props
 
+    console.log(calendar)
     const renderPrograms = ({ fields, meta: { error } }) => (
       <ul>
-        {/* {this.props.params.program + '' === '1'
-        } */}
-        {fields.length > 0
-          ? fields.map((program, index) => {
-              if (index < 3) {
-                return (
-                  <li key={index}>
-                    <button type="button" className="btn btn--secondary" onClick={() => {
-                      dispatch({ type: 'PROGRAM_SHOW', programShow: index + 1 })
-                    }}>
-                      {programs[index].name}
-                    </button>
-                    {programShow === programs[index].id &&
-                      <FieldArray name={`${program}.tasks`} component={renderTasks} />
-                    }
-                    <hr/>
-                  </li>
-                )
-              }
-            })
-          : <li>
-              <FieldArray name='program[0].tasks' component={renderTasks} />
-            </li>
-        }
+       <li>
+          <br/>
+          <div className="grid">
+            <div className="1/2--desk 1/1--pocket grid__cell">
+              <Field name='program[0].customName' placeholder="Название дня" component={InputProfile} />
+            </div>
+            <div className="1/2--desk 1/1--pocket grid__cell">
+              <Field name='program[0].customIcon' placeholder="Выберите иконку" component={InputProfile} />
+            </div>
+          </div>
+
+          {editor
+            ? <div className='home-root'>
+              <Editor
+                toolbarClassName="home-toolbar"
+                wrapperClassName="home-wrapper"
+                editorClassName="home-editor"
+                placeholder="Вставьте текст..."
+                onChange={(editorContent) => {
+                  const { dispatch } = this.props
+                  console.log(JSON.stringify(editorContent))
+                  dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
+                  dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
+                }}
+                contentState={editor[programShow - 1]}
+                uploadCallback={this.uploadImageCallBack}
+              />
+            </div>
+            : <div className='home-root'>
+              <Editor
+                toolbarClassName="home-toolbar"
+                wrapperClassName="home-wrapper"
+                editorClassName="home-editor"
+                placeholder="Вставьте текст..."
+                onChange={(editorContent) => {
+                  const { dispatch } = this.props
+                  console.log(editorContent)
+                  dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
+                  dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
+                }}
+                uploadCallback={this.uploadImageCallBack}
+              />
+            </div>
+          }
+          <br/>
+          <br/>
+          <FieldArray name='program[0].tasks' component={renderTasks} />
+        </li>
       </ul>
     )
 
     const handleDateChange = date => {
+      dispatch({ type: 'CONTENT_RESET' })
+      dispatch({ type: 'DAY_INTRO_RESET' })
+      dispatch({ type: 'EDITOR_RESET' })
+      dispatch({ type: 'DAY_ID', id: '-' })
+      change('programTasks', programs)
+      dispatch({ type: 'PROGRAM_SHOW', programShow: 0 })
       dispatch({ type: 'DAY_DATE', date: date })
+      dispatch(actions.fetchDaysIfNeeded(selectedDays))
     }
 
     return (
@@ -174,33 +217,123 @@ class DayEditorValidationForm extends Component {
             <div className="2/3 grid__cell">
               <ul className="main-nav">
                 <li className="main-nav__item">
-                  <MenuButton onClick={() => change('programTasks', programs)} icon="ico-m-book">
-                    Тренировочный день
+                  <MenuButton onClick={() => {
+                    dispatch({ type: 'CONTENT_RESET' })
+                    dispatch({ type: 'DAY_INTRO_RESET' })
+                    dispatch({ type: 'EDITOR_RESET' })
+                    dispatch({ type: 'DAY_ID', id: '-' })
+                    change('programTasks', [])
+                    dispatch({ type: 'PROGRAM_SHOW', programShow: 1 })
+                    dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                  }} icon="ico-m-book">
+                    #Я ГЕРОЙ
                   </MenuButton>
                 </li>
                 <li className="main-nav__item">
-                  <MenuButton onClick={() => change('programTasks', [])} icon="ico-m-book">
-                    Бонусный день
+                  <MenuButton onClick={() => {
+                    dispatch({ type: 'CONTENT_RESET' })
+                    dispatch({ type: 'DAY_INTRO_RESET' })
+                    dispatch({ type: 'EDITOR_RESET' })
+                    dispatch({ type: 'DAY_ID', id: '-' })
+                    change('programTasks', [])
+                    dispatch({ type: 'PROGRAM_SHOW', programShow: 2 })
+                    dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                  }} icon="ico-m-book">
+                    #МАМА МОЖЕТ
                   </MenuButton>
+                </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => {
+                    dispatch({ type: 'CONTENT_RESET' })
+                    dispatch({ type: 'DAY_INTRO_RESET' })
+                    dispatch({ type: 'EDITOR_RESET' })
+                    dispatch({ type: 'DAY_ID', id: '-' })
+                    change('programTasks', [])
+                    dispatch({ type: 'PROGRAM_SHOW', programShow: 3 })
+                    dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                  }} icon="ico-m-book">
+                    #ЭКСТРЕМАЛЬНАЯ СУШКА
+                  </MenuButton>
+                </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => {
+                    browserHistory.push('/userReports/pendingProfiles')
+                  }} icon="ico-m-tasks">Отчеты</MenuButton>
+                </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => {
+                    browserHistory.push('/superadmin/food')
+                  }} icon="ico-m-food">Питание</MenuButton>
+                </li>
+                <li className="main-nav__item">
+                  <MenuButton onClick={() => {
+                    browserHistory.push('/superadmin/photos')
+                  }} icon="ico-m-faq">Инструкция фото</MenuButton>
                 </li>
               </ul>
             </div>
             <div className="1/3 grid__cell">
               <ul className="min-calendar">
                 {calendar && calendar.map((field, index) => (
-                  <Calendar onClick={() => {
-                      reset()
-                      dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
-                      change('customName', calendar[index].customName)
-                      change('customIcon', calendar[index].customIcon)
-                      change('programTasks', calendar[index].programTasks)
-                    }}
-                    key={index}
-                    number={field.id}
-                    date={field.date}
-                  >
-                    {moment(field.date).format('DDddd')}
-                  </Calendar>
+                  <li key={index}>
+                    <Calendar onClick={() => {
+                        reset()
+
+                        console.log(calendar[index])
+
+                        dispatch({ type: 'DAY_ID', id: calendar[index].id })
+
+                        calendar[index].intro.forEach((i, index) => {
+                          dispatch({ type: 'EDITOR', editor: JSON.parse(i.intro), index })
+                        })
+
+                        dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
+                        change('customName', calendar[index].customName)
+                        change('customIcon', calendar[index].customIcon)
+                        change('programTasks', calendar[index].programTasks)
+                      }}
+                      onTrashClick={() => {
+                        this.refs[`deleteModal${index}`].show()
+                      }}
+                      key={index}
+                      number={field.id}
+                      date={field.date}
+                    >
+                      {moment(field.date).format('DDddd')}
+                    </Calendar>
+                    <Modal ref={`deleteModal${index}`} contentStyle={contentStyle}>
+                      <h2>Хотите удалить запись?</h2>
+                      <br/>
+                      <button className="btn btn--action" onClick={() => {
+                        const payload = {
+                          authToken: cookie.load('token'),
+                          data: {
+                            id: field.id
+                          }
+                        }
+
+                        const headers = {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json'
+                        }
+
+                        const method = 'POST'
+                        return fetch(`${api}/data/adminday-delete`, {
+                          headers,
+                          method,
+                          body: JSON.stringify(payload)
+                        })
+                        .then(response => response.json())
+                        .then(json => {
+                          if (json.errorCode === 1) {
+                            dispatch(actions.fetchDaysIfNeeded(selectedDays))
+                          }
+                        })
+                      }}>
+                        Удалить
+                      </button>
+                    </Modal>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -216,33 +349,11 @@ class DayEditorValidationForm extends Component {
               </div>
             </div>
 
+            <h2 className='h2'>Id: {dayId} Program: {programShow}</h2>
+            <span>Дата:</span>
+            <div className="divider" />
             <DatePicker selected={date} onChange={handleDateChange} />
             <br/>
-            <br/>
-
-            <div className="grid">
-              <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name='customName' placeholder="Название дня" component={InputProfile} />
-              </div>
-              <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name='customIcon' placeholder="Выберите иконку" component={InputProfile} />
-              </div>
-            </div>
-
-            <br/>
-            <br/>
-
-            <div className='home-root'>
-              <Editor
-                toolbarClassName="home-toolbar"
-                wrapperClassName="home-wrapper"
-                editorClassName="home-editor"
-                placeholder="Вставьте текст..."
-                onChange={this.onEditorChange}
-                uploadCallback={this.uploadImageCallBack}
-              />
-            </div>
-
             <br/>
 
             {/* <Field name="program" id="program" options={[
@@ -281,12 +392,14 @@ DayEditorValidationForm = reduxForm({
 let selector = formValueSelector('dayEditor')
 
 const mapStateToProps = state => {
-  const { selectedPrograms, recivedPrograms, hidePoll, programShow } = state
+  const { selectedDays, selectedPrograms, electedPrograms, recivedPrograms, hidePoll, programShow, dayId } = state
   const { programs } = recivedPrograms[selectedPrograms] || []
   return {
     hideCreatePoll: hidePoll,
     programShow,
-    programs
+    dayId,
+    programs,
+    selectedDays
   }
 }
 

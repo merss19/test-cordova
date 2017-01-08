@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Field } from 'redux-form'
 import { connect } from 'react-redux'
+import InputDateMask from '../componentKit/InputDateMask'
 
 import InputProfile from '../componentKit/InputProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
+import InputDayPicker from './InputDayPicker'
 import cookie from 'react-cookie'
 import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
@@ -13,11 +15,17 @@ let contentStyle = {
   padding: '30px'
 }
 
+const labelStyle = {
+  marginBottom: '10px',
+  fontSize: '1.6rem'
+}
+
 let insuranceFiles = []
 
 class InsuranceValidationForm extends Component {
   componentWillMount() {
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
 
@@ -29,7 +37,7 @@ class InsuranceValidationForm extends Component {
   }
 
   render() {
-    const { dispatch, insuranceDocs } = this.props
+    const { dispatch, insuranceDocs, birthday } = this.props
     const docsNames = insuranceDocs.map(doc => doc.name)
     const docsString = docsNames.join()
 
@@ -40,40 +48,48 @@ class InsuranceValidationForm extends Component {
 
         <div className="grid">
           <div className="2/3--desk 1/1--pocket grid__cell">
-            <p className="label">ФИО</p>
+            <p className="h3" style={labelStyle}>ФИО</p>
             <Field ref="fullName" name="fullName" placeholder="" component={InputProfile} />
           </div>
           <div className="1/3--desk 1/1--pocket grid__cell">
-            <p className="label">Дата рождения</p>
-            <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} />
+            <p className="h3" style={labelStyle}>Дата рождения</p>
+            {/* <div className="input input--box mb30">
+              <input ref="birthday" name="birthday" value={birthday} placeholder="д/М/гггг" type='text' className="input__field input__field--date"/>
+            </div> */}
+            {window.mobilecheck()
+              ? <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
+              : <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+            }
+            {/* <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} /> */}
             {/* <Field val={insurance.birthday} name="insuranceBirthday" placeholder="д/М/гггг" component={InputProfile} /> */}
           </div>
         </div>
 
-        <p className="label">Профессия/Должность</p>
+        <p className="h3" style={labelStyle}>Профессия/Должность</p>
         <Field ref="profession" name="profession" placeholder="" component={InputProfile} />
 
-        <p className="label">Паспортные данные</p>
+        <p className="h3" style={labelStyle}>Паспортные данные</p>
         <Field ref="passport" name="passport" placeholder="" component={InputProfile} />
 
-        <p className="label">Адрес Регистрации</p>
+        <p className="h3" style={labelStyle}>Адрес регистрации</p>
         <Field ref="address" name="address" placeholder="" component={InputProfile} />
 
-        <p className="label">Индивидуальная страховая сумма по рискам, указанным в п.п. ___. - ___. Договора руб.</p>
+        <p className="h3" style={labelStyle}>Индивидуальная страховая сумма по договору:</p>
         <div className="input input--box">
-          <input disabled type="text" className="input__field" placeholder="" value="100 000"/>
+          <input disabled type="text" className="input__field" placeholder="" value="100 000 руб."/>
         </div>
 
         <hr/>
 
-        <h3 className="h3">Дополнительные документы</h3>
+        <h3 className="h3">Подтверждающие документы. Скан паспорта</h3>
+        <p className="sub-title">Необходимо прикрепить сканы 1 и 2 страницы, а так же ВСЕХ заполненных страниц в паспорте!</p>
 
         <div className="grid grid--center">
           <div className="1/3--desk grid__cell">
             <ul className="upload-list mb20">
               {insuranceDocs.map((doc, index) => (
                 <li key={index} className="upload-list__item">
-                  <span className="upload-list__title">{doc.name}</span>
+                  <span className="upload-list__title">{doc.name.slice(0,20)}</span>
                   <span className="upload-list__btn-del">
                     <svg className="svg-icon ico-trash" onClick={e => {
                       e.preventDefault()
@@ -112,7 +128,7 @@ class InsuranceValidationForm extends Component {
           </div>
           <div className="2/3--desk grid__cell">
             <div className="input input--box input--btn">
-              <span className="input__text">{docsString}</span>
+              <span className="input__text" style={{ width: '100%' }}>{docsString}</span>
               <input multiple id="file-upload" type="file" className="input__field" placeholder="" onChange={input => {
                 const { target } = input
                 if (target.files && target.files[0]) {
@@ -125,9 +141,13 @@ class InsuranceValidationForm extends Component {
                       authToken: cookie.load('token'),
                       data: {
                         name: target.files[0].name,
-                        content: reader.result.replace(/data:image\/\w+;base64,/, '')
+                        content: target.files[0].type === 'application/pdf'
+                          ? reader.result.replace(/data:application\/pdf;base64,/, '')
+                          : reader.result.replace(/data:image\/\w+;base64,/, '')
                       }
                     }
+
+                    this.refs.loadingModal.show()
 
                     const headers = {
                       'Accept': 'application/json',
@@ -141,6 +161,7 @@ class InsuranceValidationForm extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
+                        this.refs.loadingModal.hide()
                         if (json.errorCode === 1 && json.data) {
                           insuranceFiles.push(json.data.uid)
 
@@ -162,12 +183,12 @@ class InsuranceValidationForm extends Component {
         </div>
 
         <div className="text-center mb30">
-          <div className="btn btn--primary" onClick={data => {
+          <div className="btn btn--primary" onClick={e => {
             const payload = {
               authToken: cookie.load('token'),
               data: {
                 fullName: this.refs.fullName.value,
-                birthday: this.refs.birthday.value,
+                birthday,
                 profession: this.refs.profession.value,
                 passport: this.refs.passport.value,
                 address: this.refs.address.value,
@@ -188,7 +209,10 @@ class InsuranceValidationForm extends Component {
               })
               .then(response => response.json())
               .then(json => {
-                if (json.errorCode === 1 && json.data) {
+                if (json.errorCode === 1 && json.data && insuranceFiles[0]
+                  && this.refs.fullName.value && birthday
+                  && this.refs.profession.value && this.refs.passport.value
+                  && this.refs.address.value) {
                   insuranceFiles.map(uid => {
                     const payload = {
                       authToken: cookie.load('token'),
@@ -207,25 +231,38 @@ class InsuranceValidationForm extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
+                        if (json.errorCode === 1) {
+                          this.refs.successModal.show()
+                        } else {
+                          this.refs.failModal.show()
+                        }
                       })
                   })
-                  this.refs.successModal.show()
                 } else {
                   this.refs.failModal.show()
                 }
               })
           }}>
-            Активировать
+            Активировать страховку
           </div>
         </div>
 
-        <hr/>
-
+        <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
+          <h2>Подождите...</h2>
+        </Modal>
         <Modal ref='failModal' contentStyle={contentStyle}>
-          <h2>Что-то пошло не так, поробуйте чуть позже</h2>
+          <h2>Что-то пошло не так, возможно не все данные по старховке заполнены</h2>
+          <br/>
+          <div className="btn btn--action" onClick={() => this.refs.failModal.hide()}>
+            Продолжить
+          </div>
         </Modal>
         <Modal ref='successModal' contentStyle={contentStyle}>
-          <h2>Данные отправлены!</h2>
+          <h2>Данные отправлены! В течение суток на почту придет письмо с подтверждением одобрения страхования. Убедительно просим указывать реальные данные</h2>
+          <br/>
+          <div className="btn btn--action" onClick={e => this.refs.successModal.hide()}>
+            Продолжить
+          </div>
         </Modal>
       </div>
     )
@@ -233,7 +270,11 @@ class InsuranceValidationForm extends Component {
 }
 
 const mapStateToProps = state => {
-  return { insuranceDocs: state.insuranceDocs }
+  const { insuranceDocs, birthday } = state
+  return {
+    insuranceDocs,
+    birthday
+   }
 }
 
 InsuranceValidationForm = connect(
