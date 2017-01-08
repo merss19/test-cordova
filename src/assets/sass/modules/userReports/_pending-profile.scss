@@ -6,6 +6,27 @@
   flex-wrap: wrap;
   flex-direction: column;
 
+  &__inner-popup {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: absolute;
+    padding: 30px;
+    border-radius: 18px;
+    background: white;
+  }
+
+  &__desc-box {
+    width: 100%;
+    min-height: 300px;
+    resize: none;
+    padding: 10px;
+
+    border-top: 1px solid $c-l-blue;
+  }
+
   &__top-panel {
     display: flex;
     align-items: center;
@@ -27,6 +48,7 @@
     align-items: center;
 
     border: $c-l-blue solid 1px;
+    cursor: pointer;
     border-radius: 50%;
   }
 

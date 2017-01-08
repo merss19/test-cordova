@@ -69,7 +69,7 @@ class DayEditorValidationForm extends Component {
   //   dispatch(() => ({type: 'EDIT_DAY', ...initialValues}))
   // }
 
-  onEditorChange: Function = (editorContent) => {
+  onEditorChange(editorContent) {
     htmlEditor = draftToHtml(editorContent)
     console.log(htmlEditor)
   }

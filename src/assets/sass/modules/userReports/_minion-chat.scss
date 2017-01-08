@@ -3,8 +3,9 @@
 $width: 300px;
 
 .minion-chat {
-  right: calc(50% - #{$width});
+  right: 30px;
   bottom: 0;
+  z-index: 2;
   position: fixed;
 
   width: $width;

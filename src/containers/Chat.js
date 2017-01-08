@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
+import ChatWindow from '../components/Chat/ChatWindow'
+
 import {
   fetchChat,
   closeChat,
@@ -31,7 +33,7 @@ export class Chat extends Component {
     closeChat()
   }
 
-  waiting () {
+  waiting() {
     const {
       id,
       waitingFromChat
@@ -109,57 +111,24 @@ export class Chat extends Component {
     } = this.props
 
     return (
-      isOpen ?
-        <div className={`minion-chat minion-chat_${isFetching ? 'fetching' : (isForwarding ? 'forwarding' : '')}`}>
-          <svg
-            onClick={() => this.closeChat()}
-            className="minion-chat__close svg-icon ico-close">
-            <use xlinkHref="#ico-close"></use>
-          </svg>
-
-          <div className="minion-chat__spinner spinner"></div>
-
-          <div className="minion-chat__buttons">
-            <button
-              onClick={() => this.waiting()}
-              className="minion-chat__button-waiting btn btn--secondary">
-              Жду ответа
-            </button>
-            <button
-              onClick={() => this.toggleForwarding()}
-              className="minion-chat__button-forward btn btn--action">
-              {isForwarding ? 'Отмена' : 'Переадресовать'}
-            </button>
-          </div>
-
-          <div className={`minion-chat__messages ${!comments.length ? 'minion-chat__messages_empty' : ''}`}>
-            <div className="minion-chat__messages-box">
-              {
-                comments.length ? comments.map(({text, user}, index) => (
-                    <div
-                      key={index}
-                      className={`minion-chat__message minion-chat__message_${user.id != userId ? 'left' : 'right'}`}>
-                      {text}
-                    </div>
-                  )) : 'Нет сообщений'
-              }
-            </div>
-          </div>
-
-          <div className="minion-chat__answer-box">
-          <textarea
-            ref="message"
-            onKeyUp={(e) => this.checkMessageLength(e)}
-            placeholder={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
-            className="minion-chat__answer-area"/>
-            <button
-              disabled={!isMessageValid}
-              onClick={() => this.sendMessage()}
-              className={`minion-chat__answer-button btn btn--${isMessageValid ? 'primary' : 'disabled'}`}>
-              {isForwarding ? 'Переадресовать' : 'Ответить'}
-            </button>
-          </div>
-        </div> : null
+      isOpen ? <ChatWindow
+          // Data
+          userId={userId}
+          comments={comments}
+          sendButtonText={isForwarding ? 'Переадресовать' : 'Ответить'}
+          placeholderText={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
+          // Flags
+          isFetching={isFetching}
+          isForwarding={isForwarding}
+          isMessageValid={isMessageValid}
+          showAdminPanel={true}
+          // Callbacks
+          onClose={() => this.closeChat()}
+          onWaiting={() => this.waiting()}
+          onForwarding={() => this.toggleForwarding()}
+          onMessageChanged={(e) => this.checkMessageLength(e)}
+          onMessageSend={() => this.sendMessage()}
+        /> : null
     )
   }
 }

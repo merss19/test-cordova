@@ -3,6 +3,7 @@ export * from './signupPayment'
 export * from './profile'
 export * from './days'
 export * from './chats'
+export * from './pendingPhotos'
 export * from './pendingProfiles'
 export * from './pendingInsuranceProfiles'
 

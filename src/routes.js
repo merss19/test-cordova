@@ -23,8 +23,8 @@ import MinionLogin from './containers/MinionLogin'
 
 import PendingMinionChats from './containers/pendingMinionChats'
 
-import PendingMinionEvent from './containers/PendingMinionEvent'
-import PendingMinionEvents from './containers/PendingMinionEvents'
+import PendingPhoto from './containers/PendingPhoto'
+import PendingPhotos from './containers/PendingPhotos'
 
 import PendingProfile from './containers/PendingProfile'
 import PendingProfiles from './containers/PendingProfiles'
@@ -141,17 +141,21 @@ export default (
         onEnter={requireMinionAuth} />
 
       <Route
-        path='events'
-        component={PendingMinionEvents}
-        onEnter={requireMinionAuth} />
-
-      <Route
         path='pendingProfiles'
         component={PendingProfiles}
         onEnter={requireMinionAuth} />
       <Route
         path='pendingProfiles/:userId'
         component={PendingProfile}
+        onEnter={requireMinionAuth} />
+
+      <Route
+        path='photos'
+        component={PendingPhotos}
+        onEnter={requireMinionAuth} />
+      <Route
+        path='photos/:userId'
+        component={PendingPhoto}
         onEnter={requireMinionAuth} />
 
       <Route

@@ -8,7 +8,7 @@ export default () => (
       to="/userReports/chats">Чаты</Link>
     <Link
       className="user-reports-menu__item"
-      to="/userReports/events">Экзамены и зачёты</Link>
+      to="/userReports/photos">Фото до/после</Link>
     <Link
       className="user-reports-menu__item"
       to="/userReports/pendingProfiles">Утверждение профилей</Link>

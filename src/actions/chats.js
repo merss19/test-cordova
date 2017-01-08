@@ -130,7 +130,7 @@ export const fetchChat = (type, typeId) => (dispatch, getState) => {
 
 // CHAT METHODS
 
-const chatMessageCreate = (authToken, group, options) => {
+const chatMessageCreate = (authToken, data) => {
   return fetch(`${api}/user/chatmessage-create`, {
     headers: {
       'Accept': 'application/json',
@@ -138,7 +138,7 @@ const chatMessageCreate = (authToken, group, options) => {
     },
     method: 'POST',
     body: JSON.stringify({
-      data: {group, ...options},
+      data,
       authToken,
     })
   })
@@ -146,11 +146,18 @@ const chatMessageCreate = (authToken, group, options) => {
     .catch(console.error)
 }
 
+export const createWithMessage = (type, typeId, text) => (dispatch, getState) => {
+  const {token} = getState().userToken
+  const authToken = token || cookie.load('token')
+
+  return chatMessageCreate(authToken, {type, typeId, text})
+}
+
 export const answerToChat = (group, text) => (dispatch, getState) => {
   const {token} = getState().userToken
   const authToken = token || cookie.load('token')
 
-  return chatMessageCreate(authToken, group, {text})
+  return chatMessageCreate(authToken, {group, text})
 }
 
 export const addToChat = (type, typeId, text) => (dispatch, getState) => {
@@ -176,5 +183,5 @@ export const waitingFromChat = (group) => (dispatch, getState) => {
   const {token} = getState().userToken
   const authToken = token || cookie.load('token')
 
-  return chatMessageCreate(authToken, group, {status: 1})
+  return chatMessageCreate(authToken, {group, status: 1})
 }

@@ -6,15 +6,15 @@ import {
   fetchChat,
   closeChat,
   createWithMessage,
-  PROFILE_CHAT_ID,
-  rejectProfile,
-  approveProfile,
-  fetchPendingProfile,
+  PROFILE_PHOTO_CHAT_ID,
+  rejectPhoto,
+  approvePhoto,
+  fetchPendingPhoto,
 } from '../actions'
 
 import Chat from './Chat'
 import UserReportsMenu from '../components/userReports/UserReportsMenu'
-import ProfilePropertiesList from '../components/userReports/ProfilePropertiesList'
+import ProfilePhotos from '../components/userReports/ProfilePhotos'
 
 class UserReports extends Component {
   constructor(props) {
@@ -26,9 +26,9 @@ class UserReports extends Component {
   }
 
   componentWillMount() {
-    const {fetchPendingProfile, routeParams} = this.props
+    const {fetchPendingPhoto, routeParams} = this.props
 
-    fetchPendingProfile(routeParams.userId)
+    fetchPendingPhoto(routeParams.userId)
   }
 
   componentWillUnmount () {
@@ -45,36 +45,48 @@ class UserReports extends Component {
     this.setState({isRejectPopupVisible: false})
   }
 
-  approveProfile () {
-    const {router, routeParams, approveProfile} = this.props
+  approvePhoto () {
+    const {router, approvePhoto, user, program} = this.props
 
-    approveProfile(routeParams.userId)
-      .then(() => router.push('/userReports/pendingProfiles'))
+    approvePhoto(user, program)
+      .then(() => router.push('/userReports/photos'))
   }
 
-  rejectProfile () {
+  rejectPhoto () {
     const {
-      routeParams,
+      user,
+      program,
       fetchChat,
       createWithMessage,
-      rejectProfile
+      rejectPhoto
     } = this.props
 
     this.hideRejectPopup()
 
     Promise
       .all([
-        createWithMessage(PROFILE_CHAT_ID, routeParams.userId, this.refs.rejectReason.value),
-        rejectProfile(routeParams.userId)
+        createWithMessage(PROFILE_PHOTO_CHAT_ID, user, this.refs.rejectReason.value),
+        rejectPhoto(user, program)
       ])
       .then(() => {
-        fetchChat(PROFILE_CHAT_ID, routeParams.userId)
+        fetchChat(PROFILE_PHOTO_CHAT_ID, user)
       })
   }
 
   render() {
     const {isRejectPopupVisible} = this.state
-    const {userId, isFetching, current, previously} = this.props
+    const {
+      userId,
+      isFetching,
+      photoAfterBackUrl,
+      photoAfterFrontUrl,
+      photoAfterLeftUrl,
+      photoAfterRightUrl,
+      photoBeforeBackUrl,
+      photoBeforeFrontUrl,
+      photoBeforeLeftUrl,
+      photoBeforeRightUrl
+    } = this.props
 
     return (
       <div className="layout layout--login">
@@ -106,9 +118,9 @@ class UserReports extends Component {
                       <div className="pending-profile__top-panel">
                         <div className="pending-profile__buttons">
                           <button
-                            onClick={() => this.approveProfile()}
+                            onClick={() => this.approvePhoto()}
                             className="pending-profile__button btn btn--primary">
-                            Утвердить профиль
+                            Утвердить фотографии
                           </button>
                           <button
                             onClick={() => this.showRejectPopup()}
@@ -118,7 +130,7 @@ class UserReports extends Component {
                         </div>
 
                         <Link
-                          to="/userReports/pendingProfiles"
+                          to="/userReports/photos"
                           className="pending-profile__close-button">
                           <svg className="svg-icon ico-close">
                             <use xlinkHref="#ico-close"></use>
@@ -127,21 +139,19 @@ class UserReports extends Component {
                       </div>
 
                       <div className="pending-profile__container">
-                        {
-                          current ?
-                            <ProfilePropertiesList
-                              title={previously ? 'Было' : null}
-                              props={current}
-                              compareTo={previously}/> : null
-                        }
-
-                        {
-                          previously ?
-                            <ProfilePropertiesList
-                              title="Стало"
-                              props={previously}
-                              compareTo={current}/> : null
-                        }
+                        <ProfilePhotos
+                          title="До"
+                          front={photoBeforeFrontUrl}
+                          back={photoBeforeBackUrl}
+                          left={photoBeforeLeftUrl}
+                          right={photoBeforeRightUrl}/>
+                        
+                        <ProfilePhotos
+                          title="После"
+                          front={photoAfterFrontUrl}
+                          back={photoAfterBackUrl}
+                          left={photoAfterLeftUrl}
+                          right={photoAfterRightUrl}/>
                       </div>
 
                       {
@@ -150,9 +160,9 @@ class UserReports extends Component {
                               <div className="pending-profile__top-panel">
                                 <div className="pending-profile__buttons">
                                   <button
-                                    onClick={() => this.rejectProfile()}
+                                    onClick={() => this.rejectPhoto()}
                                     className="pending-profile__button btn btn--primary">
-                                    Отказать
+                                    Вернуть
                                   </button>
                                   <button
                                     onClick={() => this.hideRejectPopup()}
@@ -190,16 +200,12 @@ class UserReports extends Component {
 
 const mapStateToProps = state => {
   const {
-    isFetching = true,
-    current = null,
-    previously = null
-  } = state.pendingProfile
+    pendingPhoto
+  } = state
 
   return {
     userId: cookie.load('user_id'),
-    isFetching,
-    current,
-    previously
+    ...pendingPhoto
   }
 }
 
@@ -207,9 +213,9 @@ const mapDispatchToProps = {
   fetchChat,
   closeChat,
   createWithMessage,
-  rejectProfile,
-  approveProfile,
-  fetchPendingProfile
+  rejectPhoto,
+  approvePhoto,
+  fetchPendingPhoto
 }
 
 UserReports = connect(
