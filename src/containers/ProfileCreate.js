@@ -52,7 +52,7 @@ class ProfileCreate extends Component {
 
   render() {
     const { profileData, insurance, bodyParams, token, isFetching,
-      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch } = this.props
+      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch, injuries } = this.props
     const isEmpty = !profileData || !profileData.email
     const insuranceIsEmpty = !insurance
 
@@ -70,6 +70,7 @@ class ProfileCreate extends Component {
               babyDate={moment(profileData.babyBirthday).format('YYYY-MM-DD')}
               feedDate={moment(profileData.lastBabyFeedMonth).format('YYYY-MM-DD')}
               injuriesEx={profileData.injuriesExist}
+              injuries={profileData.injuries.split(',')}
               isReadyToTasks={isReadyToTasks}
               initialValues={{
                 ...profileData,
@@ -85,7 +86,6 @@ class ProfileCreate extends Component {
                   ? insurance.address : '',
                 insuranceFile: !insuranceIsEmpty && insurance.insuranceFile
                   ? insurance.insuranceFile : []
-
               }}
               onSubmit={ data => {
                 let isValidBirthday = true
@@ -117,6 +117,7 @@ class ProfileCreate extends Component {
 
                 if (isValidBirthday && isValidBabyBirhday && isValidBabyFeed) {
                   this.refs.loadingModal.show()
+                  data.injuries = injuries.join()
                   delete data.password
                   const payload = {
                     authToken: token ? token : cookie.load('token'),
@@ -198,7 +199,7 @@ class ProfileCreate extends Component {
 
 const mapStateToProps = state => {
   const { selectedProfile, recivedProfile, userToken, birthday,
-    babyBirthday, babyFeed, isReadyToTasks } = state
+    babyBirthday, babyFeed, isReadyToTasks, injuries } = state
   const {
     isFetching,
     lastUpdated,
@@ -221,6 +222,7 @@ const mapStateToProps = state => {
     babyBirthday,
     babyFeed,
     isReadyToTasks,
+    injuries,
     token: userToken.token
   }
 }

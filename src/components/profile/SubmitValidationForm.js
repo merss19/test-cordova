@@ -22,7 +22,7 @@ import { api } from '../../config.js'
 import InputDayPicker from './InputDayPicker'
 import InputElement from 'react-input-mask'
 
-let injuries = []
+let injuriesLocal = []
 let diseases = []
 let checkInjuries = []
 
@@ -55,7 +55,7 @@ class SubmitValidationForm extends Component {
   }
 
   componentWillMount() {
-    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx } = this.props
+    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx, injuries } = this.props
 
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
@@ -71,12 +71,22 @@ class SubmitValidationForm extends Component {
     dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: babyDate })
     dispatch({ type: 'BABY_FEED', babyFeed: feedDate })
     dispatch({ type: 'INJURIES_HIDDEN', injuriesHidden: injuriesEx })
+    dispatch({ type: 'INJURIES_SET', injuries })
+    injuriesLocal = injuries
 
     if (bodyMeasure) {
       dispatch({
         type: 'SAVE_BODY_PARAMS',
         bodyMeasure
       })
+    }
+  }
+
+  componentDidMount() {
+    const { injuriesEx } = this.props
+    if (injuriesEx) {
+      console.log(document.getElementById(`injuries[${0}]i`))
+      //document.getElementById(`injuries[${0}]i`).checked = true
     }
   }
 
@@ -608,17 +618,29 @@ class SubmitValidationForm extends Component {
             </ul>
             <Field name="injuriesExist" component={ErrorField} />
 
+            {console.log('<=====)==0')}
+            {console.log(injuriesLocal)}
+
             {injuriesHidden &&
               <div>
                 <ul className="checkboxes">
                   {injuriesList.map((val, index) => (
-                    <Field key={index} name={`injuries[${index}]`} title={val} id={`injuries[${index}]`} component={CheckboxProfile} onChange={e =>
-                      e.target.checked ? injuries.push(val) : injuries.splice(injuries.indexOf(val), 1)
+                    <Field key={index} name={`injuries[${index}]`} checker={injuriesLocal.find(i => {
+                      console.log(i)
+                      console.log('=')
+                      console.log(val)
+                      return i === val
+                    })} title={val} id={`injuries[${index}]`} component={CheckboxProfile} onChange={e => {
+                        e.target.checked
+                          ? injuriesLocal.push(val)
+                          : injuriesLocal.splice(injuriesLocal.indexOf(val), 1)
+                        dispatch({ type: 'INJURIES_SET', injuries: injuriesLocal })
+                      }
                     }/>
                   ))}
                 </ul>
 
-                <Field name="injuriesAnother" placeholder="Другое" component={InputProfile} />
+                <Field name="diseases" placeholder="Другое" component={InputProfile} />
               </div>
             }
 
@@ -735,8 +757,8 @@ class SubmitValidationForm extends Component {
 const validate = data => {
   const errors = {}
 
-  data.injuries = injuries.join()
-  data.diseases = diseases.join()
+  // data.injuries = injuries.join()
+  // data.diseases = diseases.join()
 
   data.firstName.replace(/ /g, '')
   data.lastName.replace(/ /g, '')

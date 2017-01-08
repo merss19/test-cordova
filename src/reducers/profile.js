@@ -106,6 +106,15 @@ export const injuriesHidden = (state = false, action) => {
   }
 }
 
+export const injuries = (state = [], action) => {
+  switch (action.type) {
+    case 'INJURIES_SET':
+      return action.injuries
+    default:
+      return state
+  }
+}
+
 export const selectedProfile = (state = 'reactjs', action) => {
   switch (action.type) {
     case SELECT_PROFILE:
