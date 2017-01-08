@@ -83,7 +83,7 @@ class SubmitValidationForm extends Component {
   render() {
     const { error, valid, handleSubmit, bodyParams, isReadyToTasks,
       dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
-      
+
     // const sports = [
     //   'Сложно',
     //   'Нормально',
@@ -491,7 +491,7 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            {initialValues.program === 2 &&
+            {cookie.load('userProgram') === 2 &&
               <div>
                 <h3 className="h3">Для программы "Мама может"</h3>
                 <div className="grid mb30">
