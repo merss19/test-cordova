@@ -17,7 +17,7 @@ const Header = props => (
       }
       <h1 className="2/4--portable 1/2-desk grid__cell header__logo" style={window.mobilecheck()
         ? props.isReadyToTasks && props.isProfile
-          ? {marginLeft: '60px'}
+          ? {margin: '10px -100px'}
           : {margin: '-60px'}
         : {}}>
         Ясегодня
@@ -27,20 +27,21 @@ const Header = props => (
       {window.mobilecheck() &&
         props.isReadyToTasks &&
           props.isProfile &&
-            <button className="btn btn--primary" style={{
-              backgroundColor: '#1F447B',
-              marginLeft: '60px',
-              width: '70px',
-              height: '40px',
-              marginTop: '7px',
-              fontSize: '9px',
-              padding: '10px',
-            }} onClick={e => {
-              e.preventDefault()
-              browserHistory.push('/task')
-            }}>
-              К заданиям
-            </button>
+            <div className="1/4--portable grid__cell header__right-side">
+              <button className="btn btn--primary" style={{
+                backgroundColor: '#1F447B',
+                margin: '7px 120px',
+                width: '70px',
+                height: '40px',
+                fontSize: '9px',
+                padding: '10px',
+              }} onClick={e => {
+                e.preventDefault()
+                browserHistory.push('/task')
+              }}>
+                К заданиям
+              </button>
+          </div>
       }
 
       <div className="1/4--portable grid__cell header__right-side"/>

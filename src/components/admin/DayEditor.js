@@ -73,22 +73,26 @@ class DayEditor extends Component {
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
 
+                    console.log('<-==-==-=-==)==0')
                     console.log(data)
+                    console.log(JSON.stringify(content[0]))
+                    console.log(dayIntro[0])
+                    console.log(editor[0])
 
                     if (data.program && data.program[0] && data.program[0].tasks && data.program[0].tasks[0]) {
                       data.programTasks[0] = data.program[0]
+                      data.programTasks[0].intro = content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0])
+                      data.programTasks[0].introHTML = dayIntro[0] ? dayIntro[0] : 'test'
                       data.programTasks[0].tasks = data.programTasks[0].tasks.map(t => {
                         return { ...t,
                           program: programShow,
-                          intro: JSON.stringify(content[0]),
-                          introHTML: dayIntro[0]
                         }
                       })
-                    } else if (content[0] && dayIntro[0]) {
+                    } else {
                       data.programTasks[0] = {
                         program: programShow,
-                        intro: JSON.stringify(content[0]),
-                        introHTML: dayIntro[0]
+                        intro: content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0]),
+                        introHTML: dayIntro[0] ? dayIntro[0] : 'test'
                       }
                     }
 
@@ -118,7 +122,7 @@ class DayEditor extends Component {
                     console.log(payload)
 
                     const method = 'POST'
-                    if (content[0] && dayIntro[0] && programShow) {
+                    if ((content[0] && dayIntro[0]) || editor[0] && programShow) {
                       return fetch(url, {
                         headers,
                         method,
