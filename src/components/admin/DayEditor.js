@@ -40,8 +40,6 @@ class DayEditor extends Component {
     const { days, token, isFetching, editDay, dayIntro, dayDate,
       programs, editor, content, programShow, selectedDays, dispatch, dayId } = this.props
     const isEmpty = !programs || !days
-
-    console.log(days)
     // const id = this.props.params.id
     // let initialValues = {}
 
@@ -79,15 +77,16 @@ class DayEditor extends Component {
                     console.log(dayIntro[0])
                     console.log(editor[0])
 
-                    if (data.program && data.program[0] && data.program[0].tasks && data.program[0].tasks[0]) {
-                      data.programTasks[0] = data.program[0]
+                    if (data && data.tasks && data.tasks[0]) {
+                      console.log('1')
+                      data.programTasks =[{}]
+
+                      console.log('2')
                       data.programTasks[0].intro = content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0])
                       data.programTasks[0].introHTML = dayIntro[0] ? dayIntro[0] : 'test'
-                      data.programTasks[0].tasks = data.programTasks[0].tasks.map(t => {
-                        return { ...t,
-                          program: programShow,
-                        }
-                      })
+                      data.programTasks[0].program = programShow
+                      data.programTasks[0].tasks = data.tasks
+                      console.log('3')
                     } else {
                       data.programTasks[0] = {
                         program: programShow,
@@ -97,6 +96,7 @@ class DayEditor extends Component {
                     }
 
                     delete data.program
+                    delete data.tasks
 
                     // data.intro = JSON.stringify(content)
                     // data.introHTML = dayIntro
