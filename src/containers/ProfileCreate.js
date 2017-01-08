@@ -15,6 +15,8 @@ let contentStyle = {
   padding: '30px'
 }
 
+let firstTime = true
+
 class ProfileCreate extends Component {
   static propTypes = {
     token: PropTypes.string,
@@ -39,7 +41,7 @@ class ProfileCreate extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, selectedProfile } = this.props
+    const { dispatch, selectedProfile, profileData } = this.props
     dispatch(actions.fetchProfileIfNeeded(selectedProfile))
   }
 
@@ -52,7 +54,8 @@ class ProfileCreate extends Component {
 
   render() {
     const { profileData, insurance, bodyParams, token, isFetching,
-      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch, injuries } = this.props
+      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch } = this.props
+    let { injuries } = this.props
     const isEmpty = !profileData || !profileData.email
     const insuranceIsEmpty = !insurance
 
@@ -70,7 +73,7 @@ class ProfileCreate extends Component {
               babyDate={moment(profileData.babyBirthday).format('YYYY-MM-DD')}
               feedDate={moment(profileData.lastBabyFeedMonth).format('YYYY-MM-DD')}
               injuriesEx={profileData.injuriesExist}
-              injuries={profileData.injuries.split(',')}
+              injuriesFirst={profileData.injuries.split(',')}
               isReadyToTasks={isReadyToTasks}
               initialValues={{
                 ...profileData,
@@ -92,7 +95,8 @@ class ProfileCreate extends Component {
                 let isValidBabyBirhday = true
                 let isValidBabyFeed = true
 
-                if (!window.mobilecheck) {
+                if (!window.mobilecheck()) {
+                  console.log('MOBILE')
                   data.birthday = birthday
 
                   if (babyBirthday)
@@ -102,12 +106,14 @@ class ProfileCreate extends Component {
                     data.lastBabyFeedMonth = babyFeed
                 } else {
                   console.log('check')
-                  console.log(data.birthday)
+                  console.log(data)
                   data.birthday = moment(data.birthday).format('YYYY-MM-DD')
                   console.log(data.birthday)
                   console.log(moment(data.birthday, 'YYYY-MM-DD', true).isValid())
                   isValidBirthday = moment(data.birthday, 'YYYY-MM-DD', true).isValid()
                   if (data.program === 2) {
+                    console.log(data.babyBirthday)
+                    console.log(data.lastBabyFeedMonth)
                     data.babyBirthday = moment(data.babyBirthday).format('YYYY-MM-DD')
                     data.lastBabyFeedMonth = moment(data.lastBabyFeedMonth).format('YYYY-MM-DD')
                     isValidBabyBirhday = moment(data.babyBirthday, 'YYYY-MM-DD', true).isValid()

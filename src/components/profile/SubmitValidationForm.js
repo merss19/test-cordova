@@ -55,7 +55,7 @@ class SubmitValidationForm extends Component {
   }
 
   componentWillMount() {
-    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx, injuries } = this.props
+    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx, injuriesFirst } = this.props
 
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
@@ -71,8 +71,6 @@ class SubmitValidationForm extends Component {
     dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: babyDate })
     dispatch({ type: 'BABY_FEED', babyFeed: feedDate })
     dispatch({ type: 'INJURIES_HIDDEN', injuriesHidden: injuriesEx })
-    dispatch({ type: 'INJURIES_SET', injuries })
-    injuriesLocal = injuries
 
     if (bodyMeasure) {
       dispatch({
@@ -82,19 +80,10 @@ class SubmitValidationForm extends Component {
     }
   }
 
-  componentDidMount() {
-    const { injuriesEx } = this.props
-    if (injuriesEx) {
-      console.log(document.getElementById(`injuries[${0}]i`))
-      //document.getElementById(`injuries[${0}]i`).checked = true
-    }
-  }
-
   render() {
     const { error, valid, handleSubmit, bodyParams, isReadyToTasks,
       dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
-
-    // console.log(initialValues.injuries)
+      
     // const sports = [
     //   'Сложно',
     //   'Нормально',
@@ -183,7 +172,6 @@ class SubmitValidationForm extends Component {
                             })
                             .then(response => response.json())
                             .then(json => {
-                              console.log(json)
                               if (json.errorCode === 1 && json.data) {
                                 const photoPayload = {
                                   authToken: cookie.load('token'),
@@ -618,30 +606,31 @@ class SubmitValidationForm extends Component {
             </ul>
             <Field name="injuriesExist" component={ErrorField} />
 
-            {console.log('<=====)==0')}
-            {console.log(injuriesLocal)}
-
             {injuriesHidden &&
-              <div>
-                <ul className="checkboxes">
-                  {injuriesList.map((val, index) => (
-                    <Field key={index} name={`injuries[${index}]`} checker={injuriesLocal.find(i => {
-                      console.log(i)
-                      console.log('=')
-                      console.log(val)
-                      return i === val
-                    })} title={val} id={`injuries[${index}]`} component={CheckboxProfile} onChange={e => {
-                        e.target.checked
-                          ? injuriesLocal.push(val)
-                          : injuriesLocal.splice(injuriesLocal.indexOf(val), 1)
-                        dispatch({ type: 'INJURIES_SET', injuries: injuriesLocal })
-                      }
-                    }/>
-                  ))}
-                </ul>
+              // <div>
+              //   <ul className="checkboxes">
+              //     {injuriesList.map((val, index) => (
+              //       <Field key={index} name={`injuries[${index}]`} checker={injuriesLocal.find(i => {
+              //         return i === val
+              //       })} title={val} id={`injuries[${index}]`} component={CheckboxProfile} onChange={e => {
+              //           const exist = injuriesLocal.find(i => {
+              //             return i === val
+              //           })
+              //
+              //           console.log(exist)
+              //
+              //           !exist//e.target.checked
+              //             ? injuriesLocal.push(val)
+              //             : injuriesLocal.splice(injuriesLocal.indexOf(val), 1)
+              //
+              //           dispatch({ type: 'INJURIES_SET', injuries: injuriesLocal })
+              //         }
+              //       }/>
+              //     ))}
+              //   </ul>
 
-                <Field name="diseases" placeholder="Другое" component={InputProfile} />
-              </div>
+              <Field name="diseases" placeholder="Перечислите ваши проблемные зоны через запятую" component={InputProfile} />
+              // </div>
             }
 
             <hr/>
@@ -745,7 +734,6 @@ class SubmitValidationForm extends Component {
 
           </div>
           <div className="stage-box stage-box--small-padding">
-            {console.log(initialValues)}
             <InsuranceValidationForm docs={initialValues.insuranceFile}/>
           </div>
         </div>
@@ -882,10 +870,11 @@ SubmitValidationForm = reduxForm({
 const selector = formValueSelector('submitValidation')
 
 const mapStateToProps = state => {
-  const { bodyParams, injuriesHidden } = state
+  const { bodyParams, injuriesHidden, injuries } = state
   return {
     bodyParams,
-    injuriesHidden
+    injuriesHidden,
+    injuries
   }
 }
 

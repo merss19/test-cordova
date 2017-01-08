@@ -41,8 +41,6 @@ class InsuranceValidationForm extends Component {
     const docsNames = insuranceDocs.map(doc => doc.name)
     const docsString = docsNames.join()
 
-    console.log(insuranceDocs)
-
     return (
       <div>
         <h3 className="h3">Страховка</h3>
@@ -228,7 +226,6 @@ class InsuranceValidationForm extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
-                        console.log(json)
                         if (json.errorCode === 1) {
                           this.refs.successModal.show()
                         } else {
