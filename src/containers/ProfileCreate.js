@@ -73,7 +73,6 @@ class ProfileCreate extends Component {
               babyDate={moment(profileData.babyBirthday).format('YYYY-MM-DD')}
               feedDate={moment(profileData.lastBabyFeedMonth).format('YYYY-MM-DD')}
               injuriesEx={profileData.injuriesExist}
-              injuriesFirst={profileData.injuries.split(',')}
               isReadyToTasks={isReadyToTasks}
               initialValues={{
                 ...profileData,
