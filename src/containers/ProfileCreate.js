@@ -101,11 +101,11 @@ class ProfileCreate extends Component {
                   if (babyFeed)
                     data.lastBabyFeedMonth = babyFeed
                 } else {
-                  isValidBirthday = moment(data.birthday, 'YYYY-MM-DD', true).isValid()
-                  if (data.program === 2) {
-                    isValidBabyBirhday = moment(data.babyBirthday, 'YYYY-MM-DD', true).isValid()
-                    isValidBabyFeed = moment(data.lastBabyFeedMonth, 'YYYY-MM-DD', true).isValid()
-                  }
+                  // isValidBirthday = moment(data.birthday, 'YYYY-MM-DD', true).isValid()
+                  // if (data.program === 2) {
+                  //   isValidBabyBirhday = moment(data.babyBirthday, 'YYYY-MM-DD', true).isValid()
+                  //   isValidBabyFeed = moment(data.lastBabyFeedMonth, 'YYYY-MM-DD', true).isValid()
+                  // }
                 }
 
                 if (isValidBirthday && isValidBabyBirhday && isValidBabyFeed) {
