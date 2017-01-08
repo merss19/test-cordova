@@ -290,7 +290,7 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <p className="base-parag">Дата рождения</p>
+                <p className="base-parag">Дата рождения (гггг-ММ-дд)</p>
 
                 {/* <DatePicker selected={date} onChange={handleDateChange} /> */}
                 {window.mobilecheck()
@@ -498,14 +498,14 @@ class SubmitValidationForm extends Component {
                 <h3 className="h3">Для программы "Мама может"</h3>
                 <div className="grid mb30">
                   <div className="1/2--desk 1/1-pocket grid__cell">
-                    <p className="base-parag">Дата рождения последнего ребёнка</p>
+                    <p className="base-parag">Дата рождения последнего ребёнка (гггг-ММ-дд)</p>
                     {window.mobilecheck()
                       ? <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
                       : <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
                     }
                   </div>
                   <div className="1/2--desk 1/1-pocket grid__cell">
-                    <p className="base-parag">Месяц когда перестали кормить грудью</p>
+                    <p className="base-parag">Месяц когда перестали кормить грудью (гггг-ММ-дд)</p>
                     {window.mobilecheck()
                       ? <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDateMask} />
                       : <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDayPicker} />
