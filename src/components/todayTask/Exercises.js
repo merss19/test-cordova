@@ -67,7 +67,7 @@ class Exercises extends Component {
                     <li key={ind} className="num-list__item">
                       <span className="num-list__number">{ind + 1}</span>
                       <p className="num-list__description">
-                        <span>{exercise.count} раз</span>
+                        <span>{exercise.count}</span>
                         <div className='divider'/>
                         <a href="#" className="video-pupup" onClick={ e => {
                           e.preventDefault()
