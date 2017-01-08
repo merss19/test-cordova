@@ -36,6 +36,11 @@ const Header = props => (
           cookie.remove('token', { path: '/' })
           cookie.remove('txId', { path: '/' })
           cookie.remove('role', { path: '/' })
+          cookie.remove('program', { path: '/' })
+          cookie.remove('packageType', { path: '/' })
+          cookie.remove('promoName', { path: '/' })
+          cookie.remove('share', { path: '/' })
+          cookie.remove('general', { path: '/' })
           browserHistory.push('/')
         }}>
           Выйти

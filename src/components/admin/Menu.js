@@ -1,7 +1,6 @@
 import React from 'react'
 import MenuButton from '../../stories/MenuButton'
 import { browserHistory } from 'react-router'
-import { Link } from 'react-router'
 
 const Menu = () => (
   <div className="2/3 grid__cell">
@@ -9,22 +8,12 @@ const Menu = () => (
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/superadmin/day/1/')
-        }} icon="ico-m-book">#Я ГЕРОЙ</MenuButton>
+        }} icon="ico-m-book">Для программ</MenuButton>
       </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/superadmin/day/2/')
-        }} icon="ico-m-book">#МАМА МОЖЕТ</MenuButton>
-      </li>
-      <li className="main-nav__item">
-        <MenuButton onClick={() => {
-          browserHistory.push('/superadmin/day/3/')
-        }} icon="ico-m-book">#ЭКСТРИМАЛЬНАЯ СУШКА</MenuButton>
-      </li>
-      <li className="main-nav__item">
-        <MenuButton onClick={() => {
-          browserHistory.push('/superadmin/day/4/')
-        }} icon="ico-m-book">#Я ЗАВТРА</MenuButton>
+        }} icon="ico-m-book">Бонус</MenuButton>
       </li>
     </ul>
     {/* <hr/>

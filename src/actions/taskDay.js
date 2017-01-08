@@ -21,11 +21,70 @@ export const requestTaskDay = taskDay => ({
   taskDay
 })
 
+const taskDayTest = {
+  data: [{
+    intro: '<p>hero</p><p>asdasd</p><p></p><img src="http://i.imgur.com/HEqIll1.png" style="float:none;height: auto;width: 100%"/><p>Here is <strong>asdasdsadsad </strong><del><strong>asdsadsadsad</strong></del><del><em>asdasdasdsadasd</em></del></p>',
+    tasks: [{
+          name: "TextTextTextTextText",
+          description: "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText",
+          exercises: [
+            {
+              count: 10,
+              description: "TextTextTextTextTextText",
+              video: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+            },
+            {
+              count: 10,
+              description: "TextTextTextTextTextText",
+              video: "https://www.youtube.com/embed/yPYZpwSpKmA"
+            },
+            {
+              count: 10,
+              description: "TextTextTextTextTextText",
+              video: "https://www.youtube.com/embed/BeyEGebJ1l4"
+            }
+          ]
+        }, {
+          name: "GoodGoodGoodGoodGood",
+          description: "GoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGoodGood",
+          exercises: [
+            {
+              count: 14,
+              description: "GoodGoodGoodGoodGoodGood",
+              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
+            },
+            {
+              count: 14,
+              description: "GoodGoodGoodGoodGoodGood",
+              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
+            }
+          ]
+        }, {
+          name: "BadBadBadBadBad",
+          description: "BadBadBadBadBadBadBadBadBadBadBadBadBadBadBadBadBadBad",
+          exercises: [
+            {
+              count: 200,
+              description: "BadBadBadBadBadBad",
+              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
+            },
+            {
+              count: 200,
+              description: "BadBadBadBadBadBad",
+              video: "https://www.youtube.com/watch?v=xvwm99GInPs"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
 export const receiveTaskDay = (taskDay, json) => {
   return ({
     type: RECEIVE_TASKDAY,
     taskDay,
-    json,
+    json: taskDayTest,
     receivedAt: Date.now()
   })
 }

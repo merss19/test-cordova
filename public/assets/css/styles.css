@@ -1309,12 +1309,15 @@ hr {
 
 .select {
   position: relative;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  background-color: #fff; }
   .select__field {
     border: 1px solid #E4E7F4;
     border-radius: 5px;
     padding: 8px 12px;
-    height: 44px; }
+    height: 44px;
+    -moz-appearance: none;
+    outline: none; }
   .select .ico-arrow-accordion {
     width: 15px;
     height: 8px;
@@ -1363,6 +1366,8 @@ a.btn {
   font-weight: 600;
   font-family: "Exo 2", Arial, Tahoma, sans-serif;
   padding: 17px 20px 17px; }
+  .btn.wide {
+    width: 100%; }
   .btn--primary {
     color: #fff;
     background-color: #56DAA1; }
@@ -1696,8 +1701,10 @@ a.btn {
   padding: 20px;
   border-radius: 5px;
   margin-bottom: 25px;
-  color: #CCB73C;
-  background-color: #FFFBE0; }
+  color: #928227;
+  background-color: #fffbca; }
+  .attention-box .sub-title {
+    color: #aba774; }
 
 .question-form {
   background-color: #1F447B;
@@ -2260,6 +2267,7 @@ a.btn {
   height: 11px; }
 
 .ico-close {
+  fill: #696D7D;
   width: 16px;
   height: 16px; }
 
@@ -3089,10 +3097,10 @@ code {
         border-width: 9px 0 0 9px;
         border-color: transparent transparent transparent #4DC793; }
   .chat-msg--system .chat-msg__text {
-    color: #CCB73C;
-    background-color: #FFFBE0; }
+    color: #928227;
+    background-color: #fffbca; }
   .chat-msg--system .chat-msg__text:before {
-    border-color: transparent transparent transparent #CCB73C; }
+    border-color: transparent transparent transparent #928227; }
   .chat-msg__ava {
     -ms-flex-negative: 0;
     flex-shrink: 0;
@@ -3433,6 +3441,46 @@ code {
     box-shadow: 0 2.5em 0 -1.3em; }
   40% {
     box-shadow: 0 2.5em 0 0; } }
+
+.notify--alert {
+  background-color: #F97B7C;
+  color: #fff; }
+  .notify--alert a {
+    color: #f9ff47; }
+
+.notify--success {
+  background-color: #56DAA1;
+  color: #fff; }
+  .notify--success a {
+    color: #f9ff47; }
+
+.notify__item {
+  padding: 20px;
+  position: relative;
+  margin-bottom: 20px; }
+  @media screen and (min-width: 1025px) {
+    .notify__item {
+      border-radius: 5px; } }
+
+.notify__title {
+  font-size: 1.8rem;
+  margin-bottom: 10px; }
+
+.notify__close {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px; }
+  .notify__close .svg-icon {
+    fill: #fff; }
 
 #fill-report-1 {
   display: none; }

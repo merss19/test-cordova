@@ -1,13 +1,7 @@
-import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import * as actions from '../actions'
+import React, { Component } from 'react'
 import Menu from '../components/todayTask/Menu'
 import CalendarList from '../components/todayTask/CalendarList'
 import Header from '../stories/Header'
-import Chat from '../stories/chat/Chat'
-
-import MainComponent from '../components/todayTask/MainComponent'
 
 class Reports extends Component {
 

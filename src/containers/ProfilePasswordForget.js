@@ -2,15 +2,25 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { SubmissionError } from 'redux-form'
 import PasswordForgetValidationForm from '../components/profile/PasswordForgetValidationForm'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import { api, host } from '../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 class ProfilePasswordForget extends Component {
+  componentWillMount() {
+    const fbScript = document.createElement("script")
+    fbScript.text = "fbq('track', 'PageView');"
+    document.body.appendChild(fbScript)
+    
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+
   render() {
     let { amount, packageType, program } = this.props
 
@@ -26,7 +36,7 @@ class ProfilePasswordForget extends Component {
         programName = '#МАМА МОЖЕТ'
         break
       case 3:
-        programName = '#ЭКСТРИМАЛЬНАЯ СУШКА'
+        programName = '#ЭКСТРЕМАЛЬНАЯ СУШКА'
         break
       case 4:
         programName = '#Я ЗАВТРА'
@@ -46,7 +56,7 @@ class ProfilePasswordForget extends Component {
         packageName = '3  человек'
         break
       default:
-        packageName = 'Не определено'
+        packageName = 'Не выбран'
     }
 
     return (
@@ -138,11 +148,11 @@ class ProfilePasswordForget extends Component {
 
                 <hr/>
 
-                <Modal ref='successModal' modalStyle={contentStyle}>
+                <Modal ref='successModal' contentStyle={contentStyle}>
                   <h2>Письмо с инструкциями отправлено на указанный вами email</h2>
                 </Modal>
 
-                <Modal ref='failModal' modalStyle={contentStyle}>
+                <Modal ref='failModal' contentStyle={contentStyle}>
                   <h2>Пользователь с таким email, не найден</h2>
                 </Modal>
 

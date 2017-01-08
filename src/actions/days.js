@@ -1,5 +1,6 @@
 import cookie from 'react-cookie'
 import { api } from '../config.js'
+import moment from 'moment'
 
 export const REQUEST_DAYS = 'REQUEST_DAYS'
 export const RECEIVE_DAYS = 'RECEIVE_DAYS'
@@ -21,53 +22,75 @@ export const requestDays = days => ({
   days
 })
 
+const exampleJson = [{
+    id: '1',
+    number: '1',
+    customIcon: 'some-icon',
+    customName: 'GoodDay',
+    icon: 'ico-done',
+    status: 'done',
+    date: '12/12/17',
+    admin: 'Миньон',
+    completeText: 'Зачет принят',
+    day: 'Пн',
+    tasks: [
+      {
+        name: "Good",
+        description: "Good zer good",
+        exercises: [
+          {
+            count: 10,
+            description: "No",
+            video: "http://youtube.com"
+          }
+        ]
+      }
+    ],
+  }, {
+    id: '2',
+    number: '2',
+    customIcon: '',
+    customName: '',
+    status: 'waiting',
+    date: '12/12/17',
+    admin: 'Миньон',
+    completeText: 'Зачет принимается',
+    day: 'Вт',
+    tasks: []
+  }, {
+    id: '3',
+    number: '3',
+    customIcon: '',
+    customName: '',
+    icon: 'ico-cross',
+    status: 'missed',
+    date: '12/12/17',
+    admin: 'Миньон',
+    completeText: 'Зачет не сдан',
+    day: 'Ср',
+    tasks: [{
+      name: "Bad",
+      description: "Good zer good",
+      exercises: []
+    }]
+}]
+
+export const receiveDay = (days, id) => {
+  return ({
+    type: 'EDIT_DAY',
+    days,
+    json: {
+      tasks: exampleJson[id].tasks,
+      customName: exampleJson[id].customName,
+      customIcon: exampleJson[id].customIcon,
+    }
+  }
+)}
+
+export const load = data => ({ type: 'LOAD', data })
+
 export const receiveDays = (days, json) => {
-  json = [{
-      id: '1',
-      number: '1',
-      customIcon: 'some-icon',
-      customName: 'GoodDay',
-      icon: 'ico-done',
-      status: 'done',
-      date: '12/12/17',
-      admin: 'Миньон',
-      completeText: 'Зачет принят',
-      day: 'Пн',
-      tasks: [
-        {
-          name: "Good",
-          description: "Good zer good",
-          exercises: [
-            {
-              count: 10,
-              description: "No",
-              video: "http://youtube.com"
-            }
-          ]
-        }
-      ],
-    }, {
-      id: '2',
-      number: '2',
-      customIcon: '',
-      customName: '',
-      status: 'waiting',
-      date: '12/12/17',
-      admin: 'Миньон',
-      completeText: 'Зачет принимается',
-      day: 'Вт'
-    }, {
-      id: '3',
-      number: '3',
-      customIcon: '',
-      customName: '',
-      icon: 'ico-cross',
-      status: 'missed',
-      date: '12/12/17',
-      admin: 'Миньон',
-      completeText: 'Зачет не сдан',
-      day: 'Ср'
-  }]
+  // json = exampleJson
   return ({
     type: RECEIVE_DAYS,
     days,
@@ -76,11 +99,13 @@ export const receiveDays = (days, json) => {
 }
 
 const fetchDays = partialState => dispatch => {
-  const { token, days } = partialState
+  const { token, days, program, date } = partialState
   dispatch(requestDays(days))
   const payload = {
     authToken: token ? token : cookie.load('token'),
-    data: {}
+    data: {
+      date: moment().format('YYYY-MM-DD')
+    }
   }
 
   const headers = {
@@ -89,14 +114,15 @@ const fetchDays = partialState => dispatch => {
   }
 
   const method = 'POST'
-
-  return fetch(`${api}/day/days-get`, {
+  return fetch(`${api}/data/adminday-get-info`, {
     headers,
     method,
     body: JSON.stringify(payload)
   })
   .then(response => response.json())
   .then(json => {
+    console.log('<======>===0')
+    console.log(json)
     return dispatch(receiveDays(days, json))
   })
 }
@@ -113,8 +139,8 @@ const shouldFetchDays = (state, days) => {
   return d.didInvalidate
 }
 
-export const fetchDaysIfNeeded = days => (dispatch, getState) => {
+export const fetchDaysIfNeeded = (days, program, date) => (dispatch, getState) => {
   if (shouldFetchDays(getState(), days)) {
-    return dispatch(fetchDays({ token: getState().userToken.token, days}))
+    return dispatch(fetchDays({ token: getState().userToken.token, days, program, date}))
   }
 }

@@ -33,10 +33,10 @@ export const receivePayment = (payment, json) => {
 
 const fetchPayment = partialState => dispatch => {
   const { token, profile, payment } = partialState
-  const { program, packageType, promo, emailFriend, share } = profile
+  const { program, packageType, promo, emailFriend, phoneFriend, nameFriend, share } = profile
   dispatch(requestPayment(payment))
 
-  return fetch(`${api}/payment/payment-get`, {
+  return fetch(`${api}/payment/payment-get-info`, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -44,13 +44,12 @@ const fetchPayment = partialState => dispatch => {
     method: 'POST',
     body: JSON.stringify({
       authToken: token ? token : cookie.load('token'),
-      data: {}
+      data: { take: 1 },
     })
   })
   .then(response => response.json())
   .then(json => {
-    console.log(json)
-    if (!json || !json.data || !json.data[0] || !json.data[json.data.length - 1].txId) {
+    if (!json || !json.data || !json.data[0] || !json.data[0].txId) {
       let payload = {
         authToken: token ? token : cookie.load('token'),
         data: {
@@ -60,17 +59,22 @@ const fetchPayment = partialState => dispatch => {
         }
       }
 
-      if (!!promo) {
-        payload.data.promoName = promo
-      }
+      const promoName = promo || cookie.load('promoName')
 
-      if (!!promoVisit.getPromoSessionId()) {
+      if (promoName && promoName !== "undefined")
+        payload.data.promoName = promoName
+
+      if (!!promoVisit.getPromoSessionId())
         payload.data.promoSession = promoVisit.getPromoSessionId()
-      }
 
-      if (!!emailFriend) {
-        payload.data.tomorrowManEmail = emailFriend
-      }
+      if (!!emailFriend)
+        payload.data.tomorrowManEmail = emailFriend.replace(/ /g,'')
+
+      if (!!phoneFriend)
+        payload.data.tomorrowManPhone = phoneFriend
+
+      if (!!nameFriend)
+        payload.data.tomorrowManName = nameFriend
 
       let data = new FormData()
       data.append("json", JSON.stringify(payload))
@@ -88,7 +92,7 @@ const fetchPayment = partialState => dispatch => {
         return dispatch(receivePayment(payment, json))
       })
     } else {
-      return dispatch(receivePayment(payment, { data: json.data[json.data.length - 1] }))
+      return dispatch(receivePayment(payment, { data: json.data[0] }))
     }
   })
 }

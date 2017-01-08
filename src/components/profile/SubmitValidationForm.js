@@ -15,13 +15,13 @@ import ErrorField from '../componentKit/ErrorField'
 import InsuranceValidationForm from '../profile/InsuranceValidationForm'
 import cookie from 'react-cookie'
 import moment from 'moment'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
 
 let injuries = []
 let diseases = []
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
@@ -45,6 +45,10 @@ class SubmitValidationForm extends Component {
 
   componentWillMount() {
     const { bodyMeasure, dispatch } = this.props
+
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
     // const script = document.createElement("script")
 
     // script.type  = "text/javascript"
@@ -291,7 +295,7 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name="phone" type="tel" placeholder="ХХХХХХХХХХ" component={InputProfilePhone} />
+                <Field name="phone" type="tel" placeholder="+7 ХХХ ХХХ ХХХХ" component={InputProfilePhone} />
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field disabled name="email" type="tel" placeholder="Почта" defaultValue="anna@gmail.com" component={InputProfile} />
@@ -411,13 +415,13 @@ class SubmitValidationForm extends Component {
                 }} className="btn btn--primary">
                   Добавить
                 </div>
-                <Modal ref='failModal' modalStyle={contentStyle}>
+                <Modal ref='failModal' contentStyle={contentStyle}>
                   <h2>Что-то пошло не так, поробуйте снова</h2>
                 </Modal>
-                <Modal ref='submitFailModal' modalStyle={contentStyle}>
+                <Modal ref='submitFailModal' contentStyle={contentStyle}>
                   <h2>Одно или несколько полей были заполнены не правильно, проверьте вашу анкету еще раз</h2>
                 </Modal>
-                <Modal ref='successModal' modalStyle={contentStyle}>
+                <Modal ref='successModal' contentStyle={contentStyle}>
                   <h2>Данные добавлены!</h2>
                 </Modal>
               </div>
@@ -694,9 +698,6 @@ const validate = data => {
       break
     case data.phone.length > 20:
       errors.phone = 'Поле телефона должно быть короче 20 символов'
-      break
-    case !/^[0-9]{3,20}$/.test(data.phone):
-      errors.phone = 'Поле телефона может содержать только цифры'
       break
     default:
       break

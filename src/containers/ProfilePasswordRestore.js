@@ -6,14 +6,20 @@ import * as actions from '../actions'
 import RestoreValidationForm from '../components/profile/RestoreValidationForm'
 import { SubmissionError } from 'redux-form'
 import { api } from '../config.js'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 class ProfilePasswordRestore extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+  
   render() {
     const { token } = this.props.location.query
     return (
@@ -51,16 +57,16 @@ class ProfilePasswordRestore extends Component {
           })
         }}/>
 
-        <Modal ref='successModal' modalStyle={contentStyle}>
+        <Modal ref='successModal' contentStyle={contentStyle}>
           <h2>Ваш пароль изменен!</h2>
           <Link to='/'>Войти</Link>
         </Modal>
 
-        <Modal ref='loadingModal' modalStyle={contentStyle}>
+        <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
           <h2>Подождите...</h2>
         </Modal>
 
-        <Modal ref='failModal' modalStyle={contentStyle}>
+        <Modal ref='failModal' contentStyle={contentStyle}>
           <h2>Такой пароль уже есть, либо, что-то пошло не так. Попробуйте еще раз</h2>
         </Modal>
       </div>

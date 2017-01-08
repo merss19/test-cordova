@@ -5,11 +5,11 @@ import { SubmissionError } from 'redux-form'
 import SubmitValidationForm from '../components/profile/SubmitValidationForm'
 import LoadingView from '../components/componentKit/LoadingView'
 import cookie from 'react-cookie'
-import Modal from 'boron/DropModal'
+import Modal from 'boron/FadeModal'
 import moment from 'moment'
 import { api } from '../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
@@ -22,6 +22,12 @@ class ProfileCreate extends Component {
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
+  }
+
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
   }
 
   componentDidMount() {
@@ -95,10 +101,10 @@ class ProfileCreate extends Component {
                 }
               }
             />
-            <Modal ref='successModal' modalStyle={contentStyle}>
+            <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
             </Modal>
-            <Modal ref='loadingModal' modalStyle={contentStyle}>
+            <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
               <h2>Подождите...</h2>
             </Modal>
           </div>

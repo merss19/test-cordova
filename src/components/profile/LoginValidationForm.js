@@ -1,36 +1,40 @@
 import React, { Component } from 'react'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { browserHistory } from 'react-router'
-import { SubmissionError } from 'redux-form'
 import * as actions from '../../actions'
-import Modal from 'boron/DropModal'
 import cookie from 'react-cookie'
-import CustomInput from '../componentKit/CustomInput'
-import SelectProgram from '../componentKit/SelectProgram'
+import InputProfile from '../componentKit/InputProfile'
 import { api, host } from '../../config.js'
 
-const contentStyle = {
+let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
 }
 
 const FB = window.FB
-let fbPayload = {}
-let fbUserId
 
 class LoginValidationForm extends Component {
+  componentWillMount() {
+    if (window.mobilecheck()) {
+      contentStyle.width = '300px'
+    }
+  }
+
   render() {
-    const { error, handleSubmit, packageType, program, promo, email, setToken, signup } = this.props
+    const { error, handleSubmit, packageType, program, promo } = this.props
 
     const loginVk = () => {
-      if (program && packageType) {
-        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk?type=${packageType},${program},${promo}&display=page&response_type=code`
-      } else {
-        window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
-      }
+      if (packageType)
+        cookie.save('packageType', packageType, { path: '/' })
+      if (program)
+        cookie.save('program', program, { path: '/' })
+      if (promo)
+        cookie.save('promoName', promo, { path: '/' })
+
+      window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
     }
 
     const redirectFb = () => {
@@ -106,8 +110,10 @@ class LoginValidationForm extends Component {
 
                 <div className="grid grid--middle">
                   <div className="1/2--desk grid__cell entry-form__email">
-                    <Field name='email' id='login[1]' title='Ваш e-mail' component={CustomInput} />
-                    <Field name='password' id='login[2]' title='Ваш пароль' type='password' component={CustomInput} />
+                    <div className="input input--line">
+                      <Field name='email' id='login[1]' placeholder='Ваш e-mail' component={InputProfile} />
+                      <Field name='password' id='login[2]' placeholder='Ваш пароль' type='password' component={InputProfile} />
+                    </div>
                     <button type='submit' className="btn btn--primary">
                       Войти
                     </button>
@@ -162,7 +168,6 @@ LoginValidationForm = reduxForm({
   validate
 })(LoginValidationForm)
 
-const selector = formValueSelector('loginValidation')
 const mapStateToProps = state => {
   let { program, packageType, promo } = state
 
