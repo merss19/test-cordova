@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Menu from './todayTask/Menu'
 import CalendarList from './todayTask/CalendarList'
+import { browserHistory } from 'react-router'
 import Header from '../stories/Header'
+import cookie from 'react-cookie'
 import {
   Entity,
   Editor,
@@ -11,7 +13,12 @@ import {
 } from 'draft-js'
 import {getCustomStyleMap} from 'draftjs-utils'
 
-// const customStyleMap = getCustomStyleMap()
+let contentStyle = {
+  width: '754px',
+  height: '423px'
+}
+
+const customStyleMap = getCustomStyleMap()
 
 const offset = { left: '-45px' }
 
@@ -71,14 +78,10 @@ function mediaBlockRenderer(block) {
 class Faq extends Component {
   componentDidMount() {
     window.location.hash = window.decodeURIComponent(window.location.hash);
-    console.log(window.location.hash)
     const scrollToAnchor = () => {
       const hashParts = window.location.hash.split('#');
-      console.log(hashParts)
       if (hashParts.length > 2) {
         const hash = hashParts.slice(-1)[0];
-        console.log(document.querySelector(`#${hash}`))
-        // document.querySelector(`#${hash}`).className = "accordion__item accordion__item--active"
         document.querySelector(`#${hash}`).scrollIntoView();
       }
     };
@@ -87,6 +90,8 @@ class Faq extends Component {
   }
 
   render () {
+    console.log(this.props)
+    const { location: hash } = this.props
     const json = {
         "entityMap": {
             "0": {
@@ -835,6 +840,7 @@ class Faq extends Component {
             "data": {}
         }]
     }
+
     const editorState = json ? EditorState.createWithContent(convertFromRaw(json), decorator) : EditorState.createEmpty()
     return (
       <div className="layout">
@@ -843,7 +849,7 @@ class Faq extends Component {
           <div className="grid">
             <div className="1/4--desk grid__cell layout__menu">
               <div className="grid layout__menu-inner">
-                <Menu/>
+                <Menu fullName={cookie.load('fullName')}/>
                 {/* <CalendarList calendar={[{
                     number: '1',
                     icon: 'ico-done',
@@ -1243,16 +1249,23 @@ class Faq extends Component {
                     </div>
                   </li>
 
-                  <li id='youtube' className="accordion__item">
+                  <li id='youtube' className={ hash.hash === '#youtube' ? "accordion__item accordion__item--active" : "accordion__item"}>
                     <div className="accordion__header">
                       <h4 className="h3 accordion__header-title">Как выложить видео в Youtube</h4>
                     </div>
                     <div className="accordion__content">
                       <Editor
                         readOnly={true}
-                        // customStyleMap={customStyleMap}
+                        customStyleMap={customStyleMap}
                         editorState={editorState}
                         blockRendererFn={mediaBlockRenderer}/>
+
+                      <br/>
+                      <iframe width="100%" height="100%" src='https://www.youtube.com/embed/1iI0TxfzqxA' style={contentStyle} frameBorder="0" allowFullScreen></iframe>
+                      <br/>
+                      <br/>
+                      <iframe width="100%" height="100%" src='https://www.youtube.com/embed/4OT7tspcmLc' style={contentStyle} frameBorder="0" allowFullScreen></iframe>
+
                     </div>
                   </li>
 
@@ -1264,8 +1277,10 @@ class Faq extends Component {
         </div>
 
         <ul className="menu-mob-bottom">
-          <li className="menu-mob-bottom__item menu-mob-bottom__item--active">
-            <a href="#" className="menu-mob-bottom__item-inner">
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/task')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-tasks">
                   <use xlinkHref="#ico-m-tasks"></use>
@@ -1274,8 +1289,10 @@ class Faq extends Component {
               <span className="menu-mob-bottom__title">Задания</span>
             </a>
           </li>
-          <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+          {/* <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/reports')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-book">
                   <use xlinkHref="#ico-m-book"></use>
@@ -1285,7 +1302,9 @@ class Faq extends Component {
             </a>
           </li>
           <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/food')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-food">
                   <use xlinkHref="#ico-m-food"></use>
@@ -1293,15 +1312,29 @@ class Faq extends Component {
               </span>
               <span className="menu-mob-bottom__title">Питание</span>
             </a>
-          </li>
+          </li> */}
           <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/faq')
+            }>
               <span className="menu-mob-bottom__ico">
                 <svg className="svg-icon ico-m-faq">
                   <use xlinkHref="#ico-m-faq"></use>
                 </svg>
               </span>
               <span className="menu-mob-bottom__title">ЧАВО</span>
+            </a>
+          </li>
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/photos')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-faq">
+                  <use xlinkHref="#ico-m-faq"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">Фото</span>
             </a>
           </li>
         </ul>

@@ -27,14 +27,13 @@ class ProfileCreate extends Component {
 
   componentWillMount() {
     if (window.mobilecheck()) {
-      contentStyle.width = '300px'
+      contentStyle.margin = '80px'
+      contentStyle.width = '340px'
     }
   }
 
   componentDidUpdate() {
     const { profileData, dispatch } = this.props
-    console.log('herer')
-    console.log(profileData)
     if (profileData && profileData.isFirstEdit)
       dispatch({ type: 'IS_READY_TO_TASKS', isReadyToTasks: true })
   }
@@ -53,7 +52,7 @@ class ProfileCreate extends Component {
 
   render() {
     const { profileData, insurance, bodyParams, token, isFetching,
-      birthday, isReadyToTasks, dispatch } = this.props
+      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch } = this.props
     const isEmpty = !profileData || !profileData.email
     const insuranceIsEmpty = !insurance
 
@@ -67,8 +66,11 @@ class ProfileCreate extends Component {
             <SubmitValidationForm
               bodyMeasure={bodyParams}
               isReadyToTasks={isReadyToTasks}
-              date={moment(profileData.birthday).format('DD.MM.YYYY')}
+              date={moment(profileData.birthday).format('YYYY-MM-DD')}
+              babyDate={moment(profileData.babyBirthday).format('YYYY-MM-DD')}
+              feedDate={moment(profileData.lastBabyFeedMonth).format('YYYY-MM-DD')}
               injuriesEx={profileData.injuriesExist}
+              isReadyToTasks={isReadyToTasks}
               initialValues={{
                 ...profileData,
                 country: !profileData.country ? 'Россия' : profileData.country,
@@ -86,15 +88,35 @@ class ProfileCreate extends Component {
 
               }}
               onSubmit={ data => {
-                this.refs.loadingModal.show()
-                data.birthday = birthday
-                delete data.password
-                const payload = {
-                  authToken: token ? token : cookie.load('token'),
-                  data
+                let isValidBirthday = true
+                let isValidBabyBirhday = true
+                let isValidBabyFeed = true
+
+                if (!window.mobilecheck) {
+                  data.birthday = birthday
+
+                  if (babyBirthday)
+                    data.babyBirthday = babyBirthday
+
+                  if (babyFeed)
+                    data.lastBabyFeedMonth = babyFeed
+                } else {
+                  isValidBirthday = moment(data.birthday, 'YYYY-MM-DD', true).isValid()
+                  if (data.program === 2) {
+                    isValidBabyBirhday = moment(data.babyBirthday, 'YYYY-MM-DD', true).isValid()
+                    isValidBabyFeed = moment(data.lastBabyFeedMonth, 'YYYY-MM-DD', true).isValid()
+                  }
                 }
 
-                return fetch(`${api}/user/user-update`, {
+                if (isValidBirthday && isValidBabyBirhday && isValidBabyFeed) {
+                  this.refs.loadingModal.show()
+                  delete data.password
+                  const payload = {
+                    authToken: token ? token : cookie.load('token'),
+                    data
+                  }
+
+                  return fetch(`${api}/user/user-update`, {
                     headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
@@ -111,8 +133,12 @@ class ProfileCreate extends Component {
                       this.refs.successModal.show()
                     }
                   })
+                } else if (data.program === 2) {
+                  this.refs.failDatesModal.show()
+                } else {
+                  this.refs.failBirthdayModal.show()
                 }
-              }
+              }}
             />
             <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
@@ -132,6 +158,27 @@ class ProfileCreate extends Component {
                 Продолжить
               </div>
             </Modal>
+
+            <Modal ref='failBirthdayModal' contentStyle={contentStyle}>
+              <h2>Дата вашего рождения не верна, проверьте формат даты</h2>
+              <br/>
+              <div className="btn btn--action" onClick={() => {
+                this.refs.failBirthdayModal.hide()
+              }}>
+                Продолжить
+              </div>
+            </Modal>
+
+            <Modal ref='failDatesModal' contentStyle={contentStyle}>
+              <h2>Дата вашего рождения, рождения вашего ребенка или последнего месяца кормления грудью не верны</h2>
+              <br/>
+              <div className="btn btn--action" onClick={() => {
+                this.refs.failDatesModal.hide()
+              }}>
+                Продолжить
+              </div>
+            </Modal>
+
             <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
               <h2>Подождите...</h2>
             </Modal>
@@ -143,7 +190,8 @@ class ProfileCreate extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedProfile, recivedProfile, userToken, birthday, isReadyToTasks } = state
+  const { selectedProfile, recivedProfile, userToken, birthday,
+    babyBirthday, babyFeed, isReadyToTasks } = state
   const {
     isFetching,
     lastUpdated,
@@ -163,6 +211,8 @@ const mapStateToProps = state => {
     insurance,
     bodyParams,
     birthday,
+    babyBirthday,
+    babyFeed,
     isReadyToTasks,
     token: userToken.token
   }

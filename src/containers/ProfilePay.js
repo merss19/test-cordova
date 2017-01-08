@@ -334,7 +334,7 @@ class ProfilePay extends Component {
                                   if (payment.data.program + '' === '4') {
                                     browserHistory.push('/signup/pay/success/friend')
                                   } else {
-                                    browserHistory.push('/signup/pay/success')
+                                    browserHistory.push('/profile')
                                   }
                                 }
                               })

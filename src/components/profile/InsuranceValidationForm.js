@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Field } from 'redux-form'
 import { connect } from 'react-redux'
+import InputDateMask from '../componentKit/InputDateMask'
 
 import InputProfile from '../componentKit/InputProfile'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
@@ -57,7 +58,10 @@ class InsuranceValidationForm extends Component {
             {/* <div className="input input--box mb30">
               <input ref="birthday" name="birthday" value={birthday} placeholder="д/М/гггг" type='text' className="input__field input__field--date"/>
             </div> */}
-            <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputDayPicker} />
+            {window.mobilecheck()
+              ? <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
+              : <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+            }
             {/* <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} /> */}
             {/* <Field val={insurance.birthday} name="insuranceBirthday" placeholder="д/М/гггг" component={InputProfile} /> */}
           </div>
@@ -237,12 +241,12 @@ class InsuranceValidationForm extends Component {
                 }
               })
           }}>
-            Активировать
+            Активировать страховку
           </div>
         </div>
 
         <Modal ref='failModal' contentStyle={contentStyle}>
-          <h2>Что-то пошло не так, возможно не все данные заполнены</h2>
+          <h2>Что-то пошло не так, возможно не все данные по старховке заполнены</h2>
           <br/>
           <div className="btn btn--action" onClick={() => this.refs.failModal.hide()}>
             Продолжить

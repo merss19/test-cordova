@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import Header from '../../stories/Header'
+import { browserHistory } from 'react-router'
 
 import RadioProfile from '../componentKit/RadioProfile'
 import Timer from '../componentKit/Timer'
@@ -11,6 +12,7 @@ import CheckboxProfile from '../componentKit/CheckboxProfile'
 import SelectProfile from '../componentKit/SelectProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
+import InputDateMask from '../componentKit/InputDateMask'
 import ErrorField from '../componentKit/ErrorField'
 import InsuranceValidationForm from '../profile/InsuranceValidationForm'
 import cookie from 'react-cookie'
@@ -53,7 +55,7 @@ class SubmitValidationForm extends Component {
   }
 
   componentWillMount() {
-    const { bodyMeasure, dispatch, date, injuriesEx } = this.props
+    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx } = this.props
 
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
@@ -66,6 +68,8 @@ class SubmitValidationForm extends Component {
     // document.body.appendChild(script)
 
     dispatch({ type: 'BIRTHDAY', birthday: date })
+    dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: babyDate })
+    dispatch({ type: 'BABY_FEED', babyFeed: feedDate })
     dispatch({ type: 'INJURIES_HIDDEN', injuriesHidden: injuriesEx })
 
     if (bodyMeasure) {
@@ -77,8 +81,8 @@ class SubmitValidationForm extends Component {
   }
 
   render() {
-    const { error, valid, handleSubmit, bodyParams,
-      dispatch, onSubmit, initialValues, cities, injuriesHidden, isReadyToTasks } = this.props
+    const { error, valid, handleSubmit, bodyParams, isReadyToTasks,
+      dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
 
     // console.log(initialValues.injuries)
     // const sports = [
@@ -289,7 +293,10 @@ class SubmitValidationForm extends Component {
                 <p className="base-parag">Дата рождения</p>
 
                 {/* <DatePicker selected={date} onChange={handleDateChange} /> */}
-                <Field name="birthday" placeholder="д/М/гггг" component={InputDayPicker} />
+                {window.mobilecheck()
+                  ? <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
+                  : <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                }
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <p className="base-parag">Ссылка на Instagram</p>
@@ -492,11 +499,17 @@ class SubmitValidationForm extends Component {
                 <div className="grid mb30">
                   <div className="1/2--desk 1/1-pocket grid__cell">
                     <p className="base-parag">Дата рождения последнего ребёнка</p>
-                    <Field name="babyBirthday" placeholder="д/М/гггг" component={InputProfile} />
+                    {window.mobilecheck()
+                      ? <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
+                      : <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                    }
                   </div>
                   <div className="1/2--desk 1/1-pocket grid__cell">
                     <p className="base-parag">Месяц когда перестали кормить грудью</p>
-                    <Field name="lastBabyFeedMonth" placeholder="д/М/гггг" component={InputProfile} />
+                    {window.mobilecheck()
+                      ? <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDateMask} />
+                      : <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                    }
                   </div>
                 </div>
               </div>
@@ -696,6 +709,18 @@ class SubmitValidationForm extends Component {
               {error && <strong>{error}</strong>}
             </div>
 
+            <br/>
+
+            {window.mobilecheck() &&
+              isReadyToTasks && (
+                <div className="btn btn--primary" style={{ backgroundColor: '#1F447B' }} onClick={() => {
+                  browserHistory.push('/task')
+                }}>
+                  К заданиям
+                </div>
+              )
+            }
+
           </div>
           <div className="stage-box stage-box--small-padding">
             {console.log(initialValues)}
@@ -712,6 +737,9 @@ const validate = data => {
 
   data.injuries = injuries.join()
   data.diseases = diseases.join()
+
+  data.firstName.replace(/ /g, '')
+  data.lastName.replace(/ /g, '')
 
   switch (true) {
     case !data.firstName:

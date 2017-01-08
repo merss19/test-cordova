@@ -61,7 +61,28 @@ export function profile(state = {}, action) {
 export const birthday = (state = '', action) => {
   switch (action.type) {
     case 'BIRTHDAY':
+      console.log(action.birthday)
       return action.birthday
+    default:
+      return state
+  }
+}
+
+export const babyBirthday = (state = '', action) => {
+  switch (action.type) {
+    case 'BABY_BIRTHDAY':
+      console.log(action.babyBirthday)
+      return action.babyBirthday
+    default:
+      return state
+  }
+}
+
+export const babyFeed = (state = '', action) => {
+  switch (action.type) {
+    case 'BABY_FEED':
+      console.log(action.babyFeed)
+      return action.babyFeed
     default:
       return state
   }

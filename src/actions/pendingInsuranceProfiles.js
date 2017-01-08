@@ -35,7 +35,6 @@ export const fetchPendingInsuranceProfiles = () => (dispatch, getState) => {
   })
     .then(response => response.json())
     .then(json => {
-      console.log(json.data);
       const list = (json.data || [])
         .map(item => {
           const date = moment(item.updateTs)
@@ -91,7 +90,7 @@ const formatProfileFields = (fields) => {
     const value = fields[key]
     const isDate = ~datesKeysList.indexOf(key)
 
-    filteredFields[key] = isDate ? moment(value).format('DD.MM.YYYY') : value
+    filteredFields[key] = isDate ? moment(value).format('YYYY-MM-DD') : value
 
     return filteredFields
   }, {})
