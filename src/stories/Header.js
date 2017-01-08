@@ -27,7 +27,15 @@ const Header = props => (
       {window.mobilecheck() &&
         props.isReadyToTasks &&
           props.isProfile &&
-            <button className="btn btn--primary" style={{ backgroundColor: '#1F447B', marginLeft: '60px' }} onClick={e => {
+            <button className="btn btn--primary" style={{
+              backgroundColor: '#1F447B',
+              marginLeft: '60px',
+              width: '70px',
+              height: '40px',
+              marginTop: '7px',
+              fontSize: '9px',
+              padding: '10px',
+            }} onClick={e => {
               e.preventDefault()
               browserHistory.push('/task')
             }}>
@@ -73,6 +81,7 @@ const Header = props => (
             cookie.remove('promoName', { path: '/' })
             cookie.remove('share', { path: '/' })
             cookie.remove('general', { path: '/' })
+            cookie.remove('userProgram', { path: '/' })
             browserHistory.push('/')
           }}>
             Выйти

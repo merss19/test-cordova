@@ -141,9 +141,13 @@ class InsuranceValidationForm extends Component {
                       authToken: cookie.load('token'),
                       data: {
                         name: target.files[0].name,
-                        content: reader.result.replace(/data:image\/\w+;base64,/, '')
+                        content: target.files[0].type === 'application/pdf'
+                          ? reader.result.replace(/data:application\/pdf;base64,/, '')
+                          : reader.result.replace(/data:image\/\w+;base64,/, '')
                       }
                     }
+
+                    this.refs.loadingModal.show()
 
                     const headers = {
                       'Accept': 'application/json',
@@ -157,6 +161,7 @@ class InsuranceValidationForm extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
+                        this.refs.loadingModal.hide()
                         if (json.errorCode === 1 && json.data) {
                           insuranceFiles.push(json.data.uid)
 
@@ -242,6 +247,9 @@ class InsuranceValidationForm extends Component {
           </div>
         </div>
 
+        <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
+          <h2>Подождите...</h2>
+        </Modal>
         <Modal ref='failModal' contentStyle={contentStyle}>
           <h2>Что-то пошло не так, возможно не все данные по старховке заполнены</h2>
           <br/>
