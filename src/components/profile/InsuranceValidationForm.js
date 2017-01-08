@@ -205,7 +205,7 @@ class InsuranceValidationForm extends Component {
               .then(response => response.json())
               .then(json => {
                 if (json.errorCode === 1 && json.data && insuranceFiles[0]
-                  && this.refs.fullName.value && this.refs.birthday.value
+                  && this.refs.fullName.value && birthday
                   && this.refs.profession.value && this.refs.passport.value
                   && this.refs.address.value) {
                   insuranceFiles.map(uid => {
