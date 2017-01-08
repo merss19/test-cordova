@@ -98,7 +98,7 @@ class Exercises extends Component {
 
         </div>
 
-        <hr/>
+        {/* <hr/>
 
         <div className="share-box">
           <h2 className="h1 share-box__title">Делись результатами</h2>
@@ -122,7 +122,7 @@ class Exercises extends Component {
               <span className="btn-social__title">facebook</span>
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
     )
   }

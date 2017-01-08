@@ -1,66 +1,94 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import InputModal from '../componentKit/InputModal'
 
-const SendReportModal = props => {
-  const { error, handleSubmit, onSubmit } = props
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h3 className="h1">Отчет миньону</h3>
-      <hr/>
-      <p className="sub-title">Напиши сообщение миньону о том, что тренировка отработана! Если ты и правда все сделал :)</p>
-      <Field name="report" placeholder="Выполнено, сделал, справился..." component={InputModal} />
-      <p className="text-center">Как ты себя чувствовал во время выполнения заданий?</p>
-      <ul className="your-condition">
-        <li className="your-condition__item your-condition__item--active">
-          <span className="your-condition__ico">
-            <svg className="svg-icon ico-your-condition-1">
-              <use xlinkHref="#ico-your-condition-1"></use>
-            </svg>
-          </span>
-          <p className="your-condition__title">отлично</p>
-        </li>
-        <li className="your-condition__item">
-          <span className="your-condition__ico">
-            <svg className="svg-icon ico-your-condition-2">
-              <use xlinkHref="#ico-your-condition-2"></use>
-            </svg>
-          </span>
-          <p className="your-condition__title">так себе</p>
-        </li>
-        <li className="your-condition__item">
-          <span className="your-condition__ico">
-            <svg className="svg-icon ico-your-condition-3">
-              <use xlinkHref="#ico-your-condition-3"></use>
-            </svg>
-          </span>
-          <p className="your-condition__title">не очень</p>
-        </li>
-      </ul>
+let condition1 = true
+let condition2 = false
+let condition3 = false
 
-      <p className="text-center mb30">Прикрепите файл или вставьте ссылку с видео выполнения заданий</p>
+class SendReportModal extends Component {
+  render() {
+    const { error, handleSubmit, onSubmit } = this.props
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <h3 className="h1">Отчет тренеру</h3>
+        <hr/>
+        <p className="sub-title">Напиши сообщение тренеру о том, что тренировка отработана! Если ты и правда все сделал :)</p>
+        <Field name="report" placeholder="Выполнено, сделал, справился..." component={InputModal} />
+        <p className="text-center">Как ты себя чувствовал во время выполнения заданий?</p>
+        <ul className="your-condition">
+          <li ref='condition1' className="your-condition__item your-condition__item--active" onClick={() => {
+            this.refs.condition1.className = "your-condition__item your-condition__item--active"
+            this.refs.condition2.className = "your-condition__item"
+            this.refs.condition3.className = "your-condition__item"
+          }}>
+            <span className="your-condition__ico">
+              <svg className="svg-icon ico-your-condition-1">
+                <use xlinkHref="#ico-your-condition-1"></use>
+              </svg>
+            </span>
+            <p className="your-condition__title">отлично</p>
+          </li>
+          <li ref='condition2' className="your-condition__item" onClick={() => {
+            this.refs.condition1.className = "your-condition__item"
+            this.refs.condition2.className = "your-condition__item your-condition__item--active"
+            this.refs.condition3.className = "your-condition__item"
+          }}>
+            <span className="your-condition__ico">
+              <svg className="svg-icon ico-your-condition-2">
+                <use xlinkHref="#ico-your-condition-2"></use>
+              </svg>
+            </span>
+            <p className="your-condition__title">так себе</p>
+          </li>
+          <li ref='condition3' className="your-condition__item" onClick={() => {
+            this.refs.condition1.className = "your-condition__item"
+            this.refs.condition2.className = "your-condition__item"
+            this.refs.condition3.className = "your-condition__item your-condition__item--active"
+          }}>
+            <span className="your-condition__ico">
+              <svg className="svg-icon ico-your-condition-3">
+                <use xlinkHref="#ico-your-condition-3"></use>
+              </svg>
+            </span>
+            <p className="your-condition__title">не очень</p>
+          </li>
+        </ul>
 
-      <Field name="video" placeholder="http://youtube.com" component={InputModal} />
-      {error && <div className="text-center"><strong>{error}</strong></div>}
+        {/*
+          <p className="text-center mb30">Прикрепите файл или вставьте ссылку с видео выполнения заданий</p>
 
-      <hr/>
+          <Field name="video" placeholder="http://youtube.com" component={InputModal} />
+          {error && <div className="text-center"><strong>{error}</strong></div>}
+        */}
 
-      <div className="text-center">
-        <button type='submit' className="btn btn--primary js-fill-report-2">
-          Отправить отчет
-        </button>
-      </div>
-    </form>
-)}
+        <hr/>
+
+        <div className="text-center">
+          <button type='submit' className="btn btn--primary js-fill-report-2">
+            Отправить отчет
+          </button>
+          {/* <div className='divider'/>
+          <button className="btn btn--primary js-fill-report-2" onClick={e => {
+            e.preventDefault()
+            this.hide()
+          }}>
+            Закрыть
+          </button> */}
+        </div>
+      </form>
+    )
+  }
+}
 
 const validate = data => {
   const errors = {}
 
-  if (!data.report)
-    errors.report = 'Поле текста не должно быть пустым'
-
-  if (!data.video)
-    errors.video = 'Ссылка на видео должна быть заполнена'
+  // if (!data.report)
+  //   errors.report = 'Поле текста не должно быть пустым'
+  //
+  // if (!data.video)
+  //   errors.video = 'Ссылка на видео должна быть заполнена'
 
   return errors
 }

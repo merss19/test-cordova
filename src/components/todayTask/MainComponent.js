@@ -94,21 +94,30 @@ class MainComponent extends Component {
                           ...data,
                           health: 'good',
                           day: taskDay.id,//day
-                          user: '23',//user
+                          user: taskDay.user.id,//user
                           status: 'waiting',
-                          admin: 1,//admin
+                          admin: taskDay.user.admin,//admin
                           adminAnswer: '',//admin
                         }
                       })
                     })
                     .then(response => response.json())
                     .then(json => {
+                      this.refs.successModal.show()
+                      this.refs.sendReportModal.hide()
                       if (json.data) {
                       } else {
-                        throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
+                        //throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
                       }
                     })
                 }}/>
+              </Modal>
+              <Modal ref='successModal' contentStyle={contentStyle}>
+                <h2>Отчет отправлен! В течении некоторого времени его проверит твой тренер</h2>
+                <br/>
+                <div className="btn btn--action" onClick={e => this.refs.successModal.hide()}>
+                  Продолжить
+                </div>
               </Modal>
 
 
