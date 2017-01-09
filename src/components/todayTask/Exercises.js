@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
-import Modal from 'boron/FadeModal'
+import ModalVideo from './ModalVideo';
 
-let contentStyle = {
-  width: '794px',
-  height: '446px'
-}
+
 
 class Exercises extends Component {
+
   componentWillMount() {
     if (window.mobilecheck()) {
       contentStyle.width = '300px'
     }
   }
+
 
   render() {
     const { sendReport, tasks } = this.props
@@ -66,19 +65,9 @@ class Exercises extends Component {
                   {task.exercises.map((exercise, ind) => (
                     <li key={ind} className="num-list__item">
                       <span className="num-list__number">{ind + 1}</span>
-                      <p className="num-list__description">
-                        <span>{exercise.count}</span>
-                        <div className='divider'/>
-                        <a href="#" className="video-pupup" onClick={ e => {
-                          e.preventDefault()
-                          this.refs[`videoModal${index}${ind}`].show()
-                        }}>
-                          {exercise.description}
-                        </a>
-                      </p>
-                      <Modal ref={`videoModal${index}${ind}`} modalStyle={contentStyle} contentStyle={contentStyle}>
-                        <iframe width="100%" height="100%" src={exercise.video} frameBorder="0" allowFullScreen></iframe>
-                      </Modal>
+	                    <ModalVideo exercise={exercise}
+	                                ind={ind}>{exercise.description}
+	                    </ModalVideo>
                     </li>
                   ))}
                 </ul>
