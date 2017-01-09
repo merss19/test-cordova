@@ -19,8 +19,14 @@ let contentStyle = {
   padding: '30px'
 }
 
+const modalStyle ={
+	width: '100%',
+	maxWidth: '760px'
+}
+
 class MainComponent extends Component {
   componentWillMount() {
+
     if (window.mobilecheck()) {
       contentStyle.width = '300px'
     }
@@ -56,7 +62,6 @@ class MainComponent extends Component {
   render() {
     const { taskDay, token } = this.props
     const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName, role } } = taskDay
-    console.log(taskDay)
     const introJSON = intro && intro[0] && intro[0].intro ? JSON.parse(intro[0].intro) : null
     const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
 
@@ -74,36 +79,39 @@ class MainComponent extends Component {
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
               <TaskIntro text={introHTML} json={introJSON} />
-              {tasks && tasks[0] &&
+
                 <Exercises tasks={tasks} sendReport={() => {
                   this.refs.sendReportModal.show()
                 }}/>
-              }
 
-              <Modal ref='sendReportModal' contentStyle={contentStyle}>
+
+              <Modal ref='sendReportModal' contentStyle={contentStyle} modalStyle ={modalStyle} className="modal__send-report">
                 <SendReportModal onSubmit={(data) => {
-                  return fetch(`${api}/user/userTask-create`, {
+
+                    let payload = {
+					    authToken: token ? token : cookie.load('token'),
+					    data: {
+						    "day": taskDay.id,
+						    "status": 'waiting',
+						    "report": data.report,
+						    "video": '',
+						    "health": data.health
+					    }
+					  }
+                  return fetch(`${api}/user/userDay-create`, {
                       headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                       },
                       method: 'POST',
-                      body: JSON.stringify({
-                        authToken: token ? token : cookie.load('token'),
-                        data: {
-                          ...data,
-                          health: 'good',
-                          day: taskDay.id,//day
-                          user: '23',//user
-                          status: 'waiting',
-                          admin: 1,//admin
-                          adminAnswer: '',//admin
-                        }
-                      })
+                      body: JSON.stringify(payload)
                     })
                     .then(response => response.json())
                     .then(json => {
-                      if (json.data) {
+                        this.refs.sendReportModal.hide()
+                        this.refs.sendReportSuccess.show()
+                        console.log(json)
+                      if (json.isSuccess) {
                       } else {
                         throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
                       }
@@ -262,33 +270,46 @@ class MainComponent extends Component {
           </div>
         </div>
 
-        <div id="fill-report-2">
-          <div className="base-popup__msg">
-            <h3 className="h1">Отчет миньону отправлен успешно!</h3>
-            <hr/>
-            <div className="base-popup__msg-content">
-              <p className="base-parag">Молодец! Так держать! Нам нравится твой подход к тренировкам. Не сдавайся, и ты скоро ты увидишь ошеломляющий  результат.</p>
-            </div>
-            <div className="btn btn--primary js-fill-report-3">Зачетна книжка</div>
-          </div>
-        </div>
+	      <Modal ref='sendReportSuccess' contentStyle={contentStyle} modalStyle ={modalStyle}>
+		        <div>
+		          <div className="base-popup__msg">
+		            <h3 className="h1">Отчет миньону отправлен успешно!</h3>
+		            <hr/>
+		            <div className="base-popup__msg-content">
+		              <p className="base-parag">Молодец! Так держать! Нам нравится твой подход к тренировкам. Не сдавайся, и ты скоро ты увидишь ошеломляющий  результат.</p>
+		            </div>
+		            <div className="btn btn--primary js-fill-report-3" onClick={() => {
+		              this.refs.sendReportSuccess.hide()
+                  this.refs.sendReportBook.show()
+                }}>Зачетна книжка</div>
+		          </div>
+		        </div>
 
-        <div id="fill-report-3">
-          <div className="base-popup__msg">
-            <h3 className="h1">Это твоя зачетная книжка.</h3>
-            <hr/>
-            <div className="base-popup__msg-content">
-              <p className="base-parag">Здесь ты будешь сдавать тренерам “проверяющим” отчеты о своих выполненных заданиях. Они тебе будут задавать наводящие вопросы, для того, чтобы проверить тебя. Мы ведь обещали, что спуску не дадим! Пиши отчет по каждому выполненному заданию и двигайся вперед к финальным задачам! Удачи!</p>
-            </div>
-            <div className="btn btn--primary">Отлилчно!</div>
-          </div>
-        </div>
+	      </Modal>
+
+
+	      <Modal ref='sendReportBook' contentStyle={contentStyle} modalStyle ={modalStyle}>
+	        <div >
+	          <div className="base-popup__msg">
+	            <h3 className="h1">Это твоя зачетная книжка.</h3>
+	            <hr/>
+	            <div className="base-popup__msg-content">
+	              <p className="base-parag">Здесь ты будешь сдавать тренерам “проверяющим” отчеты о своих выполненных заданиях. Они тебе будут задавать наводящие вопросы, для того, чтобы проверить тебя. Мы ведь обещали, что спуску не дадим! Пиши отчет по каждому выполненному заданию и двигайся вперед к финальным задачам! Удачи!</p>
+	            </div>
+	            <div className="btn btn--primary"  onClick={() => {
+		              this.refs.sendReportBook.hide()
+                }}>Отлично!</div>
+	          </div>
+	        </div>
+	      </Modal>
 
       </div>
   )}
 }
 
-const mapStateToProps = state => ({ todayTask: state.todayTask })
+const mapStateToProps = state =>{
+	return { todayTask: state.todayTask }
+}
 
 MainComponent= connect(
   mapStateToProps

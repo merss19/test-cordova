@@ -18,6 +18,15 @@
   font-size: large;
 }
 
+.condition__input{
+  display: none;
+}
+
+/*.modal__send-report{
+  width: 100% !important;
+  max-width: 760px;
+}*/
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
