@@ -13,6 +13,7 @@ import SelectProfile from '../componentKit/SelectProfile'
 import SelectProgram from '../componentKit/SelectProgram'
 import InputProfileBirthday from '../componentKit/InputProfileBirthday'
 import InputDateMask from '../componentKit/InputDateMask'
+import InputCountMask from '../componentKit/InputCountMask'
 import ErrorField from '../componentKit/ErrorField'
 import InsuranceValidationForm from '../profile/InsuranceValidationForm'
 import cookie from 'react-cookie'
@@ -55,7 +56,7 @@ class SubmitValidationForm extends Component {
   }
 
   componentWillMount() {
-    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx, injuriesFirst } = this.props
+    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx, injuriesFirst, sportsPast } = this.props
 
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
@@ -408,12 +409,12 @@ class SubmitValidationForm extends Component {
                   ))}
                   <tr>
                     <td>{moment().format('YYYY-MM-DD')}</td>
-                    <td><InputElement mask="999" maskChar=" " ref="height" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999" maskChar=" " ref="weight" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999" maskChar=" " ref="chest" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999" maskChar=" " ref="waist" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999" maskChar=" " ref="hips" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999" maskChar=" " ref="thigh" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999.9" maskChar=" " ref="height" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999.9" maskChar=" " ref="weight" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999.9" maskChar=" " ref="chest" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999.9" maskChar=" " ref="waist" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999.9" maskChar=" " ref="hips" type="text" className="base-table__input"/></td>
+                    <td><InputElement mask="999.9" maskChar=" " ref="thigh" type="text" className="base-table__input"/></td>
                   </tr>
                 </tbody>
               </table>
@@ -521,12 +522,13 @@ class SubmitValidationForm extends Component {
 
             <h3 className="h3">Осталось решить всего несколько вопросов и бонусы будут у тебя в копилочке!</h3>
             <p className="sub-title">Посчитай сколько раз ты приседаешь за 1 минуту и запиши цифру</p>
-            <Field name="squatsCount" placeholder="Впиши свой результат сюда" component={InputProfile} />
+            <Field name="squatsCount" placeholder="Впиши свой результат сюда" component={InputCountMask} />
+
             <p className="base-rapag text-center">Вот тебе таймер обратного отсчета. Запускай и начинай приседать</p>
 
             <Timer timer={{
               minutes: 1,
-              seconds: 0
+              seconds: 5
             }}/>
 
             <hr/>
@@ -556,14 +558,22 @@ class SubmitValidationForm extends Component {
             <ul className="options options--white mtb30">
               {sportsPast.map((val, index) => (
                 <label key={index}>
-                  <li name="sports" className={initialValues && initialValues.injuriesExist === val.val ? "options__item is-active" : "options__item"} id={`sportsPast[${index}]`} onClick={e => {
+                  <li name="sports" className={initialValues && initialValues.didSports === val.val ? "options__item is-active" : "options__item"} id={`sportsPast[${index}]`} onClick={e => {
                     document.getElementById(`sportsPast[${index}]`).className += ' is-active'
                     sportsPast.forEach((v, i) => {
                       if (index !== i)
                         document.getElementById(`sportsPast[${i}]`).className = "options__item"
                     })
                   }}>
-                    <Field component='input' type='radio' name="didSports" style={{visibility: 'hidden', margin: -5}} value={val.val}/>
+                    <Field
+                      component='input'
+                      type='radio'
+                      name="didSports"
+                      style={{visibility: 'hidden', margin: -5}}
+                      value={val.val}
+                      onClick={() => {
+                        dispatch({ type: 'SPORTS_PAST', sportsPast: val.val })
+                      }}/>
                     {val.text}
                   </li>
                   <span/>
@@ -872,10 +882,11 @@ SubmitValidationForm = reduxForm({
 const selector = formValueSelector('submitValidation')
 
 const mapStateToProps = state => {
-  const { bodyParams, injuriesHidden, injuries } = state
+  const { bodyParams, injuriesHidden, injuries, sportsPast } = state
   return {
     bodyParams,
     injuriesHidden,
+    sportsPast,
     injuries
   }
 }

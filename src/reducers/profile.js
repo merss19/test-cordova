@@ -103,6 +103,15 @@ export const injuriesHidden = (state = false, action) => {
   }
 }
 
+export const sportsPast = (state = false, action) => {
+  switch (action.type) {
+    case 'SPORTS_PAST':
+      return action.sportsPast
+    default:
+      return state
+  }
+}
+
 export const injuries = (state = [], action) => {
   switch (action.type) {
     case 'INJURIES_SET':

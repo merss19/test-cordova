@@ -54,10 +54,12 @@ class ProfileCreate extends Component {
 
   render() {
     const { profileData, insurance, bodyParams, token, isFetching,
-      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch } = this.props
+      birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch, sportsPast } = this.props
     let { injuries } = this.props
     const isEmpty = !profileData || !profileData.email
     const insuranceIsEmpty = !insurance
+
+    console.log(profileData)
 
     return (
       <div className="entry__inner">
@@ -123,6 +125,8 @@ class ProfileCreate extends Component {
                 if (isValidBirthday && isValidBabyBirhday && isValidBabyFeed) {
                   this.refs.loadingModal.show()
                   data.injuries = injuries.join()
+                  console.log(sportsPast)
+                  data.didSports = sportsPast
                   delete data.password
                   const payload = {
                     authToken: token ? token : cookie.load('token'),
@@ -204,7 +208,7 @@ class ProfileCreate extends Component {
 
 const mapStateToProps = state => {
   const { selectedProfile, recivedProfile, userToken, birthday,
-    babyBirthday, babyFeed, isReadyToTasks, injuries } = state
+    babyBirthday, babyFeed, isReadyToTasks, injuries, sportsPast } = state
   const {
     isFetching,
     lastUpdated,
@@ -228,6 +232,7 @@ const mapStateToProps = state => {
     babyFeed,
     isReadyToTasks,
     injuries,
+    sportsPast,
     token: userToken.token
   }
 }
