@@ -409,41 +409,54 @@ class SubmitValidationForm extends Component {
                   ))}
                   <tr>
                     <td>{moment().format('YYYY-MM-DD')}</td>
-                    <td><InputElement mask="999.9" maskChar=" " ref="height" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999.9" maskChar=" " ref="weight" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999.9" maskChar=" " ref="chest" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999.9" maskChar=" " ref="waist" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999.9" maskChar=" " ref="hips" type="text" className="base-table__input"/></td>
-                    <td><InputElement mask="999.9" maskChar=" " ref="thigh" type="text" className="base-table__input"/></td>
+                    <td><input ref="height" type="text" className="base-table__input"/></td>
+                    <td><input ref="weight" type="text" className="base-table__input"/></td>
+                    <td><input ref="chest" type="text" className="base-table__input"/></td>
+                    <td><input ref="waist" type="text" className="base-table__input"/></td>
+                    <td><input ref="hips" type="text" className="base-table__input"/></td>
+                    <td><input ref="thigh" type="text" className="base-table__input"/></td>
                   </tr>
                 </tbody>
               </table>
               <div className="text-center">
                 <div onClick={() => {
-                  this.refs.loadingModal.show()
-                  const data = {
-                    date: moment().format('YYYY-MM-DD'),
-                    height: this.refs.height.value,
-                    weight: this.refs.weight.value,
-                    chest: this.refs.chest.value,
-                    waist: this.refs.waist.value,
-                    hips: this.refs.hips.value,
-                    thigh: this.refs.thigh.value
-                  }
 
-                  this.refs.height.value = ''
-                  this.refs.weight.value = ''
-                  this.refs.chest.value = ''
-                  this.refs.waist.value = ''
-                  this.refs.hips.value = ''
-                  this.refs.thigh.value = ''
+                  const validData = [
+                    this.refs.height.value, this.refs.weight.value,
+                    this.refs.chest.value, this.refs.waist.value,
+                    this.refs.hips.value, this.refs.thigh.value
+                  ].filter(value => {
+                    return /^[0-9.]{1,4}$/.test(value)
+                  })
 
-                  const payload = {
-                    authToken: cookie.load('token'),
-                    data
-                  }
+                  console.log('ddddddddddddddddddd')
+                  console.log(validData.length)
 
-                  return fetch(`${api}/user/bodyMeasure-create`, {
+                  if (validData.length === 6) {
+                    this.refs.loadingModal.show()
+                    const data = {
+                      date: moment().format('YYYY-MM-DD'),
+                      height: this.refs.height.value,
+                      weight: this.refs.weight.value,
+                      chest: this.refs.chest.value,
+                      waist: this.refs.waist.value,
+                      hips: this.refs.hips.value,
+                      thigh: this.refs.thigh.value
+                    }
+
+                    this.refs.height.value = ''
+                    this.refs.weight.value = ''
+                    this.refs.chest.value = ''
+                    this.refs.waist.value = ''
+                    this.refs.hips.value = ''
+                    this.refs.thigh.value = ''
+
+                    const payload = {
+                      authToken: cookie.load('token'),
+                      data
+                    }
+
+                    return fetch(`${api}/user/bodyMeasure-create`, {
                       headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -461,12 +474,22 @@ class SubmitValidationForm extends Component {
                         this.refs.failModal.show()
                       }
                     })
+                  } else {
+                    this.refs.failValidationModal.show()
+                  }
                 }} className="btn btn--primary">
                   Добавить
                 </div>
 
                 <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
                   <h2>Подождите...</h2>
+                </Modal>
+                <Modal ref='failValidationModal' contentStyle={contentStyle}>
+                  <h2>Данные могут содержать только цифры с точкой</h2>
+                  <br/>
+                  <div className="btn btn--action" onClick={() => this.refs.failValidationModal.hide()}>
+                    Продолжить
+                  </div>
                 </Modal>
                 <Modal ref='failModal' contentStyle={contentStyle}>
                   <h2>Что-то пошло не так, поробуйте снова</h2>
