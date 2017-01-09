@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import ModalVideo from './ModalVideo';
 
-
+const contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
 
 class Exercises extends Component {
 
