@@ -426,11 +426,11 @@ class SubmitValidationForm extends Component {
                     this.refs.chest.value, this.refs.waist.value,
                     this.refs.hips.value, this.refs.thigh.value
                   ].filter(value => {
-                    return /^[0-9.]{1,4}$/.test(value)
+                    return /^[0-9.]{1,100}$/.test(value)
                   })
 
                   console.log('ddddddddddddddddddd')
-                  console.log(validData.length)
+                  console.log(validData)
 
                   if (validData.length === 6) {
                     this.refs.loadingModal.show()
