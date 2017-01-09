@@ -41,6 +41,9 @@ class FoodEditor extends Component {
       programs, program, foodDescription, selectedFood, dispatch, editor, content } = this.props
     const isEmpty = !programs || !food
 
+    console.log('<<<<<<')
+    console.log(food)
+
     return (
       <div className='layout'>
         <Header burger={false} />
@@ -64,7 +67,7 @@ class FoodEditor extends Component {
                       data: {
                         id: program,
                         description: foodDescription,
-                        content: JSON.stringify(content)
+                        content: JSON.stringify(content[program-1])
                       }
                     }
 

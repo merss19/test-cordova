@@ -23,6 +23,8 @@ export const requestFood = food => ({
 })
 
 export const receiveFood = (food, json) => {
+  console.log('<=======================)))==0')
+  console.log(json)
   return ({
     type: RECEIVE_FOOD,
     food,

@@ -8,6 +8,9 @@ import TaskIntro from '../todayTask/TaskIntro'
 class MainComponent extends Component {
   render() {
     const { food } = this.props
+    console.log('FOOOOOOOOOOOÖd')
+    console.log(food)
+    const introJSON = food && food.content ? JSON.parse(food.content) : null
     return (
       <div className="layout">
         <Header/>
@@ -44,7 +47,7 @@ class MainComponent extends Component {
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
 
-              <TaskIntro text={food.description} />
+              <TaskIntro json={introJSON} />
 
               {/* {food.chat && food.chat[0] &&
                 <Chat chat={food.chat} userId={1} />
