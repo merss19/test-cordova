@@ -21,7 +21,7 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
       calendarToolip = (
         <div className={"calendar-toolip calendar-toolip--" + status}>
           <div className="calendar-toolip__inner">
-            <p className="calendar-toolip__title">{completeText}</p>
+            <p className="calendar-toolip__title">{status}</p>
             <p className="calendar-toolip__date"><span>{admin}</span></p>
           </div>
         </div>

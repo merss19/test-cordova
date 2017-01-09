@@ -22,6 +22,7 @@ let contentStyle = {
 class ProfilePay extends Component {
   componentWillMount() {
     if (window.mobilecheck()) {
+      contentStyle.margin = '100px'
       contentStyle.width = '300px'
     }
 
@@ -221,7 +222,7 @@ class ProfilePay extends Component {
         {isEmpty
           ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <Header burger={false} />
+              <Header burger={false} isPay={true} />
 
               <ul className="entry-bc entry-bc--step-1">
                 <li className="entry-bc__item entry-bc__item--done">
@@ -304,7 +305,17 @@ class ProfilePay extends Component {
                   <div className="entry__box">
                     <div className="entry-form">
                       {amount > 0
-                        ? <span id="iframe_parent"/>
+                        ? <div>
+                            {window.mobilecheck() &&
+                              <button className="btn btn--primary" onClick={() => {
+                                this.refs.accModal.show()
+                              }}>
+                                { cookie.load('general') ? 'Изменить программу'
+                                  : program === '4' ? 'Изменить данные друга' : 'Изменить пакет' }
+                              </button>
+                            }
+                            <span id="iframe_parent"/>
+                          </div>
                         : <div className="entry-success">
                             <div className="entry-success__img-wrap">
                               <img src="/assets/img/success.svg" alt=""/>

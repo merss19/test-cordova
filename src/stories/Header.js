@@ -16,7 +16,7 @@ const Header = props => (
         : <div className="1/4--portable grid__cell header__burger"/>
       }
 
-      {!window.mobilecheck() &&
+      {(!window.mobilecheck() || !props.isProfile) &&
         <h1 className="2/4--portable 1/2-desk grid__cell header__logo">
           Ясегодня
           <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>

@@ -48,7 +48,11 @@ const decorator = new CompositeDecorator([
 ])
 
 const Image = (props) => {
-  return <img src={props.src} style={{maxWidth: '100%'}} />;
+  return <img src={props.src} style={{
+    maxWidth: '100%',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto' }}/>;
 };
 
 const Atomic = (props) => {
