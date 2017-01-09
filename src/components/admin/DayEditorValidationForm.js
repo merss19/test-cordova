@@ -226,12 +226,7 @@ class DayEditorValidationForm extends Component {
                         reset()
 
                         dispatch({ type: 'DAY_ID', id: calendar[index].id })
-
-                        calendar[index].intro.forEach((i, index) => {
-                          dispatch({ type: 'EDITOR', editor: JSON.parse(i.intro), index })
-                        })
-
-                        console.log(calendar[index].programTasks[programShow - 1])
+                        dispatch({ type: 'EDITOR', editor: JSON.parse(calendar[index].intro[programShow-1].intro), index: 0 })
 
                         dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
                         change('customName', calendar[index].customName)
@@ -334,7 +329,7 @@ class DayEditorValidationForm extends Component {
                     dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
                     dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent), index: 0 })
                   }}
-                  contentState={editor[programShow - 1]}
+                  contentState={editor[0]}
                   uploadCallback={this.uploadImageCallBack}
                 />
               </div>

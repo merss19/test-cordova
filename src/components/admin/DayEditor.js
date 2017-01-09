@@ -71,19 +71,13 @@ class DayEditor extends Component {
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
 
-                    console.log('<-==-==-=-==)==0')
-                    console.log(data)
-
                     if (data && data.tasks && data.tasks[0]) {
-                      console.log('1')
                       data.programTasks =[{}]
 
-                      console.log('2')
                       data.programTasks[0].intro = content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0])
                       data.programTasks[0].introHTML = dayIntro[0] ? dayIntro[0] : 'test'
                       data.programTasks[0].program = programShow
                       data.programTasks[0].tasks = data.tasks
-                      console.log('3')
                     } else {
                       data.programTasks = [{}]
                       data.programTasks[0] = {
@@ -116,8 +110,6 @@ class DayEditor extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     }
-
-                    console.log(payload)
 
                     const method = 'POST'
                     if ((content[0] && dayIntro[0]) || editor[0] && programShow) {
