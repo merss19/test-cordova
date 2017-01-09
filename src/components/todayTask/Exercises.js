@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ModalVideo from './ModalVideo';
+import YoutubeModal from './YoutubeModal';
 
 const contentStyle = {
   borderRadius: '18px',
@@ -68,9 +68,9 @@ class Exercises extends Component {
                   {task.exercises.map((exercise, ind) => (
                     <li key={ind} className="num-list__item">
                       <span className="num-list__number">{ind + 1}</span>
-	                    <ModalVideo exercise={exercise}
-	                                ind={ind}>{exercise.description}
-	                    </ModalVideo>
+	                    <YoutubeModal exercise={exercise}
+	                        ind={ind}>{exercise.description}
+	                    </YoutubeModal>
                     </li>
                   ))}
                 </ul>

@@ -38,7 +38,7 @@ const contentStyle = {
 	}
 }
 
-class ModalVideo extends Component {
+class YoutubeModal extends Component {
 
 	constructor() {
 		super();
@@ -80,4 +80,4 @@ class ModalVideo extends Component {
   }
 }
 
-export default ModalVideo
+export default YoutubeModal
