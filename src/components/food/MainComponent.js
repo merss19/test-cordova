@@ -4,12 +4,11 @@ import CalendarList from '../todayTask/CalendarList'
 import Header from '../../stories/Header'
 import Chat from '../../stories/chat/Chat'
 import TaskIntro from '../todayTask/TaskIntro'
+import cookie from 'react-cookie'
 
 class MainComponent extends Component {
   render() {
     const { food } = this.props
-    console.log('FOOOOOOOOOOOÖd')
-    console.log(food)
     const introJSON = food && food.content ? JSON.parse(food.content) : null
     return (
       <div className="layout">
@@ -18,7 +17,7 @@ class MainComponent extends Component {
           <div className="grid">
             <div className="1/4--desk grid__cell layout__menu">
               <div className="grid layout__menu-inner">
-                <Menu/>
+                <Menu fullName={cookie.load('fullName')}/>
                 {/* <CalendarList calendar={[{
                     number: '1',
                     icon: 'ico-done',
