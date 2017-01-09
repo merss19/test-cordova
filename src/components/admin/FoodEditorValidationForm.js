@@ -16,16 +16,16 @@ import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
+import Modal from 'boron/FadeModal'
 
 let htmlEditor = ''
 
-class FoodEditorValidationForm extends Component {
-  onEditorChange: Function = (editorContent) => {
-    const { dispatch } = this.props
-    dispatch({ type: 'CONTENT', content: editorContent })
-    dispatch({ type: 'FOOD_DESCRIPTION', description: draftToHtml(editorContent) })
-  }
+let contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
 
+class FoodEditorValidationForm extends Component {
   uploadImageCallBack(file) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
@@ -54,8 +54,14 @@ class FoodEditorValidationForm extends Component {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, food,
       change, programs, selectedFood, editor, foodProgram } = this.props
 
+    const onEditorChange = (editorContent) => {
+      const { dispatch } = this.props
+      dispatch({ type: 'CONTENT', content: editorContent, index: foodProgram - 1 })
+      dispatch({ type: 'FOOD_DESCRIPTION', description: draftToHtml(editorContent) })
+    }
+
     let contentEditor
-    if (foodProgram && editor) {
+    if (foodProgram && editor[foodProgram-1]) {
       contentEditor = (
         <div className='home-root'>
           <Editor ref='introEditor'
@@ -63,13 +69,13 @@ class FoodEditorValidationForm extends Component {
             wrapperClassName="home-wrapper"
             editorClassName="home-editor"
             placeholder="Вставьте текст..."
-            onChange={this.onEditorChange}
-            contentState={editor}
+            onChange={onEditorChange}
+            contentState={editor[foodProgram-1]}
             uploadCallback={this.uploadImageCallBack}
           />
         </div>
       )
-    } else if (foodProgram && !editor) {
+    } else if (foodProgram && !editor[foodProgram-1]) {
       contentEditor = (
         <div className='home-root'>
           <Editor ref='introEditor'
@@ -77,7 +83,7 @@ class FoodEditorValidationForm extends Component {
             wrapperClassName="home-wrapper"
             editorClassName="home-editor"
             placeholder="Вставьте текст..."
-            onChange={this.onEditorChange}
+            onChange={onEditorChange}
             uploadCallback={this.uploadImageCallBack}
           />
         </div>
@@ -113,7 +119,7 @@ class FoodEditorValidationForm extends Component {
           <div className="stage-box stage-box--small-padding">
             <div className="grid">
               <div className="1/2--desk grid__cell mb30">
-                <button type className='btn btn--primary'>
+                <button type='submit' className='btn btn--primary'>
                   Сохранить
                 </button>
               </div>
@@ -124,13 +130,14 @@ class FoodEditorValidationForm extends Component {
                 {programs.map((program, index) => {
                   if (program.id !== 4) {
                     return (
-                      <li key={index} className={foodProgram + '' !== program.id + ''
+                      <li key={index} className={foodProgram !== program.id
                         ? "btn-social__item btn-social__item--vk"
                         : "btn-social__item btn-social__item--odnoklassniki"}>
                         <span className="btn-social__title" onClick={() => {
                           dispatch({ type: 'FOOD_PROGRAM', program: program.id })
-                          if (food[index] && food[index].content)
-                            dispatch({ type: 'EDITOR', editor: JSON.parse(food[index].content) })
+                          if (food[index] && food[index].content) {
+                            dispatch({ type: 'EDITOR', editor: JSON.parse(food[index].content), index })
+                          }
                         }}>
                           {program.name}
                         </span>
