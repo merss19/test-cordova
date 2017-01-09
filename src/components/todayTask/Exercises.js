@@ -8,11 +8,11 @@ const contentStyle = {
 
 class Exercises extends Component {
 
-  componentWillMount() {
-    if (window.mobilecheck()) {
-      contentStyle.width = '300px'
-    }
-  }
+  // componentWillMount() {
+  //   if (window.mobilecheck()) {
+  //     contentStyle.width = '300px'
+  //   }
+  // }
 
 
   render() {
