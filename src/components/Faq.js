@@ -1304,7 +1304,7 @@ class Faq extends Component {
               </span>
               <span className="menu-mob-bottom__title">Зачетка</span>
             </a>
-          </li>
+          </li> */}
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/food')
@@ -1316,7 +1316,7 @@ class Faq extends Component {
               </span>
               <span className="menu-mob-bottom__title">Питание</span>
             </a>
-          </li> */}
+          </li>
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/faq')

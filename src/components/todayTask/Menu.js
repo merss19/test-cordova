@@ -15,12 +15,12 @@ const Menu = ({fullName}) => (
         <MenuButton onClick={() => {
           browserHistory.push('/reports')
         }} icon="ico-m-book">Зачетка</MenuButton>
-      </li>
+      </li> */}
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/food')
         }} icon="ico-m-food">Питание</MenuButton>
-      </li> */}
+      </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/faq')
