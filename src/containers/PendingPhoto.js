@@ -26,9 +26,14 @@ class UserReports extends Component {
   }
 
   componentWillMount() {
-    const {fetchPendingPhoto, routeParams} = this.props
+    const {
+      routeParams,
+      fetchChat,
+      fetchPendingPhoto,
+    } = this.props
 
-    fetchPendingPhoto(routeParams.userId)
+    fetchChat(PROFILE_PHOTO_CHAT_ID, routeParams.userId)
+    fetchPendingPhoto(Number(routeParams.userId), Number(routeParams.programId))
   }
 
   componentWillUnmount () {

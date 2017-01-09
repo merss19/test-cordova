@@ -27,7 +27,7 @@ const getUserPhoto = (authToken, data = {}) => {
     method: 'POST',
     body: JSON.stringify({
       authToken,
-      ...data
+      data
     })
   })
     .then(response => response.json())
@@ -44,7 +44,7 @@ export const fetchPendingPhotos = () => (dispatch, getState) => {
     .then(data => {
       const list = (data || [])
         .map(item => {
-          const link = `/userReports/photos/${item.userInfo.id}`
+          const link = `/userReports/photos/${item.user}/${item.program}`
           const fullName = `${item.userInfo.firstName} ${item.userInfo.lastName}`
 
           return {
@@ -69,13 +69,13 @@ export const receivePendingPhoto = payload => ({
   payload
 })
 
-export const fetchPendingPhoto = (userId) => (dispatch, getState) => {
+export const fetchPendingPhoto = (user, program) => (dispatch, getState) => {
   dispatch(requestPendingPhoto())
 
   const {token} = getState().userToken
   const authToken = token ? token : cookie.load('token')
 
-  return getUserPhoto(authToken, {userId})
+  return getUserPhoto(authToken, {user, program})
     .then(data => dispatch(receivePendingPhoto(data[0])))
     .catch(console.error)
 }

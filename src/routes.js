@@ -212,7 +212,7 @@ export default (
           component={PendingPhotos}
           onEnter={requireMinionAuth} />
         <Route
-          path='photos/:userId'
+          path='photos/:userId/:programId'
           component={PendingPhoto}
           onEnter={requireMinionAuth} />
 

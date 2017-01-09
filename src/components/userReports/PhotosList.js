@@ -21,7 +21,7 @@ export const ProfileListItem = ({id, fullName, waitingStatus, link, timePassed})
 export default ({list}) => (
   <div className="pending-profiles">
     {
-      list.map(item => <ProfileListItem key={item.id} {...item} />)
+      list.map((item, index) => <ProfileListItem key={index} {...item} />)
     }
   </div>
 )
