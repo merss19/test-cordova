@@ -16,8 +16,14 @@ import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
+import Modal from 'boron/FadeModal'
 
 let htmlEditor = ''
+
+let contentStyle = {
+  borderRadius: '18px',
+  padding: '30px'
+}
 
 class FoodEditorValidationForm extends Component {
   uploadImageCallBack(file) {
@@ -53,9 +59,6 @@ class FoodEditorValidationForm extends Component {
       dispatch({ type: 'CONTENT', content: editorContent, index: foodProgram - 1 })
       dispatch({ type: 'FOOD_DESCRIPTION', description: draftToHtml(editorContent) })
     }
-
-    console.log('lllllllllllllll===0')
-    console.log(!!foodProgram && !!editor[foodProgram-1])
 
     let contentEditor
     if (foodProgram && editor[foodProgram-1]) {
@@ -116,7 +119,7 @@ class FoodEditorValidationForm extends Component {
           <div className="stage-box stage-box--small-padding">
             <div className="grid">
               <div className="1/2--desk grid__cell mb30">
-                <button type className='btn btn--primary'>
+                <button type='submit' className='btn btn--primary'>
                   Сохранить
                 </button>
               </div>
@@ -131,8 +134,6 @@ class FoodEditorValidationForm extends Component {
                         ? "btn-social__item btn-social__item--vk"
                         : "btn-social__item btn-social__item--odnoklassniki"}>
                         <span className="btn-social__title" onClick={() => {
-                          console.log('<====-----====)==0')
-                          console.log(food[index])
                           dispatch({ type: 'FOOD_PROGRAM', program: program.id })
                           if (food[index] && food[index].content) {
                             dispatch({ type: 'EDITOR', editor: JSON.parse(food[index].content), index })

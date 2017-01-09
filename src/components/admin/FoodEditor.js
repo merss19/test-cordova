@@ -41,9 +41,6 @@ class FoodEditor extends Component {
       programs, program, foodDescription, selectedFood, dispatch, editor, content } = this.props
     const isEmpty = !programs || !food
 
-    console.log('<<<<<<')
-    console.log(food)
-
     return (
       <div className='layout'>
         <Header burger={false} />
@@ -62,35 +59,37 @@ class FoodEditor extends Component {
                   onSubmit={ data => {
                     this.refs.loadingModal.show()
 
-                    const payload = {
-                      authToken: token ? token : cookie.load('token'),
-                      data: {
-                        id: program,
-                        description: foodDescription,
-                        content: JSON.stringify(content[program-1])
+                    content.forEach((c, i) => {
+                      const payload = {
+                        authToken: token ? token : cookie.load('token'),
+                        data: {
+                          id: i + 1,
+                          description: 'test',
+                          content: JSON.stringify(c)
+                        }
                       }
-                    }
 
-                    const headers = {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                    }
-
-                    const method = 'POST'
-                    return fetch(`${api}/day/food-update`, {
-                      headers,
-                      method,
-                      body: JSON.stringify(payload)
-                    })
-                    .then(response => response.json())
-                    .then(json => {
-                      this.refs.loadingModal.hide()
-                      if (json.errorCode === 1) {
-                        dispatch(actions.fetchFoodIfNeeded(selectedFood))
-                        this.refs.successPromoModal.show()
-                      } else {
-                        this.refs.errorModal.show()
+                      const headers = {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                       }
+
+                      const method = 'POST'
+                      return fetch(`${api}/day/food-update`, {
+                        headers,
+                        method,
+                        body: JSON.stringify(payload)
+                      })
+                      .then(response => response.json())
+                      .then(json => {
+                        this.refs.loadingModal.hide()
+                        if (json.errorCode === 1) {
+                          dispatch(actions.fetchFoodIfNeeded(selectedFood))
+                          this.refs.successPromoModal.show()
+                        } else {
+                          this.refs.errorModal.show()
+                        }
+                      })
                     })
                 }}/>
                 <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
