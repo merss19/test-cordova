@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import ModalVideo from './ModalVideo';
 
-
+let contentStyle = {
+  width: '794px',
+  height: '446px'
+}
 
 class Exercises extends Component {
 
@@ -10,6 +13,8 @@ class Exercises extends Component {
       contentStyle.width = '300px'
     }
   }
+
+
 
 
   render() {
