@@ -65,7 +65,7 @@ class ModalVideo extends Component {
     const { exercise, ind} = this.props
     return (
       <div>
-        <p className="num-list__description fghfgh">
+        <p className="num-list__description">
           <span>{exercise.count}</span>
           <div className='divider'/>
           <a href="#" className="video-pupupg" onClick={this.openModal.bind(this)}>
