@@ -15,6 +15,8 @@ class Exercises extends Component {
   // }
 
 
+
+
   render() {
     const { sendReport, tasks } = this.props
     return (
