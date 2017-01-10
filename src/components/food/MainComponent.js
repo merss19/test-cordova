@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import Menu from '../todayTask/Menu'
 import CalendarList from '../todayTask/CalendarList'
 import Header from '../../stories/Header'
@@ -55,6 +56,81 @@ class MainComponent extends Component {
             </div>
           </div>
         </div>
+
+        <ul className="menu-mob-bottom">
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/task')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-tasks">
+                  <use xlinkHref="#ico-m-tasks"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">Задания</span>
+            </a>
+          </li>
+          {/* <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/reports')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-book">
+                  <use xlinkHref="#ico-m-book"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">Зачетка</span>
+            </a>
+          </li>
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/food')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-food">
+                  <use xlinkHref="#ico-m-food"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">Питание</span>
+            </a>
+          </li> */}
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/faq')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-faq">
+                  <use xlinkHref="#ico-m-faq"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">ЧАВО</span>
+            </a>
+          </li>
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/profile')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-faq">
+                  <use xlinkHref="#ico-m-faq"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">Профиль</span>
+            </a>
+          </li>
+          <li className="menu-mob-bottom__item">
+            <a href="#" className="menu-mob-bottom__item-inner" onClick={
+              () => browserHistory.push('/photos')
+            }>
+              <span className="menu-mob-bottom__ico">
+                <svg className="svg-icon ico-m-faq">
+                  <use xlinkHref="#ico-m-faq"></use>
+                </svg>
+              </span>
+              <span className="menu-mob-bottom__title">Фото</span>
+            </a>
+          </li>
+        </ul>
       </div>
     )
   }
