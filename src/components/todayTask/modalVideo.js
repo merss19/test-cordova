@@ -11,10 +11,13 @@ const contentStyle = {
 	right             : 0,
 	bottom            : 0,
 	cursor            :'pointer',
-	backgroundColor   : 'rgb(55, 58, 71)',
-	animationFillMode : 'forwards',
-	animationDuration : '0.3s',
-	animationName     : 'anim_31483991342307',
+	zIndex            :'9999',
+	height            :'100%',
+	overflow          :'hidden',
+	backgroundColor   :'rgb(55, 58, 71)',
+	animationFillMode :'forwards',
+	animationDuration :'0.3s',
+	animationName     :'anim_31483991342307',
 	animationTimingFunction: 'ease-out'
 
 	},
@@ -23,18 +26,18 @@ const contentStyle = {
 	WebkitOverflowScrolling    : 'touch',
 	outline                    : 'none',
 	transform                  :'translate3d(-50%, -50%, 0px)',
-	top                        : '50%',
+	top                        : '45%',
 	left                       : '50%',
 	border                     : 'none',
 	background                 : 'transparent',
 	padding                    : '0',
-	bottom:'0',
-	rigth:'0',
-	width: '794px',
-	height: '446px',
-	overflow: 'hidden'
-
-
+	bottom                     :'0',
+	rigth                      :'0',
+	width                      :'100%',
+	maxWidth                   :'794px',
+	minWidth                   :'320px',
+	height                     :'auto',
+	overflow                   :'hidden'
 	}
 }
 
@@ -62,7 +65,7 @@ class ModalVideo extends Component {
     const { exercise, ind} = this.props
     return (
       <div>
-        <p className="num-list__description">
+        <p className="num-list__description fghfgh">
           <span>{exercise.count}</span>
           <div className='divider'/>
           <a href="#" className="video-pupupg" onClick={this.openModal.bind(this)}>
