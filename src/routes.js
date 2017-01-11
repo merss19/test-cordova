@@ -12,6 +12,7 @@ import ProfilePasswordRestore from './containers/ProfilePasswordRestore'
 import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
 import LoginFB from './components/profile/LoginFB'
+import LoginOk from './components/profile/LoginOk'
 import SuccessProfile from './components/profile/SuccessProfile'
 import SuccessTomorrowProfile from './components/profile/SuccessTomorrowProfile'
 import DayEditor from './components/admin/DayEditor'
@@ -174,6 +175,7 @@ export default (
       <Route path='profile' component={ProfileCreate} onEnter={requireForTest} />
       <Route path='social/vk' component={LoginSocial} />
       <Route path='social/fb' component={LoginFB} />
+      <Route path='social/ok' component={LoginOk} />
       <Route path='signup'>
         <IndexRoute component={ProfileSignup} onEnter={requireFromLoginAuth} />
         <Route path='pay' component={ProfilePay} onEnter={requireFromPayAuth} />
