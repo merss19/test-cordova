@@ -7,6 +7,6 @@ const api = 'https://api.todayme.ru/api'
 
 const host = env === PRODUCTION
   ? 'https://lk.todayme.ru'
-  : 'https://localhost:3000'
+  : 'https://lk.todayme.ru'//'https://localhost:3000'
 
 export { api, host }
