@@ -68,7 +68,7 @@ class DayEditor extends Component {
                   programs={programs}
                   editor={editor}
                   content={content}
-                  onSubmit={ data => {
+                  onSubmit={data => {
                     this.refs.loadingModal.show()
 
                     if (data && data.tasks && data.tasks[0]) {
