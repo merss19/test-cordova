@@ -126,8 +126,6 @@ class ProfileCreate extends Component {
                 if (isValidBirthday && isValidBabyBirhday && isValidBabyFeed) {
                   this.refs.loadingModal.show()
                   data.injuries = injuries.join()
-                  console.log('<-----------------------')
-                  console.log(isBabyFeed)
                   data.didSports = sportsPast
                   data.isBabyFeeding = isBabyFeed
 

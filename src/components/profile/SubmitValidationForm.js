@@ -547,7 +547,7 @@ class SubmitValidationForm extends Component {
                       : <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
                     }
                   </div>
-                  {isBabyFeeding &&
+                  {!isBabyFeeding &&
                     <div className="1/2--desk 1/1-pocket grid__cell">
                       <p className="base-parag">Месяц когда перестали кормить грудью (гггг-ММ-дд)</p>
                       {window.mobilecheck()
