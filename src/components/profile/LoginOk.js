@@ -44,35 +44,35 @@ class LoginSocial extends Component {
 
     const payload = { socialNetType, code }
 
-    // return fetch(`${api}/user/authenticate-social`, {
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json'
-    //     },
-    //     method: 'POST',
-    //     body: JSON.stringify(payload)
-    //   })
-    //   .then(response => response.json())
-    //   .then(json => {
-    //     this.refs.loadingModal.hide()
-    //
-    //     if (json.errorCode === 1 && json.data && json.data.authToken) {
-    //       cookie.save('token', json.data.authToken, { path: '/' })
-    //       setToken(json.data.authToken)
-    //       browserHistory.push('/signup/pay')
-    //     } else {
-    //       packageTypeInitial = cookie.load('packageType')
-    //       programInitial     = cookie.load('program')
-    //       promoInitial       = cookie.load('promoName')
-    //       shareInitial       = cookie.load('share')
-    //
-    //       if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
-    //         this.refs.accModal.show()
-    //       } else {
-    //         this.refs.emailModal.show()
-    //       }
-    //     }
-    //   })
+    return fetch(`${api}/user/authenticate-social`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(json => {
+        this.refs.loadingModal.hide()
+
+        if (json.errorCode === 1 && json.data && json.data.authToken) {
+          cookie.save('token', json.data.authToken, { path: '/' })
+          setToken(json.data.authToken)
+          browserHistory.push('/signup/pay')
+        } else {
+          packageTypeInitial = cookie.load('packageType')
+          programInitial     = cookie.load('program')
+          promoInitial       = cookie.load('promoName')
+          shareInitial       = cookie.load('share')
+
+          if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
+            this.refs.accModal.show()
+          } else {
+            this.refs.emailModal.show()
+          }
+        }
+      })
   }
 
   render() {
