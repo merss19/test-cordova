@@ -136,6 +136,7 @@ class MainComponent extends Component {
         <ul className="menu-mob-bottom">
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
+
               () => browserHistory.push('/task')
             }>
               <span className="menu-mob-bottom__ico">

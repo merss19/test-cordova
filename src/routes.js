@@ -85,7 +85,13 @@ const requirePayAuth = fromPay => {
         if (json.data[0].paidPackage && json.data[0].program + '' !== '4') {
           cookie.save('userProgram', json.data[0].program, { path: '/' })
           cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
-          browserHistory.push('/profile')//browserHistory.push('/signup/pay/success')
+
+	        if(json.data[0].isFirstEdit){
+		        browserHistory.push('/task')
+	        } else {
+		        browserHistory.push('/profile')//browserHistory.push('/signup/pay/success')
+	        }
+
         } else if (json.data[0].paidPackage && json.data[0].program + '' === '4') {
           browserHistory.push('/signup/pay/success/friend')
         } else {

@@ -80,7 +80,7 @@ class Exercises extends Component {
 
         <div ref='taskResults' className="tasks-results">
           <h2 className="h1 tasks-results__title">Подведем итоги?</h2>
-          <p className="tasks-results__desc">Молодец! На сегодня программа выполнена! Это конечно не максимум того, что мы могли бы сделать всметсе, но у нас еще есть немного времени впереди</p>
+          <p className="tasks-results__desc">Молодец! На сегодня программа выполнена! Это конечно не максимум того, что мы могли бы сделать вместе, но у нас еще есть немного времени впереди</p>
           <div className="text-center">
             <div className="btn btn--primary js-fill-report-1" onClick={sendReport}>
               Заполнить отчет!
