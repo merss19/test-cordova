@@ -37,6 +37,17 @@ class LoginValidationForm extends Component {
       window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
     }
 
+    const loginOk = () => {
+      if (packageType)
+        cookie.save('packageType', packageType, { path: '/' })
+      if (program)
+        cookie.save('program', program, { path: '/' })
+      if (promo)
+        cookie.save('promoName', promo, { path: '/' })
+
+      window.location = `https://connect.ok.ru/oauth/authorize?client_id=1248995328&scope=VALUABLE_ACCESS,LONG_ACCESS_TOKEN,PHOTO_CONTENT,GET_EMAIL&response_type=code&redirect_uri=${host}/social/ok`
+    }
+
     const redirectFb = () => {
       let uri
 
@@ -127,11 +138,11 @@ class LoginValidationForm extends Component {
                           <use xlinkHref="#vk"></use>
                         </svg>
                       </li>
-                      {/* <li className="social-signin__item social-signin__item--odnoklassniki">
+                      <li className="social-signin__item social-signin__item--odnoklassniki" onClick={loginOk}>
                         <svg className="svg-icon ico-odnoklassniki">
                           <use xlinkHref="#odnoklassniki"></use>
                         </svg>
-                      </li> */}
+                      </li>
                       <li className="social-signin__item social-signin__item--fb" onClick={loginFb}>
                         <svg className="svg-icon ico-fb">
                           <use xlinkHref="#fb"></use>
