@@ -67,7 +67,7 @@ export const birthday = (state = '', action) => {
   }
 }
 
-export const babyBirthday = (state = '', action) => {
+export const babyBirthday = (state = moment().format('YYYY-MM-DD'), action) => {
   switch (action.type) {
     case 'BABY_BIRTHDAY':
       return action.babyBirthday
@@ -76,7 +76,7 @@ export const babyBirthday = (state = '', action) => {
   }
 }
 
-export const babyFeed = (state = '', action) => {
+export const babyFeed = (state = moment().format('YYYY-MM-DD'), action) => {
   switch (action.type) {
     case 'BABY_FEED':
       return action.babyFeed
@@ -89,6 +89,15 @@ export const isReadyToTasks = (state = false, action) => {
   switch (action.type) {
     case 'IS_READY_TO_TASKS':
       return action.isReadyToTasks
+    default:
+      return state
+  }
+}
+
+export const isBabyFeeding = (state = false, action) => {
+  switch (action.type) {
+    case 'IS_BABY_FEEDING':
+      return action.isBabyFeeding
     default:
       return state
   }

@@ -56,7 +56,8 @@ class SubmitValidationForm extends Component {
   }
 
   componentWillMount() {
-    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx, injuriesFirst, sportsPast } = this.props
+    const { bodyMeasure, dispatch, date, babyDate, feedDate, injuriesEx,
+      injuriesFirst, sportsPast, isBabyFeed } = this.props
 
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
@@ -72,6 +73,9 @@ class SubmitValidationForm extends Component {
     dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: babyDate })
     dispatch({ type: 'BABY_FEED', babyFeed: feedDate })
     dispatch({ type: 'INJURIES_HIDDEN', injuriesHidden: injuriesEx })
+    console.log('START')
+    console.log(isBabyFeed)
+    dispatch({ type: 'IS_BABY_FEEDING', isBabyFeeding: isBabyFeed })
 
     if (bodyMeasure) {
       dispatch({
@@ -82,11 +86,11 @@ class SubmitValidationForm extends Component {
   }
 
   render() {
-    const { error, valid, handleSubmit, bodyParams, isReadyToTasks,
+    const { error, valid, handleSubmit, bodyParams, isReadyToTasks, isBabyFeeding,
       dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
 
     console.log('program')
-    console.log(initialValues.program)
+    console.log(isBabyFeeding)
     // const sports = [
     //   'Сложно',
     //   'Нормально',
@@ -520,6 +524,21 @@ class SubmitValidationForm extends Component {
             {initialValues.program === 2 &&
               <div>
                 <h3 className="h3">Для программы "Мама может"</h3>
+                <div className="checkboxes__item">
+                  <span className="checkbox">
+                    <label className="checkbox__label" htmlFor='accept'>
+                      <input name='isBabyFeeding' className="checkbox__field" checked={isBabyFeeding} id='accept' type="checkbox" onChange={() =>
+                        dispatch({ type: 'IS_BABY_FEEDING', isBabyFeeding: !isBabyFeeding })
+                      }/>
+                      <span className="checkbox__ph">
+                        <svg className="svg-icon ico-tick">
+                          <use xlinkHref="#ico-tick"></use>
+                        </svg>
+                      </span>
+                      <span className="checkbox__title">Всё ещё кормлю грудью</span>
+                    </label>
+                  </span>
+                </div>
                 <div className="grid mb30">
                   <div className="1/2--desk 1/1-pocket grid__cell">
                     <p className="base-parag">Дата рождения последнего ребёнка (гггг-ММ-дд)</p>
@@ -528,13 +547,15 @@ class SubmitValidationForm extends Component {
                       : <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
                     }
                   </div>
-                  <div className="1/2--desk 1/1-pocket grid__cell">
-                    <p className="base-parag">Месяц когда перестали кормить грудью (гггг-ММ-дд)</p>
-                    {window.mobilecheck()
-                      ? <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDateMask} />
-                      : <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDayPicker} />
-                    }
-                  </div>
+                  {isBabyFeeding &&
+                    <div className="1/2--desk 1/1-pocket grid__cell">
+                      <p className="base-parag">Месяц когда перестали кормить грудью (гггг-ММ-дд)</p>
+                      {window.mobilecheck()
+                        ? <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDateMask} />
+                        : <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                      }
+                    </div>
+                  }
                 </div>
               </div>
             }
@@ -905,12 +926,13 @@ SubmitValidationForm = reduxForm({
 const selector = formValueSelector('submitValidation')
 
 const mapStateToProps = state => {
-  const { bodyParams, injuriesHidden, injuries, sportsPast } = state
+  const { bodyParams, injuriesHidden, injuries, sportsPast, isBabyFeeding } = state
   return {
     bodyParams,
     injuriesHidden,
     sportsPast,
-    injuries
+    injuries,
+    isBabyFeeding
   }
 }
 

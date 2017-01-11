@@ -53,7 +53,7 @@ class ProfileCreate extends Component {
   }
 
   render() {
-    const { profileData, insurance, bodyParams, token, isFetching,
+    const { profileData, insurance, bodyParams, token, isFetching, isBabyFeed,
       birthday, babyBirthday, babyFeed, isReadyToTasks, dispatch, sportsPast } = this.props
     let { injuries } = this.props
     const isEmpty = !profileData || !profileData.email
@@ -76,6 +76,7 @@ class ProfileCreate extends Component {
               feedDate={moment(profileData.lastBabyFeedMonth).format('YYYY-MM-DD')}
               injuriesEx={profileData.injuriesExist}
               isReadyToTasks={isReadyToTasks}
+              isBabyFeed={profileData.isBabyFeeding}
               initialValues={{
                 ...profileData,
                 country: !profileData.country ? 'Россия' : profileData.country,
@@ -125,8 +126,11 @@ class ProfileCreate extends Component {
                 if (isValidBirthday && isValidBabyBirhday && isValidBabyFeed) {
                   this.refs.loadingModal.show()
                   data.injuries = injuries.join()
-                  console.log(sportsPast)
+                  console.log('<-----------------------')
+                  console.log(isBabyFeed)
                   data.didSports = sportsPast
+                  data.isBabyFeeding = isBabyFeed
+
                   delete data.password
                   const payload = {
                     authToken: token ? token : cookie.load('token'),
@@ -207,7 +211,7 @@ class ProfileCreate extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedProfile, recivedProfile, userToken, birthday,
+  const { selectedProfile, recivedProfile, userToken, birthday, isBabyFeeding,
     babyBirthday, babyFeed, isReadyToTasks, injuries, sportsPast } = state
   const {
     isFetching,
@@ -233,6 +237,7 @@ const mapStateToProps = state => {
     isReadyToTasks,
     injuries,
     sportsPast,
+    isBabyFeed: isBabyFeeding,
     token: userToken.token
   }
 }

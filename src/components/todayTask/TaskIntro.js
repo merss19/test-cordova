@@ -27,7 +27,11 @@ const decorator = new CompositeDecorator([
     component: (props) => {
       const {url} = Entity.get(props.entityKey).getData()
       return (
-        <a href={url}>
+        <a href='#' onClick={() => {
+          console.log(url)
+          window.open(url, '_blank');
+          return false
+        }}>
           {props.children}
         </a>
       )
@@ -37,7 +41,7 @@ const decorator = new CompositeDecorator([
 
 const Image = (props) => {
   return <img src={props.src} style={{
-    maxWidth: '100%', 
+    maxWidth: '100%',
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto' }}/>;

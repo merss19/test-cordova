@@ -49,6 +49,9 @@ const fetchTaskDay = partialState => dispatch => {
     payload.data.date = selectedDayDate
   }
 
+  console.log('payload')
+  console.log(payload)
+
   let data = new FormData()
   data.append("json", JSON.stringify(payload))
   return fetch(`${api}/data/userday-get-info`, {

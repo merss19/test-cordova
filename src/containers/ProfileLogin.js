@@ -35,8 +35,8 @@ class ProfileLogin extends Component{
               browserHistory.push('/signup/pay')
             } else {
               throw new SubmissionError({
-                password: '',
-                _error: 'Неправильное имя или пароль!'
+                password: 'Неправильное имя или пароль!',
+                _error: ''
               })
             }
           })

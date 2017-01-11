@@ -1,4 +1,4 @@
-export { sportsPast, injuries, isReadyToTasks, injuriesHidden, birthday, babyBirthday, babyFeed, profile, bodyParams, selectedProfile, recivedProfile } from './profile'
+export { isBabyFeeding, sportsPast, injuries, isReadyToTasks, injuriesHidden, birthday, babyBirthday, babyFeed, profile, bodyParams, selectedProfile, recivedProfile } from './profile'
 export { menuMobLeft } from './menuMobLeft'
 export { userToken } from './userToken'
 export { selectedDayId, selectedDayDate, selectedTaskDay, recivedTaskDay } from './taskDay'
