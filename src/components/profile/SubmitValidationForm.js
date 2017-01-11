@@ -425,14 +425,15 @@ class SubmitValidationForm extends Component {
               <div className="text-center">
                 <div onClick={() => {
 
-                  const validData = [
+                  let validData = [
                     this.refs.height.value, this.refs.weight.value,
                     this.refs.chest.value, this.refs.waist.value,
                     this.refs.hips.value, this.refs.thigh.value
                   ].filter(value => {
-                    return /^[0-9.]{1,100}$/.test(value)
+                    return /^[0-9.,]{1,100}$/.test(value)
                   })
 
+                  validData = validData.map(d => d.replace(/,/, '.'))
                   console.log('ddddddddddddddddddd')
                   console.log(validData)
 
@@ -440,12 +441,12 @@ class SubmitValidationForm extends Component {
                     this.refs.loadingModal.show()
                     const data = {
                       date: moment().format('YYYY-MM-DD'),
-                      height: this.refs.height.value,
-                      weight: this.refs.weight.value,
-                      chest: this.refs.chest.value,
-                      waist: this.refs.waist.value,
-                      hips: this.refs.hips.value,
-                      thigh: this.refs.thigh.value
+                      height: validData[0],
+                      weight: validData[1],
+                      chest: validData[2],
+                      waist: validData[3],
+                      hips: validData[4],
+                      thigh: validData[5]
                     }
 
                     this.refs.height.value = ''
