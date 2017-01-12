@@ -1317,7 +1317,7 @@ class Faq extends Component {
               <span className="menu-mob-bottom__title">Питание</span>
             </a>
           </li>
-          <li className="menu-mob-bottom__item">
+          {/* <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/faq')
             }>
@@ -1328,7 +1328,7 @@ class Faq extends Component {
               </span>
               <span className="menu-mob-bottom__title">ЧАВО</span>
             </a>
-          </li>
+          </li> */}
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/profile')
@@ -1346,8 +1346,8 @@ class Faq extends Component {
               () => browserHistory.push('/photos')
             }>
               <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-faq">
-                  <use xlinkHref="#ico-m-faq"></use>
+                <svg className="svg-icon ico-photo">
+                  <use xlinkHref="#ico-photo"></use>
                 </svg>
               </span>
               <span className="menu-mob-bottom__title">Фото</span>

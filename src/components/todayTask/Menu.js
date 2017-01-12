@@ -29,7 +29,7 @@ const Menu = ({fullName}) => (
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/photos')
-        }} icon="ico-m-faq">Фото</MenuButton>
+        }} icon="ico-photo">Фото</MenuButton>
       </li>
     </ul>
     <hr/>
