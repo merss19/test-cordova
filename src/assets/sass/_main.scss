@@ -127,6 +127,25 @@
   }
 }
 
+.btn-go-back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  z-index: 10;
+  position: fixed;
+  left: 15px;
+  width: 46px; height: 46px;
+  border-radius: $baseRadius;
+  background-color: $c-secondary;
+  @include av-mq(portable) {
+   bottom: #{15px + $mobMenuHeight};
+  }
+  @include av-mq(desk) {
+   bottom: 15px;
+  }
+}
+
 .num-list {
 
   &--paddings {
