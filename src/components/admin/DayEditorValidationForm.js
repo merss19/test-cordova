@@ -229,12 +229,13 @@ class DayEditorValidationForm extends Component {
                         console.log(calendar[index].intro)
                         const intro = calendar[index].intro.find(i => i.program === programShow)
                         dispatch({ type: 'EDITOR', editor: JSON.parse(intro.intro), index: 0 })
+                        const programTask = calendar[index].programTasks.find(p => p.program === programShow)
 
                         dispatch({ type: 'DAY_DATE', date: moment(date, 'YYYY-MM-DD') })
                         change('customName', calendar[index].customName)
                         change('customIcon', calendar[index].customIcon)
-                        change('tasks', calendar[index].programTasks[programShow - 1]
-                          ? calendar[index].programTasks[programShow - 1].tasks
+                        change('tasks', programTask
+                          ? programTask.tasks
                           : []
                         )
                       }}

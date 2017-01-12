@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import YoutubeModal from './YoutubeModal';
 import { connect } from 'react-redux';
-import { api } from '../../config.js'
 import cookie from 'react-cookie'
 import { taskDone } from '../../actions'
 
@@ -20,76 +19,46 @@ class TaskItem extends Component {
 	}
 
 	save(){
-		console.log('save')
-		console.log(this.state.isDone)
-
 		if (this.state.isDone) {
 			const {index} = this.props
 			const task = document.getElementById(`task-${index}`)
 			const taskTop = document.getElementById(`task-${index}`).offsetTop
 			const taskHeight = document.getElementById(`task-${index}`).clientHeight
 
-			console.log(document.getElementById(`task-${index}`))
-			console.log(document.getElementById(`task-${index}`).offsetTop)
-			console.log(document.getElementById(`task-${index}`).clientHeight)
-
 			window.scrollTo(0, (taskTop + taskHeight))
 		}
 
-		this.regIsDone()
+		this.reqIsDone()
 	}
 
 	changeHandler() {
-		console.log('changeHandlfgfger')
-		console.log(this.state.isDone)
 		this.setState({isDone: !this.state.isDone}, ()=>this.save())
 
 	}
 
 
 
-	regIsDone(){
-		console.log('regIsDone')
-
+	reqIsDone(){
 		const {token, task} = this.props
 
 		const payload = {
 			authToken: token ? token : cookie.load('token'),
 			data:{
 				task: task.id,
-				isDone:this.state.isDone,
-				user: 1129
+				isDone:this.state.isDone
 			}
 		}
 
-		console.log(payload)
-
 		this.props.taskDone(payload)
-
-/*		return fetch(`${api}/user/userTask-setState`, {
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify(payload)
-		})
-				.then(response => response.json())
-				.then(json => {
-					console.log('res')
-					console.log(json)
-				})*/
 	}
 
 
 
 	render() {
-		console.log('render')
 		const { task, index} = this.props
 		const checked = this.state.isDone ? 'checked' : ''
 		const active = this.state.isDone ? 'task__item--complete' : ''
-		console.log(checked)
-		console.log(active)
+
 		return (
 				<div>
 					<div className={"task__header " + active}>

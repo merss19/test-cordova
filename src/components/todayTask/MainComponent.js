@@ -13,10 +13,24 @@ import { connect } from 'react-redux'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
+import ScrollToTop from 'react-scroll-up'
 
 let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
+}
+
+const scrollUpStyle = {
+  zIndex: 2000,
+  position: 'fixed',
+  fontSize: 16,
+  bottom: 60,
+  left: 30,
+  background: 'white',
+  cursor: 'pointer',
+  transitionDuration: '0.2s',
+  transitionTimingFunction: 'linear',
+  transitionDelay: '0s'
 }
 
 class MainComponent extends Component {
@@ -57,8 +71,6 @@ class MainComponent extends Component {
   render() {
     const { taskDay, token } = this.props
     const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName, role } } = taskDay
-	  console.log('taskDay')
-    console.log(this.props)
     const introJSON = intro && intro[0] && intro[0].intro ? JSON.parse(intro[0].intro) : null
     const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
 
@@ -75,7 +87,23 @@ class MainComponent extends Component {
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-              <TaskIntro text={introHTML} json={introJSON} />
+              <TaskIntro text={introHTML} json={introJSON} isTasks={!!tasks && !!tasks[0]} scrollToTasks={e => {
+                e.preventDefault()
+
+
+                const nextElement = document.getElementById('tasks')
+                let offset = 0
+
+                if (nextElement) {
+                  offset = nextElement.offsetTop - 20
+                } else {
+                  offset = this.refs.taskResults.offsetTop
+                }
+
+                window.scrollTo(0, offset)
+              }}/>
+
+              <div id='tasks'/>
               {tasks && tasks[0] &&
                 <Exercises token={token} tasks={tasks} sendReport={() => {
                   this.refs.sendReportModal.show()
@@ -130,6 +158,10 @@ class MainComponent extends Component {
               {/* {chat && chat[0] &&
                 <Chat chat={chat} userId={1} />
               } */}
+
+              <ScrollToTop style={scrollUpStyle} showUnder={160}>
+                <span>ВВЕРХ</span>
+              </ScrollToTop>
             </div>
           </div>
         </div>

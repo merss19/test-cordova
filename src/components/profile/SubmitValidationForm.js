@@ -73,8 +73,6 @@ class SubmitValidationForm extends Component {
     dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: babyDate })
     dispatch({ type: 'BABY_FEED', babyFeed: feedDate })
     dispatch({ type: 'INJURIES_HIDDEN', injuriesHidden: injuriesEx })
-    console.log('START')
-    console.log(isBabyFeed)
     dispatch({ type: 'IS_BABY_FEEDING', isBabyFeeding: isBabyFeed })
 
     if (bodyMeasure) {
@@ -89,8 +87,6 @@ class SubmitValidationForm extends Component {
     const { error, valid, handleSubmit, bodyParams, isReadyToTasks, isBabyFeeding,
       dispatch, onSubmit, initialValues, cities, injuriesHidden } = this.props
 
-    console.log('program')
-    console.log(isBabyFeeding)
     // const sports = [
     //   'Сложно',
     //   'Нормально',
@@ -425,14 +421,15 @@ class SubmitValidationForm extends Component {
               <div className="text-center">
                 <div onClick={() => {
 
-                  const validData = [
+                  let validData = [
                     this.refs.height.value, this.refs.weight.value,
                     this.refs.chest.value, this.refs.waist.value,
                     this.refs.hips.value, this.refs.thigh.value
                   ].filter(value => {
-                    return /^[0-9.]{1,100}$/.test(value)
+                    return /^[0-9.,]{1,100}$/.test(value)
                   })
 
+                  validData = validData.map(d => d.replace(/,/, '.'))
                   console.log('ddddddddddddddddddd')
                   console.log(validData)
 
@@ -440,12 +437,12 @@ class SubmitValidationForm extends Component {
                     this.refs.loadingModal.show()
                     const data = {
                       date: moment().format('YYYY-MM-DD'),
-                      height: this.refs.height.value,
-                      weight: this.refs.weight.value,
-                      chest: this.refs.chest.value,
-                      waist: this.refs.waist.value,
-                      hips: this.refs.hips.value,
-                      thigh: this.refs.thigh.value
+                      height: validData[0],
+                      weight: validData[1],
+                      chest: validData[2],
+                      waist: validData[3],
+                      hips: validData[4],
+                      thigh: validData[5]
                     }
 
                     this.refs.height.value = ''
@@ -524,21 +521,6 @@ class SubmitValidationForm extends Component {
             {initialValues.program === 2 &&
               <div>
                 <h3 className="h3">Для программы "Мама может"</h3>
-                <div className="checkboxes__item">
-                  <span className="checkbox">
-                    <label className="checkbox__label" htmlFor='accept'>
-                      <input name='isBabyFeeding' className="checkbox__field" checked={isBabyFeeding} id='accept' type="checkbox" onChange={() =>
-                        dispatch({ type: 'IS_BABY_FEEDING', isBabyFeeding: !isBabyFeeding })
-                      }/>
-                      <span className="checkbox__ph">
-                        <svg className="svg-icon ico-tick">
-                          <use xlinkHref="#ico-tick"></use>
-                        </svg>
-                      </span>
-                      <span className="checkbox__title">Всё ещё кормлю грудью</span>
-                    </label>
-                  </span>
-                </div>
                 <div className="grid mb30">
                   <div className="1/2--desk 1/1-pocket grid__cell">
                     <p className="base-parag">Дата рождения последнего ребёнка (дд-ММ-гггг)</p>
@@ -557,8 +539,31 @@ class SubmitValidationForm extends Component {
                     </div>
                   }
                 </div>
+                <div className="grid">
+                  <div className="1/2--desk grid__cell mb30">
+                  </div>
+                  <div className="1/2--desk grid__cell">
+                    <div className="checkboxes__item">
+                      <span className="checkbox">
+                        <label className="checkbox__label" htmlFor='accept'>
+                          <input name='isBabyFeeding' className="checkbox__field" checked={isBabyFeeding} id='accept' type="checkbox" onChange={() =>
+                            dispatch({ type: 'IS_BABY_FEEDING', isBabyFeeding: !isBabyFeeding })
+                          }/>
+                          <span className="checkbox__ph">
+                            <svg className="svg-icon ico-tick">
+                              <use xlinkHref="#ico-tick"></use>
+                            </svg>
+                          </span>
+                          <span className="checkbox__title">Всё ещё кормлю грудью</span>
+                        </label>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             }
+
+            <br/>
 
             <p className="sub-title">Для того, чтобы добиться быстрых и качественных результатов тренеру важно знать некоторые особенности твоего организма. Это поможет ему правильно распределить нагрузку на мышцы и организовать последовательность тренировок, не навредив твоему организму</p>
 

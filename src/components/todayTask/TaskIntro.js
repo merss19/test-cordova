@@ -71,11 +71,16 @@ function mediaBlockRenderer(block) {
   return null;
 }
 
-const TaskIntro = ({text = '', json}) => {
+const TaskIntro = ({ text = '', json, scrollToTasks, isTasks }) => {
   const editorState = json ? EditorState.createWithContent(convertFromRaw(json), decorator) : EditorState.createEmpty()
 
   return (
     <div className="stage-box stage-box--big-padding">
+      {isTasks &&
+        <a href='#' onClick={scrollToTasks}>
+          К заданиям
+        </a>
+      }
       <Editor
         readOnly={true}
         customStyleMap={customStyleMap}
