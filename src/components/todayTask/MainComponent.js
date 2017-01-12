@@ -57,7 +57,8 @@ class MainComponent extends Component {
   render() {
     const { taskDay, token } = this.props
     const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName, role } } = taskDay
-    console.log(taskDay)
+	  console.log('taskDay')
+    console.log(this.props)
     const introJSON = intro && intro[0] && intro[0].intro ? JSON.parse(intro[0].intro) : null
     const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
 
@@ -76,7 +77,7 @@ class MainComponent extends Component {
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
               <TaskIntro text={introHTML} json={introJSON} />
               {tasks && tasks[0] &&
-                <Exercises tasks={tasks} sendReport={() => {
+                <Exercises token={token} tasks={tasks} sendReport={() => {
                   this.refs.sendReportModal.show()
                 }}/>
               }
@@ -180,7 +181,7 @@ class MainComponent extends Component {
                   <use xlinkHref="#ico-m-faq"></use>
                 </svg>
               </span>
-              <span className="menu-mob-bottom__title">ЧАВО</span>
+              <span className="menu-mob-bottom__title">Вопросы/Ответы</span>
             </a>
           </li>
           <li className="menu-mob-bottom__item">
@@ -251,7 +252,7 @@ class MainComponent extends Component {
                   <svg className="svg-icon ico-m-faq">
                     <use xlinkHref="#ico-m-faq"></use>
                   </svg>
-                  <span className="main-nav__title">ЧАВО</span>
+                  <span className="main-nav__title">Вопросы/Ответы</span>
                 </a>
               </li>
             </ul>
@@ -311,7 +312,9 @@ class MainComponent extends Component {
   )}
 }
 
-const mapStateToProps = state => ({ todayTask: state.todayTask })
+const mapStateToProps = state => {
+  return { todayTask: state.todayTask }
+}
 
 MainComponent= connect(
   mapStateToProps

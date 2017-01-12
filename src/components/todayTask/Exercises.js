@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import YoutubeModal from './YoutubeModal';
+import TaskItem from './TaskItem';
 
 const contentStyle = {
   borderRadius: '18px',
@@ -14,68 +14,21 @@ class Exercises extends Component {
   //   }
   // }
 
+
   render() {
-    const { sendReport, tasks } = this.props
+
+    const { sendReport, tasks, token } = this.props
     return (
       <div className="stage-box stage-box--big-padding">
 
         <h2 className="h1">Задание на день</h2>
 
         <ul className="task">
-          {tasks.map((task, index) => (
-            <li id={index} key={index} className="task__item">
-              <div className="task__header">
-                <div className="task__title">
-                  <span className="task__number">
-                    <span>{index + 1}</span>
-                  </span>
-                  <span className="task__name">{task.name}</span>
-                </div>
-                <div id={`btn${index}`} className="btn-taks">
-                  <span className="checkbox">
-                    <label className="checkbox__label" htmlFor={`task[${index}]`}>
-                      <span className="checkbox__title">Выполнил</span>
-                      <input className="checkbox__field checkbox__field--btn-taks" id={`task[${index}]`} onClick={ e => {
-                        const isNotDone = document.getElementById(index).className === 'task__item'
-                        if (isNotDone) {
-                          const nextElement = document.getElementById(`btn${index + 1}`)
-                          let offset = 0
-
-                          if (nextElement) {
-                            offset = nextElement.offsetTop - 20
-                          } else {
-                            offset = this.refs.taskResults.offsetTop
-                          }
-
-                          window.scrollTo(0, offset)
-                        }
-                      }} type="checkbox"/>
-                      <span className="checkbox__ph">
-                        <svg className="svg-icon ico-tick">
-                          <use xlinkHref="#ico-tick"></use>
-                        </svg>
-                      </span>
-                    </label>
-                  </span>
-                </div>
-              </div>
-              <div className="task-description">
-                <h3 className="h3">Как правильно выполнять</h3>
-                <p className="sub-title sub-title--line">Как правильно выполнять показано на видео. Правильная техника важна - следи за собой :)</p>
-                <p className="base-parag text-center">{task.description}</p>
-                <ul className="num-list">
-                  {task.exercises.map((exercise, ind) => (
-                    <li key={ind} className="num-list__item">
-                      <span className="num-list__number">{ind + 1}</span>
-	                    <YoutubeModal exercise={exercise}
-	                        ind={ind}>{exercise.description}
-	                    </YoutubeModal>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          {tasks.map((task, index) => {
+            return (<li id={`task-${index}`} key={index} className="task__item">
+              <TaskItem task={task} index={index} token={token}/>
             </li>
-          ))}
+            )})}
         </ul>
 
         <div ref='taskResults' className="tasks-results">

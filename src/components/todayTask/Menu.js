@@ -24,7 +24,7 @@ const Menu = ({fullName}) => (
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/faq')
-        }} icon="ico-m-faq">ЧАВО</MenuButton>
+        }} icon="ico-m-faq">Вопросы/Ответы</MenuButton>
       </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {

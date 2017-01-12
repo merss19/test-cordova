@@ -88,3 +88,28 @@ export const fetchTaskDayIfNeeded = taskDay => (dispatch, getState) => {
     }))
   }
 }
+
+export function taskDone(payload) {
+
+  return (dispatch) => {
+		console.log('taskDone')
+	  console.log(payload)
+
+	fetch(`${api}/user/userTask-setState`, {
+		  headers: {
+			  'Accept': 'application/json',
+			  'Content-Type': 'application/json'
+		  },
+		  method: 'POST',
+		  body: JSON.stringify(payload)
+	  })
+			  .then(response => response.json())
+			  .then(json => {
+				  console.log('taskDone-res')
+				  console.log(json)
+			  })
+
+
+  }
+
+}
