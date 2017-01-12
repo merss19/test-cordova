@@ -27,6 +27,7 @@ const reportStyle = {
 
 let modalStyle = {
   // position: 'absolute',
+  zIndex: '3000',
   transform: 'translate3d(-50%, -50%, 0px)',
   overflowY: 'auto',
   padding: '0',

@@ -8,6 +8,7 @@ import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../config.js'
 
+
 class ProfileLogin extends Component{
   componentWillMount() {
     const fbScript = document.createElement("script")
@@ -17,6 +18,7 @@ class ProfileLogin extends Component{
 
   render () {
     const { setToken } = this.props
+
     return (
       <LoginValidationForm onSubmit={ data => {
         return fetch(`${api}/user/authenticate`, {
