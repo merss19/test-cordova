@@ -54,9 +54,16 @@
 
   &__menu {
 
+  }
+
+  &__menu-nav {
     @include av-mq(portable) {
       display: none;
     }
+  }
+
+  &__calendar {
+
   }
 
   &__menu-inner {

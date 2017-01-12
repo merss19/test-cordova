@@ -1,5 +1,13 @@
 .min-calendar {
   @extend %stage-box;
+
+  @include av-mq(portable) {
+    width: 100%;
+    display: flex;
+    padding: 10px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   
   &__item {
     z-index: 1;
@@ -9,17 +17,31 @@
     height: 48px;
     padding: 0 4px;
     cursor: pointer;
-    
-    &:not(:last-child) {
-      border-bottom: 1px solid $c-border;
+
+    @include av-mq(portable) {
+      width: 100%;
+      min-width: 80px; height: 60px;
+      &:not(:last-child) {
+        border-right: 1px solid $c-border;
+      }
     }
 
+    @include av-mq(desk) {
+      &:not(:last-child) {
+        border-bottom: 1px solid $c-border;
+      }
+      &:hover {
+        .no-touchevents & {
+          .calendar-toolip {
+            display: block;
+          }
+        }
+      }
+    }
+    
     &:hover {
       &:not(.min-calendar__item--finish):not(.today) {
         background-color: $c-l-gray;
-      }
-      .calendar-toolip {
-        display: block;
       }
     }
 
@@ -72,7 +94,6 @@
 
     &--finish {
       background-color: $c-secondary;
-      border-radius: 0 0 $baseRadius $baseRadius;
       .min-calendar__day, .min-calendar__date {
         color: #fff;
       }
@@ -80,6 +101,9 @@
         font-size: $fz-small;
         line-height: 1.1;
         color: #fff;
+      }
+      @include av-mq(desk) {
+        border-radius: 0 0 $baseRadius $baseRadius;
       }
     }
   }
