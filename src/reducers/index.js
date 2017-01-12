@@ -5,6 +5,8 @@ export { selectedDayId, selectedDayDate, selectedTaskDay, recivedTaskDay } from 
 export { selectedPayment, recivedPayment } from './signupPayment'
 export { timer } from './timer'
 export { insuranceDocs } from './insurance'
+export { chat, chats } from './chats'
+export { pendingPhoto, pendingPhotos } from './pendingPhotos'
 export { pendingProfile, pendingProfiles } from './userReports'
 export { dayId, content, editor, programShow, dayDate, dayIntro, hidePoll, editDay, selectedDays, recivedDays } from './days'
 export { recivedPrograms } from './programs'

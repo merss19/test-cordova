@@ -1,48 +1,20 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import cookie from 'react-cookie'
 import {Link} from 'react-router'
 import {
-  fetchChat,
-  closeChat,
-  createWithMessage,
-  PROFILE_CHAT_ID,
   rejectProfile,
   approveProfile,
   fetchPendingProfile,
 } from '../actions'
 
-import Chat from './Chat'
 import UserReportsMenu from '../components/userReports/UserReportsMenu'
 import ProfilePropertiesList from '../components/userReports/ProfilePropertiesList'
 
 class UserReports extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      isRejectPopupVisible: false
-    }
-  }
-
   componentWillMount() {
     const {fetchPendingProfile, routeParams} = this.props
 
     fetchPendingProfile(routeParams.userId)
-  }
-
-  componentWillUnmount () {
-    const {closeChat} = this.props
-
-    closeChat()
-  }
-
-  showRejectPopup() {
-    this.setState({isRejectPopupVisible: true})
-  }
-
-  hideRejectPopup() {
-    this.setState({isRejectPopupVisible: false})
   }
 
   approveProfile () {
@@ -53,32 +25,17 @@ class UserReports extends Component {
   }
 
   rejectProfile () {
-    const {
-      routeParams,
-      fetchChat,
-      createWithMessage,
-      rejectProfile
-    } = this.props
+    const {router, routeParams, rejectProfile} = this.props
 
-    this.hideRejectPopup()
-
-    Promise
-      .all([
-        createWithMessage(PROFILE_CHAT_ID, routeParams.userId, this.refs.rejectReason.value),
-        rejectProfile(routeParams.userId)
-      ])
-      .then(() => {
-        fetchChat(PROFILE_CHAT_ID, routeParams.userId)
-      })
+    rejectProfile(routeParams.userId)
+      .then(() => router.push('/userReports/pendingProfiles'))
   }
 
   render() {
-    const {isRejectPopupVisible} = this.state
-    const {userId, isFetching, current, previously} = this.props
+    const {isFetching, current, previously} = this.props
 
     return (
       <div className="layout layout--login">
-        <Chat userId={userId}/>
 
         <div className="header">
           <div className="grid header__inner">
@@ -111,7 +68,7 @@ class UserReports extends Component {
                             Утвердить профиль
                           </button>
                           <button
-                            onClick={() => this.showRejectPopup()}
+                            onClick={() => this.rejectProfile()}
                             className="pending-profile__button btn btn--action">
                             Вернуть на исправление
                           </button>
@@ -143,39 +100,6 @@ class UserReports extends Component {
                               compareTo={current}/> : null
                         }
                       </div>
-
-                      {
-                        isRejectPopupVisible ? (
-                            <div className="pending-profile__inner-popup">
-                              <div className="pending-profile__top-panel">
-                                <div className="pending-profile__buttons">
-                                  <button
-                                    onClick={() => this.rejectProfile()}
-                                    className="pending-profile__button btn btn--primary">
-                                    Отказать
-                                  </button>
-                                  <button
-                                    onClick={() => this.hideRejectPopup()}
-                                    className="pending-profile__button btn btn--action">
-                                    Отмена
-                                  </button>
-                                </div>
-
-                                <div className="pending-profile__close-button"
-                                     onClick={() => this.hideRejectPopup()}>
-                                  <svg className="svg-icon ico-close">
-                                    <use xlinkHref="#ico-close"></use>
-                                  </svg>
-                                </div>
-                              </div>
-
-                              <textarea
-                                ref="rejectReason"
-                                className="pending-profile__desc-box"
-                                placeholder="Причина отказа"/>
-                            </div>
-                          ) : null
-                      }
                     </div>
                   )
                 }
@@ -189,24 +113,12 @@ class UserReports extends Component {
 }
 
 const mapStateToProps = state => {
-  const {
-    isFetching = true,
-    current = null,
-    previously = null
-  } = state.pendingProfile
+  const {isFetching = true, current = null, previously = null} = state.pendingProfile
 
-  return {
-    userId: cookie.load('user_id'),
-    isFetching,
-    current,
-    previously
-  }
+  return {isFetching, current, previously}
 }
 
 const mapDispatchToProps = {
-  fetchChat,
-  closeChat,
-  createWithMessage,
   rejectProfile,
   approveProfile,
   fetchPendingProfile

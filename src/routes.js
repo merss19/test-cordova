@@ -24,6 +24,11 @@ import AdminLogin from './containers/AdminLogin'
 
 import MinionLogin from './containers/MinionLogin'
 
+import PendingMinionChats from './containers/pendingMinionChats'
+
+import PendingPhoto from './containers/PendingPhoto'
+import PendingPhotos from './containers/PendingPhotos'
+
 import PendingProfile from './containers/PendingProfile'
 import PendingProfiles from './containers/PendingProfiles'
 
@@ -58,6 +63,8 @@ const getRole = role => {
     const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
 
     if (isRegistered) {
+      cookie.save('user_id', json.data[0].id, { path: '/' }) // id текущего пользователя необходим для чатов
+
       if (role === 3 && !json.data[0].paidPackage)
         browserHistory.push('/signup/pay')
     } else {
@@ -192,13 +199,41 @@ export default (
         <Route path='show' component={PartnerDataShow} onEnter={requireAdminAuth} />
       </Route>
       <Route path='userReports'>
-        <IndexRoute component={MinionLogin} onEnter={requireMinionAuth} />
+        <IndexRoute
+          component={MinionLogin}
+          onEnter={requireMinionAuth} />
 
-        <Route path='pendingProfiles' component={PendingProfiles} onEnter={requireMinionAuth} />
-        <Route path='pendingProfiles/:userId' component={PendingProfile} onEnter={requireMinionAuth} />
+        <Route
+          path='chats'
+          component={PendingMinionChats}
+          onEnter={requireMinionAuth} />
 
-        <Route path='pendingInsurance' component={PendingInsuranceProfiles} onEnter={requireMinionAuth} />
-        <Route path='pendingInsurance/:userId/:insuranceId' component={PendingInsuranceProfile} onEnter={requireMinionAuth} />
+        <Route
+          path='pendingProfiles'
+          component={PendingProfiles}
+          onEnter={requireMinionAuth} />
+        <Route
+          path='pendingProfiles/:userId'
+          component={PendingProfile}
+          onEnter={requireMinionAuth} />
+
+        <Route
+          path='photos'
+          component={PendingPhotos}
+          onEnter={requireMinionAuth} />
+        <Route
+          path='photos/:userId/:programId'
+          component={PendingPhoto}
+          onEnter={requireMinionAuth} />
+
+        <Route
+          path='pendingInsurance'
+          component={PendingInsuranceProfiles}
+          onEnter={requireMinionAuth} />
+        <Route
+          path='pendingInsurance/:userId/:insuranceId'
+          component={PendingInsuranceProfile}
+          onEnter={requireMinionAuth} />
       </Route>
 
       <Route path='superadmin'>

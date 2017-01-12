@@ -1,0 +1,166 @@
+@import "../../_theme";
+
+$width: 300px;
+
+.minion-chat {
+  right: 30px;
+  bottom: 0;
+  z-index: 2;
+  position: fixed;
+
+  width: $width;
+  height: 50%;
+
+  border: 1px solid $c-l-blue;
+  background: white;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+
+  // Fetching modifier
+
+  &_fetching {
+    justify-content: center;
+  }
+
+  &_fetching &__spinner {
+    display: block;
+  }
+
+  &_fetching &__buttons, &_fetching &__messages, &_fetching &__answer-box {
+    display: none;
+  }
+
+  // Forwarding modifier
+
+  &_forwarding &__messages {
+    flex: 0;
+    transition: flex 0.3s ease-out;
+  }
+  &_forwarding &__answer-box {
+    flex: 1;
+    transition: flex 0.3s ease-out;
+  }
+  &_forwarding &__button-waiting {
+    display: none;
+  }
+
+  &__close {
+    top: -26px;
+    right: 10px;
+    position: absolute;
+
+    cursor: pointer;
+  }
+
+  &__spinner {
+    display: none;
+  }
+
+  &__button-waiting, &__button-forward {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  &__messages {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column-reverse;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: white;
+
+    &-box {
+      width: 100%;
+      padding-top: 10px;
+    }
+
+    &_empty {
+      justify-content: center;
+    }
+
+    &_empty &-box {
+      text-align: center;
+    }
+  }
+
+  &__message {
+    color: #fff;
+    border-radius: 10px;
+
+    width: 90%;
+    margin: 0 10px 20px;
+    padding: 10px 15px;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      border: 0;
+      border-style: solid;
+      border-bottom-width: 10px;
+      display: block;
+      width: 0;
+    }
+
+    &_left {
+      $message-color: lighten($c-s-yellow, 25%);
+
+      align-self: flex-start;
+      background: $message-color;
+
+      &::before {
+        left: 20px;
+        border-color: transparent $message-color;
+        border-left-width: 15px;
+      }
+    }
+
+    &_right {
+      $message-color: lighten($c-green, 25%);
+
+      align-self: flex-end;
+      background: $message-color;
+
+      &::before {
+        right: 20px;
+        border-color: transparent $message-color;
+        border-right-width: 15px;
+      }
+    }
+  }
+
+  &__answer {
+    &-box {
+      flex: 0 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    &-area {
+      flex: 1;
+      width: 100%;
+      min-height: 100px;
+      resize: none;
+      padding: 10px;
+
+      border-top: 1px solid $c-l-blue;
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+
+      color: $c-text;
+      background: white;
+    }
+
+    &-button {
+      width: 100%;
+      border-radius: 0;
+    }
+  }
+}
