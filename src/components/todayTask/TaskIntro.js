@@ -81,9 +81,7 @@ const TaskIntro = ({ text = '', json, scrollToTasks, isTasks }) => {
         //   К заданиям
         // </a>
         <div>
-          <div className="btn btn--primary" style={{
-            backgroundColor: '#1F447B',
-          }} onClick={scrollToTasks}>
+          <div className="btn btn--action" onClick={scrollToTasks}>
             К заданиям
           </div>
           <br/>
