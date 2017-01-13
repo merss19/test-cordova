@@ -14,7 +14,7 @@ import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
 import ScrollToTop from 'react-scroll-up'
-import { createWithMessage, PRIVATE_CHAT_ID } from '../../actions'
+import { fetchChat, createWithMessage, EXAM_CHAT_ID } from '../../actions'
 
 let contentStyle = {
   borderRadius: '18px',
@@ -98,15 +98,13 @@ class MainComponent extends Component {
   // }
 
   createTask (data) {
-    const { taskDay, token, createWithMessage } = this.props
-    const chatMessage = `
-                    Комментарий: ${data.report} \n
-                    Видео: ${data.video} \n
-                    Оценка: ${HEALTH_CONDITIONS[data.health]} \n
-                  `;
+    const { taskDay, token, createWithMessage, fetchChat } = this.props
+    const chatMessage = `Комментарий: ${data.report}
+                         Видео: ${data.video}
+                         Оценка: ${HEALTH_CONDITIONS[data.health]}`;
 
     return Promise.all([
-      createWithMessage(PRIVATE_CHAT_ID, taskDay.id, chatMessage),
+      createWithMessage(EXAM_CHAT_ID, taskDay.id, chatMessage),
       fetch(`${api}/user/userTask-create`, {
         headers: {
           'Accept': 'application/json',
@@ -136,6 +134,7 @@ class MainComponent extends Component {
           }
         })
     ])
+      .then(() => fetchChat(EXAM_CHAT_ID, taskDay.id))
   }
 
   render() {
@@ -393,7 +392,7 @@ const mapStateToProps = state => {
 
 MainComponent= connect(
   mapStateToProps,
-  { createWithMessage }
+  { createWithMessage, fetchChat }
 )(MainComponent)
 
 export default MainComponent

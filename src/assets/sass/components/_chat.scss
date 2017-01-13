@@ -4,9 +4,28 @@
   margin-bottom: $baseMargin;
   border-radius: $baseRadius;
 
+  height: 650px;
+
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+
+  // Fetching modifier
+
+  &_fetching &__spinner {
+    display: flex;
+  }
+
+  &_fetching &-content, &_fetching &-form {
+    display: none;
+  }
+
+  &__spinner {
+    display: none;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+  }
 
   &__tabs {
     display: flex;
@@ -15,6 +34,7 @@
     border-bottom: 1px solid $c-border;
     // overflow: hidden;
   }
+
   &__tab {
     display: flex;
     justify-content: center;
