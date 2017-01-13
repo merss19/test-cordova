@@ -39,17 +39,18 @@ const Menu = ({fullName}) => (
         <p className="profile__sub-text">Профиль</p>
       </Link>
     </div>
-    {/* <hr/>
+    <hr/>
     <ul className="banner-ls">
       <li className="banner-ls__item">
-        <a href="#">
-          <div className="banner-ls__img">
+        <div className="btn btn--primary" onClick={() => browserHistory.push('/season')}>
+          Записаться на 2-ой сезон
+          {/* <div className="banner-ls__img">
             <img src="/tmp/banner-2.png" alt=""/>
           </div>
-          <p className="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
-        </a>
+          <p className="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p> */}
+        </div>
       </li>
-    </ul> */}
+    </ul>
   </div>
 )
 

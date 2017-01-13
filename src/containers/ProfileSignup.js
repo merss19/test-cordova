@@ -43,16 +43,16 @@ class ProfileSignup extends Component {
 
     switch (programParam) {
       case 'hero':
-        program = '1'
+        program = '5'
         break
       case 'mommy':
-        program = '2'
+        program = '6'
         break
       case 'extremeways':
-        program = '3'
+        program = '7'
         break
       case 'tomorrowman':
-        program = '4'
+        program = '8'
         break
       default:
         break
@@ -107,16 +107,16 @@ class ProfileSignup extends Component {
     amount = !!amount ? amount : 0
 
     switch (program + '') {
-      case '1':
+      case '5':
         programName = '#Я ГЕРОЙ'
         break
-      case '2':
+      case '6':
         programName = '#МАМА МОЖЕТ'
         break
-      case '3':
+      case '7':
         programName = '#ЭКСТРЕМАЛЬНАЯ СУШКА'
         break
-      case '4':
+      case '8':
         programName = '#Я ЗАВТРА'
         break
       default:
@@ -138,7 +138,7 @@ class ProfileSignup extends Component {
         }
     }
 
-    if (program + '' === '4') {
+    if (program + '' === '8') {
       packageName = 'Подарок другу'
       if (amount === 0)
         amount = 2000
@@ -161,7 +161,7 @@ class ProfileSignup extends Component {
     const userCreate = payload => {
       if (!isFetching) {
         isFetching = true
-        program = !!program ? program : '1'
+        program = !!program ? program : '5'
         packageType = !!packageType ? packageType : '1'
         cookie.save('program', program + '', { path: '/' })
         signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
@@ -295,7 +295,7 @@ class ProfileSignup extends Component {
                   email = data.email
                   password = data.password
 
-                  if (!program || !packageType || program === '4') {
+                  if (!program || !packageType || program === '8') {
                     this.refs.accModal.show()
                     return
                   }
@@ -324,20 +324,20 @@ class ProfileSignup extends Component {
           <br/>
           {cookie.load('general') &&
             <Field name="programValue" id="programValue" options={[
-              { name: '#Я ГЕРОЙ', value: '1'},
-              { name: '#МАМА МОЖЕТ', value: '2' },
-              { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
-              { name: '#Я ЗАВТРА', value: '4' }
+              { name: '#Я ГЕРОЙ', value: '5'},
+              { name: '#МАМА МОЖЕТ', value: '6' },
+              { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '7' },
+              { name: '#Я ЗАВТРА', value: '8' }
             ]} component={SelectProgram} />
           }
-          {program !== '4' &&
+          {program !== '8' &&
             <Field name="packageTypeValue" id="packageTypeValue" options={[
               { name: '1 человек', value: '1'},
               { name: '2 человека', value: '2' },
               { name: '3 человека', value: '3' }
             ]} component={SelectProgram} />
           }
-          {program === '4' &&
+          {program === '8' &&
             <div>
               <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
               <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
@@ -346,7 +346,7 @@ class ProfileSignup extends Component {
           }
           <Field name='promoValue' id='promoValue' placeholder='Промокод, если есть' component={InputProfile} />
           <button className="btn btn--action" onClick={() => {
-            program = !!program ? program : 1
+            program = !!program ? program : 5
             packageType = !!packageType ? packageType : 1
 
             return fetch(`${api}/day/package-get`, {

@@ -73,7 +73,7 @@ class LoginSocial extends Component {
           promoInitial       = cookie.load('promoName')
           shareInitial       = cookie.load('share')
 
-          if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
+          if (!programInitial || !packageTypeInitial || programInitial + '' === '8') {
             this.refs.accModal.show()
           } else {
             this.refs.emailModal.show()
@@ -95,13 +95,13 @@ class LoginSocial extends Component {
           emailFriend = emailFriend.replace(/ /g,'')
 
         this.refs.loadingModal.show()
-        const pack = program === '4' || !packageType || packageType === 'undefined'
+        const pack = program === '8' || !packageType || packageType === 'undefined'
           ? '1' : packageType
         signup(program, undefined, pack, promo, emailFriend, share, phoneFriend, nameFriend)
 
         const payload = {
           email: email ? email.replace(/ /g,'') : email,
-          program: program ? program : '1',
+          program: program ? program : '5',
           package: pack
         }
 
@@ -159,7 +159,7 @@ class LoginSocial extends Component {
     }
 
     const loginOk = () => {
-      if (!programInitial || !packageTypeInitial || programInitial + '' === '4') {
+      if (!programInitial || !packageTypeInitial || programInitial + '' === '8') {
         signupWith(email, program, packageType, promo, share)
       } else {
         signupWith(email, programInitial, packageTypeInitial, promoInitial, shareInitial)
@@ -201,7 +201,7 @@ class LoginSocial extends Component {
                 <h2>Введите ваш email</h2>
                 <br/>
                 <Field name='emailValue' id='emailValue' placeholder='Email' component={InputProfile} />
-                {program === '4' &&
+                {program === '8' &&
                   <div>
                     <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
                     <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
@@ -219,13 +219,13 @@ class LoginSocial extends Component {
                 <br/>
                 {!programInitial &&
                   <Field name="programValue" id="programValue" options={[
-                    { name: '#Я ГЕРОЙ', value: '1'},
-                    { name: '#МАМА МОЖЕТ', value: '2' },
-                    { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
-                    { name: '#Я ЗАВТРА', value: '4' }
+                    { name: '#Я ГЕРОЙ', value: '5'},
+                    { name: '#МАМА МОЖЕТ', value: '6' },
+                    { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '7' },
+                    { name: '#Я ЗАВТРА', value: '8' }
                   ]} component={SelectProgram} />
                 }
-                {program !== '4' &&
+                {program !== '8' &&
                   <Field name="packageTypeValue" id="packageTypeValue" options={[
                     { name: '1 человек', value: '1'},
                     { name: '2 человека', value: '2' },
@@ -233,7 +233,7 @@ class LoginSocial extends Component {
                   ]} component={SelectProgram} />
                 }
                 <Field name='emailValue' id='emailValue' placeholder='Email' component={InputProfile} />
-                {program === '4' &&
+                {program === '8' &&
                   <div>
                     <Field name='emailFriendValue' id='emailFriendValue' placeholder='Email друга' component={InputProfile} />
                     <Field name='phoneFriendValue' id='phoneFriendValue' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
@@ -295,7 +295,7 @@ const validate = data => {
   if (!data.accept)
     errors.accept = 'Вы должны принять условия оферты'
 
-  if (data.program === '4') {
+  if (data.program === '8') {
     switch (true) {
       case !data.emailFriendValue:
         errors.emailFriendValue = 'Email должен быть заполнен'
@@ -374,7 +374,7 @@ const mapStateToProps = state => {
   }
 
   if (!programInitial && !program) {
-    program = 1
+    program = 5
   }
 
   if (!packageTypeInitial && !packageType) {

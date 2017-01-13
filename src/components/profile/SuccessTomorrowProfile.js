@@ -32,7 +32,7 @@ class SuccessTomorrowProfile extends Component {
       let payload = {
         authToken: cookie.load('token'),
         data: {
-          program: program || program === 'undefined' ? program : '1',
+          program: program || program === 'undefined' ? program : '5',
           package: packageType || packageType === 'undefined' ? packageType : '1',
           isShare: share ? share : false
         }
@@ -100,20 +100,20 @@ class SuccessTomorrowProfile extends Component {
               <br/>
               {!this.props.params.program &&
                 <Field name="program" id="program" options={[
-                  { name: '#Я ГЕРОЙ', value: '1'},
-                  { name: '#МАМА МОЖЕТ', value: '2' },
-                  { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '3' },
-                  { name: '#Я ЗАВТРА', value: '4' }
+                  { name: '#Я ГЕРОЙ', value: '5'},
+                  { name: '#МАМА МОЖЕТ', value: '6' },
+                  { name: '#ЭКСТРЕМАЛЬНАЯ СУШКА', value: '7' },
+                  { name: '#Я ЗАВТРА', value: '8' }
                 ]} component={SelectProgram} />
               }
-              {program + '' !== '4' &&
+              {program + '' !== '8' &&
                 <Field name="packageType" id="packageType" options={[
                   { name: '1 человек', value: '1'},
                   { name: '2 человека', value: '2' },
                   { name: '3 человека', value: '3' }
                 ]} component={SelectProgram} />
               }
-              {program + '' === '4' &&
+              {program + '' === '8' &&
                 <div>
                   <Field name='emailFriend' id='emailFriend' placeholder='Email друга' component={InputProfile} />
                   <Field name='phoneFriend' id='phoneFriend' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />

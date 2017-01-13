@@ -41,7 +41,7 @@ class ProfilePay extends Component {
       let payload = {
         authToken: cookie.load('token'),
         data: {
-          program: program || program === 'undefined' ? program : '1',
+          program: program || program === 'undefined' ? program : '5',
           package: packageType || packageType === 'undefined' ? packageType : '1',
           isShare: share ? share : false
         }
@@ -116,13 +116,13 @@ class ProfilePay extends Component {
         program = payment.data.program + ''
 
       switch (payment.data.program + '') {
-        case '2':
+        case '6':
           programName = '#МАМА МОЖЕТ'
           break
-        case '3':
+        case '7':
           programName = '#ЭКСТРЕМАЛЬНАЯ СУШКА'
           break
-        case '4':
+        case '8':
           programName = '#Я ЗАВТРА'
           break
         default:
@@ -132,7 +132,7 @@ class ProfilePay extends Component {
 
       switch (payment.data.package + '') {
         case '1':
-          packageName = payment.data.program + '' === '4'? 'Подарок другу' : '1  человек'
+          packageName = payment.data.program + '' === '8'? 'Подарок другу' : '1  человек'
           break
         case '2':
           packageName = '2  человек'
@@ -170,7 +170,7 @@ class ProfilePay extends Component {
       let payload = {
         authToken: cookie.load('token'),
         data: {
-          program: program || program === 'undefined' ? program : '1',
+          program: program || program === 'undefined' ? program : '5',
           package: packageType || packageType === 'undefined' ? packageType : '1',
           isShare: share ? share : false
         }
@@ -297,7 +297,7 @@ class ProfilePay extends Component {
                         this.refs.accModal.show()
                       }}>
                         { cookie.load('general') ? 'Изменить программу'
-                          : program === '4' ? 'Изменить данные друга' : 'Изменить пакет' }
+                          : program === '8' ? 'Изменить данные друга' : 'Изменить пакет' }
                       </button>
                     </div>
                   </div>
@@ -311,7 +311,7 @@ class ProfilePay extends Component {
                                 this.refs.accModal.show()
                               }}>
                                 { cookie.load('general') ? 'Изменить программу'
-                                  : program === '4' ? 'Изменить данные друга' : 'Изменить пакет' }
+                                  : program === '8' ? 'Изменить данные друга' : 'Изменить пакет' }
                               </button>
                             }
                             <span id="iframe_parent"/>
@@ -342,7 +342,7 @@ class ProfilePay extends Component {
                               .then(json => {
                                 this.refs.loadingModal.hide()
                                 if (json.errorCode === 1 && json.data) {
-                                  if (payment.data.program + '' === '4') {
+                                  if (payment.data.program + '' === '8') {
                                     browserHistory.push('/signup/pay/success/friend')
                                   } else {
                                     browserHistory.push('/profile')
@@ -359,7 +359,7 @@ class ProfilePay extends Component {
                   </div>
 
                   <Modal ref='accModal' contentStyle={contentStyle}>
-                    <h2>{ program === '4' ? 'Введите новые данные о друге' : 'Выберите количество человек' }</h2>
+                    <h2>{ program === '8' ? 'Введите новые данные о друге' : 'Выберите количество человек' }</h2>
                     <br/>
                     {cookie.load('general') &&
                       <Field name="program" id="programValue" options={[
@@ -369,14 +369,14 @@ class ProfilePay extends Component {
                         { name: '#Я ЗАВТРА', value: '4' }
                       ]} component={SelectProgram} />
                     }
-                    {program !== '4' &&
+                    {program !== '8' &&
                       <Field name="packageType" id="packageTypeValue" options={[
                         { name: '1 человек', value: '1'},
                         { name: '2 человека', value: '2' },
                         { name: '3 человека', value: '3' }
                       ]} component={SelectProgram} />
                     }
-                    {program === '4' &&
+                    {program === '8' &&
                       <div>
                         <Field name='emailFriend' id='emailFriend' placeholder='Email друга' component={InputProfile} />
                         <Field name='phoneFriend' id='phoneFriend' type='tel' placeholder='Телефон друга' component={InputProfilePhone} />
@@ -456,10 +456,10 @@ const mapStateToProps = state => {
     program = selector(state, 'program')
 
   if (selector(state, 'packageType'))
-    packageType = program === '4' ? 1 : selector(state, 'packageType')
+    packageType = program === '8' ? 1 : selector(state, 'packageType')
 
-  if ((!cookie.load('general') && payment && payment.data && payment.data.program + '' === '4')
-    || (cookie.load('general') && program + '' === '4')) {
+  if ((!cookie.load('general') && payment && payment.data && payment.data.program + '' === '8')
+    || (cookie.load('general') && program + '' === '8')) {
     const friend = payment && payment.data
       && payment.data.tomorrowManEmails && payment.data.tomorrowManEmails[0]
       ? payment.data.tomorrowManEmails[0] : {}
