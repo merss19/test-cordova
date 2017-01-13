@@ -3306,10 +3306,17 @@ code {
   box-shadow: 0 6px 10px rgba(31, 68, 123, 0.03);
   background-color: #fff;
   margin-bottom: 30px;
-  border-radius: 5px; }
+  border-radius: 5px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: column;
+  flex-flow: column;
+  -ms-flex-pack: justify;
+  justify-content: space-between; }
   .chat__tabs {
     display: -ms-flexbox;
     display: flex;
+    min-height: 59px;
     border-radius: 5px 5px 0 0;
     border-bottom: 1px solid #E4E7F4; }
   .chat__tab {
@@ -3333,6 +3340,13 @@ code {
       border-left: 1px solid #E4E7F4;
       border-right: 1px solid #E4E7F4;
       background-color: #f7f9fb; }
+    .chat__tab--disabled {
+      color: #F9FBFC;
+      cursor: not-allowed;
+      background-color: #c4c4c4;
+      border-top: 1px solid #E4E7F4;
+      border-left: 1px solid #E4E7F4;
+      border-right: 1px solid #E4E7F4; }
   .chat__tab-msg {
     font-size: 1.2rem;
     color: #70CFFE;
@@ -3364,29 +3378,40 @@ code {
     color: #869BB8;
     font-size: 1.2rem; }
 
-@media screen and (min-width: 1025px) {
-  .chat-content {
-    padding: 40px; } }
+.chat-content {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: white; }
 
-@media screen and (max-width: 1024px) {
-  .chat-content {
-    padding: 20px; } }
-
-.chat-content__date {
-  display: block;
-  margin: 30px auto 30px;
-  text-align: center;
-  width: 80%;
-  height: 1px;
-  background-color: #E4E7F4; }
-  .chat-content__date span {
-    display: inline-block;
-    position: relative;
-    top: -9px;
-    background-color: #fff;
-    padding: 0 10px;
-    font-size: 1.2rem;
-    color: #696D7D; }
+.chat-messages {
+  width: 100%; }
+  @media screen and (min-width: 1025px) {
+    .chat-messages {
+      padding: 40px; } }
+  @media screen and (max-width: 1024px) {
+    .chat-messages {
+      padding: 20px; } }
+  .chat-messages__date {
+    display: block;
+    margin: 30px auto 30px;
+    text-align: center;
+    width: 80%;
+    height: 1px;
+    background-color: #E4E7F4; }
+    .chat-messages__date span {
+      display: inline-block;
+      position: relative;
+      top: -9px;
+      background-color: #fff;
+      padding: 0 10px;
+      font-size: 1.2rem;
+      color: #696D7D; }
 
 .chat-msg {
   display: -ms-flexbox;
@@ -3460,6 +3485,8 @@ code {
       margin: 0 20px 0 20px;
       padding-bottom: 20px; } }
   .chat-form__inner {
+    display: -ms-flexbox;
+    display: flex;
     position: relative;
     border: 1px solid #E4E7F4; }
     @media screen and (min-width: 1025px) {
