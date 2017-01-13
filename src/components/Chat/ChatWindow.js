@@ -76,7 +76,11 @@ export default class Chat extends Component {
 
           <button
             disabled={!isMessageValid}
-            onClick={() => onMessageSend(this.refs.message.value)}
+            onClick={() => {
+              onMessageSend(this.refs.message.value)
+
+              this.refs.message.value = ''
+            }}
             className={`minion-chat__answer-button btn btn--${isMessageValid ? 'primary' : 'disabled'}`}>
             {sendButtonText}
           </button>
