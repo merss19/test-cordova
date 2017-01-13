@@ -2,19 +2,22 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import InputModal from '../componentKit/InputModal'
 import ConditionItem from './ConditionItem'
-const conditions = [
+
+export const conditions = [
 	{
 		id:1,
 		class:'ico-your-condition-1',
 		title:'отлично',
 		filter:'good'
 	},
-	{ id:2,
+	{
+		id:2,
 		class:'ico-your-condition-2',
 		title:'так себе',
 		filter:'middle'
 	},
-	{ id:3,
+	{
+		id:3,
 		class:'ico-your-condition-3',
 		title:'не очень',
 		filter:'bad'
