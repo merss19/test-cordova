@@ -227,7 +227,7 @@ class SubmitValidationForm extends Component {
                   </li>
                   <li className="btn-social__item btn-social__item--odnoklassniki" onClick={() => {
                     const self = this
-                    
+
                     var config = {
                       app_id: 1248995328,
                       app_key: 'CBAJCDHLEBABABABA'
@@ -440,20 +440,24 @@ class SubmitValidationForm extends Component {
               </table>
               <div className="text-center">
                 <div onClick={() => {
-
+                  let emptyData = false
                   let validData = [
                     this.refs.height.value, this.refs.weight.value,
                     this.refs.chest.value, this.refs.waist.value,
                     this.refs.hips.value, this.refs.thigh.value
                   ].filter(value => {
+                    if (!value) {
+                      emptyData = true
+                    }
                     return /^[0-9.,]{1,100}$/.test(value)
                   })
 
                   validData = validData.map(d => d.replace(/,/, '.'))
+
                   console.log('ddddddddddddddddddd')
                   console.log(validData)
 
-                  if (validData.length === 6) {
+                  if (validData.length === 6 && !emptyData) {
                     this.refs.loadingModal.show()
                     const data = {
                       date: moment().format('YYYY-MM-DD'),
@@ -496,7 +500,11 @@ class SubmitValidationForm extends Component {
                       }
                     })
                   } else {
-                    this.refs.failValidationModal.show()
+                    if (emptyData) {
+                      this.refs.failValidationEmptyModal.show()
+                    } else {
+                      this.refs.failValidationModal.show()
+                    }
                   }
                 }} className="btn btn--primary">
                   Добавить
@@ -509,6 +517,13 @@ class SubmitValidationForm extends Component {
                   <h2>Данные могут содержать только цифры с точкой</h2>
                   <br/>
                   <div className="btn btn--action" onClick={() => this.refs.failValidationModal.hide()}>
+                    Продолжить
+                  </div>
+                </Modal>
+                <Modal ref='failValidationEmptyModal' contentStyle={contentStyle}>
+                  <h2>Некоторые данные не заполнены!</h2>
+                  <br/>
+                  <div className="btn btn--action" onClick={() => this.refs.failValidationEmptyModal.hide()}>
                     Продолжить
                   </div>
                 </Modal>
@@ -559,7 +574,7 @@ class SubmitValidationForm extends Component {
                     </div>
                   }
                 </div>
-                <div className="grid">
+                <div className="grid" style={{marginTop: '-35px'}}>
                   <div className="1/2--desk grid__cell mb30">
                   </div>
                   <div className="1/2--desk grid__cell">
