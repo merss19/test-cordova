@@ -42,7 +42,7 @@ export class Chat extends Component {
     waitingFromChat(id)
   }
 
-  sendMessage() {
+  sendMessage(text) {
     const {
       id,
       type,
@@ -56,28 +56,22 @@ export class Chat extends Component {
       isForwarding
     } = this.state
 
-    const {
-      message
-    } = this.refs
-
     if (isForwarding) {
-      addToChat(type, typeId, message.value)
+      addToChat(type, typeId, text)
         .then(() => fetchChat(type, typeId))
 
       this.setState({isForwarding: false})
     } else {
-      answerToChat(id, message.value)
+      answerToChat(id, text)
         .then(() => fetchChat(type, typeId))
 
       this.setState({
         comments: comments.concat({
-          text: message.value,
+          text,
           user: {id: userId}
         })
       })
     }
-
-    message.value = ''
   }
 
   toggleForwarding() {
@@ -127,7 +121,7 @@ export class Chat extends Component {
           onWaiting={() => this.waiting()}
           onForwarding={() => this.toggleForwarding()}
           onMessageChanged={(e) => this.checkMessageLength(e)}
-          onMessageSend={() => this.sendMessage()}
+          onMessageSend={(message) => this.sendMessage(message)}
         /> : null
     )
   }
