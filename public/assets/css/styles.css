@@ -3048,6 +3048,8 @@ code {
       color: #fff; }
     .min-calendar__item.today .min-calendar__info {
       display: none; }
+    .min-calendar__item.today .min-calendar__special-day {
+      color: #fff; }
   .min-calendar__item--finish {
     background-color: #1F447B;
     border-radius: 0 0 5px 5px; }

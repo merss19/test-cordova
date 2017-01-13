@@ -117,6 +117,7 @@ const days = (state = {
         didInvalidate: false
       }
     case RECEIVE_DAYS:
+
       return {
         ...state,
         isFetching: false,

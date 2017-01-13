@@ -205,7 +205,7 @@
     }, false);
   }
 
-/*  // -- Complete Task
+  // -- Complete Task
   document.addEventListener('change', function(e) {
     if (e.target.classList.contains('checkbox__field--btn-taks')) {
       task = closest(e.target, 'task__item')
@@ -216,7 +216,7 @@
       }
       e.preventDefault();
     }
-  }, false);*/
+  }, false);
 
 
   // -- Helpers

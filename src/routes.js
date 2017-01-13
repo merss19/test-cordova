@@ -13,6 +13,7 @@ import ProfilePay from './containers/ProfilePay'
 import LoginSocial from './components/profile/LoginSocial'
 import LoginFB from './components/profile/LoginFB'
 import LoginOk from './components/profile/LoginOk'
+import NewSeason from './components/profile/NewSeason'
 import SuccessProfile from './components/profile/SuccessProfile'
 import SuccessTomorrowProfile from './components/profile/SuccessTomorrowProfile'
 import DayEditor from './components/admin/DayEditor'
@@ -89,18 +90,77 @@ const requirePayAuth = fromPay => {
     })
     .then(response => response.json())
     .then(json => {
+      console.log('BABYYYYYYYYYYYYYYY')
+      console.log(json)
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
-        if (json.data[0].paidPackage && json.data[0].program + '' !== '4') {
+        if (json.data[0].paidPackage && json.data[0].program + '' !== '4' && json.data[0].program + '' !== '8') {
           cookie.save('userProgram', json.data[0].program, { path: '/' })
           cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
 
-	        if(json.data[0].isFirstEdit){
+          if (json.data[0].paidState === 2) {
+		        browserHistory.push('/signup/pay/success')
+	        } else if (json.data[0].isFirstEdit) {
 		        browserHistory.push('/task')
 	        } else {
 		        browserHistory.push('/profile')//browserHistory.push('/signup/pay/success')
 	        }
 
-        } else if (json.data[0].paidPackage && json.data[0].program + '' === '4') {
+        } else if (json.data[0].paidPackage && json.data[0].program + '' === '4' && json.data[0].program + '' === '8') {
+          browserHistory.push('/signup/pay/success/friend')
+        } else {
+          browserHistory.push('/signup/pay/')
+        }
+      } else {
+        cookie.remove('token', { path: '/' })
+        cookie.remove('txId', { path: '/' })
+        cookie.remove('role', { path: '/' })
+        cookie.remove('program', { path: '/' })
+        cookie.remove('packageType', { path: '/' })
+        cookie.remove('promoName', { path: '/' })
+        cookie.remove('share', { path: '/' })
+        cookie.remove('general', { path: '/' })
+        browserHistory.push('/')
+      }
+    })
+  } else if (fromPay) {
+    browserHistory.push('/')
+  }
+}
+
+const requirePayNewSeasonAuth = fromPay => {
+  const token = cookie.load('token')
+  if (token) {
+    return fetch(`${api}/user/user-get`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        authToken: token,
+        data: {}
+      })
+    })
+    .then(response => response.json())
+    .then(json => {
+      console.log('BABYYYYYYYYYYYYYYY')
+      console.log(json)
+      if (json && json.errorCode === 1 && json.data && json.data[0]) {
+        if (json.data[0].paidPackage && json.data[0].program + '' !== '4' && json.data[0].program + '' !== '8') {
+          cookie.save('userProgram', json.data[0].program, { path: '/' })
+          cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
+
+          if (json.data[0].paidState === 1) {
+            browserHistory.push('/season/pay')
+          } else if (json.data[0].paidState === 2) {
+		        browserHistory.push('/signup/pay/success')
+	        } else if (json.data[0].isFirstEdit) {
+		        browserHistory.push('/task')
+	        } else {
+		        browserHistory.push('/profile')//browserHistory.push('/signup/pay/success')
+	        }
+
+        } else if (json.data[0].paidPackage && json.data[0].program + '' === '4' && json.data[0].program + '' === '8') {
           browserHistory.push('/signup/pay/success/friend')
         } else {
           browserHistory.push('/signup/pay/')
@@ -137,9 +197,14 @@ const requireForTest = () => {
   })
   .then(response => response.json())
   .then(json => {
+
     const isRegistered = json && json.errorCode === 1 && json.data && json.data[0]
     if (!isRegistered) {
-      browserHistory.push('/')
+      if (json.data[0].paidState === 2) {
+        browserHistory.push('/signup/pay/success')
+      } else {
+        browserHistory.push('/')
+      }
     } else {
       cookie.save('userProgram', json.data[0].program, { path: '/' })
       cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
@@ -169,6 +234,7 @@ const forceTrailingSlashOnChange = (prevState, nextState, replace) => {
 const requireMinionAuth = () => getRole(2)
 const requireAdminAuth = () => getRole(1)
 const requireFromPayAuth = () => requirePayAuth(true)
+const requireFromPayNewSeasonAuth = () => requirePayNewSeasonAuth(true)
 const requireFromLoginAuth = () => requirePayAuth(false)
 
 export default (
@@ -183,6 +249,8 @@ export default (
       <Route path='social/vk' component={LoginSocial} />
       <Route path='social/fb' component={LoginFB} />
       <Route path='social/ok' component={LoginOk} />
+      <Route path='season' component={NewSeason} />
+      <Route path='season/pay' component={ProfilePay} onEnter={requireFromPayNewSeasonAuth} />
       <Route path='signup'>
         <IndexRoute component={ProfileSignup} onEnter={requireFromLoginAuth} />
         <Route path='pay' component={ProfilePay} onEnter={requireFromPayAuth} />
