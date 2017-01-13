@@ -132,9 +132,9 @@ class SendReportModal extends Component {
 		})
 		return (
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<h3 className="h1">Отчет миньону</h3>
+				<h3 className="h1">Отчет тренеру</h3>
 				<hr/>
-				<p className="sub-title">Напиши сообщение миньону о том, что тренировка отработана! Если ты и правда все
+				<p className="sub-title">Напиши сообщение тренеру о том, что тренировка отработана! Если ты и правда все
 					сделал :)</p>
 				<Field name="report" placeholder="Выполнено, сделал, справился..." component={InputModal}/>
 				<p className="text-center">Как ты себя чувствовал во время выполнения заданий?</p>

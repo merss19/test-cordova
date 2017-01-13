@@ -196,7 +196,7 @@ const mapStateToProps = state => {
   return {
     program,
     packageType,
-    promo,
+    promo
   }
 }
 
