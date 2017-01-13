@@ -1644,7 +1644,7 @@ class Faq extends Component {
 
                   <li id='youtube_instructions' className={ hash.hash === '#youtube_instructions' ? "accordion__item accordion__item--active" : "accordion__item"}>
                     <div className="accordion__header">
-                      <h4 className="h3 accordion__header-title">Инструкция по съемке видео на экзамен</h4>
+                      <h4 className="h3 accordion__header-title">Инструкция как снять отчетное видео</h4>
                     </div>
                     <div className="accordion__content">
                       <Editor
