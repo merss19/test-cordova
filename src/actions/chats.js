@@ -9,6 +9,7 @@ export const PRIVATE_CHAT_ID = 2;
 export const PROFILE_CHAT_ID = 3;
 export const INSURANCE_CHAT_ID = 4;
 export const PROFILE_PHOTO_CHAT_ID = 5;
+export const EXAM_CHAT_ID = 6;
 
 export const CLOSE_CHAT = 'CLOSE_CHAT'
 export const REQUEST_CHAT = 'REQUEST_CHAT'
@@ -126,7 +127,7 @@ export const fetchChat = (type, typeId) => (dispatch, getState) => {
   const {token} = getState().userToken
 
   return commentGetInfo(token || cookie.load('token'), {type, typeId})
-    .then((chats) => dispatch(receiveChat(chats[0])))
+    .then((chats) => dispatch(chats[0] ? receiveChat(chats[0]) : closeChat()))
 }
 
 // CHAT METHODS

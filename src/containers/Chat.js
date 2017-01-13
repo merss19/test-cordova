@@ -9,7 +9,7 @@ import {
   closeChat,
   addToChat,
   answerToChat,
-  waitingFromChat
+  waitingFromChat,
 } from '../actions'
 
 export class Chat extends Component {
@@ -50,6 +50,7 @@ export class Chat extends Component {
       typeId,
       userId,
       addToChat,
+      fetchChat,
       answerToChat,
     } = this.props
     const {
@@ -100,6 +101,7 @@ export class Chat extends Component {
       isMessageValid,
     } = this.state
     const {
+      id,
       isOpen,
       userId,
       isWindow = true,
@@ -115,7 +117,7 @@ export class Chat extends Component {
           sendButtonText={isForwarding ? 'Переадресовать' : 'Ответить'}
           placeholderText={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
           // Flags
-          isFetching={isFetching}
+          isFetching={isFetching || id === undefined}
           isForwarding={isForwarding}
           isMessageValid={isMessageValid}
           showAdminPanel={true}
@@ -132,7 +134,7 @@ export class Chat extends Component {
             sendButtonText={'Отправить'}
             placeholderText={'Текст сообщения'}
             // Flags
-            isFetching={isFetching}
+            isFetching={isFetching || id === undefined}
             isMessageValid={isMessageValid}
             // Callbacks
             onMessageChanged={(e) => this.checkMessageLength(e)}

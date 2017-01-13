@@ -25,7 +25,8 @@ export default class Chat extends Component {
     return (
       <div>
         <h2 className="h1">Чаты</h2>
-        <div className="chat" style={{height: '650px'}}>
+
+        <div className={`chat chat_${isFetching ? 'fetching' : ''}`}>
           <ul className="chat__tabs">
             <li className="chat__tab chat__tab--disabled">
               <span className="chat__tab-title">Общий</span>
@@ -50,6 +51,10 @@ export default class Chat extends Component {
           {/*</div>*/}
           {/*</div>*/}
 
+          <div className="chat__spinner">
+            <div className="spinner"></div>
+          </div>
+
           <div className="chat-content">
             <ul className="chat-messages">
               {
@@ -59,7 +64,9 @@ export default class Chat extends Component {
                       <img src={user.photo} alt=""/>
                     </div>
                     <div className="chat-msg__content">
-                      <p className="chat-msg__name">{`${user.firstName} ${user.lastName}`}</p>
+                      <p className="chat-msg__name">
+                        {`${user.firstName || ''} ${user.lastName || ''}`}
+                      </p>
                       <div className="chat-msg__text">{text}</div>
                     </div>
                   </li>

@@ -2663,9 +2663,6 @@ code {
   flex-flow: column;
   -ms-flex-pack: justify;
   justify-content: space-between; }
-  .minion-chat_fetching {
-    -ms-flex-pack: center;
-    justify-content: center; }
   .minion-chat_fetching .minion-chat__spinner {
     display: block; }
   .minion-chat_fetching .minion-chat__buttons, .minion-chat_fetching .minion-chat__messages, .minion-chat_fetching .minion-chat__answer-box {
@@ -3307,12 +3304,26 @@ code {
   background-color: #fff;
   margin-bottom: 30px;
   border-radius: 5px;
+  height: 650px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-flow: column;
   flex-flow: column;
   -ms-flex-pack: justify;
   justify-content: space-between; }
+  .chat_fetching .chat__spinner {
+    display: -ms-flexbox;
+    display: flex; }
+  .chat_fetching .chat-content, .chat_fetching .chat-form {
+    display: none; }
+  .chat__spinner {
+    display: none;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
   .chat__tabs {
     display: -ms-flexbox;
     display: flex;
