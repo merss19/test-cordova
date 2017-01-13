@@ -17,6 +17,7 @@ let contentStyle = {
 
 class DayEditor extends Component {
 
+
 	componentDidMount() {
     const fbScript = document.createElement("script")
     fbScript.text = "fbq('track', 'PageView');"
@@ -71,7 +72,6 @@ class DayEditor extends Component {
                   content={content}
                   onSubmit={data => {
 
-
                     this.refs.loadingModal.show()
 
                     if (data && data.tasks && data.tasks[0]) {
@@ -107,6 +107,7 @@ class DayEditor extends Component {
 
                     const payload = {
                       authToken: token ? token : cookie.load('token'),
+                      customName:data.customName,
                       data
                     }
 

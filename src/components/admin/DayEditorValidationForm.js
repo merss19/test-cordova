@@ -138,14 +138,14 @@ class DayEditorValidationForm extends Component {
   }
 
   componentDidMount() {
-    const { change, programs } = this.props
+    const { change, programs, changeName } = this.props
     change('programTasks', programs)
+
   }
 
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
       change, date, programs, programShow, selectedDays, editor, dayId, content } = this.props
-
 
     const handleDateChange = date => {
       dispatch({ type: 'CONTENT_RESET' })
@@ -225,10 +225,11 @@ class DayEditorValidationForm extends Component {
                 {calendar && calendar.map((field, index) => (
                   <li key={index}>
                     <Calendar onClick={() => {
+
                         reset()
 
                         dispatch({ type: 'DAY_ID', id: calendar[index].id })
-
+												 change('customName', field.intro[0].customName)
                         const intro = calendar[index].intro.find(i => i.program === programShow)
                         dispatch({ type: 'EDITOR', editor: JSON.parse(intro.intro), index: 0 })
                         const programTask = calendar[index].programTasks.find(p => p.program === programShow)
@@ -315,7 +316,9 @@ class DayEditorValidationForm extends Component {
             <br/>
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name='customName' placeholder="Название дня" component={InputProfile} />
+                <Field name='customName'  placeholder="Название дня" component={InputProfile} onClick = {()=>{
+                     dispatch(change('dayEditor', 'customName', 'sdfsdfsdf'))
+                }}/>
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field name='customIcon' placeholder="Выберите иконку" component={InputProfile} />
