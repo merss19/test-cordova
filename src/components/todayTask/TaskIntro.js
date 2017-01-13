@@ -77,9 +77,18 @@ const TaskIntro = ({ text = '', json, scrollToTasks, isTasks }) => {
   return (
     <div className="stage-box stage-box--big-padding">
       {isTasks &&
-        <a href='#' onClick={scrollToTasks}>
-          К заданиям
-        </a>
+        // <a href='#' onClick={scrollToTasks}>
+        //   К заданиям
+        // </a>
+        <div>
+          <div className="btn btn--primary" style={{
+            backgroundColor: '#1F447B',
+          }} onClick={scrollToTasks}>
+            К заданиям
+          </div>
+          <br/>
+          <br/>
+        </div>
       }
       <Editor
         readOnly={true}
