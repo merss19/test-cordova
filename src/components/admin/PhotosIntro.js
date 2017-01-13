@@ -58,7 +58,7 @@ class PhotosIntro extends Component {
     const { photosIntro, token, isFetching, programs, editor, content, selectedPhotosIntro, dispatch } = this.props
     const isEmpty = !photosIntro
 
-    console.log(photosIntro)
+
 
     return (
       <div className='layout'>
@@ -99,8 +99,7 @@ class PhotosIntro extends Component {
                         <div className="1/2--desk grid__cell mb30">
                           <button type className='btn btn--primary' onClick={data => {
                             this.refs.loadingModal.show()
-                            console.log('data')
-                            console.log(data)
+
 
                             const payload = {
                               authToken: token ? token : cookie.load('token'),
@@ -115,7 +114,7 @@ class PhotosIntro extends Component {
                               'Content-Type': 'application/json'
                             }
 
-                            console.log(payload)
+
 
                             const method = 'POST'
                             return fetch(`${api}/data/siteParam-set`, {
@@ -125,7 +124,7 @@ class PhotosIntro extends Component {
                             })
                             .then(response => response.json())
                             .then(json => {
-                            console.log(json)
+
                               this.refs.loadingModal.hide()
                               if (json.errorCode === 1) {
                                 this.refs.successPromoModal.show()
@@ -146,7 +145,7 @@ class PhotosIntro extends Component {
                         placeholder="Вставьте текст..."
                         onChange={(editorContent) => {
                           const { dispatch } = this.props
-                          console.log(JSON.stringify(editorContent))
+
                           dispatch({ type: 'CONTENT', content: editorContent, index: 0 })
                         }}
                         contentState={photosIntro.data.paramValue && photosIntro.data.paramValue !== 'html'

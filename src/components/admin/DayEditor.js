@@ -70,8 +70,7 @@ class DayEditor extends Component {
                   editor={editor}
                   content={content}
                   onSubmit={data => {
-                  console.log('days-editor')
-                  console.log(data)
+
 
                     this.refs.loadingModal.show()
 
@@ -115,7 +114,7 @@ class DayEditor extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     }
-                     console.log(payload)
+
 
                     const method = 'POST'
                     if ((content[0] && dayIntro[0]) || editor[0] && programShow) {
@@ -126,8 +125,7 @@ class DayEditor extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
-                      console.log('json')
-                        console.log(json)
+
                         this.refs.loadingModal.hide()
                         if (json.errorCode === 1) {
                           this.refs.successPromoModal.show()
@@ -176,8 +174,7 @@ class DayEditor extends Component {
 }
 
 const mapStateToProps = state => {
-	console.log('state')
-	console.log(state)
+
   const { selectedPrograms, recivedPrograms, selectedDays, recivedDays,
     userToken, editDay, dayIntro, dayDate, editor, content, programShow, dayId } = state
   const {

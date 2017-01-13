@@ -60,8 +60,6 @@ const getRole = role => {
   })
   .then(response => response.json())
   .then(json => {
-	  console.log('getRole ')
-	  console.log(json)
     const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
 
     if (isRegistered) {
@@ -91,8 +89,7 @@ const requirePayAuth = fromPay => {
     })
     .then(response => response.json())
     .then(json => {
-	    console.log('requirePayAuth')
-	    console.log(json)
+
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
         if (json.data[0].paidPackage && json.data[0].program + '' !== '4') {
           cookie.save('userProgram', json.data[0].program, { path: '/' })
@@ -141,8 +138,7 @@ const requireForTest = () => {
   })
   .then(response => response.json())
   .then(json => {
-    console.log(json)
-    console.log('requireForTest')
+
     const isRegistered = json && json.errorCode === 1 && json.data && json.data[0]
     if (!isRegistered) {
       browserHistory.push('/')

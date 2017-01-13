@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react'
 
 const Calendar = props => {
     const { children, onClick, onTrashClick, number, date, dispatch, selectedDays } = props
-	console.log('Calendarfff')
-	console.log(props)
+
     return (
       <li className="min-calendar__item" onClick={onClick}>
         <span className="min-calendar__date-wrap">

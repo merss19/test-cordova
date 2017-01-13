@@ -90,8 +90,7 @@ export const receiveDay = (days, id) => {
 export const load = data => ({ type: 'LOAD', data })
 
 export const receiveDays = (days, json) => {
-  console.log('receiveDays')
-  console.log(json)
+
   return ({
     type: RECEIVE_DAYS,
     days,
@@ -101,8 +100,7 @@ export const receiveDays = (days, json) => {
 
 const fetchDays = partialState => dispatch => {
   const { token, days, date, program } = partialState
-  console.log('fetchDays')
-  console.log(days)
+
   dispatch(requestDays(days))
   const payload = {
     authToken: token ? token : cookie.load('token'),
@@ -111,7 +109,7 @@ const fetchDays = partialState => dispatch => {
       program
     }
   }
-  console.log(payload)
+
 
   const headers = {
     'Accept': 'application/json',
@@ -126,17 +124,14 @@ const fetchDays = partialState => dispatch => {
   })
   .then(response => response.json())
   .then(json => {
-	  console.log('json-fetchDays')
-    console.log(json)
+
     return dispatch(receiveDays(days, json))
   })
 }
 
 const shouldFetchDays = (state, days) => {
   const d = state.days
-console.log('shouldFetchDays')
-  console.log(state)
-  console.log(state.days)
+
   if (!d)
     return true
 
@@ -149,8 +144,7 @@ console.log('shouldFetchDays')
 export const fetchDaysIfNeeded = days => (dispatch, getState) => {
 
   if (shouldFetchDays(getState(), days)) {
-    console.log('fetchDaysIfNeeded')
-    console.log(days)
+
     return dispatch(fetchDays({
       token: getState().userToken.token,
       days,

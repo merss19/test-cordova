@@ -21,6 +21,14 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic");
 @import url("https://fonts.googleapis.com/css?family=Exo+2:700&subset=cyrillic");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Exo+2:700&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Exo+2:700&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Exo+2:700&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Exo+2:700&subset=cyrillic");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic");
 .grid {
   display: block;
   list-style: none;
@@ -2385,6 +2393,22 @@ code {
   flex-wrap: wrap;
   -ms-flex-direction: column;
   flex-direction: column; }
+  .pending-profile__inner-popup {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: absolute;
+    padding: 30px;
+    border-radius: 18px;
+    background: white; }
+  .pending-profile__desc-box {
+    width: 100%;
+    min-height: 300px;
+    resize: none;
+    padding: 10px;
+    border-top: 1px solid #869BB8; }
   .pending-profile__top-panel {
     display: -ms-flexbox;
     display: flex;
@@ -2405,6 +2429,7 @@ code {
     -ms-flex-align: center;
     align-items: center;
     border: #869BB8 solid 1px;
+    cursor: pointer;
     border-radius: 50%; }
   .pending-profile__container {
     display: -ms-flexbox;
@@ -2447,6 +2472,41 @@ code {
 /* ===========================
    App theme
    =========================== */
+.pending-photos {
+  width: 100%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+  .pending-photos__title {
+    margin: 5px; }
+  .pending-photos__row {
+    width: 100%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: row;
+    flex-direction: row; }
+  .pending-photos__photo {
+    margin: 5px;
+    max-width: 25%;
+    -ms-flex-preferred-size: 25%;
+    flex-basis: 25%;
+    position: relative; }
+    .pending-photos__photo-image {
+      width: 100%; }
+      .pending-photos__photo-image:before {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: 22px;
+        left: 0px;
+        height: calc(100% - 22px);
+        width: 100%;
+        background-color: #e6e6e6; }
+
+/* ===========================
+   App theme
+   =========================== */
 .profile-properties {
   width: 50%;
   -ms-flex-preferred-size: 50%;
@@ -2480,6 +2540,235 @@ code {
       padding: 5px; }
       .profile-properties-list__title_changed, .profile-properties-list__definition_changed {
         background-color: rgba(86, 218, 161, 0.2); }
+
+/* ===========================
+   App theme
+   =========================== */
+.chats-groups {
+  width: 100%; }
+
+.chat-group {
+  width: 100%;
+  margin-bottom: 30px; }
+  .chat-group_chat-root {
+    cursor: pointer; }
+  .chat-group_chat-root:hover .chat-group__header {
+    background-color: #f7f8f8; }
+  .chat-group_selected .chat-group__header, .chat-group_selected:hover .chat-group__header {
+    background: #bff1db; }
+  .chat-group__header {
+    position: relative;
+    padding: 10px 15px;
+    margin-bottom: 1px;
+    background-color: #e6ebf1;
+    border: none;
+    list-style: none;
+    box-shadow: 0 0 0 1px #b3b9bd;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between; }
+  .chat-group__unread {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-direction: row;
+    flex-direction: row; }
+  .chat-group__counter {
+    width: 35px;
+    height: 35px;
+    margin-left: 15px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: #b3b9bd solid 1px;
+    border-radius: 50%; }
+
+/* ===========================
+   App theme
+   =========================== */
+.chats-list {
+  width: 100%; }
+  .chats-list__item {
+    position: relative;
+    padding: 10px 15px;
+    margin-bottom: 1px;
+    border: none;
+    cursor: pointer;
+    list-style: none;
+    box-shadow: 0 0 0 1px #b3b9bd;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-pack: justify;
+    justify-content: space-between; }
+    .chats-list__item:hover, .chats-list__item:focus {
+      background-color: #f7f8f8; }
+    .chats-list__item_selected, .chats-list__item_selected:hover {
+      background: #bff1db; }
+  .chats-list__unread {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-direction: row;
+    flex-direction: row; }
+  .chats-list__counter {
+    width: 35px;
+    height: 35px;
+    margin-left: 15px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: #869BB8 solid 1px;
+    border-radius: 50%; }
+
+/* ===========================
+   App theme
+   =========================== */
+.minion-chat {
+  right: 30px;
+  bottom: 0;
+  z-index: 2;
+  position: fixed;
+  width: 300px;
+  height: 50%;
+  border: 1px solid #869BB8;
+  background: white;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: column;
+  flex-flow: column;
+  -ms-flex-pack: justify;
+  justify-content: space-between; }
+  .minion-chat_fetching {
+    -ms-flex-pack: center;
+    justify-content: center; }
+  .minion-chat_fetching .minion-chat__spinner {
+    display: block; }
+  .minion-chat_fetching .minion-chat__buttons, .minion-chat_fetching .minion-chat__messages, .minion-chat_fetching .minion-chat__answer-box {
+    display: none; }
+  .minion-chat_forwarding .minion-chat__messages {
+    -ms-flex: 0;
+    flex: 0;
+    transition: -ms-flex 0.3s ease-out;
+    transition: flex 0.3s ease-out; }
+  .minion-chat_forwarding .minion-chat__answer-box {
+    -ms-flex: 1;
+    flex: 1;
+    transition: -ms-flex 0.3s ease-out;
+    transition: flex 0.3s ease-out; }
+  .minion-chat_forwarding .minion-chat__button-waiting {
+    display: none; }
+  .minion-chat__close {
+    top: -26px;
+    right: 10px;
+    position: absolute;
+    cursor: pointer; }
+  .minion-chat__spinner {
+    display: none; }
+  .minion-chat__button-waiting, .minion-chat__button-forward {
+    width: 100%;
+    border-radius: 0; }
+  .minion-chat__messages {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: white; }
+    .minion-chat__messages-box {
+      width: 100%;
+      padding-top: 10px; }
+    .minion-chat__messages_empty {
+      -ms-flex-pack: center;
+      justify-content: center; }
+    .minion-chat__messages_empty .minion-chat__messages-box {
+      text-align: center; }
+  .minion-chat__message {
+    color: #fff;
+    border-radius: 10px;
+    width: 90%;
+    margin: 0 10px 20px;
+    padding: 10px 15px;
+    position: relative; }
+    .minion-chat__message::before {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      border: 0;
+      border-style: solid;
+      border-bottom-width: 10px;
+      display: block;
+      width: 0; }
+    .minion-chat__message_left {
+      -ms-flex-item-align: start;
+      align-self: flex-start;
+      background: #d5c463; }
+      .minion-chat__message_left::before {
+        left: 20px;
+        border-color: transparent #d5c463;
+        border-left-width: 15px; }
+    .minion-chat__message_right {
+      -ms-flex-item-align: end;
+      align-self: flex-end;
+      background: #bff1db; }
+      .minion-chat__message_right::before {
+        right: 20px;
+        border-color: transparent #bff1db;
+        border-right-width: 15px; }
+  .minion-chat__answer-box {
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-direction: column;
+    flex-direction: column; }
+  .minion-chat__answer-area {
+    -ms-flex: 1;
+    flex: 1;
+    width: 100%;
+    min-height: 100px;
+    resize: none;
+    padding: 10px;
+    border-top: 1px solid #869BB8;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    color: #1F447B;
+    background: white; }
+  .minion-chat__answer-button {
+    width: 100%;
+    border-radius: 0; }
 
 .header {
   background-color: #70CFFE; }
@@ -2762,6 +3051,8 @@ code {
       color: #fff; }
     .min-calendar__item.today .min-calendar__info {
       display: none; }
+    .min-calendar__item.today .min-calendar__special-day {
+      color: #fff; }
   .min-calendar__item--finish {
     background-color: #1F447B;
     border-radius: 0 0 5px 5px; }

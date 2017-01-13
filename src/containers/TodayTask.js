@@ -37,18 +37,15 @@ class TodayTask extends Component {
   }
 
   render() {
-    const { taskDay, token, isFetching,state } = this.props
+    const { taskDay, token, isFetching } = this.props
     const isEmpty = !taskDay|| !taskDay.data || taskDay.data.length === 0
 
-	  console.log('TodayTask')
-	  console.log(this.props)
-
     return (
-      <div className={isEmpty ? 'entry__inner' : 'layout'}>
+      <div className={isEmpty ? 'entry__inner dfgdfg' : 'layout dfgdfg'}>
         {isEmpty
           ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <MainComponent token={token} taskDay={taskDay.data[0]} state={state} />
+              <MainComponent token={token} taskDay={taskDay.data[0]} />
             </div>
         }
       </div>
@@ -57,8 +54,7 @@ class TodayTask extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('TodayTask')
-  console.log(state)
+
   const { selectedTaskDay, recivedTaskDay, userToken } = state
 
   const {
@@ -71,7 +67,6 @@ const mapStateToProps = state => {
   }
 
   return {
-	  state,
     selectedTaskDay,
     isFetching,
     lastUpdated,

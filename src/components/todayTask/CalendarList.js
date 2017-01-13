@@ -22,10 +22,6 @@ let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
         }
 
         const isTooSoon = moment(field.date).isAfter(moment().format('YYYY-MM-DD')) && role !== 2
-	      //console.log('CalendarList')
-	      //console.log(selectedTaskDay)
-	      //console.log(dayId)
-	      //console.log(role)
 
         return (
           <Calendar
@@ -41,6 +37,7 @@ let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
             isSelected={field.dayId === dayId}
             number={field.number}
             icon={icon}
+            customName = {field.customName}
             status={field.status}
             date={field.date}
             admin={field.admin}

@@ -112,8 +112,7 @@ const renderPollFields = ({ fields, meta: { error } }) => (
 
 class DayEditorValidationForm extends Component {
   onEditorChange: Function = (editorContent) => {
-	  console.lo('onEditorChange')
-	  console.lo(editorContent)
+
     const { dispatch } = this.props
     dispatch({ type: 'CONTENT', content: editorContent })
     dispatch({ type: 'DAY_INTRO', intro: draftToHtml(editorContent) })
@@ -146,8 +145,7 @@ class DayEditorValidationForm extends Component {
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
       change, date, programs, programShow, selectedDays, editor, dayId, content } = this.props
-	  console.log('DayEditorValidationForm')
-    console.log(this.props)
+
 
     const handleDateChange = date => {
       dispatch({ type: 'CONTENT_RESET' })
@@ -230,7 +228,7 @@ class DayEditorValidationForm extends Component {
                         reset()
 
                         dispatch({ type: 'DAY_ID', id: calendar[index].id })
-                        console.log(calendar[index].intro)
+
                         const intro = calendar[index].intro.find(i => i.program === programShow)
                         dispatch({ type: 'EDITOR', editor: JSON.parse(intro.intro), index: 0 })
                         const programTask = calendar[index].programTasks.find(p => p.program === programShow)

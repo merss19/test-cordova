@@ -177,12 +177,13 @@ class InputDayPicker extends Component {
                   weekdaysLong={ WEEKDAYS_LONG }
                   weekdaysShort={ WEEKDAYS_SHORT }
                   onDayClick={(e, day) => {
-                  console.log('onDayClick')
+
                     this.setState({
                       value: moment(day).format('L'),
                       selectedDay: day,
                       showOverlay: false
                     });
+
                     this.input.blur();
                     switch (name) {
                       case 'birthday':
@@ -199,7 +200,6 @@ class InputDayPicker extends Component {
                     }
                   }}
                   selectedDays={ day => {
-                  console.log('selectedDays')
                    console.log(day)
                   DateUtils.isSameDay(this.state.selectedDay, day)
                   } }

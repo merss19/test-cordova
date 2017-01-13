@@ -2,19 +2,13 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 
 const Calendar = ({ children, onClick, number, completeText, icon, status,
-  date, admin, isSelected, isTooSoon }) => {
-  //console.log('Calendar')
-  //console.log(children)
-  //console.log(number)
-  //console.log(completeText)
-  //console.log(status)
-  //console.log(icon)
-  //console.log(date)
-  //console.log(isSelected)
-  //console.log(isTooSoon)
-    let calendarIcon
-    let calendarToolip
-    let calendarClass = "min-calendar__item"
+  date, admin, isSelected, isTooSoon,customName }) => {
+
+    let calendarIcon,
+        calendarToolip,
+        content,
+        special,
+        calendarClass = "min-calendar__item"
 
     if (icon) {
       calendarIcon = (
@@ -45,14 +39,29 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
 
     const style = isTooSoon ? { color: '#C8C9CF' } : {}
 
-    return (
-      <li className={calendarClass} onClick={onClick}>
+    content = (
         <span className="min-calendar__date-wrap">
           <span className="min-calendar__day">{children}</span>
           <span className="min-calendar__date" style={style}>{number}</span>
         </span>
+    )
+
+    if(customName.length){
+      special = (
+          <p className="min-calendar__special-day">{customName}</p>
+      )
+      content = null
+      calendarIcon = null
+      calendarToolip = null
+    }
+
+
+    return (
+      <li className={calendarClass} onClick={onClick}>
+        {content}
         {calendarIcon}
         {calendarToolip}
+        {special}
       </li>
     )
 }

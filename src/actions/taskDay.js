@@ -49,8 +49,7 @@ const fetchTaskDay = partialState => dispatch => {
     payload.data.date = selectedDayDate ? selectedDayDate : moment().format('YYYY-MM-DD')
   }
 
-  console.log('PAYLOAD')
-  console.log(payload)
+
 
   let data = new FormData()
   data.append("json", JSON.stringify(payload))
@@ -92,9 +91,6 @@ export const fetchTaskDayIfNeeded = taskDay => (dispatch, getState) => {
 export function taskDone(payload) {
 
   return (dispatch) => {
-		console.log('taskDone')
-	  console.log(payload)
-
 	fetch(`${api}/user/userTask-setState`, {
 		  headers: {
 			  'Accept': 'application/json',
@@ -105,8 +101,7 @@ export function taskDone(payload) {
 	  })
 			  .then(response => response.json())
 			  .then(json => {
-				  console.log('taskDone-res')
-				  console.log(json)
+
 			  })
 
 
