@@ -845,7 +845,376 @@ class Faq extends Component {
         }]
     }
 
+    const json2 = {
+        "entityMap": {},
+        "blocks": [{
+            "key": "cotgv",
+            "text": "Как снять отчетное Видео ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 0,
+                "length": 24,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {
+                "text-align": "center"
+            }
+        }, {
+            "key": "99p0i",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "77ria",
+            "text": "Просто прочти все внимательно. Поверь, тут нет ничего сложного. Ты это умеешь, ты можешь. Более того, в течение недели ты уже все это, так или иначе, делал. ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "dhmg1",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "48d0a",
+            "text": "Поехали! ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "20hd8",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "6cfmk",
+            "text": "ОБСТАНОВКА ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 0,
+                "length": 10,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "8ag70",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "aas8l",
+            "text": "Мы не даем ограничений по времени суток, когда тебе нужно выполнить отчетное задание. Можешь выполнить его утром/днем/вечером, как тебе удобно. НО! Помещение должно быть хорошо освещено, чтобы мы не угадывали твой силуэт на фоне стены в свете одинокой свечи.  ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 86,
+                "length": 58,
+                "style": "BOLD"
+            }, {
+                "offset": 148,
+                "length": 37,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "1aafm",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "di7rd",
+            "text": "Постарайся убрать хлам. Мы не требуем невозможного, не надо делать ремонт и переклеивать обои, просто убери разбросанную одежду и вещи. Ну, или, как вариант, вспомни, как ты делал Фото До, и воспользуйся белой простыней, можешь выполнять упражнения на ее фоне.   ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 0,
+                "length": 23,
+                "style": "BOLD"
+            }, {
+                "offset": 180,
+                "length": 8,
+                "style": "UNDERLINE"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "aaq9h",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "p27u",
+            "text": "СЪЕМКА ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 0,
+                "length": 6,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "3g36a",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "1qo5r",
+            "text": "А вот тут читай внимательно! Основные правила именно в этом пункте.  Ты должен снять видео одним кадром. НИКАКОГО МОНТАЖА, РЕЗКИ, СКЛЕЙКИ! Вся тренировка ОТ и ДО одним кадром. Кнопка на устройстве записи должна быть нажата два раза: в начале записи и в конце. Все! Если мы увидим, что ты каким-то образом доработал Видео, сразу же исключим тебя из борьбы за призы. ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 105,
+                "length": 33,
+                "style": "BOLD"
+            }, {
+                "offset": 154,
+                "length": 7,
+                "style": "BOLD"
+            }, {
+                "offset": 265,
+                "length": 99,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "f0bji",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "9jtsb",
+            "text": "Тебя должно быть хорошо видно, в полный рост! ВЕСЬ СПОРТСМЕН В КАДРЕ! ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 31,
+                "length": 13,
+                "style": "UNDERLINE"
+            }, {
+                "offset": 46,
+                "length": 23,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "8j9rn",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "1el9k",
+            "text": "Стой боком к камере или чуть повернувшись, как тренеры на наших видео. Да, их положение идеально, постарайся вести съемку с такого же ракурса. ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 0,
+                "length": 41,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "39a7a",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "85nuf",
+            "text": "Конечно, будет супер, если тебя будет снимать кто-то из друзей или близких. Но, если рядом никого нет, это тоже не проблема. Снова вспомни, как ты делал Фото До. Воспользуйся функцией «ТАЙМЕР» или «УПРАВЛЕНИЕ ГОЛОСОМ» на своем смартфоне и начинай тренировку. Или можешь сделать совсем просто. Установи камеру (телефон, смартфон, ноутбук – не важно), войди в кадр и начинай тренировку, после ее окончания так же подойти к устройству и выключи его. ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 80,
+                "length": 44,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "f9d8o",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "5doc9",
+            "text": "Важно! Если будешь снимать сам, перед началом тренировки убедись, что ты полностью помещаешься в кадр. Иначе будет очень обидно! Будешь потеть полчаса, а потом окажется, что записались только твои ноги. ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 7,
+                "length": 95,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "f4qeo",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "34qcc",
+            "text": "ОДЕЖДА ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 0,
+                "length": 6,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "7fk9g",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "4v81e",
+            "text": "С одеждой все просто. У нас нет особых требований. Это не Фото До и После. Нам не обязательно видеть тебя в купальнике или плавках. Занимайся в своей привычной спортивной одежде, в той, в которой тебе удобно. ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 132,
+                "length": 45,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "aq0mk",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "5v0pr",
+            "text": "ИЗЮМИНКА ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 0,
+                "length": 8,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "3ahn7",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "bc9uv",
+            "text": "И еще одна важная вещь, которую стоит сделать перед началом. В кадре обязательно должен присутствовать лист А4, на котором ты напишешь дату выполнения задания и нарисуешь специальный символ. Каждую неделю символ будет разный, мы будем писать об этом в сообщении в Личном кабинете накануне испытания.  ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 103,
+                "length": 88,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "40irr",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "6lqfm",
+            "text": "Нам неважно, будет ли эта фраза написана от руки или напечатана на компьютере. Главное, чтобы она была читабельна. Готовый лист можешь повесить на стену, на фоне которой будешь записывать Видео, или прикрепить булавочкой к простыне или занавеске, если запись будет идти на их фоне. ",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [{
+                "offset": 0,
+                "length": 79,
+                "style": "BOLD"
+            }],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "9i5ma",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }, {
+            "key": "5ndd3",
+            "text": "Вот и все. Прочитай инструкцию еще раз и приступай к выполнению задания. Удачи! \n",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+        }]
+    }
+
     const editorState = json ? EditorState.createWithContent(convertFromRaw(json), decorator) : EditorState.createEmpty()
+    const editorState2 = json2 ? EditorState.createWithContent(convertFromRaw(json2), decorator) : EditorState.createEmpty()
+
     return (
       <div className="layout">
         <Header isTask={true}/>
@@ -1270,6 +1639,19 @@ class Faq extends Component {
                       <br/>
                       <iframe width="100%" height="100%" src='https://www.youtube.com/embed/4OT7tspcmLc' style={contentStyle} frameBorder="0" allowFullScreen></iframe>
 
+                    </div>
+                  </li>
+
+                  <li id='youtube_instructions' className={ hash.hash === '#youtube_instructions' ? "accordion__item accordion__item--active" : "accordion__item"}>
+                    <div className="accordion__header">
+                      <h4 className="h3 accordion__header-title">Инструкция по съемке видео на экзамен</h4>
+                    </div>
+                    <div className="accordion__content">
+                      <Editor
+                        readOnly={true}
+                        customStyleMap={customStyleMap}
+                        editorState={editorState2}
+                        blockRendererFn={mediaBlockRenderer}/>
                     </div>
                   </li>
 
