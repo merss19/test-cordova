@@ -3,8 +3,14 @@
   background-color: #fff;
   margin-bottom: $baseMargin;
   border-radius: $baseRadius;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+
   &__tabs {
     display: flex;
+    min-height: 59px;
     border-radius: $baseRadius $baseRadius 0 0;
     border-bottom: 1px solid $c-border;
     // overflow: hidden;
@@ -30,6 +36,18 @@
       border-left: 1px solid $c-border;
       border-right: 1px solid $c-border;
       background-color: #f7f9fb;
+      // &:hover {
+      //   background-color: #fff;
+      // }
+    }
+
+    &--disabled {
+      color: $c-gray;
+      cursor: not-allowed;
+      background-color: #c4c4c4;
+      border-top: 1px solid $c-border;
+      border-left: 1px solid $c-border;
+      border-right: 1px solid $c-border;
       // &:hover {
       //   background-color: #fff;
       // }
@@ -90,6 +108,17 @@
 }
 
 .chat-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column-reverse;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: white;
+}
+
+.chat-messages {
+  width: 100%;
 
   @include av-mq(desk) {
     padding: 40px;
@@ -220,6 +249,7 @@
   }
 
   &__inner {
+    display: flex;
     position: relative;
     border: 1px solid $c-border;
     @include av-mq(desk) {

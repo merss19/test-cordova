@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import Chat from '../../stories/chat/Chat'
+import Chat from '../../containers/Chat'
 import Poll from '../../stories/poll/Poll'
 import Header from '../../stories/Header'
 import CalendarList from './CalendarList'
@@ -8,12 +8,13 @@ import TaskIntro from './TaskIntro'
 import Menu from './Menu'
 import Exercises from './Exercises'
 import Modal from 'boron/FadeModal'
-import SendReportModal from './SendReportModal'
+import SendReportModal, {conditions} from './SendReportModal'
 import { connect } from 'react-redux'
 import { SubmissionError } from 'redux-form'
 import cookie from 'react-cookie'
 import { api } from '../../config.js'
 import ScrollToTop from 'react-scroll-up'
+import { createWithMessage, PRIVATE_CHAT_ID } from '../../actions'
 
 let contentStyle = {
   borderRadius: '18px',
@@ -54,6 +55,8 @@ const scrollUpStyle = {
   transitionDelay: '0s'
 }
 
+const HEALTH_CONDITIONS = conditions.reduce((all, {filter, title}) => Object.assign(all, {[filter]: title}), {})
+
 class MainComponent extends Component {
   componentWillMount() {
     if (window.mobilecheck()) {
@@ -93,6 +96,47 @@ class MainComponent extends Component {
   //   window.removeEventListener('scroll', this.handleScroll)
   //   window.removeEventListener("resize", this.handleResize)
   // }
+
+  createTask (data) {
+    const { taskDay, token, createWithMessage } = this.props
+    const chatMessage = `
+                    Комментарий: ${data.report} \n
+                    Видео: ${data.video} \n
+                    Оценка: ${HEALTH_CONDITIONS[data.health]} \n
+                  `;
+
+    return Promise.all([
+      createWithMessage(PRIVATE_CHAT_ID, taskDay.id, chatMessage),
+      fetch(`${api}/user/userTask-create`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          authToken: token ? token : cookie.load('token'),
+          data: {
+            ...data,
+            health: 'good',
+            day: taskDay.id,//day
+            user: taskDay.user.id,//user
+            status: 'waiting',
+            admin: taskDay.user.admin,//admin
+            adminAnswer: '',//admin
+          }
+        })
+      })
+        .then(response => response.json())
+        .then(json => {
+          this.refs.successModal.show()
+          this.refs.sendReportModal.hide()
+          if (json.data) {
+          } else {
+            //throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
+          }
+        })
+    ])
+  }
 
   render() {
     const { taskDay, token } = this.props
@@ -136,36 +180,7 @@ class MainComponent extends Component {
               }
 
               <Modal ref='sendReportModal' modalStyle={modalStyle} contentStyle={reportStyle}>
-                <SendReportModal onSubmit={(data) => {
-                  return fetch(`${api}/user/userTask-create`, {
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                      },
-                      method: 'POST',
-                      body: JSON.stringify({
-                        authToken: token ? token : cookie.load('token'),
-                        data: {
-                          ...data,
-                          health: 'good',
-                          day: taskDay.id,//day
-                          user: taskDay.user.id,//user
-                          status: 'waiting',
-                          admin: taskDay.user.admin,//admin
-                          adminAnswer: '',//admin
-                        }
-                      })
-                    })
-                    .then(response => response.json())
-                    .then(json => {
-                      this.refs.successModal.show()
-                      this.refs.sendReportModal.hide()
-                      if (json.data) {
-                      } else {
-                        //throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
-                      }
-                    })
-                }}/>
+                <SendReportModal onSubmit={(data) => this.createTask(data)}/>
               </Modal>
               <Modal ref='successModal' contentStyle={contentStyle}>
                 <h2>Отчет отправлен! В течении некоторого времени его проверит твой тренер</h2>
@@ -180,9 +195,7 @@ class MainComponent extends Component {
                 <Poll poll={poll} />
               }
 
-              {/* {chat && chat[0] &&
-                <Chat chat={chat} userId={1} />
-              } */}
+              <Chat userId={taskDay.user.id} isWindow={false} isOpen={false} />
 
               <ScrollToTop style={scrollUpStyle} showUnder={160}>
                 <div className="btn-go-back">
@@ -378,7 +391,8 @@ const mapStateToProps = state => {
 }
 
 MainComponent= connect(
-  mapStateToProps
+  mapStateToProps,
+  { createWithMessage }
 )(MainComponent)
 
 export default MainComponent

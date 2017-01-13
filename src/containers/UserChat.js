@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-import ChatBlock from '../components/Chat/ChatBlock'
 import ChatWindow from '../components/Chat/ChatWindow'
 
 import {
@@ -75,12 +74,6 @@ export class Chat extends Component {
     }
   }
 
-  toggleForwarding() {
-    this.setState({
-      isForwarding: !this.state.isForwarding
-    })
-  }
-
   componentWillMount() {
     const {type, typeId, isOpen, fetchChat} = this.props
 
@@ -102,13 +95,11 @@ export class Chat extends Component {
     const {
       isOpen,
       userId,
-      isWindow = true,
       isFetching
     } = this.props
 
     return (
-      isOpen ? (
-        isWindow ? <ChatWindow
+      isOpen ? <ChatWindow
           // Data
           userId={userId}
           comments={comments}
@@ -125,20 +116,7 @@ export class Chat extends Component {
           onForwarding={() => this.toggleForwarding()}
           onMessageChanged={(e) => this.checkMessageLength(e)}
           onMessageSend={(message) => this.sendMessage(message)}
-        /> : <ChatBlock
-            // Data
-            userId={userId}
-            comments={comments}
-            sendButtonText={'Отправить'}
-            placeholderText={'Текст сообщения'}
-            // Flags
-            isFetching={isFetching}
-            isMessageValid={isMessageValid}
-            // Callbacks
-            onMessageChanged={(e) => this.checkMessageLength(e)}
-            onMessageSend={(message) => this.sendMessage(message)}
-          />
-        ) : null
+        /> : null
     )
   }
 }
