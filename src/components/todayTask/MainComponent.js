@@ -73,7 +73,8 @@ class MainComponent extends Component {
     const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName, role } } = taskDay
     const introJSON = intro && intro[0] && intro[0].intro ? JSON.parse(intro[0].intro) : null
     const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
-
+    console.log('MainComponent')
+    console.log(this.props)
     return (
       <div className="layout">
         <Header closeMobMenu={() => {}} isTask={true}/>

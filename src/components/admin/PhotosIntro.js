@@ -99,7 +99,7 @@ class PhotosIntro extends Component {
                         <div className="1/2--desk grid__cell mb30">
                           <button type className='btn btn--primary' onClick={data => {
                             this.refs.loadingModal.show()
-
+                            console.log('data')
                             console.log(data)
 
                             const payload = {
@@ -125,6 +125,7 @@ class PhotosIntro extends Component {
                             })
                             .then(response => response.json())
                             .then(json => {
+                            console.log(json)
                               this.refs.loadingModal.hide()
                               if (json.errorCode === 1) {
                                 this.refs.successPromoModal.show()

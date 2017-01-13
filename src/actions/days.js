@@ -81,7 +81,7 @@ export const receiveDay = (days, id) => {
     days,
     json: {
       tasks: exampleJson[id].tasks,
-      customName: exampleJson[id].customName,
+      customName: 'ddfgfgsdfg',
       customIcon: exampleJson[id].customIcon,
     }
   }
@@ -90,7 +90,7 @@ export const receiveDay = (days, id) => {
 export const load = data => ({ type: 'LOAD', data })
 
 export const receiveDays = (days, json) => {
-  console.log('rrrrrrrrrr')
+  console.log('receiveDays')
   console.log(json)
   return ({
     type: RECEIVE_DAYS,
@@ -101,6 +101,8 @@ export const receiveDays = (days, json) => {
 
 const fetchDays = partialState => dispatch => {
   const { token, days, date, program } = partialState
+  console.log('fetchDays')
+  console.log(days)
   dispatch(requestDays(days))
   const payload = {
     authToken: token ? token : cookie.load('token'),
@@ -109,6 +111,7 @@ const fetchDays = partialState => dispatch => {
       program
     }
   }
+  console.log(payload)
 
   const headers = {
     'Accept': 'application/json',
@@ -123,13 +126,17 @@ const fetchDays = partialState => dispatch => {
   })
   .then(response => response.json())
   .then(json => {
+	  console.log('json-fetchDays')
+    console.log(json)
     return dispatch(receiveDays(days, json))
   })
 }
 
 const shouldFetchDays = (state, days) => {
   const d = state.days
-
+console.log('shouldFetchDays')
+  console.log(state)
+  console.log(state.days)
   if (!d)
     return true
 
@@ -140,7 +147,10 @@ const shouldFetchDays = (state, days) => {
 }
 
 export const fetchDaysIfNeeded = days => (dispatch, getState) => {
+
   if (shouldFetchDays(getState(), days)) {
+    console.log('fetchDaysIfNeeded')
+    console.log(days)
     return dispatch(fetchDays({
       token: getState().userToken.token,
       days,

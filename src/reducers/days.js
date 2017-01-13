@@ -117,6 +117,8 @@ const days = (state = {
         didInvalidate: false
       }
     case RECEIVE_DAYS:
+        console.log('reducer-recivedaye')
+      console.log(action.json.data)
       return {
         ...state,
         isFetching: false,

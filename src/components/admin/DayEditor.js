@@ -16,7 +16,8 @@ let contentStyle = {
 }
 
 class DayEditor extends Component {
-  componentDidMount() {
+
+	componentDidMount() {
     const fbScript = document.createElement("script")
     fbScript.text = "fbq('track', 'PageView');"
     document.body.appendChild(fbScript)
@@ -69,11 +70,14 @@ class DayEditor extends Component {
                   editor={editor}
                   content={content}
                   onSubmit={data => {
+                  console.log('days-editor')
+                  console.log(data)
+
                     this.refs.loadingModal.show()
 
                     if (data && data.tasks && data.tasks[0]) {
-                      data.programTasks =[{}]
-
+                      data.programTasks[0].customName = data.customName
+											data.programTasks[0].program = programShow
                       data.programTasks[0].intro = content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0])
                       data.programTasks[0].introHTML = dayIntro[0] ? dayIntro[0] : 'test'
                       data.programTasks[0].program = programShow
@@ -81,6 +85,7 @@ class DayEditor extends Component {
                     } else {
                       data.programTasks = [{}]
                       data.programTasks[0] = {
+                        customName:data.customName,
                         program: programShow,
                         intro: content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0]),
                         introHTML: dayIntro[0] ? dayIntro[0] : 'test'
@@ -110,6 +115,7 @@ class DayEditor extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     }
+                     console.log(payload)
 
                     const method = 'POST'
                     if ((content[0] && dayIntro[0]) || editor[0] && programShow) {
@@ -120,6 +126,8 @@ class DayEditor extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
+                      console.log('json')
+                        console.log(json)
                         this.refs.loadingModal.hide()
                         if (json.errorCode === 1) {
                           this.refs.successPromoModal.show()
@@ -168,6 +176,8 @@ class DayEditor extends Component {
 }
 
 const mapStateToProps = state => {
+	console.log('state')
+	console.log(state)
   const { selectedPrograms, recivedPrograms, selectedDays, recivedDays,
     userToken, editDay, dayIntro, dayDate, editor, content, programShow, dayId } = state
   const {

@@ -3,6 +3,15 @@ import moment from 'moment'
 
 const Calendar = ({ children, onClick, number, completeText, icon, status,
   date, admin, isSelected, isTooSoon }) => {
+  //console.log('Calendar')
+  //console.log(children)
+  //console.log(number)
+  //console.log(completeText)
+  //console.log(status)
+  //console.log(icon)
+  //console.log(date)
+  //console.log(isSelected)
+  //console.log(isTooSoon)
     let calendarIcon
     let calendarToolip
     let calendarClass = "min-calendar__item"

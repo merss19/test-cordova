@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 
 let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
+
   <div className="1/3 grid__cell">
     <ul className="min-calendar">
       {calendar.map((field, index) => {
@@ -21,6 +22,10 @@ let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
         }
 
         const isTooSoon = moment(field.date).isAfter(moment().format('YYYY-MM-DD')) && role !== 2
+	      //console.log('CalendarList')
+	      //console.log(selectedTaskDay)
+	      //console.log(dayId)
+	      //console.log(role)
 
         return (
           <Calendar
