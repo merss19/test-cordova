@@ -231,7 +231,10 @@
   position: relative;
   margin-bottom: 20px;
   background-color: #fff;
+  z-index: 0;
+
   &__field {
+    z-index: 2;
     border: 1px solid $c-border;
     border-radius: $baseRadius;
     padding: 8px 12px;
@@ -240,9 +243,11 @@
     outline: none;
   }
   .ico-arrow-accordion {
+    z-index: 1;
     width: 15px; height: 8px;
     position: absolute;
     bottom: 17px; right: 15px;
+    pointer-events: none;
   }
   &:before {
     content: '';

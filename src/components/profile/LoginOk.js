@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router'
 import { SubmissionError } from 'redux-form'
 import Modal from 'boron/FadeModal'
 import cookie from 'react-cookie'
-import { api } from '../../config.js'
+import { api, host } from '../../config.js'
 
 import CheckboxOfert from '../componentKit/CheckboxOfert'
 import CustomInput from '../componentKit/CustomInput'
@@ -32,6 +32,7 @@ let isFetching = false
 class LoginSocial extends Component {
   componentDidMount() {
     this.refs.loadingModal.show()
+
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
       contentStyle.width = '300px'
@@ -39,6 +40,12 @@ class LoginSocial extends Component {
 
     const { setToken } = this.props
     code = this.props.location.query.code
+
+    if (window.opener) {
+      window.opener.postMessage({ name: 'okAuth', code}, host)
+      window.close()
+    }
+
     socialNetType = 2
     socialName = 'Одноклассники'
 

@@ -22,6 +22,7 @@ import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
 import InputDayPicker from './InputDayPicker'
 import InputElement from 'react-input-mask'
+import { OKSDK } from './oksdk.js'
 
 let injuriesLocal = []
 let diseases = []
@@ -40,6 +41,7 @@ const overlayStyle = {
 
 const FB = window.FB
 const VK = window.VK
+const OK = window.OKSDK
 
 class SubmitValidationForm extends Component {
   updatePhoto(photoPayload) {
@@ -223,24 +225,42 @@ class SubmitValidationForm extends Component {
                     </svg>
                     <span className="btn-social__title">Вконтакте</span>
                   </li>
-                  {/* <li className="btn-social__item btn-social__item--odnoklassniki" onClick={() => {
-                    // const FAPI = window.FAPI
-                    // var rParams = window.FAPI.Util.getRequestParameters()
-                    // FAPI.init(rParams["api_server"], rParams["apiconnection"], () => {
-                    //     FAPI.Client.call({
-                    //       method: "users.getInfo",
-                    //       fields: "pic190x190"
-                    //     }, r => {
-                    //       console.log(r)
-                    //     }, () => { console.log(error) })
-                    //   }
-                    // )
+                  <li className="btn-social__item btn-social__item--odnoklassniki" onClick={() => {
+                    const self = this
+
+                    var config = {
+                      app_id: 1248995328,
+                      app_key: 'CBAJCDHLEBABABABA'
+                    };
+
+                    OKSDK.init(config, function () {
+                      //on success
+                      console.log('SUCCESS')
+                      OKSDK.REST.call("users.getCurrentUser", { fields: "pic190x190"}, function (status, data, error) {
+                      	//callback
+                        console.log(data)
+                        if(data && data.pic190x190) {
+                          const photo = data.pic190x190
+                          self.refs.avatar.src = photo
+                          const photoPayload = {
+                            authToken: cookie.load('token'),
+                            data: { photo }
+                          }
+
+                          return self.updatePhoto(photoPayload)
+                        }
+                      });
+                    }, function (error) {
+                      //on error
+                      console.log('ERROR')
+                      console.log(error)
+                    });
                   }}>
                     <svg className="svg-icon ico-odnoklassniki">
                       <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#odnoklassniki"></use>
                     </svg>
                     <span className="btn-social__title">Одноклассники</span>
-                  </li> */}
+                  </li>
                   <li className="btn-social__item btn-social__item--fb" onClick={() => {
                     FB.login(response => {
                       if (response.status === 'connected') {
@@ -420,20 +440,24 @@ class SubmitValidationForm extends Component {
               </table>
               <div className="text-center">
                 <div onClick={() => {
-
+                  let emptyData = false
                   let validData = [
                     this.refs.height.value, this.refs.weight.value,
                     this.refs.chest.value, this.refs.waist.value,
                     this.refs.hips.value, this.refs.thigh.value
                   ].filter(value => {
+                    if (!value) {
+                      emptyData = true
+                    }
                     return /^[0-9.,]{1,100}$/.test(value)
                   })
 
                   validData = validData.map(d => d.replace(/,/, '.'))
+
                   console.log('ddddddddddddddddddd')
                   console.log(validData)
 
-                  if (validData.length === 6) {
+                  if (validData.length === 6 && !emptyData) {
                     this.refs.loadingModal.show()
                     const data = {
                       date: moment().format('YYYY-MM-DD'),
@@ -476,7 +500,11 @@ class SubmitValidationForm extends Component {
                       }
                     })
                   } else {
-                    this.refs.failValidationModal.show()
+                    if (emptyData) {
+                      this.refs.failValidationEmptyModal.show()
+                    } else {
+                      this.refs.failValidationModal.show()
+                    }
                   }
                 }} className="btn btn--primary">
                   Добавить
@@ -489,6 +517,13 @@ class SubmitValidationForm extends Component {
                   <h2>Данные могут содержать только цифры с точкой</h2>
                   <br/>
                   <div className="btn btn--action" onClick={() => this.refs.failValidationModal.hide()}>
+                    Продолжить
+                  </div>
+                </Modal>
+                <Modal ref='failValidationEmptyModal' contentStyle={contentStyle}>
+                  <h2>Некоторые данные не заполнены!</h2>
+                  <br/>
+                  <div className="btn btn--action" onClick={() => this.refs.failValidationEmptyModal.hide()}>
                     Продолжить
                   </div>
                 </Modal>
@@ -539,7 +574,7 @@ class SubmitValidationForm extends Component {
                     </div>
                   }
                 </div>
-                <div className="grid">
+                <div className="grid" style={{marginTop: '-35px'}}>
                   <div className="1/2--desk grid__cell mb30">
                   </div>
                   <div className="1/2--desk grid__cell">

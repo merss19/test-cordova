@@ -46,10 +46,10 @@ const fetchTaskDay = partialState => dispatch => {
   if (selectedDayId) {
     payload.data.id = selectedDayId
   } else {
-    payload.data.date = selectedDayDate
+    payload.data.date = selectedDayDate ? selectedDayDate : moment().format('YYYY-MM-DD')
   }
 
-  console.log('payload')
+  console.log('PAYLOAD')
   console.log(payload)
 
   let data = new FormData()

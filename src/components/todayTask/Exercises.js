@@ -14,9 +14,7 @@ class Exercises extends Component {
   //   }
   // }
 
-
   render() {
-
     const { sendReport, tasks, token } = this.props
     return (
       <div className="stage-box stage-box--big-padding">

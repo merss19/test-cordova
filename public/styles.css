@@ -36,6 +36,10 @@ button {
   display:inline-block;
 }
 
+#carrotquest-messenger-collapsed-img-cont {
+    padding-bottom: 50px;
+}
+
 /*react-draft-wysiwyg styles*/
 
 .home-root {

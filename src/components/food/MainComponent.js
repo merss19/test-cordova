@@ -123,8 +123,8 @@ class MainComponent extends Component {
               () => browserHistory.push('/photos')
             }>
               <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-faq">
-                  <use xlinkHref="#ico-m-faq"></use>
+                <svg className="svg-icon ico-photo">
+                  <use xlinkHref="#ico-photo"></use>
                 </svg>
               </span>
               <span className="menu-mob-bottom__title">Фото</span>

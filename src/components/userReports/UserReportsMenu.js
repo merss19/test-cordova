@@ -5,10 +5,10 @@ export default () => (
   <div className="user-reports-menu">
     <Link
       className="user-reports-menu__item"
-      to="/userReports/events">События</Link>
+      to="/userReports/chats">Чаты</Link>
     <Link
       className="user-reports-menu__item"
-      to="/userReports/qa">Вопросы/ответы</Link>
+      to="/userReports/photos">Фото до/после</Link>
     <Link
       className="user-reports-menu__item"
       to="/userReports/pendingProfiles">Утверждение профилей</Link>

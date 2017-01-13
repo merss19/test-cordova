@@ -30,6 +30,14 @@ class SignupValidationForm extends Component {
     if (email) {
       change('email', email)
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      window.addEventListener('message', function (event) {
+        if (event.data.name === 'okAuth') {
+          browserHistory.push({ pathname: '/social/ok', query: { code: event.data.code } })
+        }
+      }, false)
+    }, false)
   }
 
   render() {
@@ -54,7 +62,8 @@ class SignupValidationForm extends Component {
       if (promo)
         cookie.save('promoName', promo, { path: '/' })
 
-      window.location = `https://connect.ok.ru/oauth/authorize?client_id=1248995328&scope=VALUABLE_ACCESS,LONG_ACCESS_TOKEN,PHOTO_CONTENT,GET_EMAIL&response_type=code&redirect_uri=${host}/social/ok`
+        const url = `https://connect.ok.ru/oauth/authorize?client_id=1248995328&scope=VALUABLE_ACCESS,LONG_ACCESS_TOKEN,PHOTO_CONTENT,GET_EMAIL&response_type=code&redirect_uri=${host}/social/ok`
+        window.open(url, "Odnoklassniki", "width=700,height=400")
     }
 
     const redirectFb = () => {

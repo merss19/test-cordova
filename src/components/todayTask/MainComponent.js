@@ -20,13 +20,34 @@ let contentStyle = {
   padding: '30px'
 }
 
+const reportStyle = {
+  borderRadius: '18px',
+  padding: '30px',
+}
+
+let modalStyle = {
+  // position: 'absolute',
+  zIndex: '3000',
+  transform: 'translate3d(-50%, -50%, 0px)',
+  overflowY: 'auto',
+  padding: '0',
+	bottom: '0',
+	rigth: '0',
+  width: '100%',
+  maxWidth: '530px',
+  minWidth: '300px',
+  WebkitOverflowScrolling: 'touch',
+  height: '100%',
+  top: '50%',
+	left: '50%',
+}
+
 const scrollUpStyle = {
   zIndex: 2000,
   position: 'fixed',
   fontSize: 16,
   bottom: 60,
   left: 30,
-  background: 'white',
   cursor: 'pointer',
   transitionDuration: '0.2s',
   transitionTimingFunction: 'linear',
@@ -38,6 +59,11 @@ class MainComponent extends Component {
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
       contentStyle.width = '300px'
+      delete reportStyle.borderRadius
+    }
+
+    if (!window.mobilecheck()) {
+      modalStyle = {}
     }
   }
 
@@ -111,7 +137,7 @@ class MainComponent extends Component {
                 }}/>
               }
 
-              <Modal ref='sendReportModal' contentStyle={contentStyle}>
+              <Modal ref='sendReportModal' modalStyle={modalStyle} contentStyle={reportStyle}>
                 <SendReportModal onSubmit={(data) => {
                   return fetch(`${api}/user/userTask-create`, {
                       headers: {
@@ -161,14 +187,18 @@ class MainComponent extends Component {
               } */}
 
               <ScrollToTop style={scrollUpStyle} showUnder={160}>
-                <span>ВВЕРХ</span>
+                <div className="btn-go-back">
+                  <svg className="svg-icon ico-arrow-up">
+                    <use xlinkHref="#ico-arrow-up"></use>
+                  </svg>
+                </div>
               </ScrollToTop>
             </div>
           </div>
         </div>
 
         <ul className="menu-mob-bottom">
-          <li className="menu-mob-bottom__item">
+          {/* <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
 
               () => browserHistory.push('/task')
@@ -181,7 +211,7 @@ class MainComponent extends Component {
               <span className="menu-mob-bottom__title">Задания</span>
             </a>
           </li>
-          {/* <li className="menu-mob-bottom__item">
+          <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/reports')
             }>
@@ -234,8 +264,8 @@ class MainComponent extends Component {
               () => browserHistory.push('/photos')
             }>
               <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-faq">
-                  <use xlinkHref="#ico-m-faq"></use>
+                <svg className="svg-icon ico-photo">
+                  <use xlinkHref="#ico-photo"></use>
                 </svg>
               </span>
               <span className="menu-mob-bottom__title">Фото</span>

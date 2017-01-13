@@ -76,6 +76,18 @@ class ProfileSignup extends Component {
     signup(program, amount, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
   }
 
+  componentDidMount() {
+    const { dispatch, selectedPrograms } = this.props
+    dispatch(actions.fetchProgramsIfNeeded(selectedPrograms, true))
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { dispatch, selectedPrograms } = nextProps
+
+    if (nextProps.selectedPrograms !== this.props.selectedPrograms)
+      dispatch(actions.fetchProgramsIfNeeded(selectedPrograms))
+  }
+
   statusChangeCallback(response) {
     if (response.status === 'connected') {
     } else if (response.status === 'not_authorized') {
@@ -307,7 +319,6 @@ class ProfileSignup extends Component {
 
         </div>
 
-
         <Modal ref='accModal' contentStyle={contentStyle}>
           <h2>Выберите программу</h2>
           <br/>
@@ -405,7 +416,8 @@ ProfileSignup = reduxForm({
 
 const selector = formValueSelector('signupValidation')
 const mapStateToProps = state => {
-  let { program, packageType, promo, amount, share } = state.profile
+  const { selectedPrograms, recivedPrograms, profile } = state
+  let { program, packageType, promo, amount, share } = profile
 
   if (!program) {
     program = selector(state, 'programValue')
@@ -420,6 +432,8 @@ const mapStateToProps = state => {
   const nameFriend  = selector(state, 'nameFriendValue')
   promo = selector(state, 'promoValue')
 
+  const { programs } = recivedPrograms[selectedPrograms] || []
+
   return {
     program,
     packageType,
@@ -428,7 +442,9 @@ const mapStateToProps = state => {
     emailFriend,
     phoneFriend,
     nameFriend,
-    share
+    share,
+    selectedPrograms,
+    programs
   }
 }
 

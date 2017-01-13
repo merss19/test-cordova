@@ -10,6 +10,8 @@ export const selectPrograms = profileData => ({
 })
 
 export const receivePrograms = (programs, json) => {
+  console.log('<<<<<<<<<<<<<===)===--0')
+  console.log(json)
   return ({
     type: RECEIVE_PROGRAMS,
     programs,
@@ -18,11 +20,16 @@ export const receivePrograms = (programs, json) => {
 }
 
 const fetchPrograms = partialState => dispatch => {
-  const { programs } = partialState
+  const { programs, isNextSeason } = partialState
 
   const headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
+  }
+
+  let payload = {}
+  if (isNextSeason) {
+    payload.isNextSeason = isNextSeason
   }
 
   const method = 'POST'
@@ -30,7 +37,7 @@ const fetchPrograms = partialState => dispatch => {
   return fetch(`${api}/day/program-get`, {
       headers,
       method,
-      body: '{}'
+      body: JSON.stringify(payload)
     })
   .then(response => response.json())
   .then(json => {
@@ -47,8 +54,8 @@ const shouldFetchPrograms = (state, programs) => {
   return progrs.didInvalidate
 }
 
-export const fetchProgramsIfNeeded = programs => (dispatch, getState) => {
+export const fetchProgramsIfNeeded = (programs, isNextSeason) => (dispatch, getState) => {
   if (shouldFetchPrograms(getState(), programs)) {
-    return dispatch(fetchPrograms({ token: getState().userToken.token, programs}))
+    return dispatch(fetchPrograms({ token: getState().userToken.token, programs, isNextSeason}))
   }
 }

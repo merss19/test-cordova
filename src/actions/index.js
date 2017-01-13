@@ -3,6 +3,8 @@ export * from './signupPayment'
 export * from './profile'
 export * from './days'
 export * from './food'
+export * from './chats'
+export * from './pendingPhotos'
 export * from './pendingProfiles'
 export * from './pendingInsuranceProfiles'
 export * from './programs'
@@ -44,6 +46,7 @@ export const setToken = token => ({
 })
 
 export const setRole = role => ({
+
   type: SET_ROLE,
   role
 })

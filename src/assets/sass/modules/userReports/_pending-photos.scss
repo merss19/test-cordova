@@ -1,0 +1,39 @@
+@import "../../_theme";
+
+.pending-photos {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    margin: 5px;
+  }
+
+  &__row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__photo {
+    margin: 5px;
+    max-width: 25%;
+    flex-basis: 25%;
+    position: relative;
+
+    &-image {
+      width: 100%;
+
+      &:before {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: 22px;
+        left: 0px;
+        height: calc(100% - 22px);
+        width: 100%;
+        background-color: #e6e6e6;
+      }
+    }
+  }
+}
