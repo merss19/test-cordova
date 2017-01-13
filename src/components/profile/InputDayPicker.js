@@ -85,6 +85,7 @@ class InputDayPicker extends Component {
   clickTimeout = null;
 
   handleContainerMouseDown() {
+    console.log('handleContainerMouseDown')
     this.clickedInside = true;
     // The input's onBlur method is called from a queue right after onMouseDown event.
     // setTimeout adds another callback in the queue, but is called later than onBlur event
@@ -94,12 +95,14 @@ class InputDayPicker extends Component {
   }
 
   handleInputFocus() {
+	  console.log('handleInputFocus')
     this.setState({
       showOverlay: true,
     });
   }
 
   handleInputBlur() {
+	  console.log(' handleInputBlur')
     const showOverlay = this.clickedInside;
 
     this.setState({
@@ -113,6 +116,7 @@ class InputDayPicker extends Component {
   }
 
   handleInputChange(e) {
+	  console.log('  handleInputChange')
     const { value } = e.target;
     const momentDay = moment(value, 'L', true);
     if (momentDay.isValid()) {
@@ -147,7 +151,7 @@ class InputDayPicker extends Component {
 
     return (
       <div onMouseDown={ this.handleContainerMouseDown }>
-        <div className="input input--box">
+        <div className="input input--box input--datepicker">
           <input
             {...input}
             className="input__field"
@@ -161,7 +165,7 @@ class InputDayPicker extends Component {
             onBlur={ this.handleInputBlur }
           />
         </div>
-        {touched && error && <span>{error}</span>}
+	      {touched && error && <span>{error}</span>}
         { this.state.showOverlay &&
           <div style={ { position: 'relative' } }>
             <div style={ overlayStyle }>
@@ -173,27 +177,32 @@ class InputDayPicker extends Component {
                   weekdaysLong={ WEEKDAYS_LONG }
                   weekdaysShort={ WEEKDAYS_SHORT }
                   onDayClick={(e, day) => {
+                  console.log('onDayClick')
                     this.setState({
                       value: moment(day).format('L'),
                       selectedDay: day,
-                      showOverlay: false,
+                      showOverlay: false
                     });
                     this.input.blur();
                     switch (name) {
                       case 'birthday':
-                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('YYYY-MM-DD') })
+                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD-MM-YYYY') })
                         break
                       case 'babyBirthday':
-                        this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(day).format('YYYY-MM-DD') })
+                        this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(day).format('DD-MM-YYYY') })
                         break
                       case 'lastBabyFeedMonth':
-                        this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(day).format('YYYY-MM-DD') })
+                        this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(day).format('DD-MM-YYYY') })
                         break
                       default:
-                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('YYYY-MM-DD') })
+                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD-MM-YYYY') })
                     }
                   }}
-                  selectedDays={ day => DateUtils.isSameDay(this.state.selectedDay, day) }
+                  selectedDays={ day => {
+                  console.log('selectedDays')
+                   console.log(day)
+                  DateUtils.isSameDay(this.state.selectedDay, day)
+                  } }
                   initialMonth={ this.state.initialMonth }
                   fromMonth={ fromMonth }
                   toMonth={ toMonth }

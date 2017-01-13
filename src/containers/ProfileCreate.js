@@ -162,7 +162,7 @@ class ProfileCreate extends Component {
             <Modal ref='successModal' contentStyle={contentStyle}>
               <h2>Профиль обновлен!</h2>
               <br/>
-              <h4>Мы проверим анкету на наличие опечаток и пришлём подтверждение по почте. Ознакомьтесь с разделом ЧАВО!</h4>
+              <h4>Мы проверим анкету на наличие опечаток и пришлём подтверждение по почте. Ознакомьтесь с разделом Вопросы/Ответы!</h4>
               <br/>
               <div className="btn btn--primary" onClick={() => {
                 browserHistory.push('/task')

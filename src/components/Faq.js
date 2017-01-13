@@ -946,7 +946,7 @@ class Faq extends Component {
 
                   <li id='reports' className="accordion__item">
                     <div className="accordion__header">
-                      <h4 className="h3 accordion__header-title">Отчеты в рамках тренировчного процесса</h4>
+                      <h4 className="h3 accordion__header-title">Отчеты в рамках тренировочного процесса</h4>
                     </div>
                     <div className="accordion__content">
                       <ul className="num-list">
@@ -1074,9 +1074,9 @@ class Faq extends Component {
                         </li>
                         <li className="num-list__item">
                           <span className="num-list__number">8</span>
-                          <h6 className="num-list__title">Кто пишет програму тренировок?</h6>
+                          <h6 className="num-list__title">Кто пишет программу тренировок?</h6>
                           <p className="num-list__description">
-                            Программу тренировок пишут тренеры Ксения и Стас вместе с командой врачей клини АльфаЗдрав и СМ-Клиника.
+                            Программу тренировок пишут тренеры Ксения и Стас вместе с командой врачей клиник: Альфа Центр Здоровья и СМ-Клиника.
                           </p>
                         </li>
                         <li className="num-list__item">
@@ -1097,7 +1097,7 @@ class Faq extends Component {
                           <span className="num-list__number" style={offset}>11</span>
                           <h6 className="num-list__title">Что если я не согласен с тренером?</h6>
                           <p className="num-list__description">
-                            Вы всегда можете написать письмо в технчиескую поддержку, ваша жалоба будет рассмотрена.
+                            Вы всегда можете написать письмо в техническую поддержку, ваша жалоба будет рассмотрена.
                           </p>
                         </li>
                         <li className="num-list__item">
@@ -1239,7 +1239,7 @@ class Faq extends Component {
                           <span className="num-list__number">5</span>
                           <h6 className="num-list__title">Как проходит голосование и определяется победитель?</h6>
                           <p className="num-list__description">
-                            У нас нет голосования, а главный приз рызыгрывается через генератор случайных чисел. Таким образом, "ВСЕ" участники получат подарки. Мы считаем, что каждый дошедший до конца достоин поощрения.
+                            У нас нет голосования, а главный приз розыгрывается через генератор случайных чисел. Таким образом, "ВСЕ" участники получат подарки. Мы считаем, что каждый дошедший до конца достоин поощрения.
                           </p>
                         </li>
                         <li className="num-list__item">
@@ -1326,7 +1326,7 @@ class Faq extends Component {
                   <use xlinkHref="#ico-m-faq"></use>
                 </svg>
               </span>
-              <span className="menu-mob-bottom__title">ЧАВО</span>
+              <span className="menu-mob-bottom__title">Вопросы/Ответы</span>
             </a>
           </li> */}
           <li className="menu-mob-bottom__item">
@@ -1397,7 +1397,7 @@ class Faq extends Component {
                   <svg className="svg-icon ico-m-faq">
                     <use xlinkHref="#ico-m-faq"></use>
                   </svg>
-                  <span className="main-nav__title">ЧАВО</span>
+                  <span className="main-nav__title">Вопросы/Ответы</span>
                 </a>
               </li>
             </ul>

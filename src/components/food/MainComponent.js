@@ -103,7 +103,7 @@ class MainComponent extends Component {
                   <use xlinkHref="#ico-m-faq"></use>
                 </svg>
               </span>
-              <span className="menu-mob-bottom__title">ЧАВО</span>
+              <span className="menu-mob-bottom__title">Вопросы/Ответы</span>
             </a>
           </li>
           <li className="menu-mob-bottom__item">

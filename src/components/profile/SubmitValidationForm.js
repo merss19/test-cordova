@@ -311,12 +311,12 @@ class SubmitValidationForm extends Component {
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <p className="base-parag">Дата рождения (гггг-ММ-дд)</p>
+                <p className="base-parag">Дата рождения (дд-ММ-гггг)</p>
 
                 {/* <DatePicker selected={date} onChange={handleDateChange} /> */}
                 {window.mobilecheck()
-                  ? <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
-                  : <Field name="birthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                  ? <Field name="birthday" placeholder="дд-ММ-гггг" component={InputDateMask} />
+                  : <Field name="birthday" placeholder="дд-ММ-гггг" component={InputDayPicker} />
                 }
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
@@ -543,18 +543,18 @@ class SubmitValidationForm extends Component {
                 <h3 className="h3">Для программы "Мама может"</h3>
                 <div className="grid mb30">
                   <div className="1/2--desk 1/1-pocket grid__cell">
-                    <p className="base-parag">Дата рождения последнего ребёнка (гггг-ММ-дд)</p>
+                    <p className="base-parag">Дата рождения последнего ребёнка (дд-ММ-гггг)</p>
                     {window.mobilecheck()
-                      ? <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDateMask} />
-                      : <Field name="babyBirthday" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                      ? <Field name="babyBirthday" placeholder="дд-ММ-гггг" component={InputDateMask} />
+                      : <Field name="babyBirthday" placeholder="дд-ММ-гггг" component={InputDayPicker} />
                     }
                   </div>
                   {!isBabyFeeding &&
                     <div className="1/2--desk 1/1-pocket grid__cell">
-                      <p className="base-parag">Месяц когда перестали кормить грудью (гггг-ММ-дд)</p>
+                      <p className="base-parag">Месяц когда перестали кормить грудью (дд-ММ-гггг)</p>
                       {window.mobilecheck()
-                        ? <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDateMask} />
-                        : <Field name="lastBabyFeedMonth" placeholder="гггг-ММ-дд" component={InputDayPicker} />
+                        ? <Field name="lastBabyFeedMonth" placeholder="дд-ММ-гггг" component={InputDateMask} />
+                        : <Field name="lastBabyFeedMonth" placeholder="дд-ММ-гггг" component={InputDayPicker} />
                       }
                     </div>
                   }

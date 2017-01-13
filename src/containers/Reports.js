@@ -333,7 +333,7 @@ class Reports extends Component {
                   <use xlinkHref="#ico-m-faq"></use>
                 </svg>
               </span>
-              <span className="menu-mob-bottom__title">ЧАВО</span>
+              <span className="menu-mob-bottom__title">Вопросы/Ответы</span>
             </a>
           </li>
         </ul>
@@ -380,7 +380,7 @@ class Reports extends Component {
                   <svg className="svg-icon ico-m-faq">
                     <use xlinkHref="#ico-m-faq"></use>
                   </svg>
-                  <span className="main-nav__title">ЧАВО</span>
+                  <span className="main-nav__title">Вопросы/Ответы</span>
                 </a>
               </li>
             </ul>
