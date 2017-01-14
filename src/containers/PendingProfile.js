@@ -28,6 +28,7 @@ class UserReports extends Component {
   componentWillMount() {
     const {fetchPendingProfile, routeParams} = this.props
 
+    fetchChat(PROFILE_CHAT_ID, routeParams.userId)
     fetchPendingProfile(routeParams.userId)
   }
 

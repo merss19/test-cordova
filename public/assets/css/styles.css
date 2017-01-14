@@ -2386,6 +2386,7 @@ code {
    App theme
    =========================== */
 .pending-profile {
+  width: 100%;
   display: -ms-flexbox;
   display: flex;
   text-align: left;
@@ -2393,6 +2394,11 @@ code {
   flex-wrap: wrap;
   -ms-flex-direction: column;
   flex-direction: column; }
+  .pending-profile__row {
+    width: 100%;
+    margin-top: 15px; }
+  .pending-profile__row-title {
+    margin-bottom: 15px; }
   .pending-profile__inner-popup {
     top: 0;
     left: 0;
@@ -2405,7 +2411,7 @@ code {
     background: white; }
   .pending-profile__desc-box {
     width: 100%;
-    min-height: 300px;
+    min-height: 200px;
     resize: none;
     padding: 10px;
     border-top: 1px solid #869BB8; }

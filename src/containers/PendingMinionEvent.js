@@ -2,40 +2,94 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {
-  rejectProfile,
-  approveProfile,
-  fetchPendingProfile,
+  fetchChat,
+  closeChat,
+  createWithMessage,
+  rejectExam,
+  waitingExam,
+  approveExam,
+  fetchPendingExam,
+  EXAM_CHAT_ID
 } from '../actions'
 
+import Chat from './Chat'
 import UserReportsMenu from '../components/userReports/UserReportsMenu'
-import ProfilePropertiesList from '../components/userReports/ProfilePropertiesList'
+
+const healthConditions = {
+  bad: 'Ужасно',
+  middle: 'Так себе',
+  good: 'Отлично'
+}
+const youtubePattern = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/
 
 class UserReports extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      isConfirmPopupVisible: false
+    }
+  }
+
   componentWillMount() {
-    const {fetchPendingProfile, routeParams} = this.props
+    const {fetchPendingExam, routeParams} = this.props
 
-    fetchPendingProfile(routeParams.userId)
+    fetchChat(EXAM_CHAT_ID, routeParams.dayId)
+    fetchPendingExam(routeParams.userId, routeParams.dayId)
   }
 
-  approveProfile () {
-    const {router, routeParams, approveProfile} = this.props
+  componentWillUnmount() {
+    const {closeChat} = this.props
 
-    approveProfile(routeParams.userId)
-      .then(() => router.push('/userReports/pendingProfiles'))
+    closeChat()
   }
 
-  rejectProfile () {
-    const {router, routeParams, rejectProfile} = this.props
+  confirmChoice() {
+    const {confirmMessage} = this.refs
+    const {confirmationAction} = this.state
 
-    rejectProfile(routeParams.userId)
-      .then(() => router.push('/userReports/pendingProfiles'))
+    this.toggleStatus(confirmationAction, confirmMessage.value)
+  }
+
+  toggleStatus(action, message) {
+    const {id, router} = this.props
+
+    action(id, message)
+      .then(() => router.push('/userReports/exams'))
+  }
+
+  showConfirmPopup(confirmationAction) {
+    this.setState({isConfirmPopupVisible: true, confirmationAction})
+  }
+
+  hideConfirmPopup() {
+    this.setState({isConfirmPopupVisible: false})
   }
 
   render() {
-    const {isFetching, current, previously} = this.props
+    const {isConfirmPopupVisible} = this.state
+    const {
+      userId,
+      isFetching,
+      approveExam,
+      waitingExam,
+      rejectExam,
+      video,
+      report,
+      health,
+    } = this.props
+
+    const healthCondition = healthConditions[health] || healthConditions.middle
+
+    const matchYoutubeUrl = video.match(youtubePattern);
+    const isVideoValid = matchYoutubeUrl && matchYoutubeUrl[2].length === 11
+    const videoEmbedUrl = isVideoValid ? `https://www.youtube.com/embed/${matchYoutubeUrl[2]}?autoplay=0` : null
 
     return (
       <div className="layout layout--login">
+        <Chat
+          userId={userId}
+          onWaiting={() => this.toggleStatus(waitingExam, '')}/>
 
         <div className="header">
           <div className="grid header__inner">
@@ -59,49 +113,102 @@ class UserReports extends Component {
               <div className="entry__box">
                 {
                   isFetching ? <div className="spinner"></div> : (
-                    <div className="pending-profile">
-                      <div className="pending-profile__top-panel">
-                        <div className="pending-profile__buttons">
-                          <button
-                            onClick={() => this.approveProfile()}
-                            className="pending-profile__button btn btn--primary">
-                            Утвердить профиль
-                          </button>
-                          <button
-                            onClick={() => this.rejectProfile()}
-                            className="pending-profile__button btn btn--action">
-                            Вернуть на исправление
-                          </button>
+                      <div className="pending-profile">
+                        <div className="pending-profile__top-panel">
+                          <div className="pending-profile__buttons">
+                            <button
+                              onClick={() => this.showConfirmPopup(approveExam)}
+                              className="pending-profile__button btn btn--primary">
+                              Отчёт принят
+                            </button>
+                            <button
+                              onClick={() => this.showConfirmPopup(rejectExam)}
+                              className="pending-profile__button btn btn--action">
+                              Отчёт не принят
+                            </button>
+                            <button
+                              onClick={() => this.showConfirmPopup(waitingExam)}
+                              className="pending-profile__button btn btn--secondary">
+                              Вернуть клиенту
+                            </button>
+                          </div>
+
+                          <Link
+                            to="/userReports/exams"
+                            className="pending-profile__close-button">
+                            <svg className="svg-icon ico-close">
+                              <use xlinkHref="#ico-close"></use>
+                            </svg>
+                          </Link>
                         </div>
 
-                        <Link
-                          to="/userReports/pendingProfiles"
-                          className="pending-profile__close-button">
-                          <svg className="svg-icon ico-close">
-                            <use xlinkHref="#ico-close"></use>
-                          </svg>
-                        </Link>
-                      </div>
+                        <div className="pending-profile__container">
+                          <div className="pending-profile__row">
+                            <h3 className="pending-profile__row-title">
+                              Состояние
+                            </h3>
 
-                      <div className="pending-profile__container">
-                        {
-                          current ?
-                            <ProfilePropertiesList
-                              title={previously ? 'Было' : null}
-                              props={current}
-                              compareTo={previously}/> : null
-                        }
+                            {healthCondition}
+                          </div>
 
-                        {
-                          previously ?
-                            <ProfilePropertiesList
-                              title="Стало"
-                              props={previously}
-                              compareTo={current}/> : null
-                        }
+
+                          <div className="pending-profile__row">
+                            <h3 className="pending-profile__row-title">
+                              Комментарий
+                            </h3>
+
+                            {report}
+                          </div>
+
+                          <div className="pending-profile__row">
+                            <h3 className="pending-profile__row-title">
+                              Видео
+                            </h3>
+
+                            {
+                              isVideoValid ? (
+                                  <iframe width="420" height="315" src={videoEmbedUrl}/>
+                                ) : 'Некорректная ссылка, либо отсутствует'
+
+                            }
+                          </div>
+
+                        </div>
                       </div>
-                    </div>
-                  )
+                    )
+                }
+
+                {
+                  isConfirmPopupVisible ? (
+                      <div className="pending-profile__inner-popup">
+                        <div className="pending-profile__top-panel">
+                          <div className="pending-profile__buttons">
+                            <button
+                              onClick={() => this.confirmChoice()}
+                              className="pending-profile__button btn btn--primary">
+                              Принять
+                            </button>
+                            <button
+                              onClick={() => this.hideConfirmPopup()}
+                              className="pending-profile__button btn btn--action">
+                              Отмена
+                            </button>
+                          </div>
+
+                          <div className="pending-profile__close-button"
+                               onClick={() => this.hideConfirmPopup()}>
+                            <svg className="svg-icon ico-close">
+                              <use xlinkHref="#ico-close"></use>
+                            </svg>
+                          </div>
+                        </div>
+
+                        <textarea
+                          ref="confirmMessage"
+                          className="pending-profile__desc-box"
+                          placeholder="Сообщение пользователю"/>
+                      </div>
+                    ) : null
                 }
               </div>
             </div>
@@ -113,15 +220,19 @@ class UserReports extends Component {
 }
 
 const mapStateToProps = state => {
-  const {isFetching = true, current = null, previously = null} = state.pendingProfile
+  const {pendingEvent = {}} = state
 
-  return {isFetching, current, previously}
+  return pendingEvent
 }
 
 const mapDispatchToProps = {
-  rejectProfile,
-  approveProfile,
-  fetchPendingProfile
+  fetchChat,
+  closeChat,
+  createWithMessage,
+  rejectExam,
+  waitingExam,
+  approveExam,
+  fetchPendingExam
 }
 
 UserReports = connect(
