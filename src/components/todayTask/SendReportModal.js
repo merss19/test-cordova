@@ -119,7 +119,7 @@ class SendReportModal extends Component {
 	}
 
 	render() {
-		const { error, handleSubmit, onSubmit } = this.props
+		const { error, handleSubmit, onSubmit, isVideo } = this.props
 		const condition = conditions.map((item) => {
 			return (
 			<label key={item.id}>
@@ -145,10 +145,18 @@ class SendReportModal extends Component {
 					{condition}
 				</ul>
 
-				{/* <p className="text-center mb30">Прикрепите файл или вставьте ссылку с видео выполнения заданий</p>
+				{
+          isVideo ? (
+          	<div>
+							<p className="text-center mb30">
+								Прикрепите файл или вставьте ссылку с видео выполнения заданий
+							</p>
 
-				 <Field name="video" placeholder="http://youtube.com" component={InputModal} />
-				 {error && <div className="text-center"><strong>{error}</strong></div>}*/}
+							<Field name="video" placeholder="http://youtube.com" component={InputModal} />
+              {error && <div className="text-center"><strong>{error}</strong></div>}
+						</div>
+						) : null
+				}
 
 				<hr/>
 

@@ -60,9 +60,9 @@ export default class Chat extends Component {
               {
                 comments.map(({text, user}, index) => (
                   <li key={index} className={`chat-msg chat-msg--${userId === user.id ? 'you' : 'someone'}`}>
-                    <div className="chat-msg__ava">
-                      <img src={user.photo} alt=""/>
-                    </div>
+                    {/*<div className="chat-msg__ava">*/}
+                      {/*<img src={user.photo} alt=""/>*/}
+                    {/*</div>*/}
                     <div className="chat-msg__content">
                       <p className="chat-msg__name">
                         {`${user.firstName || ''} ${user.lastName || ''}`}
