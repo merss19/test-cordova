@@ -141,7 +141,7 @@ class NewSeason extends Component {
                   }
                 })
               }}>
-                Выберите программу себе
+                Выбрать программу!
               </button>
               <div className="divider" />
               <button className="btn btn--action" onClick={e => {
