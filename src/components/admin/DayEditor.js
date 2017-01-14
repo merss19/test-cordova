@@ -75,7 +75,7 @@ class DayEditor extends Component {
                     this.refs.loadingModal.show()
 
                     if (data && data.tasks && data.tasks[0]) {
-                      data.programTasks[0].customName = data.customName
+                      data.programTasks[0].customName = data.customName ? data.customName : ''
 											data.programTasks[0].program = programShow
                       data.programTasks[0].intro = content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0])
                       data.programTasks[0].introHTML = dayIntro[0] ? dayIntro[0] : 'test'
