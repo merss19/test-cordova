@@ -3,7 +3,7 @@ const DEVELOPMENT = 'development'
 
 const env = process.env.NODE_ENV || DEVELOPMENT
 
-const api = 'https://api.todayme.ru/api2'
+const api = 'https://api2.todayme.ru/api'
 
 const host = env === PRODUCTION
   ? 'https://lk2.todayme.ru'
