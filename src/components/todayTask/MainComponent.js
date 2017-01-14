@@ -179,7 +179,7 @@ class MainComponent extends Component {
               }
 
               <Modal ref='sendReportModal' modalStyle={modalStyle} contentStyle={reportStyle}>
-                <SendReportModal onSubmit={(data) => this.createTask(data)}/>
+                <SendReportModal isVideo={taskDay.isVideo} onSubmit={(data) => this.createTask(data)}/>
               </Modal>
               <Modal ref='successModal' contentStyle={contentStyle}>
                 <h2>Отчет отправлен! В течении некоторого времени его проверит твой тренер</h2>
