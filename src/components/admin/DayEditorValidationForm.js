@@ -322,13 +322,12 @@ class DayEditorValidationForm extends Component {
                 <Field name='customIcon' placeholder="Выберите иконку" component={InputProfile} />
               </div>
 
-	            <div className="1/2--desk 1/1--pocket grid__cell">
-		            <label htmlFor="isVideo">Ссылка на видео</label>
-
-		            <div>
+	            <div className="1/2--desk 1/1--pocket grid__cell is-video">
+		            <div className="is-video__box">
 			            <Field name="isVideo" id="isVideo" component="input" type="checkbox"/>
 		            </div>
 
+		            <label htmlFor="isVideo" className="is-video__label">Ссылка на видео</label>
 	            </div>
 
             </div>

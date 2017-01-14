@@ -1954,6 +1954,14 @@ a.btn {
   .upload-gallery__img {
     max-width: 100%; }
 
+.is-video__box {
+  display: inline-block; }
+
+.is-video__label {
+  display: inline-block;
+  padding: 10px;
+  cursor: pointer; }
+
 .entry__inner {
   position: relative;
   text-align: center;

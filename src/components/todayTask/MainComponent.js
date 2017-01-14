@@ -98,6 +98,8 @@ class MainComponent extends Component {
   // }
 
   createTask (data) {
+	  console.log('createTask')
+	  console.log(data)
     const { taskDay, token, createWithMessage, fetchChat } = this.props
     const chatMessage = `Комментарий: ${data.report}
                          Видео: ${data.video}

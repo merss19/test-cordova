@@ -72,7 +72,7 @@ class DayEditor extends Component {
                   content={content}
                   onSubmit={data => {
                   		console.log('data')
-											console.log(data)
+											console.log(!!data.isVideo)
                     this.refs.loadingModal.show()
 
                     if (data && data.tasks && data.tasks[0]) {

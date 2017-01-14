@@ -679,6 +679,18 @@
 
 }
 
+.is-video{
+	&__box{
+		display: inline-block;
+	}
+
+	&__label{
+		display: inline-block;
+		padding:10px;
+		cursor: pointer;
+	}
+}
+
 
 
 
