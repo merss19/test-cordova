@@ -1,10 +1,20 @@
 @import "../../_theme";
 
 .pending-profile {
+  width: 100%;
   display: flex;
   text-align: left;
   flex-wrap: wrap;
   flex-direction: column;
+
+  &__row {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  &__row-title {
+    margin-bottom: 15px;
+  }
 
   &__inner-popup {
     top: 0;
@@ -20,7 +30,7 @@
 
   &__desc-box {
     width: 100%;
-    min-height: 300px;
+    min-height: 200px;
     resize: none;
     padding: 10px;
 

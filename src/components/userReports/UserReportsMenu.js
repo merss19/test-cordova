@@ -11,6 +11,9 @@ export default () => (
       to="/userReports/photos">Фото до/после</Link>
     <Link
       className="user-reports-menu__item"
+      to="/userReports/exams">Экзамены и зачёты</Link>
+    <Link
+      className="user-reports-menu__item"
       to="/userReports/pendingProfiles">Утверждение профилей</Link>
     <Link
       className="user-reports-menu__item"

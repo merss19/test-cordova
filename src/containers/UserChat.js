@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-import ChatBlock from '../components/Chat/ChatBlock'
 import ChatWindow from '../components/Chat/ChatWindow'
 
 import {
@@ -9,7 +8,7 @@ import {
   closeChat,
   addToChat,
   answerToChat,
-  waitingFromChat,
+  waitingFromChat
 } from '../actions'
 
 export class Chat extends Component {
@@ -37,15 +36,10 @@ export class Chat extends Component {
   waiting() {
     const {
       id,
-      onWaiting,
       waitingFromChat
     } = this.props
 
-    const promise = waitingFromChat(id)
-
-    if (onWaiting) {
-      onWaiting(id, promise)
-    }
+    waitingFromChat(id)
   }
 
   sendMessage(text) {
@@ -55,7 +49,6 @@ export class Chat extends Component {
       typeId,
       userId,
       addToChat,
-      fetchChat,
       answerToChat,
     } = this.props
     const {
@@ -81,12 +74,6 @@ export class Chat extends Component {
     }
   }
 
-  toggleForwarding() {
-    this.setState({
-      isForwarding: !this.state.isForwarding
-    })
-  }
-
   componentWillMount() {
     const {type, typeId, isOpen, fetchChat} = this.props
 
@@ -106,46 +93,30 @@ export class Chat extends Component {
       isMessageValid,
     } = this.state
     const {
-      id,
       isOpen,
       userId,
-      isWindow = true,
       isFetching
     } = this.props
 
     return (
-      isOpen ? (
-          isWindow ? <ChatWindow
-              // Data
-              userId={userId}
-              comments={comments}
-              sendButtonText={isForwarding ? 'Переадресовать' : 'Ответить'}
-              placeholderText={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
-              // Flags
-              isFetching={isFetching || id === undefined}
-              isForwarding={isForwarding}
-              isMessageValid={isMessageValid}
-              showAdminPanel={true}
-              // Callbacks
-              onClose={() => this.closeChat()}
-              onWaiting={() => this.waiting()}
-              onForwarding={() => this.toggleForwarding()}
-              onMessageChanged={(e) => this.checkMessageLength(e)}
-              onMessageSend={(message) => this.sendMessage(message)}
-            /> : <ChatBlock
-              // Data
-              userId={userId}
-              comments={comments}
-              sendButtonText={'Отправить'}
-              placeholderText={'Текст сообщения'}
-              // Flags
-              isFetching={isFetching || id === undefined}
-              isMessageValid={isMessageValid}
-              // Callbacks
-              onMessageChanged={(e) => this.checkMessageLength(e)}
-              onMessageSend={(message) => this.sendMessage(message)}
-            />
-        ) : null
+      isOpen ? <ChatWindow
+          // Data
+          userId={userId}
+          comments={comments}
+          sendButtonText={isForwarding ? 'Переадресовать' : 'Ответить'}
+          placeholderText={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
+          // Flags
+          isFetching={isFetching}
+          isForwarding={isForwarding}
+          isMessageValid={isMessageValid}
+          showAdminPanel={true}
+          // Callbacks
+          onClose={() => this.closeChat()}
+          onWaiting={() => this.waiting()}
+          onForwarding={() => this.toggleForwarding()}
+          onMessageChanged={(e) => this.checkMessageLength(e)}
+          onMessageSend={(message) => this.sendMessage(message)}
+        /> : null
     )
   }
 }

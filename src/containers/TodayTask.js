@@ -1,6 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
+import {
+  selectTaskDay,
+  invalidateTaskDay,
+  fetchTaskDayIfNeeded,
+  fetchChat, EXAM_CHAT_ID
+} from '../actions'
 
 import MainComponent from '../components/todayTask/MainComponent'
 import LoadingView from '../components/componentKit/LoadingView'
@@ -9,31 +14,41 @@ class TodayTask extends Component {
   static propTypes = {
     taskDay: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired
+    selectTaskDay: PropTypes.func.isRequired,
+    invalidateTaskDay: PropTypes.func.isRequired,
+    fetchTaskDayIfNeeded: PropTypes.func.isRequired,
+    fetchChat: PropTypes.func.isRequired
   }
 
   componentDidMount() {
-    const { dispatch, selectedTaskDay } = this.props
-    dispatch(actions.fetchTaskDayIfNeeded(selectedTaskDay))
+    const { fetchTaskDayIfNeeded, selectedTaskDay, fetchChat } = this.props
+
+    fetchTaskDayIfNeeded(selectedTaskDay)
+      .then(({json}) => {
+        fetchChat(EXAM_CHAT_ID, json.data[0].id)
+      })
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedTaskDay !== this.props.selectedTaskDay) {
-      const { dispatch, selectedTaskDay } = nextProps
-      dispatch(actions.fetchTaskDayIfNeeded(selectedTaskDay))
+      const { fetchTaskDayIfNeeded, selectedTaskDay, taskDay } = nextProps
+      fetchChat(EXAM_CHAT_ID, taskDay.data[0].id)
+      fetchTaskDayIfNeeded(selectedTaskDay)
     }
   }
 
   handleChange = nextTaskDay => {
-    this.props.dispatch(actions.selectTaskDay(nextTaskDay))
+    const { selectTaskDay } = this.props
+
+    selectTaskDay(nextTaskDay)
   }
 
   handleRefreshClick = e => {
     e.preventDefault()
 
-    const { dispatch, selectedTaskDay } = this.props
-    dispatch(actions.invalidateTaskDay(selectedTaskDay))
-    dispatch(actions.fetchTaskDayIfNeeded(selectedTaskDay))
+    const { invalidateTaskDay, fetchTaskDayIfNeeded, selectedTaskDay } = this.props
+    invalidateTaskDay(selectedTaskDay)
+    fetchTaskDayIfNeeded(selectedTaskDay)
   }
 
   render() {
@@ -77,7 +92,13 @@ const mapStateToProps = state => {
 }
 
 TodayTask = connect(
-  mapStateToProps
+  mapStateToProps,
+  {
+    selectTaskDay,
+    invalidateTaskDay,
+    fetchTaskDayIfNeeded,
+    fetchChat
+  }
 )(TodayTask)
 
 export default TodayTask

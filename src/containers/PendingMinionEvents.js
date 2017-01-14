@@ -1,19 +1,20 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import {fetchPendingProfiles} from '../actions'
+import {fetchPendingExams} from '../actions'
 
+import ExamsList from '../components/userReports/ExamsList'
 import UserReportsMenu from '../components/userReports/UserReportsMenu'
-import ProfilesList from '../components/userReports/ProfilesList'
 
-class UserReports extends Component {
+class PendingEvents extends Component {
   componentWillMount() {
-    const {fetchPendingProfiles} = this.props
+    const {fetchPendingExams} = this.props
 
-    fetchPendingProfiles()
+    fetchPendingExams()
   }
 
   render() {
-    const {list, isFetching = true} = this.props
+    const {exams, ladders, isFetching = true} = this.props
 
     return (
       <div className="layout layout--login">
@@ -39,34 +40,17 @@ class UserReports extends Component {
 
               <div className="entry__box">
                 {
-                  isFetching ? <div className="spinner"></div> : (
-                      <div className="chat-groups">
-                        <div className="chat-group">
-                          <div
-                            className="chat-group__header">
-                            <div className="chat-group__name">
-                              123
-                            </div>
-
-                            <div className="chat-group__unread">
-                              Непрочитанных
-
-                              <div className="chat-group__counter">
-                                80
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="chat-group__body">
-
-                          </div>
-                        </div>
+                  !isFetching ? (
+                      <div className="chats-groups">
+                        <ExamsList key="exams" title="Экзамены" list={exams} unread={0}/>
+                        <ExamsList key="ladders" title="Зачёты" list={ladders} unread={0}/>
                       </div>
-                    )
+                    ) : <div className="spinner"></div>
                 }
               </div>
             </div>
           </div>
+
         </div>
       </div>
     )
@@ -74,18 +58,22 @@ class UserReports extends Component {
 }
 
 const mapStateToProps = state => {
-  const {pendingProfiles} = state
+  const {isFetching, list = []} = state.pendingEvents
 
-  return pendingProfiles
+  return {
+    isFetching,
+    exams: list.filter(event => event.isExam),
+    ladders: list.filter(event => !event.isExam)
+  }
 }
 
 const mapDispatchToProps = {
-  fetchPendingProfiles
+  fetchPendingExams
 }
 
-UserReports = connect(
+PendingEvents = connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserReports);
+)(PendingEvents);
 
-export default UserReports
+export default PendingEvents
