@@ -71,7 +71,8 @@ class DayEditor extends Component {
                   editor={editor}
                   content={content}
                   onSubmit={data => {
-
+                  		console.log('data')
+											console.log(data)
                     this.refs.loadingModal.show()
 
                     if (data && data.tasks && data.tasks[0]) {
@@ -126,7 +127,8 @@ class DayEditor extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
-
+												console.log('json')
+												console.log(json)
                         this.refs.loadingModal.hide()
                         if (json.errorCode === 1) {
                           this.refs.successPromoModal.show()

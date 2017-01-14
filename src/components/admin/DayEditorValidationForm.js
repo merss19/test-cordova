@@ -227,7 +227,7 @@ class DayEditorValidationForm extends Component {
                     <Calendar onClick={() => {
 
                         reset()
-
+												console.log(field.intro[0].customName)
                         dispatch({ type: 'DAY_ID', id: calendar[index].id })
 												 change('customName', field.intro[0].customName)
                         const intro = calendar[index].intro.find(i => i.program === programShow)
@@ -316,13 +316,21 @@ class DayEditorValidationForm extends Component {
             <br/>
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">
-                <Field name='customName'  placeholder="Название дня" component={InputProfile} onClick = {()=>{
-                     dispatch(change('dayEditor', 'customName', 'sdfsdfsdf'))
-                }}/>
+                <Field name='customName'  placeholder="Название дня" component={InputProfile}/>
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
                 <Field name='customIcon' placeholder="Выберите иконку" component={InputProfile} />
               </div>
+
+	            <div className="1/2--desk 1/1--pocket grid__cell">
+		            <label htmlFor="isVideo">Ссылка на видео</label>
+
+		            <div>
+			            <Field name="isVideo" id="isVideo" component="input" type="checkbox"/>
+		            </div>
+
+	            </div>
+
             </div>
 
             {editor
