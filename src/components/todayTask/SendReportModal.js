@@ -145,10 +145,10 @@ class SendReportModal extends Component {
 					{condition}
 				</ul>
 
-				{/* <p className="text-center mb30">Прикрепите файл или вставьте ссылку с видео выполнения заданий</p>
+				<p className="text-center mb30">Прикрепите файл или вставьте ссылку с видео выполнения заданий</p>
 
 				 <Field name="video" placeholder="http://youtube.com" component={InputModal} />
-				 {error && <div className="text-center"><strong>{error}</strong></div>}*/}
+				 {error && <div className="text-center"><strong>{error}</strong></div>}
 
 				<hr/>
 
