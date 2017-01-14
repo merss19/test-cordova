@@ -74,7 +74,7 @@ class UserReports extends Component {
       approveExam,
       waitingExam,
       rejectExam,
-      video,
+      video = '',
       report,
       health,
     } = this.props
