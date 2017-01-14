@@ -37,10 +37,15 @@ export class Chat extends Component {
   waiting() {
     const {
       id,
+      onWaiting,
       waitingFromChat
     } = this.props
 
-    waitingFromChat(id)
+    const promise = waitingFromChat(id)
+
+    if (onWaiting) {
+      onWaiting(id, promise)
+    }
   }
 
   sendMessage(text) {
@@ -110,36 +115,36 @@ export class Chat extends Component {
 
     return (
       isOpen ? (
-        isWindow ? <ChatWindow
-          // Data
-          userId={userId}
-          comments={comments}
-          sendButtonText={isForwarding ? 'Переадресовать' : 'Ответить'}
-          placeholderText={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
-          // Flags
-          isFetching={isFetching || id === undefined}
-          isForwarding={isForwarding}
-          isMessageValid={isMessageValid}
-          showAdminPanel={true}
-          // Callbacks
-          onClose={() => this.closeChat()}
-          onWaiting={() => this.waiting()}
-          onForwarding={() => this.toggleForwarding()}
-          onMessageChanged={(e) => this.checkMessageLength(e)}
-          onMessageSend={(message) => this.sendMessage(message)}
-        /> : <ChatBlock
-            // Data
-            userId={userId}
-            comments={comments}
-            sendButtonText={'Отправить'}
-            placeholderText={'Текст сообщения'}
-            // Flags
-            isFetching={isFetching || id === undefined}
-            isMessageValid={isMessageValid}
-            // Callbacks
-            onMessageChanged={(e) => this.checkMessageLength(e)}
-            onMessageSend={(message) => this.sendMessage(message)}
-          />
+          isWindow ? <ChatWindow
+              // Data
+              userId={userId}
+              comments={comments}
+              sendButtonText={isForwarding ? 'Переадресовать' : 'Ответить'}
+              placeholderText={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
+              // Flags
+              isFetching={isFetching || id === undefined}
+              isForwarding={isForwarding}
+              isMessageValid={isMessageValid}
+              showAdminPanel={true}
+              // Callbacks
+              onClose={() => this.closeChat()}
+              onWaiting={() => this.waiting()}
+              onForwarding={() => this.toggleForwarding()}
+              onMessageChanged={(e) => this.checkMessageLength(e)}
+              onMessageSend={(message) => this.sendMessage(message)}
+            /> : <ChatBlock
+              // Data
+              userId={userId}
+              comments={comments}
+              sendButtonText={'Отправить'}
+              placeholderText={'Текст сообщения'}
+              // Flags
+              isFetching={isFetching || id === undefined}
+              isMessageValid={isMessageValid}
+              // Callbacks
+              onMessageChanged={(e) => this.checkMessageLength(e)}
+              onMessageSend={(message) => this.sendMessage(message)}
+            />
         ) : null
     )
   }
