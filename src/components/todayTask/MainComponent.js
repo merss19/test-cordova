@@ -105,7 +105,7 @@ class MainComponent extends Component {
 
     return Promise.all([
       createWithMessage(EXAM_CHAT_ID, taskDay.id, chatMessage),
-      fetch(`${api}/user/userTask-create`, {
+      fetch(taskDay.isVideo ? `${api}/user/userDay-create` : `${api}/user/userTask-create`, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
