@@ -81,7 +81,7 @@ class UserReports extends Component {
 
     const healthCondition = healthConditions[health] || healthConditions.middle
 
-    const matchYoutubeUrl = video.match(youtubePattern);
+    const matchYoutubeUrl = video ? video.match(youtubePattern) : '';
     const isVideoValid = matchYoutubeUrl && matchYoutubeUrl[2].length === 11
     const videoEmbedUrl = isVideoValid ? `https://www.youtube.com/embed/${matchYoutubeUrl[2]}?autoplay=0` : null
 
