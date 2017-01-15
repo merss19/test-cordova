@@ -9,7 +9,7 @@ import {
   waitingExam,
   approveExam,
   fetchPendingExam,
-  EXAM_CHAT_ID
+  PRIVATE_CHAT_ID
 } from '../actions'
 
 import Chat from './Chat'
@@ -34,7 +34,7 @@ class UserReports extends Component {
   componentWillMount() {
     const {fetchPendingExam, routeParams} = this.props
 
-    fetchChat(EXAM_CHAT_ID, routeParams.dayId)
+    fetchChat(PRIVATE_CHAT_ID)
     fetchPendingExam(routeParams.userId, routeParams.dayId)
   }
 

@@ -4,7 +4,7 @@ import {
   selectTaskDay,
   invalidateTaskDay,
   fetchTaskDayIfNeeded,
-  fetchChat, EXAM_CHAT_ID
+  fetchChat, PRIVATE_CHAT_ID
 } from '../actions'
 
 import MainComponent from '../components/todayTask/MainComponent'
@@ -23,16 +23,14 @@ class TodayTask extends Component {
   componentDidMount() {
     const { fetchTaskDayIfNeeded, selectedTaskDay, fetchChat } = this.props
 
+    fetchChat(PRIVATE_CHAT_ID)
     fetchTaskDayIfNeeded(selectedTaskDay)
-      .then(({json}) => {
-        fetchChat(EXAM_CHAT_ID, json.data[0].id)
-      })
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedTaskDay !== this.props.selectedTaskDay) {
       const { fetchTaskDayIfNeeded, selectedTaskDay, taskDay } = nextProps
-      fetchChat(EXAM_CHAT_ID, taskDay.data[0].id)
+      fetchChat(PRIVATE_CHAT_ID)
       fetchTaskDayIfNeeded(selectedTaskDay)
     }
   }

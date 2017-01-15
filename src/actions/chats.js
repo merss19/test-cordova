@@ -121,12 +121,13 @@ export const closeChat = () => (dispatch, getState) => {
   })
 }
 
-export const fetchChat = (type, typeId) => (dispatch, getState) => {
+export const fetchChat = (type, typeId = null) => (dispatch, getState) => {
   dispatch(requestChat())
 
   const {token} = getState().userToken
+  const data = typeId ? {type, typeId} : {type}
 
-  return commentGetInfo(token || cookie.load('token'), {type, typeId})
+  return commentGetInfo(token || cookie.load('token'), data)
     .then((chats) => dispatch(chats[0] ? receiveChat(chats[0]) : closeChat()))
 }
 
@@ -148,11 +149,12 @@ const chatMessageCreate = (authToken, data) => {
     .catch(console.error)
 }
 
-export const createWithMessage = (type, typeId, text) => (dispatch, getState) => {
+export const createWithMessage = (type, typeId = null, text) => (dispatch, getState) => {
   const {token} = getState().userToken
   const authToken = token || cookie.load('token')
+  const data = typeId ? {type, typeId, text} : {type, text}
 
-  return chatMessageCreate(authToken, {type, typeId, text})
+  return chatMessageCreate(authToken, data)
 }
 
 export const answerToChat = (group, text) => (dispatch, getState) => {
@@ -162,9 +164,11 @@ export const answerToChat = (group, text) => (dispatch, getState) => {
   return chatMessageCreate(authToken, {group, text})
 }
 
-export const addToChat = (type, typeId, text) => (dispatch, getState) => {
+export const addToChat = (type, typeId = null, text) => (dispatch, getState) => {
   const {token} = getState().userToken
   const authToken = token || cookie.load('token')
+
+  const data = typeId ? {type, typeId, text} : {type, text}
 
   return fetch(`${api}/user/chat-adduser`, {
     headers: {
@@ -173,7 +177,7 @@ export const addToChat = (type, typeId, text) => (dispatch, getState) => {
     },
     method: 'POST',
     body: JSON.stringify({
-      data: {type, typeId, text},
+      data,
       authToken,
     })
   })
