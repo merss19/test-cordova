@@ -116,7 +116,6 @@ class DayEditor extends Component {
                       'Content-Type': 'application/json'
                     }
 
-
                     const method = 'POST'
                     if ((content[0] && dayIntro[0]) || editor[0] && programShow) {
                       return fetch(url, {

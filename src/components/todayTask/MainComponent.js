@@ -118,7 +118,7 @@ class MainComponent extends Component {
           authToken: token ? token : cookie.load('token'),
           data: {
             ...data,
-            health: 'good',
+            health: data.health,
             day: taskDay.id,//day
             user: taskDay.user.id,//user
             status: 'waiting',
