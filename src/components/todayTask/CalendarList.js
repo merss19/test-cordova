@@ -4,7 +4,7 @@ import * as actions from '../../actions'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
+let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role, privateChatId }) => (
 
   <div className="1/3 grid__cell">
     <ul className="min-calendar">
@@ -30,6 +30,7 @@ let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
                 dispatch({ type: 'SELECT_DAY_ID', id: field.dayId })
                 dispatch({ type: 'SELECT_DAY_DATE', date: field.date })
                 dispatch(actions.fetchTaskDayIfNeeded(selectedTaskDay))
+                dispatch(actions.fetchChat(privateChatId))
               }
             }}
             key={index}

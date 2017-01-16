@@ -155,7 +155,7 @@ class MainComponent extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div id="menu" className="grid layout__menu-inner">
                 <Menu fullName={`${firstName} ${lastName}`}/>
-                <CalendarList calendar={calendar} dayId={id} role={role}/>
+                <CalendarList calendar={calendar} dayId={id} role={role} privateChatId={PRIVATE_CHAT_ID} />
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
