@@ -2,7 +2,11 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 
 const Calendar = ({ children, onClick, number, completeText, icon, status,
-  date, admin, isSelected, isTooSoon,customName }) => {
+  date, admin, isSelected, isTooSoon,customName,statusWaiting,currentDay,day }) => {
+  /*  console.log('statusWaitinff')
+	console.log(currentDay +':'+day)
+	console.log(statusWaiting)
+	console.log(currentDay === day && statusWaiting)*/
 
     let calendarIcon,
         calendarToolip,
@@ -20,7 +24,18 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
       )
     }
 
-    if (completeText && admin && status) {
+	if (currentDay === day && statusWaiting) {
+		calendarIcon = (
+			<div className="min-calendar__info sssssssssss">
+				<svg className={"svg-icon ico-waiting" }>
+					<use xlinkHref={"#ico-done"}/>
+				</svg>
+			</div>
+		)
+	}
+
+
+	if (completeText && admin && status) {
       calendarToolip = (
         <div className={"calendar-toolip calendar-toolip--" + status}>
           <div className="calendar-toolip__inner">

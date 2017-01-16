@@ -58,6 +58,17 @@ const scrollUpStyle = {
 const HEALTH_CONDITIONS = conditions.reduce((all, {filter, title}) => Object.assign(all, {[filter]: title}), {})
 
 class MainComponent extends Component {
+
+	constructor(props) {
+		super();
+		this.state = {
+			statusWaiting: false
+		};
+		console.log('MainComponent')
+		console.log(this.state.statusWaiting)
+	}
+
+
   componentWillMount() {
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
@@ -107,7 +118,7 @@ class MainComponent extends Component {
 
     return Promise.all([
       createWithMessage(EXAM_CHAT_ID, taskDay.id, chatMessage),
-      fetch(taskDay.isVideo ? `${api}/user/userDay-create` : `${api}/user/userTask-create`, {
+      fetch(`${api}/user/userDay-create` ,{
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -128,9 +139,15 @@ class MainComponent extends Component {
       })
         .then(response => response.json())
         .then(json => {
+          console.log('create-task')
+          console.log(json)
           this.refs.successModal.show()
           this.refs.sendReportModal.hide()
-          if (json.data) {
+          if (json.isSuccess) {
+	          this.setState({
+		          statusWaiting: true
+	          })
+
           } else {
             //throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
           }
@@ -154,7 +171,7 @@ class MainComponent extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div id="menu" className="grid layout__menu-inner">
                 <Menu fullName={`${firstName} ${lastName}`}/>
-                <CalendarList calendar={calendar} dayId={id} role={role}/>
+                <CalendarList calendar={calendar} dayId={id} role={role} statusWaiting={this.state.statusWaiting}/>
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">

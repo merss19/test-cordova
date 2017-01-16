@@ -4,7 +4,8 @@ import * as actions from '../../actions'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
+let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role,statusWaiting }) => (
+
 
   <div className="1/3 grid__cell">
     <ul className="min-calendar">
@@ -22,12 +23,15 @@ let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
         }
 
         const isTooSoon = moment(field.date).isAfter(moment().format('YYYY-MM-DD')) && role !== 2
-
+	      console.log('isTooSoongg')
+	      console.log(calendar)
+	      console.log(isTooSoon)
         return (
+
           <Calendar
             onClick={() => {
               if (!isTooSoon) {
-                dispatch({ type: 'SELECT_DAY_ID', id: field.dayId })
+                dispatch({ type: 'SELECT_DAY_ID', id: field.dayId, status:'wating'})
                 dispatch({ type: 'SELECT_DAY_DATE', date: field.date })
                 dispatch(actions.fetchTaskDayIfNeeded(selectedTaskDay))
               }
@@ -37,10 +41,13 @@ let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role }) => (
             isSelected={field.dayId === dayId}
             number={field.number}
             icon={icon}
+            day={field.dayId}
+            currentDay={dayId}
             customName = {field.customName}
             status={field.status}
             date={field.date}
             admin={field.admin}
+            statusWaiting={statusWaiting}
             completeText={field.completeText}>
               {field.day}
           </Calendar>
