@@ -138,6 +138,10 @@
   width: 46px; height: 46px;
   border-radius: $baseRadius;
   background-color: $c-secondary;
+  cursor: pointer;
+  .ico-arrow-up {
+    fill: #fff;
+  }
   @include av-mq(portable) {
    bottom: #{15px + $mobMenuHeight};
   }
