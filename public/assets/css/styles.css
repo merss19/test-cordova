@@ -3105,7 +3105,8 @@ code {
 .min-calendar__special-day {
   text-align: center;
   font-size: 1.1rem;
-  line-height: 1.2; }
+  line-height: 1.2;
+  margin: auto; }
 
 .min-calendar .ico-waiting {
   opacity: .5; }

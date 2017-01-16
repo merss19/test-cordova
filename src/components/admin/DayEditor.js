@@ -71,11 +71,10 @@ class DayEditor extends Component {
                   editor={editor}
                   content={content}
                   onSubmit={data => {
-                  		console.log('data')
-											console.log(!!data.isVideo)
                     this.refs.loadingModal.show()
 
                     if (data && data.tasks && data.tasks[0]) {
+                      data.programTasks = [{}]
                       data.programTasks[0].customName = data.customName ? data.customName : ''
 											data.programTasks[0].program = programShow
                       data.programTasks[0].intro = content[0] ? JSON.stringify(content[0]) : JSON.stringify(editor[0])
@@ -116,7 +115,6 @@ class DayEditor extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     }
-
 
                     const method = 'POST'
                     if ((content[0] && dayIntro[0]) || editor[0] && programShow) {

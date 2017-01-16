@@ -9,7 +9,7 @@ import {
   waitingExam,
   approveExam,
   fetchPendingExam,
-  EXAM_CHAT_ID
+  PRIVATE_CHAT_ID
 } from '../actions'
 
 import Chat from './Chat'
@@ -34,7 +34,7 @@ class UserReports extends Component {
   componentWillMount() {
     const {fetchPendingExam, routeParams} = this.props
 
-    fetchChat(EXAM_CHAT_ID, routeParams.dayId)
+    fetchChat(PRIVATE_CHAT_ID)
     fetchPendingExam(routeParams.userId, routeParams.dayId)
   }
 
@@ -81,7 +81,7 @@ class UserReports extends Component {
 
     const healthCondition = healthConditions[health] || healthConditions.middle
 
-    const matchYoutubeUrl = video.match(youtubePattern);
+    const matchYoutubeUrl = video ? video.match(youtubePattern) : '';
     const isVideoValid = matchYoutubeUrl && matchYoutubeUrl[2].length === 11
     const videoEmbedUrl = isVideoValid ? `https://www.youtube.com/embed/${matchYoutubeUrl[2]}?autoplay=0` : null
 

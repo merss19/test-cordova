@@ -203,12 +203,11 @@ const requireForTest = () => {
 
     const isRegistered = json && json.errorCode === 1 && json.data && json.data[0]
     if (!isRegistered) {
+      browserHistory.push('/')
+    } else {
       if (json.data[0].paidState === 2) {
         browserHistory.push('/signup/pay/success')
-      } else {
-        browserHistory.push('/')
       }
-    } else {
       cookie.save('userProgram', json.data[0].program, { path: '/' })
       cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
     }
