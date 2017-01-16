@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router'
 import { Link } from 'react-router'
 
 const Menu = ({fullName}) => (
-  <div className="2/3 grid__cell">
+  <div className="2/3 grid__cell layout__menu-nav">
     <ul className="main-nav">
       <li className="main-nav__item">
         <MenuButton onClick={() => {

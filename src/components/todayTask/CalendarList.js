@@ -6,7 +6,7 @@ import moment from 'moment'
 
 let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role, privateChatId }) => (
 
-  <div className="1/3 grid__cell">
+  <div className="1/3--desk grid__cell layout__calendar">
     <ul className="min-calendar">
       {calendar.map((field, index) => {
         let icon
