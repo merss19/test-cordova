@@ -49,32 +49,48 @@ import cookie from 'react-cookie'
 import { promoWatch } from './actions/promo/promoWatch'
 import resolveUrl from 'resolve-url'
 
+const leave = () => {
+  cookie.remove('token', { path: '/' })
+  cookie.remove('txId', { path: '/' })
+  cookie.remove('role', { path: '/' })
+  cookie.remove('program', { path: '/' })
+  cookie.remove('packageType', { path: '/' })
+  cookie.remove('promoName', { path: '/' })
+  cookie.remove('share', { path: '/' })
+  cookie.remove('general', { path: '/' })
+  browserHistory.push('/')
+}
+
 const getRole = role => {
   const token = cookie.load('token')
-  return fetch(`${api}/user/user-get`, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      authToken: token,
-      data: {}
+  if (token) {
+    return fetch(`${api}/user/user-get`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        authToken: token,
+        data: {}
+      })
     })
-  })
-  .then(response => response.json())
-  .then(json => {
-    const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
+    .then(response => response.json())
+    .then(json => {
+      const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
 
-    if (isRegistered) {
-      cookie.save('user_id', json.data[0].id, { path: '/' }) // id текущего пользователя необходим для чатов
+      if (isRegistered) {
+        cookie.save('user_id', json.data[0].id, { path: '/' }) // id текущего пользователя необходим для чатов
 
-      if (role === 3 && !json.data[0].paidPackage)
-        browserHistory.push('/signup/pay')
-    } else {
-      browserHistory.push(role === 2 ? '/userReports' : '/')
-    }
-  })
+        if (role === 3 && !json.data[0].paidPackage)
+          browserHistory.push('/signup/pay')
+      } else {
+        browserHistory.push(role === 2 ? '/userReports' : '/')
+      }
+    })
+  } else {
+    leave()
+  }
 }
 
 const requirePayAuth = fromPay => {
@@ -114,15 +130,7 @@ const requirePayAuth = fromPay => {
           browserHistory.push('/signup/pay/')
         }
       } else {
-        cookie.remove('token', { path: '/' })
-        cookie.remove('txId', { path: '/' })
-        cookie.remove('role', { path: '/' })
-        cookie.remove('program', { path: '/' })
-        cookie.remove('packageType', { path: '/' })
-        cookie.remove('promoName', { path: '/' })
-        cookie.remove('share', { path: '/' })
-        cookie.remove('general', { path: '/' })
-        browserHistory.push('/')
+        leave()
       }
     })
   } else if (fromPay) {
@@ -169,49 +177,45 @@ const requirePayNewSeasonAuth = fromPay => {
           browserHistory.push('/signup/pay/')
         }
       } else {
-        cookie.remove('token', { path: '/' })
-        cookie.remove('txId', { path: '/' })
-        cookie.remove('role', { path: '/' })
-        cookie.remove('program', { path: '/' })
-        cookie.remove('packageType', { path: '/' })
-        cookie.remove('promoName', { path: '/' })
-        cookie.remove('share', { path: '/' })
-        cookie.remove('general', { path: '/' })
-        browserHistory.push('/')
+        leave()
       }
     })
   } else if (fromPay) {
-    browserHistory.push('/')
+    leave()
   }
 }
 
 const requireForTest = () => {
   const token = cookie.load('token')
-  return fetch(`${api}/user/user-get`, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      authToken: token,
-      data: {}
+  if (token) {
+    return fetch(`${api}/user/user-get`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        authToken: token,
+        data: {}
+      })
     })
-  })
-  .then(response => response.json())
-  .then(json => {
+    .then(response => response.json())
+    .then(json => {
 
-    const isRegistered = json && json.errorCode === 1 && json.data && json.data[0]
-    if (!isRegistered) {
-      browserHistory.push('/')
-    } else {
-      if (json.data[0].paidState === 2) {
-        browserHistory.push('/signup/pay/success')
+      const isRegistered = json && json.errorCode === 1 && json.data && json.data[0]
+      if (!isRegistered) {
+        browserHistory.push('/')
+      } else {
+        if (json.data[0].paidState === 2) {
+          browserHistory.push('/signup/pay/success')
+        }
+        cookie.save('userProgram', json.data[0].program, { path: '/' })
+        cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
       }
-      cookie.save('userProgram', json.data[0].program, { path: '/' })
-      cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
-    }
-  })
+    })
+  } else {
+    leave()
+  }
 }
 
 const forceTrailingSlash = (nextState, replace) => {

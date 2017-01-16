@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 
 const Calendar = ({ children, onClick, number, completeText, icon, status,
-  date, admin, isSelected, isTooSoon,customName }) => {
+  date, admin, isSelected, isTooSoon,customName, id }) => {
 
     let calendarIcon,
         calendarToolip,
@@ -57,7 +57,7 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
 
 
     return (
-      <li className={calendarClass} onClick={onClick}>
+      <li id={id} className={calendarClass} onClick={onClick}>
         {content}
         {calendarIcon}
         {calendarToolip}
