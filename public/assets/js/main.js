@@ -95,7 +95,6 @@
   // -- Accordion
   document.addEventListener('click', function(e) {
     if (findMeorAncestor(e.target,'accordion__header')) {
-      console.log('item')
       var item = closest(e.target, 'accordion__item')
       if (!item.classList.contains('accordion__item--active')) {
         item.classList.add('accordion__item--active');
