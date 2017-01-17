@@ -6,6 +6,19 @@ import Header from '../../stories/Header'
 import Chat from '../../stories/chat/Chat'
 import TaskIntro from '../todayTask/TaskIntro'
 import cookie from 'react-cookie'
+import ScrollToTop from 'react-scroll-up'
+
+const scrollUpStyle = {
+  zIndex: 2000,
+  position: 'fixed',
+  fontSize: 16,
+  bottom: 60,
+  left: 30,
+  cursor: 'pointer',
+  transitionDuration: '0.2s',
+  transitionTimingFunction: 'linear',
+  transitionDelay: '0s'
+}
 
 class MainComponent extends Component {
   render() {
@@ -52,6 +65,14 @@ class MainComponent extends Component {
               {/* {food.chat && food.chat[0] &&
                 <Chat chat={food.chat} userId={1} />
               } */}
+
+              <ScrollToTop style={scrollUpStyle} showUnder={160}>
+                <div className="btn-go-back">
+                  <svg className="svg-icon ico-arrow-up">
+                    <use xlinkHref="#ico-arrow-up"></use>
+                  </svg>
+                </div>
+              </ScrollToTop>
 
             </div>
           </div>

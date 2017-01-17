@@ -6,6 +6,7 @@ import '../../../public/react-draft-wysiwyg.css'
 import * as actions from '../../actions'
 import { convertFromHTML, convertToRaw, convertFromRaw, ContentState, EditorState } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
+import RadioProfile from '../componentKit/RadioProfile'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
 import Calendar from './Calendar'
@@ -66,6 +67,12 @@ const renderTasks = ({ fields, meta: { error } }) => (
               <use xlinkHref="#ico-trash"></use>
             </svg>
           </span>
+        </div>
+        <br/>
+        <div className="gender">
+          <p className="gender__title">Пол</p>
+          <Field name={`${task}.gender`} value="male" type='radio' title="Мужчина" id={`genfer${index}[1]`} component={RadioProfile} />
+          <Field name={`${task}.gender`} value="female" type='radio' title="Женщина" id={`genfer${index}[2]`} component={RadioProfile} />
         </div>
         <br/>
         <Field name={`${task}.name`} placeholder="Название" component={InputProfile} />
