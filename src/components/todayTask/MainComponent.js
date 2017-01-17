@@ -115,7 +115,7 @@ class MainComponent extends Component {
 
     return Promise.all([
 
-      createWithMessage(PRIVATE_CHAT_ID, null, chatMessage),
+      createWithMessage(PRIVATE_CHAT_ID, null, chatMessage, true),
       fetch(`${api}/user/userDay-create` ,{
 
         headers: {
@@ -219,7 +219,15 @@ class MainComponent extends Component {
                 <Poll poll={poll} />
               }
 
-              <Chat userId={taskDay.user.id} isWindow={false} isOpen={false} />
+
+              <div>
+                <h2 className="h1">Чат</h2>
+                <Chat
+                  userId={taskDay.user.id}
+                  isWindow={false}
+                  showAdminPanel={false}
+                  isOpen={false} />
+              </div>
 
               <ScrollToTop style={scrollUpStyle} showUnder={160}>
                 <div className="btn-go-back">

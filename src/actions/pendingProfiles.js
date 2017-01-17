@@ -36,7 +36,7 @@ export const fetchPendingProfiles = (page = 1) => (dispatch, getState) => {
       data: {take: ITEMS_PER_PAGE, skip: ITEMS_PER_PAGE * (page - 1)}
     })
   })
-    .then(response => response.json())
+    .then(response => {console.log(response.json());return response.json()})
     .then(json => {
       const list = (json.data || [])
         .map(item => {

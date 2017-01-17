@@ -110,43 +110,61 @@ export class Chat extends Component {
       isOpen,
       userId,
       isWindow = true,
-      isFetching
+      isFetching,
+      showAdminPanel = true
     } = this.props
 
-    return (
-      isOpen ? (
-          isWindow ? <ChatWindow
-              // Data
-              userId={userId}
-              comments={comments}
-              sendButtonText={isForwarding ? 'Переадресовать' : 'Ответить'}
-              placeholderText={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
-              // Flags
-              isFetching={isFetching || id === undefined}
-              isForwarding={isForwarding}
-              isMessageValid={isMessageValid}
-              showAdminPanel={true}
-              // Callbacks
-              onClose={() => this.closeChat()}
-              onWaiting={() => this.waiting()}
-              onForwarding={() => this.toggleForwarding()}
-              onMessageChanged={(e) => this.checkMessageLength(e)}
-              onMessageSend={(message) => this.sendMessage(message)}
-            /> : <ChatBlock
-              // Data
-              userId={userId}
-              comments={comments}
-              sendButtonText={'Отправить'}
-              placeholderText={'Текст сообщения'}
-              // Flags
-              isFetching={isFetching || id === undefined}
-              isMessageValid={isMessageValid}
-              // Callbacks
-              onMessageChanged={(e) => this.checkMessageLength(e)}
-              onMessageSend={(message) => this.sendMessage(message)}
-            />
-        ) : null
-    )
+    const chat = <ChatBlock
+      // Data
+      userId={userId}
+      comments={comments}
+      sendButtonText={isForwarding ? 'Переадресовать' : 'Ответить'}
+      placeholderText={isForwarding ? 'Сообщение суперадмину' : 'Сообщение пользователю'}
+      // Flags
+      isFetching={isFetching || id === undefined}
+      isForwarding={isForwarding}
+      isMessageValid={isMessageValid}
+      // Callbacks
+      onMessageChanged={(e) => this.checkMessageLength(e)}
+      onMessageSend={(message) => this.sendMessage(message)}
+    />
+
+    return isOpen ? (
+        <div className={`chat
+                          ${isWindow ? 'chat_window' : ''}
+                          ${isFetching ? 'chat_fetching' : ''}
+                          ${isForwarding ? 'chat_forwarding' : ''}
+                        `}>
+          <svg
+            onClick={() => this.closeChat()}
+            className="minion-chat__close svg-icon ico-close">
+            <use xlinkHref="#ico-close"></use>
+          </svg>
+
+          {
+            !isFetching && showAdminPanel ? (
+                <div className="chat__admin-panel">
+                  {
+                    !isForwarding ? (
+                        <button
+                          onClick={() => this.waiting()}
+                          className="chat__admin-panel-button btn btn--secondary">
+                          Жду ответа
+                        </button>
+                      ) : null
+                  }
+                  <button
+                    onClick={() => this.toggleForwarding()}
+                    className="chat__admin-panel-button btn btn--action">
+                    {isForwarding ? 'Отмена' : 'Переадресовать'}
+                  </button>
+                </div>
+              ) : null
+          }
+
+          {chat}
+        </div>
+      ) : null
   }
 }
 

@@ -15,7 +15,7 @@ export default ({list = [], onChatSelect, selectedChat}) => {
               </div>
 
               <div className="chats-list__item-timestamp">
-                Ожидает ответа: {chat.timePassed}
+                {chat.hasMessages ? (chat.isAnswered ? 'Отвечено' : `Ожидает ответа: ${chat.timePassed}`) : 'Пустой'}
               </div>
             </div>
           ))
