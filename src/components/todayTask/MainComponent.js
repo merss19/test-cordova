@@ -61,13 +61,11 @@ class MainComponent extends Component {
 
 	constructor(props) {
 		super();
-		this.state = {
-			statusWaiting: false
-		};
-		console.log('MainComponent')
-		console.log(this.state.statusWaiting)
-	}
 
+		this.state = {
+			status: ''
+		};
+	}
 
   componentWillMount() {
     if (window.mobilecheck()) {
@@ -109,8 +107,6 @@ class MainComponent extends Component {
   // }
 
   createTask (data) {
-	  console.log('createTask')
-	  console.log(data)
     const { taskDay, token, createWithMessage, fetchChat } = this.props
     const chatMessage = `Отчёт для тренера:
                          Комментарий: "${data.report}";
@@ -147,10 +143,11 @@ class MainComponent extends Component {
           this.refs.successModal.show()
           this.refs.sendReportModal.hide()
           if (json.isSuccess) {
-	          this.setState({
-		          statusWaiting: true
-	          })
 
+	          this.setState({
+		          status:'waiting'
+	          })
+	          //changeTask()
           } else {
             //throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
           }
@@ -174,7 +171,7 @@ class MainComponent extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div id="menu" className="grid layout__menu-inner">
                 <Menu fullName={`${firstName} ${lastName}`}/>
-                <CalendarList calendar={calendar} dayId={id} role={role} statusWaiting={this.state.statusWaiting}/>
+                <CalendarList calendar={calendar} dayId={id} role={role} status={this.state.status}/>
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
@@ -414,7 +411,7 @@ const mapStateToProps = state => {
 
 MainComponent= connect(
   mapStateToProps,
-  { createWithMessage, fetchChat }
+  { createWithMessage, fetchChat}
 )(MainComponent)
 
 export default MainComponent

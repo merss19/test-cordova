@@ -19,8 +19,7 @@
   position: relative;
   margin-bottom: 20px;
 
-
-  &--box {
+	&--box {
     .input__field {
       border: 1px solid $c-border;
       border-radius: $baseRadius;
@@ -116,6 +115,8 @@
     color: transparent;
     text-indent: -9999px;
   }
+
+
 }
 
 .textarea {
@@ -272,6 +273,92 @@
   & + .input {
     margin-bottom: 20px;
   }
+}
+
+.datepicker-wrapper{
+	.DayPicker{
+		width: 100%;
+		padding: 0
+	}
+
+	.DayPicker-NavButton{
+		top: 15px;
+
+		&:after{
+			content: '';
+			display: block;
+			position: absolute;
+			top: -3px;
+			right: -5px;
+			width: 12px;
+			height: 12px;
+			border-right: 1px solid #fff;
+			border-bottom: 1px solid #fff;
+			transform: rotate(135deg);
+		}
+
+		&--next{
+			background-image: none;
+			position: relative;
+
+			&:after{
+				transform: rotate(-45deg);
+			}
+		}
+	}
+
+	.DayPicker-Month{
+		width: 280px;
+		margin: 0;
+	}
+
+	.DayPicker-Caption{
+		height: 47px;
+		background: $c-primary;
+		padding: 9px 0;
+		width: 100%;
+
+		select{
+			border: 1px solid #fff;
+			border-radius: 5px;
+			color: #222;
+			padding: 3px 6px;
+			margin: 0 3px;
+		}
+	}
+
+	.DayPicker-Weekdays{
+		margin: 0 8px;
+	}
+
+	.DayPicker-WeekdaysRow{
+		padding: 9px;
+		margin: 8px;
+	}
+
+	.DayPicker-Weekday{
+		padding: .9rem;
+
+		abbr[title]{
+			text-decoration: none;
+			color: #b7b4b4;
+		}
+	}
+
+	.DayPicker-Day{
+		padding: .9rem;
+		
+		&:hover{
+			background: #eee;
+		}
+	}
+
+	.DayPicker-Caption select{
+		border-radius: 3px;
+		outline: none;
+		cursor: pointer;
+
+	}
 }
 
 

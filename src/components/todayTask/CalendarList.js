@@ -4,28 +4,16 @@ import * as actions from '../../actions'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role,statusWaiting }) => (
+let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role,status }) => (
 
 
   <div className="1/3 grid__cell">
     <ul className="min-calendar">
       {calendar.map((field, index) => {
-        let icon
-        switch (field.status) {
-          case 'done':
-            icon = 'ico-done'
-            break
-          case 'missed':
-            icon = 'ico-cross'
-            break
-          default:
-            icon = ''
-        }
 
         const isTooSoon = moment(field.date).isAfter(moment().format('YYYY-MM-DD')) && role !== 2
-	      console.log('isTooSoongg')
-	      console.log(calendar)
-	      console.log(isTooSoon)
+
+
         return (
 
           <Calendar
@@ -40,14 +28,14 @@ let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role,statusWai
             isTooSoon={isTooSoon}
             isSelected={field.dayId === dayId}
             number={field.number}
-            icon={icon}
+            icon={field.icon}
             day={field.dayId}
             currentDay={dayId}
             customName = {field.customName}
+            dynamicStatus = {status}
             status={field.status}
             date={field.date}
             admin={field.admin}
-            statusWaiting={statusWaiting}
             completeText={field.completeText}>
               {field.day}
           </Calendar>

@@ -49,6 +49,7 @@ const taskDay = (state = {
         didInvalidate: false
       }
     case RECEIVE_TASKDAY:
+
       return {
         ...state,
         isFetching: false,
@@ -62,6 +63,7 @@ const taskDay = (state = {
 }
 
 export const recivedTaskDay = (state = {}, action) => {
+
   switch (action.type) {
     case INVALIDATE_TASKDAY:
     case RECEIVE_TASKDAY:
