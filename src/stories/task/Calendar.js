@@ -3,8 +3,11 @@ import moment from 'moment'
 
 const Calendar = ({ children, onClick, number, completeText, icon, status,
 
-  date, admin, isSelected, isTooSoon,customName,currentDay, day, dynamicStatus,id }) => {
-
+  date, admin, isSelected, isTooSoon,customName, dynamicStatus,id }) => {
+    console.log('Calendar')
+	console.log(dynamicStatus)
+	console.log(isSelected)
+	console.log(isSelected && dynamicStatus)
 
     let calendarIcon,
         calendarToolip,
@@ -22,9 +25,9 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
       )
     }
 
-	if (currentDay === day && dynamicStatus) {
+	if (isSelected && dynamicStatus.length) {
 		calendarIcon = (
-			<div className="min-calendar__info sssssssssss">
+			<div className="min-calendar__info">
 				<svg className={"svg-icon waiting" }>
 					<use xlinkHref={"#ico-done"}/>
 				</svg>

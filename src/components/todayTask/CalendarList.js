@@ -13,7 +13,7 @@ class CalendarList extends Component {
   }
 
   render() {
-    const { calendar, selectedTaskDay, dispatch, dayId, role, privateChatId } = this.props
+    const { calendar, selectedTaskDay, dispatch, dayId, role, privateChatId,status } = this.props
 
     return (
       <div className="1/3--desk grid__cell layout__calendar">
@@ -43,7 +43,6 @@ class CalendarList extends Component {
                 status={field.status}
                 date={field.date}
                 admin={field.admin}
-                currentDay={dayId}
                 dynamicStatus = {status}
                 status={field.status}
                 completeText={field.completeText}>

@@ -100,7 +100,7 @@ class InputDayPicker extends Component {
   handleInputFocus() {
 
     this.setState({
-      showOverlay: false,
+      showOverlay: true,
     });
   }
 

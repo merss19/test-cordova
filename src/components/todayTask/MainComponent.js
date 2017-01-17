@@ -147,7 +147,7 @@ class MainComponent extends Component {
 	          this.setState({
 		          status:'waiting'
 	          })
-	          //changeTask()
+
           } else {
             //throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
           }
