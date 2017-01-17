@@ -35,7 +35,7 @@ class Reports extends Component {
       <div className={isEmpty ? 'entry__inner' : 'layout'}>
         <Header/>
         {isEmpty
-          ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
+          ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено" taskBack={true}/>)
           : <div className="layout__inner">
               <div className="grid">
                 <div className="1/4--desk grid__cell layout__menu">
