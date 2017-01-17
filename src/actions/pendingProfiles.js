@@ -33,7 +33,7 @@ export const fetchPendingProfiles = () => (dispatch, getState) => {
       authToken: token ? token : cookie.load('token')
     })
   })
-    .then(response => response.json())
+    .then(response => {console.log(response.json());return response.json()})
     .then(json => {
       const list = (json.data || [])
         .map(item => {

@@ -76,7 +76,9 @@ class MinionChats extends Component {
                         <ChatGroup
                           title="Приватные чаты"
                           list={privateChats}
-                          unread={privateChats.reduce((sum, {unread}) => sum + unread, 0)}
+                          unread={privateChats.reduce((sum, {isAnswered, hasMessages}) => {
+                            return isAnswered || !hasMessages ? sum : sum + 1
+                          }, 0)}
                           selectedChat={chat.id}
                           onChatSelect={(type, id) => this.selectChat(type, id)}
                         />
@@ -84,7 +86,9 @@ class MinionChats extends Component {
                         <ChatGroup
                           title="Публичные чаты"
                           list={publicChats}
-                          unread={publicChats.reduce((sum, {unread}) => sum + unread, 0)}
+                          unread={publicChats.reduce((sum, {isAnswered, hasMessages}) => {
+                            return isAnswered || !hasMessages ? sum : sum + 1
+                          }, 0)}
                           selectedChat={chat.id}
                           onChatSelect={(type, typeId) => this.selectChat(type, typeId)}
                         />
@@ -112,7 +116,7 @@ const mapStateToProps = state => {
 
   return {
     chat,
-    userId: cookie.load('user_id'),
+    userId: Number(cookie.load('user_id')),
     publicChats,
     privateChats,
     isChatFetching,
