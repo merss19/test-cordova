@@ -233,19 +233,6 @@ class MainComponent extends Component {
         </div>
 
         <ul className="menu-mob-bottom">
-          {/* <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner" onClick={
-
-              () => browserHistory.push('/task')
-            }>
-              <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-tasks">
-                  <use xlinkHref="#ico-m-tasks"></use>
-                </svg>
-              </span>
-              <span className="menu-mob-bottom__title">Задания</span>
-            </a>
-          </li>
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/reports')
@@ -257,7 +244,7 @@ class MainComponent extends Component {
               </span>
               <span className="menu-mob-bottom__title">Зачетка</span>
             </a>
-          </li> */}
+          </li>
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/food')
