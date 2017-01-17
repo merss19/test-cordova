@@ -10,12 +10,14 @@ let contentStyle = {
   padding: '30px'
 }
 
+let failMessage = 'Пользователь с таким email, не найден'
+
 class ProfilePasswordForget extends Component {
   componentWillMount() {
     const fbScript = document.createElement("script")
     fbScript.text = "fbq('track', 'PageView');"
     document.body.appendChild(fbScript)
-    
+
     if (window.mobilecheck()) {
       contentStyle.width = '300px'
     }
@@ -153,7 +155,7 @@ class ProfilePasswordForget extends Component {
                 </Modal>
 
                 <Modal ref='failModal' contentStyle={contentStyle}>
-                  <h2>Пользователь с таким email, не найден</h2>
+                  <h2>{failMessage}</h2>
                 </Modal>
 
                 <div className="grid grid--middle">
@@ -169,11 +171,14 @@ class ProfilePasswordForget extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
+                        console.log('JSON HERE JSON!!!')
+                        console.log(json)
                         if (json.errorCode === 1 && json.data) {
-                          if (json.data.resultCode === 2) {
-                            this.refs.failModal.show()
+                          if (json.data.resultCode === 1) {
+                              this.refs.successModal.show()
                           } else {
-                            this.refs.successModal.show()
+                              failMessage = json.data.resultText
+                              this.refs.failModal.show()
                           }
                         } else {
                           throw new SubmissionError({

@@ -10,7 +10,7 @@ export const REQUEST_PENDING_EXAMS = 'REQUEST_PENDING_EXAMS'
 export const RECEIVE_PENDING_EXAMS = 'RECEIVE_PENDING_EXAMS'
 
 export const EXAM_STATUS_APPROVE = 'done'
-export const EXAM_STATUS_WAITING = 'waiting'
+export const EXAM_STATUS_WAITING = 'waitingadmin'
 export const EXAM_STATUS_REJECT = 'missed'
 
 export const requestPendingExams = () => ({

@@ -1132,7 +1132,7 @@ hr {
       .layout__inner {
         padding: 0 0 50px 0; } }
   @media screen and (max-width: 1024px) {
-    .layout__menu {
+    .layout__menu-nav {
       display: none; } }
   .layout__menu-inner.is-fixed {
     z-index: 10;
@@ -1585,7 +1585,10 @@ a.btn {
   width: 46px;
   height: 46px;
   border-radius: 5px;
-  background-color: #1F447B; }
+  background-color: #1F447B;
+  cursor: pointer; }
+  .btn-go-back .ico-arrow-up {
+    fill: #fff; }
   @media screen and (max-width: 1024px) {
     .btn-go-back {
       bottom: 65px; } }
@@ -2369,6 +2372,7 @@ a.btn {
   height: 17px; }
 
 .ico-arrow-up {
+  fill: #70768C;
   width: 14px;
   height: 19px; }
 
@@ -3072,6 +3076,15 @@ code {
     width: 90px;
     height: 30px; }
 
+@media screen and (max-width: 1024px) {
+  .min-calendar {
+    width: 100%;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 10px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; } }
+
 .min-calendar__item {
   z-index: 1;
   display: -ms-flexbox;
@@ -3082,12 +3095,20 @@ code {
   height: 48px;
   padding: 0 4px;
   cursor: pointer; }
-  .min-calendar__item:not(:last-child) {
-    border-bottom: 1px solid #E4E7F4; }
+  @media screen and (max-width: 1024px) {
+    .min-calendar__item {
+      width: 100%;
+      min-width: 80px;
+      height: 60px; }
+      .min-calendar__item:not(:last-child) {
+        border-right: 1px solid #E4E7F4; } }
+  @media screen and (min-width: 1025px) {
+    .min-calendar__item:not(:last-child) {
+      border-bottom: 1px solid #E4E7F4; }
+    .no-touchevents .min-calendar__item:hover .calendar-toolip {
+      display: block; } }
   .min-calendar__item:hover:not(.min-calendar__item--finish):not(.today) {
     background-color: #F3F6F8; }
-  .min-calendar__item:hover .calendar-toolip {
-    display: block; }
   .min-calendar__item.is-select {
     position: relative;
     z-index: 2;
@@ -3125,14 +3146,16 @@ code {
     .min-calendar__item.today .min-calendar__special-day {
       color: #fff; }
   .min-calendar__item--finish {
-    background-color: #1F447B;
-    border-radius: 0 0 5px 5px; }
+    background-color: #1F447B; }
     .min-calendar__item--finish .min-calendar__day, .min-calendar__item--finish .min-calendar__date {
       color: #fff; }
     .min-calendar__item--finish .finish-day-title {
       font-size: 1.1rem;
       line-height: 1.1;
       color: #fff; }
+    @media screen and (min-width: 1025px) {
+      .min-calendar__item--finish {
+        border-radius: 0 0 5px 5px; } }
 
 .min-calendar__date-wrap {
   width: 45%; }
@@ -3288,7 +3311,9 @@ code {
 
 .task-description .btn {
   margin-top: 30px;
-  min-width: 308px; }
+  min-width: 259px;
+  max-width: 308px;
+  width: 100%; }
 
 .tasks-results {
   margin-bottom: 30px; }

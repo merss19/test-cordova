@@ -1,6 +1,7 @@
 import cookie from 'react-cookie'
 import { api } from '../config.js'
 import moment from 'moment'
+import { browserHistory } from 'react-router'
 
 export const REQUEST_TASKDAY = 'REQUEST_TASKDAY'
 export const RECEIVE_TASKDAY = 'RECEIVE_TASKDAY'
@@ -36,24 +37,26 @@ export const receiveTaskDay = (taskDay, json) => {
 const fetchTaskDay = partialState => dispatch => {
   const { token, taskDay, profile, selectedDayDate, selectedDayId } = partialState
   dispatch(requestTaskDay(taskDay))
-  let payload = {
-    authToken: token ? token : cookie.load('token'),
-    data: {
-      program: cookie.load('userProgram') ? cookie.load('userProgram') : 1,
+  const authToken = token ? token : cookie.load('token')
+  if (authToken) {
+    let payload = {
+      authToken,
+      data: {
+        program: cookie.load('userProgram') ? cookie.load('userProgram') : 1,
+      }
     }
-  }
 
-  if (selectedDayId) {
-    payload.data.id = selectedDayId
-  } else {
-    payload.data.date = selectedDayDate ? selectedDayDate : moment().format('YYYY-MM-DD')
-  }
-
+    if (selectedDayId) {
+      payload.data.id = selectedDayId
+    } else {
+      payload.data.date = selectedDayDate ? selectedDayDate : moment().format('YYYY-MM-DD')
+    }
 
 
-  let data = new FormData()
-  data.append("json", JSON.stringify(payload))
-  return fetch(`${api}/data/userday-get-info`, {
+
+    let data = new FormData()
+    data.append("json", JSON.stringify(payload))
+    return fetch(`${api}/data/userday-get-info`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -63,6 +66,17 @@ const fetchTaskDay = partialState => dispatch => {
     })
     .then(response => response.json())
     .then(json => dispatch(receiveTaskDay(taskDay, json)))
+  } else {
+    cookie.remove('token', { path: '/' })
+    cookie.remove('txId', { path: '/' })
+    cookie.remove('role', { path: '/' })
+    cookie.remove('program', { path: '/' })
+    cookie.remove('packageType', { path: '/' })
+    cookie.remove('promoName', { path: '/' })
+    cookie.remove('share', { path: '/' })
+    cookie.remove('general', { path: '/' })
+    browserHistory.push('/')
+  }
 }
 
 const shouldFetchTaskDay = (state, taskDay) => {

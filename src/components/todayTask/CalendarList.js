@@ -1,49 +1,62 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes, Component } from 'react'
 import Calendar from '../../stories/task/Calendar'
 import * as actions from '../../actions'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-let CalendarList = ({ calendar, selectedTaskDay, dispatch, dayId, role,status }) => (
+
+class CalendarList extends Component {
+  componentDidMount() {
+    if (window.mobilecheck()) {
+      document.getElementById('calendar').scrollLeft = document.getElementById('today').getBoundingClientRect().left
+    }
+  }
+
+  render() {
+    const { calendar, selectedTaskDay, dispatch, dayId, role, privateChatId } = this.props
+
+    return (
+      <div className="1/3--desk grid__cell layout__calendar">
+        <ul id='calendar' className="min-calendar">
+          {calendar.map((field, index) => {
+
+            const isTooSoon = moment(field.date).isAfter(moment().format('YYYY-MM-DD')) && role !== 2
 
 
-  <div className="1/3 grid__cell">
-    <ul className="min-calendar">
-      {calendar.map((field, index) => {
+            return (
+              <Calendar
+                id={field.date === moment().format('YYYY-MM-DD') ? 'today' : 'day'}
+                onClick={() => {
+                  if (!isTooSoon) {
+                    dispatch({ type: 'SELECT_DAY_ID', id: field.dayId })
+                    dispatch({ type: 'SELECT_DAY_DATE', date: field.date })
+                    dispatch(actions.fetchTaskDayIfNeeded(selectedTaskDay))
+                    dispatch(actions.fetchChat(privateChatId))
+                  }
+                }}
+                key={index}
+                isTooSoon={isTooSoon}
+                isSelected={field.dayId === dayId}
+                number={field.number}
+                icon={field.icon}
+                customName = {field.customName}
+                status={field.status}
+                date={field.date}
+                admin={field.admin}
+                currentDay={dayId}
+                dynamicStatus = {status}
+                status={field.status}
+                completeText={field.completeText}>
+                  {field.day}
+              </Calendar>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  }
+}
 
-        const isTooSoon = moment(field.date).isAfter(moment().format('YYYY-MM-DD')) && role !== 2
-
-
-        return (
-
-          <Calendar
-            onClick={() => {
-              if (!isTooSoon) {
-                dispatch({ type: 'SELECT_DAY_ID', id: field.dayId, status:'wating'})
-                dispatch({ type: 'SELECT_DAY_DATE', date: field.date })
-                dispatch(actions.fetchTaskDayIfNeeded(selectedTaskDay))
-              }
-            }}
-            key={index}
-            isTooSoon={isTooSoon}
-            isSelected={field.dayId === dayId}
-            number={field.number}
-            icon={field.icon}
-            day={field.dayId}
-            currentDay={dayId}
-            customName = {field.customName}
-            dynamicStatus = {status}
-            status={field.status}
-            date={field.date}
-            admin={field.admin}
-            completeText={field.completeText}>
-              {field.day}
-          </Calendar>
-        )
-      })}
-    </ul>
-  </div>
-)
 
 const mapStateToProps = state => {
   const { selectedTaskDay } = state

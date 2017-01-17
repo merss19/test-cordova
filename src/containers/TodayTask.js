@@ -29,7 +29,7 @@ class TodayTask extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedTaskDay !== this.props.selectedTaskDay) {
-      const { fetchTaskDayIfNeeded, selectedTaskDay, taskDay } = nextProps
+      const { fetchTaskDayIfNeeded, selectedTaskDay, taskDay, fetchChat } = nextProps
       fetchChat(PRIVATE_CHAT_ID)
       fetchTaskDayIfNeeded(selectedTaskDay)
     }

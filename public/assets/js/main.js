@@ -11,7 +11,8 @@
       layout           = document.querySelector('.layout'),
       btnCloseMobMenu  = document.querySelector('.menu-mob-left__ico-close'),
       stickyWrap       = document.querySelector('.layout__menu'),
-      dateInput        = document.querySelectorAll('.input__field--date');
+      dateInput        = document.querySelectorAll('.input__field--date'),
+      isMobile         = Modernizr.mq('(max-width: 1024px)');
 
   // --  inject svg sprite
   SVGInjector(document.getElementById('svg-inject-me'));
@@ -34,6 +35,8 @@
     var stickEl = document.querySelector('.layout__menu-inner'),
         stickyElTop = stickEl.offsetTop;
 
+    console.log(isMobile)
+
     var sticky = function(){
       var scrollTop = window.scrollY;
       if (stickyElTop < scrollTop + 20) {
@@ -54,7 +57,7 @@
     window.addEventListener('resize', calcSideBarWidth, false);
   }
 
-  if (!(stickyWrap === null)) {stickyMenu();}
+  if (!(stickyWrap === null) && !isMobile) {stickyMenu();}
 
   // -- Float Labels
   document.addEventListener('keyup', function(e) {
