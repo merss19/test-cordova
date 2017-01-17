@@ -58,6 +58,15 @@ const scrollUpStyle = {
 const HEALTH_CONDITIONS = conditions.reduce((all, {filter, title}) => Object.assign(all, {[filter]: title}), {})
 
 class MainComponent extends Component {
+
+	constructor(props) {
+		super();
+
+		this.state = {
+			status: ''
+		};
+	}
+
   componentWillMount() {
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
@@ -98,8 +107,6 @@ class MainComponent extends Component {
   // }
 
   createTask (data) {
-	  console.log('createTask')
-	  console.log(data)
     const { taskDay, token, createWithMessage, fetchChat } = this.props
     const chatMessage = `Отчёт для тренера:
                          Комментарий: "${data.report}";
@@ -107,8 +114,10 @@ class MainComponent extends Component {
                          Оценка: ${HEALTH_CONDITIONS[data.health]}.`;
 
     return Promise.all([
+
       createWithMessage(PRIVATE_CHAT_ID, null, chatMessage, true),
-      fetch(taskDay.isVideo ? `${api}/user/userDay-create` : `${api}/user/userTask-create`, {
+      fetch(`${api}/user/userDay-create` ,{
+
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -129,9 +138,16 @@ class MainComponent extends Component {
       })
         .then(response => response.json())
         .then(json => {
+          console.log('create-task')
+          console.log(json)
           this.refs.successModal.show()
           this.refs.sendReportModal.hide()
-          if (json.data) {
+          if (json.isSuccess) {
+
+	          this.setState({
+		          status:'waiting'
+	          })
+
           } else {
             //throw new SubmissionError({ password: '', _error: 'Отчет заполнен не верно, попробуйте снова' })
           }
@@ -155,7 +171,12 @@ class MainComponent extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div id="menu" className="grid layout__menu-inner">
                 <Menu fullName={`${firstName} ${lastName}`}/>
-                <CalendarList calendar={calendar} dayId={id} role={role} privateChatId={PRIVATE_CHAT_ID} />
+                <CalendarList
+                    calendar={calendar}
+                    dayId={id} role={role}
+                    privateChatId={PRIVATE_CHAT_ID}
+                    status={this.state.status}/>
+
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">
@@ -220,19 +241,6 @@ class MainComponent extends Component {
         </div>
 
         <ul className="menu-mob-bottom">
-          {/* <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner" onClick={
-
-              () => browserHistory.push('/task')
-            }>
-              <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-tasks">
-                  <use xlinkHref="#ico-m-tasks"></use>
-                </svg>
-              </span>
-              <span className="menu-mob-bottom__title">Задания</span>
-            </a>
-          </li>
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/reports')
@@ -244,7 +252,7 @@ class MainComponent extends Component {
               </span>
               <span className="menu-mob-bottom__title">Зачетка</span>
             </a>
-          </li> */}
+          </li>
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/food')
@@ -403,7 +411,7 @@ const mapStateToProps = state => {
 
 MainComponent= connect(
   mapStateToProps,
-  { createWithMessage, fetchChat }
+  { createWithMessage, fetchChat}
 )(MainComponent)
 
 export default MainComponent

@@ -9,6 +9,8 @@ export const RECEIVE_PENDING_PROFILE = 'RECEIVE_PENDING_PROFILE'
 export const REQUEST_PENDING_PROFILES = 'REQUEST_PENDING_PROFILES'
 export const RECEIVE_PENDING_PROFILES = 'RECEIVE_PENDING_PROFILES'
 
+const ITEMS_PER_PAGE = 50
+
 export const requestPendingProfiles = () => ({
   type: REQUEST_PENDING_PROFILES
 })
@@ -18,7 +20,7 @@ export const receivePendingProfiles = payload => ({
   payload
 })
 
-export const fetchPendingProfiles = () => (dispatch, getState) => {
+export const fetchPendingProfiles = (page = 1) => (dispatch, getState) => {
   dispatch(requestPendingProfiles())
 
   const {token} = getState().userToken
@@ -30,7 +32,8 @@ export const fetchPendingProfiles = () => (dispatch, getState) => {
     },
     method: 'POST',
     body: JSON.stringify({
-      authToken: token ? token : cookie.load('token')
+      authToken: token ? token : cookie.load('token'),
+      data: {take: ITEMS_PER_PAGE, skip: ITEMS_PER_PAGE * (page - 1)}
     })
   })
     .then(response => {console.log(response.json());return response.json()})

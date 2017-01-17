@@ -4,6 +4,7 @@ import * as actions from '../../actions'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
+
 class CalendarList extends Component {
   componentDidMount() {
     if (window.mobilecheck()) {
@@ -12,25 +13,15 @@ class CalendarList extends Component {
   }
 
   render() {
-    const { calendar, selectedTaskDay, dispatch, dayId, role, privateChatId } = this.props
+    const { calendar, selectedTaskDay, dispatch, dayId, role, privateChatId,status } = this.props
 
     return (
       <div className="1/3--desk grid__cell layout__calendar">
         <ul id='calendar' className="min-calendar">
           {calendar.map((field, index) => {
-            let icon
-            switch (field.status) {
-              case 'done':
-                icon = 'ico-done'
-                break
-              case 'missed':
-                icon = 'ico-cross'
-                break
-              default:
-                icon = ''
-            }
 
             const isTooSoon = moment(field.date).isAfter(moment().format('YYYY-MM-DD')) && role !== 2
+
 
             return (
               <Calendar
@@ -47,11 +38,13 @@ class CalendarList extends Component {
                 isTooSoon={isTooSoon}
                 isSelected={field.dayId === dayId}
                 number={field.number}
-                icon={icon}
+                icon={field.icon}
                 customName = {field.customName}
                 status={field.status}
                 date={field.date}
                 admin={field.admin}
+                dynamicStatus = {status}
+                status={field.status}
                 completeText={field.completeText}>
                   {field.day}
               </Calendar>
@@ -62,6 +55,7 @@ class CalendarList extends Component {
     )
   }
 }
+
 
 const mapStateToProps = state => {
   const { selectedTaskDay } = state

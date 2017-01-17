@@ -2,7 +2,12 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 
 const Calendar = ({ children, onClick, number, completeText, icon, status,
-  date, admin, isSelected, isTooSoon,customName, id }) => {
+
+  date, admin, isSelected, isTooSoon,customName, dynamicStatus,id }) => {
+    console.log('Calendar')
+	console.log(dynamicStatus)
+	console.log(isSelected)
+	console.log(isSelected && dynamicStatus)
 
     let calendarIcon,
         calendarToolip,
@@ -10,21 +15,32 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
         special,
         calendarClass = "min-calendar__item"
 
-    if (icon) {
+    if (icon && !customName.length) {
       calendarIcon = (
         <div className="min-calendar__info">
-          <svg className={"svg-icon " + icon}>
+          <svg className={"svg-icon " + status}>
             <use xlinkHref={"#" + icon}/>
           </svg>
         </div>
       )
     }
 
-    if (completeText && admin && status) {
+	if (isSelected && dynamicStatus.length) {
+		calendarIcon = (
+			<div className="min-calendar__info">
+				<svg className={"svg-icon waiting" }>
+					<use xlinkHref={"#ico-done"}/>
+				</svg>
+			</div>
+		)
+	}
+
+
+	if (completeText && admin && status) {
       calendarToolip = (
         <div className={"calendar-toolip calendar-toolip--" + status}>
           <div className="calendar-toolip__inner">
-            <p className="calendar-toolip__title">{status}</p>
+            <p className="calendar-toolip__title">{completeText}</p>
             <p className="calendar-toolip__date"><span>{admin}</span></p>
           </div>
         </div>
@@ -38,6 +54,7 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
     }
 
     const style = isTooSoon ? { color: '#C8C9CF' } : {}
+
 
     content = (
         <span className="min-calendar__date-wrap">

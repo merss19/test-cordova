@@ -1356,6 +1356,68 @@ hr {
   .label + .input {
     margin-bottom: 20px; }
 
+.datepicker-wrapper .DayPicker {
+  width: 100%;
+  padding: 0; }
+
+.datepicker-wrapper .DayPicker-NavButton {
+  top: 15px; }
+  .datepicker-wrapper .DayPicker-NavButton:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -3px;
+    right: -5px;
+    width: 12px;
+    height: 12px;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    transform: rotate(135deg); }
+  .datepicker-wrapper .DayPicker-NavButton--next {
+    background-image: none;
+    position: relative; }
+    .datepicker-wrapper .DayPicker-NavButton--next:after {
+      transform: rotate(-45deg); }
+
+.datepicker-wrapper .DayPicker-Month {
+  width: 280px;
+  margin: 0; }
+
+.datepicker-wrapper .DayPicker-Caption {
+  height: 47px;
+  background: #70CFFE;
+  padding: 9px 0;
+  width: 100%; }
+  .datepicker-wrapper .DayPicker-Caption select {
+    border: 1px solid #fff;
+    border-radius: 5px;
+    color: #222;
+    padding: 3px 6px;
+    margin: 0 3px; }
+
+.datepicker-wrapper .DayPicker-Weekdays {
+  margin: 0 8px; }
+
+.datepicker-wrapper .DayPicker-WeekdaysRow {
+  padding: 9px;
+  margin: 8px; }
+
+.datepicker-wrapper .DayPicker-Weekday {
+  padding: .9rem; }
+  .datepicker-wrapper .DayPicker-Weekday abbr[title] {
+    text-decoration: none;
+    color: #b7b4b4; }
+
+.datepicker-wrapper .DayPicker-Day {
+  padding: .9rem; }
+  .datepicker-wrapper .DayPicker-Day:hover {
+    background: #eee; }
+
+.datepicker-wrapper .DayPicker-Caption select {
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer; }
+
 a.btn {
   text-decoration: none; }
 
@@ -2411,6 +2473,10 @@ code {
     margin-top: 15px; }
   .pending-profile__row-title {
     margin-bottom: 15px; }
+  .pending-profile__load-more {
+    width: 100%;
+    border-radius: 0;
+    margin-top: 15px; }
   .pending-profile__inner-popup {
     top: 0;
     left: 0;
@@ -3081,8 +3147,6 @@ code {
       box-shadow: 0 4px 18px rgba(31, 68, 123, 0.18); }
     .min-calendar__item.today .min-calendar__day, .min-calendar__item.today .min-calendar__date {
       color: #fff; }
-    .min-calendar__item.today .min-calendar__info {
-      display: none; }
     .min-calendar__item.today .min-calendar__special-day {
       color: #fff; }
   .min-calendar__item--finish {
@@ -3131,7 +3195,7 @@ code {
   line-height: 1.2;
   margin: auto; }
 
-.min-calendar .ico-waiting {
+.min-calendar .waiting {
   opacity: .5; }
 
 .calendar-toolip {

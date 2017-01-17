@@ -850,7 +850,7 @@ class Photos extends Component {
               <span className="menu-mob-bottom__title">Задания</span>
             </a>
           </li>
-          {/* <li className="menu-mob-bottom__item">
+          <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/reports')
             }>
@@ -873,7 +873,7 @@ class Photos extends Component {
               </span>
               <span className="menu-mob-bottom__title">Питание</span>
             </a>
-          </li> */}
+          </li>
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/faq')
@@ -896,18 +896,6 @@ class Photos extends Component {
                 </svg>
               </span>
               <span className="menu-mob-bottom__title">Профиль</span>
-            </a>
-          </li>
-          <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner" onClick={
-              () => browserHistory.push('/photos')
-            }>
-              <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-faq">
-                  <use xlinkHref="#ico-m-faq"></use>
-                </svg>
-              </span>
-              <span className="menu-mob-bottom__title">Фото</span>
             </a>
           </li>
         </ul>

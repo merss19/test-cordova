@@ -6,6 +6,19 @@ import Header from '../../stories/Header'
 import Chat from '../../stories/chat/Chat'
 import TaskIntro from '../todayTask/TaskIntro'
 import cookie from 'react-cookie'
+import ScrollToTop from 'react-scroll-up'
+
+const scrollUpStyle = {
+  zIndex: 2000,
+  position: 'fixed',
+  fontSize: 16,
+  bottom: 60,
+  left: 30,
+  cursor: 'pointer',
+  transitionDuration: '0.2s',
+  transitionTimingFunction: 'linear',
+  transitionDelay: '0s'
+}
 
 class MainComponent extends Component {
   render() {
@@ -53,6 +66,14 @@ class MainComponent extends Component {
                 <Chat chat={food.chat} userId={1} />
               } */}
 
+              <ScrollToTop style={scrollUpStyle} showUnder={160}>
+                <div className="btn-go-back">
+                  <svg className="svg-icon ico-arrow-up">
+                    <use xlinkHref="#ico-arrow-up"></use>
+                  </svg>
+                </div>
+              </ScrollToTop>
+
             </div>
           </div>
         </div>
@@ -70,7 +91,7 @@ class MainComponent extends Component {
               <span className="menu-mob-bottom__title">Задания</span>
             </a>
           </li>
-          {/* <li className="menu-mob-bottom__item">
+          <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/reports')
             }>
@@ -82,18 +103,6 @@ class MainComponent extends Component {
               <span className="menu-mob-bottom__title">Зачетка</span>
             </a>
           </li>
-          <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner" onClick={
-              () => browserHistory.push('/food')
-            }>
-              <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-food">
-                  <use xlinkHref="#ico-m-food"></use>
-                </svg>
-              </span>
-              <span className="menu-mob-bottom__title">Питание</span>
-            </a>
-          </li> */}
           <li className="menu-mob-bottom__item">
             <a href="#" className="menu-mob-bottom__item-inner" onClick={
               () => browserHistory.push('/faq')

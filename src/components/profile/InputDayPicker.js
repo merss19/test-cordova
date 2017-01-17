@@ -22,7 +22,10 @@ const overlayStyle = {
   position: 'absolute',
   background: 'white',
   boxShadow: '0 2px 5px rgba(0, 0, 0, .15)',
-  zIndex: 100
+  zIndex: 100,
+  width:'280px',
+  top: '-20px'
+
 };
 
 function YearMonthForm({ date, localeUtils, onChange }) {
@@ -85,7 +88,7 @@ class InputDayPicker extends Component {
   clickTimeout = null;
 
   handleContainerMouseDown() {
-    console.log('handleContainerMouseDown')
+
     this.clickedInside = true;
     // The input's onBlur method is called from a queue right after onMouseDown event.
     // setTimeout adds another callback in the queue, but is called later than onBlur event
@@ -95,14 +98,14 @@ class InputDayPicker extends Component {
   }
 
   handleInputFocus() {
-	  console.log('handleInputFocus')
+
     this.setState({
       showOverlay: true,
     });
   }
 
   handleInputBlur() {
-	  console.log(' handleInputBlur')
+
     const showOverlay = this.clickedInside;
 
     this.setState({
@@ -116,7 +119,7 @@ class InputDayPicker extends Component {
   }
 
   handleInputChange(e) {
-	  console.log('  handleInputChange')
+
     const { value } = e.target;
     const momentDay = moment(value, 'L', true);
     if (momentDay.isValid()) {
@@ -131,9 +134,19 @@ class InputDayPicker extends Component {
     }
   }
 
+	reverseData(data){
+
+		if(data.indexOf('-') === 4){
+			data.split('-')
+		}
+		const newData = data.split('-').reverse().join('-')
+		return newData
+	}
+
   render() {
     const { input, name, placeholder, meta: { touched, error }, birthday, babyBirthday, babyFeed } = this.props
     let value
+
 
     switch (name) {
       case 'birthday':
@@ -149,8 +162,11 @@ class InputDayPicker extends Component {
         value = birthday
     }
 
+	  value = this.reverseData(value)
+
+
     return (
-      <div onMouseDown={ this.handleContainerMouseDown }>
+      <div onMouseDown={ this.handleContainerMouseDown } className="datepicker-wrapper">
         <div className="input input--box input--datepicker">
           <input
             {...input}
@@ -187,20 +203,20 @@ class InputDayPicker extends Component {
                     this.input.blur();
                     switch (name) {
                       case 'birthday':
-                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD-MM-YYYY') })
+                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('YYYY-MM-DD') })
                         break
                       case 'babyBirthday':
-                        this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(day).format('DD-MM-YYYY') })
+                        this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(day).format('YYYY-MM-DD') })
                         break
                       case 'lastBabyFeedMonth':
-                        this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(day).format('DD-MM-YYYY') })
+                        this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(day).format('YYYY-MM-DD') })
                         break
                       default:
-                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('DD-MM-YYYY') })
+                        this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(day).format('YYYY-MM-DD') })
                     }
                   }}
                   selectedDays={ day => {
-                   console.log(day)
+
                   DateUtils.isSameDay(this.state.selectedDay, day)
                   } }
                   initialMonth={ this.state.initialMonth }
