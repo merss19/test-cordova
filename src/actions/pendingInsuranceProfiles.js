@@ -9,6 +9,8 @@ export const RECEIVE_PENDING_INSURANCE_PROFILE = 'RECEIVE_PENDING_INSURANCE_PROF
 export const REQUEST_PENDING_INSURANCE_PROFILES = 'REQUEST_PENDING_INSURANCE_PROFILES'
 export const RECEIVE_PENDING_INSURANCE_PROFILES = 'RECEIVE_PENDING_INSURANCE_PROFILES'
 
+const ITEMS_PER_PAGE = 50
+
 export const requestPendingInsuranceProfiles = () => ({
   type: REQUEST_PENDING_INSURANCE_PROFILES
 })
@@ -18,7 +20,7 @@ export const receivePendingInsuranceProfiles = payload => ({
   payload
 })
 
-export const fetchPendingInsuranceProfiles = () => (dispatch, getState) => {
+export const fetchPendingInsuranceProfiles = (page = 1) => (dispatch, getState) => {
   dispatch(requestPendingInsuranceProfiles())
 
   const {token} = getState().userToken
@@ -30,7 +32,8 @@ export const fetchPendingInsuranceProfiles = () => (dispatch, getState) => {
     },
     method: 'POST',
     body: JSON.stringify({
-      authToken: token ? token : cookie.load('token')
+      authToken: token ? token : cookie.load('token'),
+      data: {take: ITEMS_PER_PAGE, skip: ITEMS_PER_PAGE * (page - 1)}
     })
   })
     .then(response => response.json())
