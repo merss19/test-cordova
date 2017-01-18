@@ -32,6 +32,7 @@ class TaskItem extends Component {
 	}
 
 	changeHandler() {
+		console.log('changeHandler')
 		this.setState({isDone: !this.state.isDone}, ()=>this.save())
 
 	}

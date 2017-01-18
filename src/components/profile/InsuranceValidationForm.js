@@ -9,6 +9,7 @@ import InputDayPicker from './InputDayPicker'
 import cookie from 'react-cookie'
 import Modal from 'boron/FadeModal'
 import { api } from '../../config.js'
+import MobileDayPicker from './MobileDayPicker'
 
 let contentStyle = {
   borderRadius: '18px',
@@ -57,7 +58,7 @@ class InsuranceValidationForm extends Component {
               <input ref="birthday" name="birthday" value={birthday} placeholder="д/М/гггг" type='text' className="input__field input__field--date"/>
             </div> */}
             {window.mobilecheck()
-              ? <Field name="birthday" placeholder="дд-мм-гггг" component={InputDateMask} />
+              ? <Field name="birthday" placeholder="дд-мм-гггг" component={MobileDayPicker} />
               : <Field name="birthday" placeholder="дд-мм-гггг" component={InputDayPicker} />
             }
             {/* <Field ref="birthday" name="birthday" placeholder="д/М/гггг" component={InputProfileBirthday} /> */}

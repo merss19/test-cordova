@@ -23,6 +23,7 @@ import { api } from '../../config.js'
 import InputDayPicker from './InputDayPicker'
 import InputElement from 'react-input-mask'
 import { OKSDK } from './oksdk.js'
+import MobileDayPicker from './MobileDayPicker'
 
 let injuriesLocal = []
 let diseases = []
@@ -42,6 +43,10 @@ const overlayStyle = {
 const FB = window.FB
 const VK = window.VK
 const OK = window.OKSDK
+
+
+
+
 
 class SubmitValidationForm extends Component {
   updatePhoto(photoPayload) {
@@ -315,7 +320,7 @@ class SubmitValidationForm extends Component {
 
                 {/* <DatePicker selected={date} onChange={handleDateChange} /> */}
                 {window.mobilecheck()
-                  ? <Field name="birthday" placeholder="дд-ММ-гггг" component={InputDateMask} />
+                  ? <Field name="birthday" placeholder="дд-ММ-гггг" component={MobileDayPicker} />
                   : <Field name="birthday" placeholder="дд-ММ-гггг" component={InputDayPicker} />
                 }
               </div>
@@ -560,7 +565,7 @@ class SubmitValidationForm extends Component {
                   <div className="1/2--desk 1/1-pocket grid__cell">
                     <p className="base-parag">Дата рождения последнего ребёнка (дд-ММ-гггг)</p>
                     {window.mobilecheck()
-                      ? <Field name="babyBirthday" placeholder="дд-ММ-гггг" component={InputDateMask} />
+                      ? <Field name="babyBirthday" placeholder="дд-ММ-гггг" component={MobileDayPicker} />
                       : <Field name="babyBirthday" placeholder="дд-ММ-гггг" component={InputDayPicker} />
                     }
                   </div>
@@ -568,7 +573,7 @@ class SubmitValidationForm extends Component {
                     <div className="1/2--desk 1/1-pocket grid__cell">
                       <p className="base-parag">Месяц когда перестали кормить грудью (дд-ММ-гггг)</p>
                       {window.mobilecheck()
-                        ? <Field name="lastBabyFeedMonth" placeholder="дд-ММ-гггг" component={InputDateMask} />
+                        ? <Field name="lastBabyFeedMonth" placeholder="дд-ММ-гггг" component={MobileDayPicker} />
                         : <Field name="lastBabyFeedMonth" placeholder="дд-ММ-гггг" component={InputDayPicker} />
                       }
                     </div>
