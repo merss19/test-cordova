@@ -65,7 +65,7 @@ class UserReports extends Component {
 
     Promise
       .all([
-        createWithMessage(INSURANCE_CHAT_ID, routeParams.insuranceId, this.refs.rejectReason.value),
+        createWithMessage(INSURANCE_CHAT_ID, routeParams.insuranceId, this.refs.rejectReason.value, true),
         rejectInsuranceProfile(routeParams.insuranceId)
       ])
       .then(() => {

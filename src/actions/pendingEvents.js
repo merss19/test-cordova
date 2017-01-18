@@ -4,6 +4,8 @@ import moment from 'moment'
 
 moment.locale('ru')
 
+const ITEMS_PER_PAGE = 50
+
 export const REQUEST_PENDING_EXAM = 'REQUEST_PENDING_EXAM'
 export const RECEIVE_PENDING_EXAM = 'RECEIVE_PENDING_EXAM'
 export const REQUEST_PENDING_EXAMS = 'REQUEST_PENDING_EXAMS'
@@ -17,15 +19,18 @@ export const requestPendingExams = () => ({
   type: REQUEST_PENDING_EXAMS
 })
 
-export const receivePendingExams = payload => ({
+export const receivePendingExams = (payload, pageCount) => ({
   type: RECEIVE_PENDING_EXAMS,
-  payload
+  payload,
+  pageCount
 })
 
-export const fetchPendingExams = () => (dispatch, getState) => {
+export const fetchPendingExams = (status, page = 1, isExam) => (dispatch, getState) => {
   dispatch(requestPendingExams())
 
   const {token} = getState().userToken
+
+  console.log(isExam)
 
   return fetch(`${api}/user/userDayAdmin-get`, {
     headers: {
@@ -34,7 +39,13 @@ export const fetchPendingExams = () => (dispatch, getState) => {
     },
     method: 'POST',
     body: JSON.stringify({
-      authToken: token ? token : cookie.load('token')
+      authToken: token ? token : cookie.load('token'),
+      data: {
+        status: status ? status : 'waiting',
+        take: ITEMS_PER_PAGE,
+        skip: ITEMS_PER_PAGE * (page - 1),
+        isExam: isExam ? true : false
+      }
     })
   })
     .then(response => response.json())
@@ -52,7 +63,12 @@ export const fetchPendingExams = () => (dispatch, getState) => {
         })
         .sort((a, b) => a.updateTs > b.updateTs)
 
-      dispatch(receivePendingExams(list))
+      console.log('??????')
+      console.log(json)
+      const listLength = json.data.length
+      const pageCount = listLength > 0 ? Math.ceil(json.itemsCounter / ITEMS_PER_PAGE) : 0
+      console.log(pageCount)
+      dispatch(receivePendingExams(list, pageCount))
     })
     .catch(console.error)
 

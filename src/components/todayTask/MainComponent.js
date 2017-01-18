@@ -115,7 +115,7 @@ class MainComponent extends Component {
 
     return Promise.all([
 
-      createWithMessage(PRIVATE_CHAT_ID, null, chatMessage),
+      createWithMessage(PRIVATE_CHAT_ID, null, chatMessage, true),
       fetch(`${api}/user/userDay-create` ,{
 
         headers: {

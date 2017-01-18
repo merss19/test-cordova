@@ -149,10 +149,17 @@ const chatMessageCreate = (authToken, data) => {
     .catch(console.error)
 }
 
-export const createWithMessage = (type, typeId = null, text) => (dispatch, getState) => {
+export const createWithMessage = (type, typeId = null, text, isSystem) => (dispatch, getState) => {
   const {token} = getState().userToken
   const authToken = token || cookie.load('token')
-  const data = typeId ? {type, typeId, text} : {type, text}
+  const data = typeId
+    ? {
+      type,
+      typeId,
+      text,
+      isSystem: isSystem ? true : false
+    }
+    : { type, text }
 
   return chatMessageCreate(authToken, data)
 }

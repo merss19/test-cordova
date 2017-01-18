@@ -127,7 +127,7 @@ const requirePayAuth = fromPay => {
         } else if (json.data[0].paidPackage && json.data[0].program + '' === '4' && json.data[0].program + '' === '8') {
           browserHistory.push('/signup/pay/success/friend')
         } else {
-          browserHistory.push('/signup/pay/')
+          browserHistory.push('/signup/pay')
         }
       } else {
         leave()
@@ -174,7 +174,7 @@ const requirePayNewSeasonAuth = fromPay => {
         } else if (json.data[0].paidPackage && json.data[0].program + '' === '4' && json.data[0].program + '' === '8') {
           browserHistory.push('/signup/pay/success/friend')
         } else {
-          browserHistory.push('/signup/pay/')
+          browserHistory.push('/signup/pay')
         }
       } else {
         leave()
