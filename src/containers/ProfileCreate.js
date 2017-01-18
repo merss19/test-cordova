@@ -93,12 +93,14 @@ class ProfileCreate extends Component {
                   ? insurance.insuranceFile : []
               }}
               onSubmit={ data => {
+
                 let isValidBirthday = true
                 let isValidBabyBirhday = true
                 let isValidBabyFeed = true
 
                 if (!window.mobilecheck()) {
                   console.log('MOBILE')
+                  console.log(data)
                   data.birthday = birthday
 
                   if (babyBirthday)
@@ -113,6 +115,15 @@ class ProfileCreate extends Component {
                   console.log(data.birthday)
                   console.log(moment(data.birthday, 'YYYY-MM-DD', true).isValid())
                   isValidBirthday = moment(data.birthday, 'YYYY-MM-DD', true).isValid()
+
+                  data.birthday = birthday
+
+                  if (babyBirthday)
+                    data.babyBirthday = babyBirthday
+
+                  if (babyFeed)
+                    data.lastBabyFeedMonth = babyFeed
+
                   if (data.program === 2) {
                     console.log(data.babyBirthday)
                     console.log(data.lastBabyFeedMonth)
@@ -145,6 +156,8 @@ class ProfileCreate extends Component {
                   })
                   .then(response => response.json())
                   .then(user => {
+                    console.log('userrrrrrrrrrrrrrrrrrrrrrr')
+              console.log(user)
                     this.refs.loadingModal.hide()
                     if (!user.data) {
                       throw new SubmissionError({ _error: 'Что-то пошло не так, попробуйте снова.' })
@@ -209,6 +222,9 @@ class ProfileCreate extends Component {
 }
 
 const mapStateToProps = state => {
+	console.log('profilecreate')
+	console.log(state)
+
   const { selectedProfile, recivedProfile, userToken, birthday, isBabyFeeding,
     babyBirthday, babyFeed, isReadyToTasks, injuries, sportsPast } = state
   const {

@@ -17,6 +17,8 @@ export const RECEIVE_CHAT = 'RECEIVE_CHAT'
 export const REQUEST_CHATS = 'REQUEST_CHATS'
 export const RECEIVE_CHATS = 'RECEIVE_CHATS'
 
+let updateInstance
+
 // CHAT LIST ACTIONS
 
 const commentGetInfo = (authToken, data) => {
@@ -45,7 +47,7 @@ export const receiveChats = payload => ({
   payload
 })
 
-const getChatTitle = ({name, isPublic, userStarter}) => {
+const getChatTitle = ({id, name, isPublic, userStarter}) => {
   let title
 
   if (isPublic) {
@@ -53,7 +55,7 @@ const getChatTitle = ({name, isPublic, userStarter}) => {
   } else {
     const {firstName, lastName, programName} = userStarter
 
-    title = `${firstName} ${lastName}`
+    title = `[${id}] ${firstName} ${lastName}`
 
     if (programName) {
       title += ` / ${programName}`
@@ -72,27 +74,36 @@ export const fetchChats = (...types) => () => (dispatch, getState) => {
 
   const {userToken} = getState()
   const token = userToken.token || cookie.load('token')
+  const userId = Number(cookie.load('user_id'))
 
   return Promise
     .all(types.map(type => commentGetInfo(token, {type})))
     .then((chatsArray) => {
-      const flatChats = Array.prototype.concat.apply([], chatsArray)
+      let flatChats = Array.prototype.concat.apply([], chatsArray)
         .map(({userStarter, ...chat}) => ({...chat, userStarter: userStarter || {}})) // Баг с null в userStarter
         .map(chat => {
           const title = getChatTitle(chat)
           const unread = chat.comments.length // TODO: Убрать когда придумаем способ чекать прочитанные
           const lastComment = chat.comments[unread - 1]
-          const lastCommentDate = moment(lastComment.date)
+          const hasMessages = Boolean(lastComment)
+          const isAnswered = lastComment ? lastComment.user.id === userId : false
+          const lastCommentDate = hasMessages ? moment(lastComment.date) : null
 
           return {
             ...chat,
             title,
             unread,
-            updateTs: lastCommentDate.valueOf(),
-            timePassed: lastComment ? lastCommentDate.fromNow(true) : '-'
+            isAnswered,
+            hasMessages,
+            updateTs: isAnswered ? 0 : (hasMessages ? (moment().valueOf() - lastCommentDate.valueOf()) : -1),
+            timePassed: hasMessages ? lastCommentDate.fromNow(true) : '-'
           }
         })
-        .sort((a, b) => a.updateTs > b.updateTs)
+
+      flatChats.sort((a, b) => {
+        console.log(a, b);
+        return b.updateTs - a.updateTs
+      })
 
       dispatch(receiveChats(flatChats))
     })
@@ -116,19 +127,38 @@ export const receiveChat = payload => ({
 })
 
 export const closeChat = () => (dispatch, getState) => {
+  clearTimeout(updateInstance)
+
   dispatch({
     type: CLOSE_CHAT
   })
 }
 
-export const fetchChat = (type, typeId = null) => (dispatch, getState) => {
-  dispatch(requestChat())
+export const fetchChat = (type, typeId = null, silent = false) => (dispatch, getState) => {
+  if (!silent) {
+    dispatch(requestChat())
+  }
 
   const {token} = getState().userToken
   const data = typeId ? {type, typeId} : {type}
 
   return commentGetInfo(token || cookie.load('token'), data)
-    .then((chats) => dispatch(chats[0] ? receiveChat(chats[0]) : closeChat()))
+    .then((chats) => {
+      if (chats[0]) {
+        if (!silent) {
+          clearTimeout(updateInstance)
+        }
+
+        if (!silent || !getState().chat.comments || getState().chat.comments.length !== data.comments.length) {
+          dispatch(receiveChat(chats[0]))
+        }
+
+        updateInstance = setTimeout(() => fetchChat(type, typeId, true)(dispatch, getState), 5000)
+      } else {
+        dispatch(closeChat())
+      }
+
+    })
 }
 
 // CHAT METHODS
@@ -149,17 +179,10 @@ const chatMessageCreate = (authToken, data) => {
     .catch(console.error)
 }
 
-export const createWithMessage = (type, typeId = null, text, isSystem) => (dispatch, getState) => {
+export const createWithMessage = (type, typeId = null, text, isSystem = false) => (dispatch, getState) => {
   const {token} = getState().userToken
   const authToken = token || cookie.load('token')
-  const data = typeId
-    ? {
-      type,
-      typeId,
-      text,
-      isSystem: isSystem ? true : false
-    }
-    : { type, text }
+  const data = typeId ? {type, typeId, text, isSystem} : {type, text, isSystem}
 
   return chatMessageCreate(authToken, data)
 }

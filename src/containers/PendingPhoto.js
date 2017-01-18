@@ -36,7 +36,7 @@ class UserReports extends Component {
     fetchPendingPhoto(Number(routeParams.userId), Number(routeParams.programId))
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const {closeChat} = this.props
 
     closeChat()
@@ -50,14 +50,14 @@ class UserReports extends Component {
     this.setState({isRejectPopupVisible: false})
   }
 
-  approvePhoto () {
+  approvePhoto() {
     const {router, approvePhoto, user, program} = this.props
 
     approvePhoto(user, program)
       .then(() => router.push('/userReports/photos'))
   }
 
-  rejectPhoto () {
+  rejectPhoto() {
     const {
       user,
       program,
@@ -82,6 +82,7 @@ class UserReports extends Component {
     const {isRejectPopupVisible} = this.state
     const {
       userId,
+      hasChat,
       isFetching,
       photoAfterBackUrl,
       photoAfterFrontUrl,
@@ -95,8 +96,6 @@ class UserReports extends Component {
 
     return (
       <div className="layout layout--login">
-        <Chat userId={userId}/>
-
         <div className="header">
           <div className="grid header__inner">
             <h1 className="grid__cell header__logo">
@@ -119,85 +118,87 @@ class UserReports extends Component {
               <div className="entry__box">
                 {
                   isFetching ? <div className="spinner"></div> : (
-                    <div className="pending-profile">
-                      <div className="pending-profile__top-panel">
-                        <div className="pending-profile__buttons">
-                          <button
-                            onClick={() => this.approvePhoto()}
-                            className="pending-profile__button btn btn--primary">
-                            Утвердить фотографии
-                          </button>
-                          <button
-                            onClick={() => this.showRejectPopup()}
-                            className="pending-profile__button btn btn--action">
-                            Вернуть на исправление
-                          </button>
+                      <div className="pending-profile">
+                        <div className="pending-profile__top-panel">
+                          <div className="pending-profile__buttons">
+                            <button
+                              onClick={() => this.approvePhoto()}
+                              className="pending-profile__button btn btn--primary">
+                              Утвердить фотографии
+                            </button>
+                            <button
+                              onClick={() => this.showRejectPopup()}
+                              className="pending-profile__button btn btn--action">
+                              Вернуть на исправление
+                            </button>
+                          </div>
+
+                          <Link
+                            to="/userReports/photos"
+                            className="pending-profile__close-button">
+                            <svg className="svg-icon ico-close">
+                              <use xlinkHref="#ico-close"></use>
+                            </svg>
+                          </Link>
                         </div>
 
-                        <Link
-                          to="/userReports/photos"
-                          className="pending-profile__close-button">
-                          <svg className="svg-icon ico-close">
-                            <use xlinkHref="#ico-close"></use>
-                          </svg>
-                        </Link>
-                      </div>
+                        <div className="pending-profile__container">
+                          <ProfilePhotos
+                            title="До"
+                            front={photoBeforeFrontUrl}
+                            back={photoBeforeBackUrl}
+                            left={photoBeforeLeftUrl}
+                            right={photoBeforeRightUrl}/>
 
-                      <div className="pending-profile__container">
-                        <ProfilePhotos
-                          title="До"
-                          front={photoBeforeFrontUrl}
-                          back={photoBeforeBackUrl}
-                          left={photoBeforeLeftUrl}
-                          right={photoBeforeRightUrl}/>
+                          <ProfilePhotos
+                            title="После"
+                            front={photoAfterFrontUrl}
+                            back={photoAfterBackUrl}
+                            left={photoAfterLeftUrl}
+                            right={photoAfterRightUrl}/>
+                        </div>
 
-                        <ProfilePhotos
-                          title="После"
-                          front={photoAfterFrontUrl}
-                          back={photoAfterBackUrl}
-                          left={photoAfterLeftUrl}
-                          right={photoAfterRightUrl}/>
-                      </div>
+                        {
+                          isRejectPopupVisible ? (
+                              <div className="pending-profile__inner-popup">
+                                <div className="pending-profile__top-panel">
+                                  <div className="pending-profile__buttons">
+                                    <button
+                                      onClick={() => this.rejectPhoto()}
+                                      className="pending-profile__button btn btn--primary">
+                                      Вернуть
+                                    </button>
+                                    <button
+                                      onClick={() => this.hideRejectPopup()}
+                                      className="pending-profile__button btn btn--action">
+                                      Отмена
+                                    </button>
+                                  </div>
 
-                      {
-                        isRejectPopupVisible ? (
-                            <div className="pending-profile__inner-popup">
-                              <div className="pending-profile__top-panel">
-                                <div className="pending-profile__buttons">
-                                  <button
-                                    onClick={() => this.rejectPhoto()}
-                                    className="pending-profile__button btn btn--primary">
-                                    Вернуть
-                                  </button>
-                                  <button
-                                    onClick={() => this.hideRejectPopup()}
-                                    className="pending-profile__button btn btn--action">
-                                    Отмена
-                                  </button>
+                                  <div className="pending-profile__close-button"
+                                       onClick={() => this.hideRejectPopup()}>
+                                    <svg className="svg-icon ico-close">
+                                      <use xlinkHref="#ico-close"></use>
+                                    </svg>
+                                  </div>
                                 </div>
 
-                                <div className="pending-profile__close-button"
-                                     onClick={() => this.hideRejectPopup()}>
-                                  <svg className="svg-icon ico-close">
-                                    <use xlinkHref="#ico-close"></use>
-                                  </svg>
-                                </div>
+                                <textarea
+                                  ref="rejectReason"
+                                  className="pending-profile__desc-box"
+                                  placeholder="Причина отказа"/>
                               </div>
-
-                              <textarea
-                                ref="rejectReason"
-                                className="pending-profile__desc-box"
-                                placeholder="Причина отказа"/>
-                            </div>
-                          ) : null
-                      }
-                    </div>
-                  )
+                            ) : null
+                        }
+                      </div>
+                    )
                 }
               </div>
             </div>
           </div>
         </div>
+
+        <Chat userId={userId}/>
       </div>
     )
   }
@@ -205,11 +206,12 @@ class UserReports extends Component {
 
 const mapStateToProps = state => {
   const {
+    chat,
     pendingPhoto
   } = state
 
   return {
-    userId: cookie.load('user_id'),
+    userId: Number(cookie.load('user_id')),
     ...pendingPhoto
   }
 }

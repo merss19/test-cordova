@@ -359,6 +359,65 @@
 		cursor: pointer;
 
 	}
+	.DayPicker-NavButton.DayPicker-NavButton--prev{
+		display: none;
+
+		&:after{
+			display: none;
+		}
+	}
+	.DayPicker-NavButton.DayPicker-NavButton--next{
+		display: none;
+
+		&:after{
+			display: none;
+		}
+	}
 }
+
+.react-ultra-selector{
+	z-index: 2147483001;
+	position: relative;
+
+	.caption{
+		background-color: #70CFFE !important;
+		color: #fff;
+		padding: 8px 0;
+		border-top:none !important;
+	}
+
+	.cancel,
+	.confirm{
+		color: #fff !important;
+		background-color: #70CFFE !important;
+	}
+
+	table{
+		background-color: #fff !important;
+	}
+
+/*	.separator{
+		height:30px !important;
+		top: 48px !important;
+	}
+
+	.columns .elem-level-4{
+		height:30px !important;
+	}*/
+}
+
+.react-ultra-selector-static{
+	width: 100%;
+	border: 1px solid #E4E7F4 !important;
+	border-radius: 5px !important;
+	padding: 10px 12px !important;
+	text-align: left;
+	margin-bottom: 20px;
+
+	&:after{
+		display: none;
+	}
+}
+
 
 

@@ -4,10 +4,6 @@ import moment from 'moment'
 const Calendar = ({ children, onClick, number, completeText, icon, status,
 
   date, admin, isSelected, isTooSoon,customName, dynamicStatus,id }) => {
-    console.log('Calendar')
-	console.log(dynamicStatus)
-	console.log(isSelected)
-	console.log(isSelected && dynamicStatus)
 
     let calendarIcon,
         calendarToolip,

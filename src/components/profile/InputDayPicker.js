@@ -24,11 +24,13 @@ const overlayStyle = {
   boxShadow: '0 2px 5px rgba(0, 0, 0, .15)',
   zIndex: 100,
   width:'280px',
-  top: '-20px'
+  top: '-20px',
+  display:'block'
 
 };
 
 function YearMonthForm({ date, localeUtils, onChange }) {
+	console.log('YearMonthForm')
   const months = MONTHS
 
   const years = [];
@@ -37,20 +39,21 @@ function YearMonthForm({ date, localeUtils, onChange }) {
   }
 
   const handleChange = function handleChange(e) {
+	  console.log('handhhlegange')
     const { year, month } = e.target.form;
     onChange(new Date(year.value, month.value));
   };
 
   return (
     <div className="DayPicker-Caption">
-      <select name="month" onChange={ handleChange } value={ date.getMonth() }>
+      <select name="month"  onChange ={handleChange} value={ date.getMonth() }>
         { months.map((month, i) =>
           <option key={ i } value={ i }>
             { month }
           </option>)
         }
       </select>
-      <select name="year" onChange={ handleChange } value={ date.getFullYear() }>
+      <select name="year"  onChange ={handleChange} value={ date.getFullYear() }>
         { years.map((year, i) =>
           <option key={ i } value={ year }>
             { year }
@@ -148,6 +151,8 @@ class InputDayPicker extends Component {
     let value
 
 
+
+
     switch (name) {
       case 'birthday':
         value = birthday
@@ -163,6 +168,7 @@ class InputDayPicker extends Component {
     }
 
 	  value = this.reverseData(value)
+
 
 
     return (
@@ -193,6 +199,7 @@ class InputDayPicker extends Component {
                   weekdaysLong={ WEEKDAYS_LONG }
                   weekdaysShort={ WEEKDAYS_SHORT }
                   onDayClick={(e, day) => {
+
 
                     this.setState({
                       value: moment(day).format('L'),
@@ -236,6 +243,7 @@ class InputDayPicker extends Component {
 }
 
 const mapStateToProps = state => {
+
   const { birthday, babyBirthday, babyFeed } = state
   return {
     birthday,

@@ -19,7 +19,10 @@
 
   // -- http://nosir.github.io/cleave.js/
 
-  if (!(dateInput === null)) {
+  if (dateInput.length) {
+	  console.log('dateInput')
+    console.log(!(dateInput.length))
+	  console.log(dateInput.length)
     dateInput.forEach(function(el, i){
       new Cleave(el, {
           date: true,
@@ -209,8 +212,9 @@
   }
 
   // -- Complete Task
-  document.addEventListener('change', function(e) {
+/*  document.addEventListener('change', function(e) {
     if (e.target.classList.contains('checkbox__field--btn-taks')) {
+	    console.log('classlist')
       task = closest(e.target, 'task__item')
       if (!task.classList.contains('task__item--complete')) {
         task.classList.add('task__item--complete');
@@ -219,7 +223,7 @@
       }
       e.preventDefault();
     }
-  }, false);
+  }, false);*/
 
 
   // -- Helpers
