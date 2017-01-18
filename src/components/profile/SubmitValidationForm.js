@@ -297,13 +297,16 @@ class SubmitValidationForm extends Component {
 
             <hr/>
 
-            <div className="gender">
-              <p className="gender__title">Пол</p>
-              <Field name="gender" value="male" type='radio' title="Мужчина" id="gender[1]" component={RadioProfile} />
-              <Field name="gender" value="female" type='radio' title="Женщина" id="gender[2]" component={RadioProfile} />
-            </div>
-
-            <hr/>
+            {initialValues.program !== 2 &&
+              <div>
+                <div className="gender">
+                  <p className="gender__title">Пол</p>
+                  <Field name="gender" value="male" type='radio' title="Мужчина" id="gender[1]" component={RadioProfile} />
+                  <Field name="gender" value="female" type='radio' title="Женщина" id="gender[2]" component={RadioProfile} />
+                </div>
+                <hr/>
+              </div>
+            }
 
             <div className="grid">
               <div className="1/2--desk 1/1--pocket grid__cell">

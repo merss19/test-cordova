@@ -197,7 +197,7 @@ const mapStateToProps = state => {
   } = state.pendingProfile
 
   return {
-    userId: cookie.load('user_id'),
+    userId: Number(cookie.load('user_id')),
     isFetching,
     current,
     previously

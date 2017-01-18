@@ -11,6 +11,7 @@ export * from './pendingInsuranceProfiles'
 export * from './programs'
 export * from './photos'
 export * from './photosIntro'
+export * from './reports'
 
 export const CREATE_PROFILE = 'CREATE_PROFILE'
 export const SET_TOKEN      = 'SET_TOKEN'

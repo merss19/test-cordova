@@ -11,11 +11,11 @@ const Menu = ({fullName}) => (
           browserHistory.push('/task')
         }} icon="ico-m-tasks">Задания</MenuButton>
       </li>
-      {/* <li className="main-nav__item">
+      <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/reports')
         }} icon="ico-m-book">Зачетка</MenuButton>
-      </li> */}
+      </li>
       <li className="main-nav__item">
         <MenuButton onClick={() => {
           browserHistory.push('/food')

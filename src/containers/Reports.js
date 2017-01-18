@@ -1,342 +1,209 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import moment from 'moment'
+import { browserHistory } from 'react-router'
+import {
+  selectReports,
+  invalidateReports,
+  fetchReportsIfNeeded
+} from '../actions'
+
+import LoadingView from '../components/componentKit/LoadingView'
 import Menu from '../components/todayTask/Menu'
 import CalendarList from '../components/todayTask/CalendarList'
 import Header from '../stories/Header'
 
 class Reports extends Component {
+  componentDidMount() {
+    const { fetchReportsIfNeeded, selectedReports } = this.props
+
+    fetchReportsIfNeeded(selectedReports)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedReports !== this.props.selectedReports) {
+      const { fetchReportsIfNeeded, selectedReports } = nextProps
+      fetchReportsIfNeeded(selectedReports)
+    }
+  }
 
   render() {
+    const { reports, isFetching } = this.props
+    const isEmpty = !reports || reports.length === 0
+
     return (
-      <div className="layout">
+      <div className={isEmpty ? 'entry__inner' : 'layout'}>
         <Header/>
-        <div className="layout__inner">
-          <div className="grid">
-            <div className="1/4--desk grid__cell layout__menu">
-              <div className="grid layout__menu-inner">
-                <Menu/>
-                <CalendarList calendar={[{
-                    number: '1',
-                    icon: 'ico-done',
-                    status: 'done',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет принят',
-                    day: 'Пн'
-                  }, {
-                    number: '2',
-                    status: 'waiting',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет принимается',
-                    day: 'Вт'
-                  }, {
-                    number: '3',
-                    icon: 'ico-cross',
-                    status: 'missed',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет не сдан',
-                    day: 'Ср'
-                }]}/>
+        {isEmpty
+          ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено" taskBack={true}/>)
+          : <div className="layout__inner">
+              <div className="grid">
+                <div className="1/4--desk grid__cell layout__menu">
+                  <div className="grid layout__menu-inner">
+                    <Menu/>
+                  </div>
+                </div>
+
+                <div className="3/4--desk 1/1--pocket grid__cell layout__content">
+
+                  <div className="stage-box stage-box--no-padding">
+
+                    <h1 className="h1">Отчеты за все дни</h1>
+
+                    <ul className="accordion accordion--reports">
+                      {reports.map((report, index) => {
+                        let health, status, accordionState
+                        const adminName = report.userInfo.firstName + ' ' + report.userInfo.lastName
+
+                        switch (report.health) {
+                          case 'good':
+                            health = 'Отлично'
+                            break
+                          case 'middle':
+                            health = 'Так себе'
+                            break
+                          case 'bad':
+                            health = 'Не очень'
+                            break
+                          default:
+                            health = 'Так себе'
+                        }
+
+                        switch (report.status) {
+                          case 'done':
+                            status = 'Зачет'
+                            accordionState = 'accordion__state--done'
+                            break
+                          case 'missed':
+                            status = 'Не сдан'
+                            accordionState = 'accordion__state--cross'
+                            break
+                          case 'waitingadmin':
+                          case 'waiting':
+                            status = 'Проверка'
+                            accordionState = 'accordion__state--waiting'
+                            break
+                          default:
+                            health = 'Так себе'
+                        }
+
+                        return (
+                          <li key={index} className="accordion__item">
+                            <div className="accordion__header">
+                              <div className={`accordion__state ${accordionState}`}>{status}</div>
+                              <div className="accordion__date">{moment(report.date).format('YYYY-MM-DD')}</div>
+                              <div className="accordion__name">{adminName}</div>
+                              {/* <div className="accordion__qty-msg">
+                                <svg className="svg-icon ico-msg">
+                                  <use xlinkHref="#ico-msg"></use>
+                                </svg>
+                                <span className="num">5</span>
+                              </div> */}
+                              <div className="accordion__btn">
+                                <div className="accordion__btn-title">свернуть</div>
+                                <svg className="svg-icon ico-arrow-accordion">
+                                  <use xlinkHref="#ico-arrow-accordion"></use>
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="accordion__content">
+                              <ul className="chat-content">
+                                {report.adminAnswer &&
+                                  <li className="chat-msg chat-msg--someone">
+                                    {/* <div className="chat-msg__ava">
+                                      <img src={report.userInfo.photo} alt=""/>
+                                    </div> */}
+                                    <div className="chat-msg__content" style={{ margin: '0px 50px' }}>
+                                      <p className="chat-msg__name">{adminName}</p>
+                                      <div className="chat-msg__text">{report.adminAnswer}</div>
+                                    </div>
+                                  </li>
+                                }
+                                <li className="chat-msg chat-msg--you chat-msg--system">
+                                  <div className="chat-msg__content" style={{ margin: '0px 50px' }}>
+                                    <div className="chat-msg__text">{`${report.report} Состояние: ${health}`}</div>
+                                  </div>
+                                  {/* <div className="chat-msg__ava">
+                                    <img src="/tmp/ava-you.png" alt=""/>
+                                  </div> */}
+                                </li>
+                                <br/>
+                              </ul>
+                            </div>
+                          </li>
+                        )
+                      }
+                    )}
+                    </ul>
+
+                  </div>
+
+                </div>
               </div>
             </div>
-
-            <div className="3/4--desk 1/1--pocket grid__cell layout__content">
-
-              <div className="stage-box stage-box--no-padding">
-
-                <h1 className="h1">Отчеты за все дни</h1>
-
-                <ul className="accordion accordion--reports">
-                  <li className="accordion__item accordion__item--active">
-                    <div className="accordion__header">
-                      <div className="accordion__state accordion__state--done">Зачет</div>
-                      <div className="accordion__date">12/12/17</div>
-                      <div className="accordion__name">Олег Алексеев</div>
-                      <div className="accordion__qty-msg">
-                        <svg className="svg-icon ico-msg">
-                          <use xlinkHref="#ico-msg"></use>
-                        </svg>
-                        <span className="num">5</span>
-                      </div>
-                      <div className="accordion__btn">
-                        <div className="accordion__btn-title">свернуть</div>
-                        <svg className="svg-icon ico-arrow-accordion">
-                          <use xlinkHref="#ico-arrow-accordion"></use>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="accordion__content">
-                      <ul className="chat-content">
-                        <li className="chat-msg chat-msg--you chat-msg--system">
-                          <div className="chat-msg__content">
-                            <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
-                          </div>
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-you.png" alt=""/>
-                          </div>
-                        </li>
-                        <li className="chat-msg chat-msg--someone">
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-t-big.png" alt=""/>
-                          </div>
-                          <div className="chat-msg__content">
-                            <p className="chat-msg__name">Олег Алексеев</p>
-                            <div className="chat-msg__text">Умница, Анна! Я рад, что все идет по плану. Помните, что все зависит только от вас, и с каждым выполненным упражнением вы становитесь легче :)</div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="accordion__item">
-                    <div className="accordion__header">
-                      <div className="accordion__state accordion__state--done">Зачет</div>
-                      <div className="accordion__date">12/12/17</div>
-                      <div className="accordion__name">Олег Алексеев</div>
-                      <div className="accordion__qty-msg">
-                        <svg className="svg-icon ico-msg">
-                          <use xlinkHref="#ico-msg"></use>
-                        </svg>
-                        <span className="num">5</span>
-                      </div>
-                      <div className="accordion__btn">
-                        <div className="accordion__btn-title">развернуть</div>
-                        <svg className="svg-icon ico-arrow-accordion">
-                          <use xlinkHref="#ico-arrow-accordion"></use>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="accordion__content">
-                      <ul className="chat-content">
-                        <li className="chat-msg chat-msg--you chat-msg--system">
-                          <div className="chat-msg__content">
-                            <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
-                          </div>
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-you.png" alt=""/>
-                          </div>
-                        </li>
-                        <li className="chat-msg chat-msg--someone">
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-t-big.png" alt=""/>
-                          </div>
-                          <div className="chat-msg__content">
-                            <p className="chat-msg__name">Олег Алексеев</p>
-                            <div className="chat-msg__text">Умница, Анна! Я рад, что все идет по плану. Помните, что все зависит только от вас, и с каждым выполненным упражнением вы становитесь легче :)</div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="accordion__item">
-                    <div className="accordion__header">
-                      <div className="accordion__state accordion__state--cross">Не сдан</div>
-                      <div className="accordion__date">12/12/17</div>
-                      <div className="accordion__name">Олег Алексеев</div>
-                      <div className="accordion__qty-msg">
-                        <svg className="svg-icon ico-msg">
-                          <use xlinkHref="#ico-msg"></use>
-                        </svg>
-                        <span className="num">5</span>
-                      </div>
-                      <div className="accordion__btn">
-                        <div className="accordion__btn-title">развернуть</div>
-                        <svg className="svg-icon ico-arrow-accordion">
-                          <use xlinkHref="#ico-arrow-accordion"></use>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="accordion__content">
-                      <ul className="chat-content">
-                        <li className="chat-msg chat-msg--you chat-msg--system">
-                          <div className="chat-msg__content">
-                            <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
-                          </div>
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-you.png" alt=""/>
-                          </div>
-                        </li>
-                        <li className="chat-msg chat-msg--someone">
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-t-big.png" alt=""/>
-                          </div>
-                          <div className="chat-msg__content">
-                            <p className="chat-msg__name">Олег Алексеев</p>
-                            <div className="chat-msg__text">Умница, Анна! Я рад, что все идет по плану. Помните, что все зависит только от вас, и с каждым выполненным упражнением вы становитесь легче :)</div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="accordion__item">
-                    <div className="accordion__header">
-                      <div className="accordion__state accordion__state--waiting">Проверка</div>
-                      <div className="accordion__date">12/12/17</div>
-                      <div className="accordion__name">Олег Алексеев</div>
-                      <div className="accordion__qty-msg">
-                        <svg className="svg-icon ico-msg">
-                          <use xlinkHref="#ico-msg"></use>
-                        </svg>
-                        <span className="num">5</span>
-                      </div>
-                      <div className="accordion__btn">
-                        <div className="accordion__btn-title">развернуть</div>
-                        <svg className="svg-icon ico-arrow-accordion">
-                          <use xlinkHref="#ico-arrow-accordion"></use>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="accordion__content">
-                      <ul className="chat-content">
-                        <li className="chat-msg chat-msg--you chat-msg--system">
-                          <div className="chat-msg__content">
-                            <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
-                          </div>
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-you.png" alt=""/>
-                          </div>
-                        </li>
-                        <li className="chat-msg chat-msg--someone">
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-t-big.png" alt=""/>
-                          </div>
-                          <div className="chat-msg__content">
-                            <p className="chat-msg__name">Олег Алексеев</p>
-                            <div className="chat-msg__text">Умница, Анна! Я рад, что все идет по плану. Помните, что все зависит только от вас, и с каждым выполненным упражнением вы становитесь легче :)</div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="accordion__item">
-                    <div className="accordion__header">
-                      <div className="accordion__state accordion__state--cross">Не сдан</div>
-                      <div className="accordion__date">12/12/17</div>
-                      <div className="accordion__name">Олег Алексеев</div>
-                      <div className="accordion__qty-msg">
-                        <svg className="svg-icon ico-msg">
-                          <use xlinkHref="#ico-msg"></use>
-                        </svg>
-                        <span className="num">5</span>
-                      </div>
-                      <div className="accordion__btn">
-                        <div className="accordion__btn-title">развернуть</div>
-                        <svg className="svg-icon ico-arrow-accordion">
-                          <use xlinkHref="#ico-arrow-accordion"></use>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="accordion__content">
-                      <ul className="chat-content">
-                        <li className="chat-msg chat-msg--you chat-msg--system">
-                          <div className="chat-msg__content">
-                            <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
-                          </div>
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-you.png" alt=""/>
-                          </div>
-                        </li>
-                        <li className="chat-msg chat-msg--someone">
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-t-big.png" alt=""/>
-                          </div>
-                          <div className="chat-msg__content">
-                            <p className="chat-msg__name">Олег Алексеев</p>
-                            <div className="chat-msg__text">Умница, Анна! Я рад, что все идет по плану. Помните, что все зависит только от вас, и с каждым выполненным упражнением вы становитесь легче :)</div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="accordion__item">
-                    <div className="accordion__header">
-                      <div className="accordion__state accordion__state--done">Зачет</div>
-                      <div className="accordion__date">12/12/17</div>
-                      <div className="accordion__name">Олег Алексеев</div>
-                      <div className="accordion__qty-msg">
-                        <svg className="svg-icon ico-msg">
-                          <use xlinkHref="#ico-msg"></use>
-                        </svg>
-                        <span className="num">5</span>
-                      </div>
-                      <div className="accordion__btn">
-                        <div className="accordion__btn-title">развернуть</div>
-                        <svg className="svg-icon ico-arrow-accordion">
-                          <use xlinkHref="#ico-arrow-accordion"></use>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="accordion__content">
-                      <ul className="chat-content">
-                        <li className="chat-msg chat-msg--you chat-msg--system">
-                          <div className="chat-msg__content">
-                            <div className="chat-msg__text">Выполнила! Состояние: Отлично!</div>
-                          </div>
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-you.png" alt=""/>
-                          </div>
-                        </li>
-                        <li className="chat-msg chat-msg--someone">
-                          <div className="chat-msg__ava">
-                            <img src="/tmp/ava-t-big.png" alt=""/>
-                          </div>
-                          <div className="chat-msg__content">
-                            <p className="chat-msg__name">Олег Алексеев</p>
-                            <div className="chat-msg__text">Умница, Анна! Я рад, что все идет по плану. Помните, что все зависит только от вас, и с каждым выполненным упражнением вы становитесь легче :)</div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                </ul>
-
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <ul className="menu-mob-bottom">
-          <li className="menu-mob-bottom__item menu-mob-bottom__item--active">
-            <a href="#" className="menu-mob-bottom__item-inner">
-              <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-tasks">
-                  <use xlinkHref="#ico-m-tasks"></use>
-                </svg>
-              </span>
-              <span className="menu-mob-bottom__title">Задания</span>
-            </a>
-          </li>
-          <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
-              <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-book">
-                  <use xlinkHref="#ico-m-book"></use>
-                </svg>
-              </span>
-              <span className="menu-mob-bottom__title">Зачетка</span>
-            </a>
-          </li>
-          <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
-              <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-food">
-                  <use xlinkHref="#ico-m-food"></use>
-                </svg>
-              </span>
-              <span className="menu-mob-bottom__title">Питание</span>
-            </a>
-          </li>
-          <li className="menu-mob-bottom__item">
-            <a href="#" className="menu-mob-bottom__item-inner">
-              <span className="menu-mob-bottom__ico">
-                <svg className="svg-icon ico-m-faq">
-                  <use xlinkHref="#ico-m-faq"></use>
-                </svg>
-              </span>
-              <span className="menu-mob-bottom__title">Вопросы/Ответы</span>
-            </a>
-          </li>
-        </ul>
+          }
+          <ul className="menu-mob-bottom">
+            <li className="menu-mob-bottom__item">
+              <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                () => browserHistory.push('/task')
+              }>
+                <span className="menu-mob-bottom__ico">
+                  <svg className="svg-icon ico-m-tasks">
+                    <use xlinkHref="#ico-m-tasks"></use>
+                  </svg>
+                </span>
+                <span className="menu-mob-bottom__title">Задания</span>
+              </a>
+            </li>
+            <li className="menu-mob-bottom__item">
+              <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                () => browserHistory.push('/food')
+              }>
+                <span className="menu-mob-bottom__ico">
+                  <svg className="svg-icon ico-m-food">
+                    <use xlinkHref="#ico-m-food"></use>
+                  </svg>
+                </span>
+                <span className="menu-mob-bottom__title">Питание</span>
+              </a>
+            </li>
+            <li className="menu-mob-bottom__item">
+              <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                () => browserHistory.push('/faq')
+              }>
+                <span className="menu-mob-bottom__ico">
+                  <svg className="svg-icon ico-m-faq">
+                    <use xlinkHref="#ico-m-faq"></use>
+                  </svg>
+                </span>
+                <span className="menu-mob-bottom__title">Вопросы/Ответы</span>
+              </a>
+            </li>
+            <li className="menu-mob-bottom__item">
+              <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                () => browserHistory.push('/profile')
+              }>
+                <span className="menu-mob-bottom__ico">
+                  <svg className="svg-icon ico-m-faq">
+                    <use xlinkHref="#ico-m-faq"></use>
+                  </svg>
+                </span>
+                <span className="menu-mob-bottom__title">Профиль</span>
+              </a>
+            </li>
+            <li className="menu-mob-bottom__item">
+              <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                () => browserHistory.push('/photos')
+              }>
+                <span className="menu-mob-bottom__ico">
+                  <svg className="svg-icon ico-photo">
+                    <use xlinkHref="#ico-photo"></use>
+                  </svg>
+                </span>
+                <span className="menu-mob-bottom__title">Фото</span>
+              </a>
+            </li>
+          </ul>
 
         <div className="menu-mob-left">
           <div className="menu-mob-left__inner">
@@ -418,5 +285,34 @@ class Reports extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+
+  const { selectedReports, recivedReports } = state
+
+  const {
+    isFetching,
+    lastUpdated,
+    reports
+  } = recivedReports[selectedReports] || {
+    isFetching: true,
+    reports: []
+  }
+
+  return {
+    selectedReports,
+    isFetching,
+    reports
+  }
+}
+
+Reports = connect(
+  mapStateToProps,
+  {
+    selectReports,
+    invalidateReports,
+    fetchReportsIfNeeded
+  }
+)(Reports)
 
 export default Reports

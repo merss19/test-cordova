@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router'
 
 export const ProfileListItem = ({id, fullName, waitingStatus, link, timePassed}) => (
-  <li className="pending-profiles__item">
+  <div className="pending-profiles__item">
     <Link className="pending-profiles__item-link" to={link}>
       <div className="pending-profiles__item-name">
         {fullName}
@@ -22,13 +22,23 @@ export const ProfileListItem = ({id, fullName, waitingStatus, link, timePassed})
           </div> : null
       }
     </Link>
-  </li>
+  </div>
 )
 
-export default ({list}) => (
+export default ({list, isFetching, loadMoreButton = true, onLoadMore}) => (
   <div className="pending-profiles">
     {
       list.map(item => <ProfileListItem key={item.id} {...item} />)
+    }
+
+    {
+      loadMoreButton ? (
+          <button
+            onClick={!isFetching ? onLoadMore : null}
+            className="pending-profile__load-more btn btn--action">
+            {isFetching ? 'Загружается...' : 'Загрузить больше'}
+          </button>
+        ) : null
     }
   </div>
 )

@@ -5,15 +5,40 @@ import {fetchPendingInsuranceProfiles} from '../actions'
 import UserReportsMenu from '../components/userReports/UserReportsMenu'
 import ProfilesList from '../components/userReports/ProfilesList'
 
+const DEFAULT_PAGE = 1
+
 class UserReports extends Component {
   componentWillMount() {
     const {fetchPendingInsuranceProfiles} = this.props
 
-    fetchPendingInsuranceProfiles()
+    this.state = {
+      list: [],
+      page: DEFAULT_PAGE,
+    }
+
+    fetchPendingInsuranceProfiles(DEFAULT_PAGE)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isFetching && this.props.isFetching) {
+      this.setState({
+        list: [...this.state.list, ...nextProps.list]
+      })
+    }
+  }
+
+  loadMore() {
+    const {fetchPendingInsuranceProfiles} = this.props
+    const nextPage = this.state.page + 1
+
+    fetchPendingInsuranceProfiles(nextPage)
+
+    this.setState({page: nextPage})
   }
 
   render() {
-    const {list, isFetching = true} = this.props
+    const {list = true} = this.state
+    const {isFetching = true} = this.props
 
     return (
       <div className="layout layout--login">
@@ -38,7 +63,14 @@ class UserReports extends Component {
               </div>
 
               <div className="entry__box">
-                { isFetching ? <div className="spinner"></div> : <ProfilesList list={list}/> }
+                {
+                  !isFetching || list.length ? (
+                      <ProfilesList
+                        list={list}
+                        isFetching={isFetching}
+                        onLoadMore={() => this.loadMore()}/>
+                    ) : <div className="spinner"></div>
+                }
               </div>
             </div>
           </div>
