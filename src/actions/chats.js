@@ -17,6 +17,7 @@ export const RECEIVE_CHAT = 'RECEIVE_CHAT'
 export const REQUEST_CHATS = 'REQUEST_CHATS'
 export const RECEIVE_CHATS = 'RECEIVE_CHATS'
 
+const ITEMS_PER_PAGE = 50
 let updateInstance
 
 // CHAT LIST ACTIONS
@@ -34,7 +35,7 @@ const commentGetInfo = (authToken, data) => {
     })
   })
     .then(response => response.json())
-    .then(json => json.data)
+    // .then(json => json.data)
     .catch(console.error)
 }
 
@@ -42,9 +43,10 @@ export const requestChats = () => ({
   type: REQUEST_CHATS
 })
 
-export const receiveChats = payload => ({
+export const receiveChats = (payload, pageCount) => ({
   type: RECEIVE_CHATS,
-  payload
+  payload,
+  pageCount
 })
 
 const getChatTitle = ({id, name, isPublic, userStarter}) => {
@@ -69,17 +71,20 @@ const getChatTitle = ({id, name, isPublic, userStarter}) => {
   return title
 }
 
-export const fetchChats = (...types) => () => (dispatch, getState) => {
+export const fetchChats = (type, page = 1) => (dispatch, getState) => {
   dispatch(requestChats())
 
   const {userToken} = getState()
   const token = userToken.token || cookie.load('token')
   const userId = Number(cookie.load('user_id'))
 
-  return Promise
-    .all(types.map(type => commentGetInfo(token, {type})))
+  return commentGetInfo(token, {
+      type,
+      take: ITEMS_PER_PAGE,
+      skip: ITEMS_PER_PAGE * (page - 1)
+    })
     .then((chatsArray) => {
-      let flatChats = Array.prototype.concat.apply([], chatsArray)
+      let flatChats = Array.prototype.concat.apply([], chatsArray.data)
         .map(({userStarter, ...chat}) => ({...chat, userStarter: userStarter || {}})) // Баг с null в userStarter
         .map(chat => {
           const title = getChatTitle(chat)
@@ -105,7 +110,9 @@ export const fetchChats = (...types) => () => (dispatch, getState) => {
         return b.updateTs - a.updateTs
       })
 
-      dispatch(receiveChats(flatChats))
+      const pageCount = chatsArray.data.length > 0 ? Math.ceil(chatsArray.itemsCounter / ITEMS_PER_PAGE) : 0
+
+      dispatch(receiveChats(flatChats, pageCount))
     })
 }
 
@@ -144,13 +151,13 @@ export const fetchChat = (type, typeId = null, silent = false) => (dispatch, get
 
   return commentGetInfo(token || cookie.load('token'), data)
     .then((chats) => {
-      if (chats[0]) {
+      if (chats.data[0]) {
         if (!silent) {
           clearTimeout(updateInstance)
         }
 
         if (!silent || !getState().chat.comments || getState().chat.comments.length !== data.comments.length) {
-          dispatch(receiveChat(chats[0]))
+          dispatch(receiveChat(chats.data[0]))
         }
 
         updateInstance = setTimeout(() => fetchChat(type, typeId, true)(dispatch, getState), 5000)

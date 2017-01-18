@@ -63,11 +63,7 @@ export const fetchPendingExams = (status, page = 1, isExam) => (dispatch, getSta
         })
         .sort((a, b) => a.updateTs > b.updateTs)
 
-      console.log('??????')
-      console.log(json)
-      const listLength = json.data.length
-      const pageCount = listLength > 0 ? Math.ceil(json.itemsCounter / ITEMS_PER_PAGE) : 0
-      console.log(pageCount)
+      const pageCount = json.data.length > 0 ? Math.ceil(json.itemsCounter / ITEMS_PER_PAGE) : 0      
       dispatch(receivePendingExams(list, pageCount))
     })
     .catch(console.error)
