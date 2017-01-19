@@ -95,33 +95,35 @@ class ProfilePay extends Component {
     change('nameFriend', nameFriend)
     if (payment && payment.data && payment.data.amount === 0) {
       setInterval(() => {
-        this.refs.loadingModal.show()
-        const payload = {
-          authToken: cookie.load('token'),
-          data: {
-            txId: payment.data.txId
-          }
-        }
-
-        return fetch(`${api}/payment/payment-setpaid-manual`, {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: 'POST',
-          body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(json => {
-          this.refs.loadingModal.hide()
-          if (json.errorCode === 1 && json.data) {
-            if (payment.data.program + '' === '8') {
-              browserHistory.push('/signup/pay/success/friend')
-            } else {
-              browserHistory.push('/profile')
+        if (this.refs.loadingModal) {
+          this.refs.loadingModal.show()
+          const payload = {
+            authToken: cookie.load('token'),
+            data: {
+              txId: payment.data.txId
             }
           }
-        })
+
+          return fetch(`${api}/payment/payment-setpaid-manual`, {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then(json => {
+            this.refs.loadingModal.hide()
+            if (json.errorCode === 1 && json.data) {
+              if (payment.data.program + '' === '8') {
+                browserHistory.push('/signup/pay/success/friend')
+              } else {
+                browserHistory.push('/profile')
+              }
+            }
+          })
+        }
       }, 3000)
     }
   }

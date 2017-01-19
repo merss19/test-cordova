@@ -108,6 +108,7 @@ export class Chat extends Component {
     const {
       id,
       isOpen,
+      isTaskChat,
       userId,
       isWindow = true,
       isFetching,
@@ -130,39 +131,42 @@ export class Chat extends Component {
     />
 
     return isOpen ? (
-        <div className={`chat
-                          ${isWindow ? 'chat_window' : ''}
-                          ${isFetching ? 'chat_fetching' : ''}
-                          ${isForwarding ? 'chat_forwarding' : ''}
-                        `}>
-          <svg
-            onClick={() => this.closeChat()}
-            className="minion-chat__close svg-icon ico-close">
-            <use xlinkHref="#ico-close"></use>
-          </svg>
+        <div>
+          {isTaskChat && <h2 className="h1">Чат</h2>}
+          <div className={`chat
+                            ${isWindow ? 'chat_window' : ''}
+                            ${isFetching ? 'chat_fetching' : ''}
+                            ${isForwarding ? 'chat_forwarding' : ''}
+                          `}>
+            <svg
+              onClick={() => this.closeChat()}
+              className="minion-chat__close svg-icon ico-close">
+              <use xlinkHref="#ico-close"></use>
+            </svg>
 
-          {
-            !isFetching && showAdminPanel ? (
-                <div className="chat__admin-panel">
-                  {
-                    !isForwarding ? (
-                        <button
-                          onClick={() => this.waiting()}
-                          className="chat__admin-panel-button btn btn--secondary">
-                          Жду ответа
-                        </button>
-                      ) : null
-                  }
-                  <button
-                    onClick={() => this.toggleForwarding()}
-                    className="chat__admin-panel-button btn btn--action">
-                    {isForwarding ? 'Отмена' : 'Переадресовать'}
-                  </button>
-                </div>
-              ) : null
-          }
+            {
+              !isFetching && showAdminPanel ? (
+                  <div className="chat__admin-panel">
+                    {
+                      !isForwarding ? (
+                          <button
+                            onClick={() => this.waiting()}
+                            className="chat__admin-panel-button btn btn--secondary">
+                            Жду ответа
+                          </button>
+                        ) : null
+                    }
+                    <button
+                      onClick={() => this.toggleForwarding()}
+                      className="chat__admin-panel-button btn btn--action">
+                      {isForwarding ? 'Отмена' : 'Переадресовать'}
+                    </button>
+                  </div>
+                ) : null
+            }
 
-          {chat}
+            {chat}
+          </div>
         </div>
       ) : null
   }
