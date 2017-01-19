@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { browserHistory } from 'react-router'
+import cookie from 'react-cookie'
 import {
   selectReports,
   invalidateReports,
@@ -58,7 +59,7 @@ class Reports extends Component {
               <div className="grid">
                 <div className="1/4--desk grid__cell layout__menu">
                   <div className="grid layout__menu-inner">
-                    <Menu/>
+                    <Menu fullName={cookie.load('fullName')}/>
 	                  <CalendarList
 		                  calendar={calendar}
 		                  dayId={id} role={role}
