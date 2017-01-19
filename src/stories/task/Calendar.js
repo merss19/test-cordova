@@ -21,7 +21,7 @@ const Calendar = ({ children, onClick, number, completeText, icon, status,
       )
     }
 
-	if (isSelected && dynamicStatus.length) {
+	if (isSelected && dynamicStatus && dynamicStatus.length) {
 		calendarIcon = (
 			<div className="min-calendar__info">
 				<svg className={"svg-icon waiting" }>

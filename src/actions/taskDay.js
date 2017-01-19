@@ -23,6 +23,7 @@ export const requestTaskDay = taskDay => ({
   taskDay
 })
 
+
 export const receiveTaskDay = (taskDay, json) => {
   console.log('<<<')
   console.log(json)
@@ -34,7 +35,7 @@ export const receiveTaskDay = (taskDay, json) => {
   })
 }
 
-const fetchTaskDay = partialState => dispatch => {
+export const fetchTaskDay = partialState => dispatch => {
   const { token, taskDay, profile, selectedDayDate, selectedDayId } = partialState
   dispatch(requestTaskDay(taskDay))
   const authToken = token ? token : cookie.load('token')
@@ -65,7 +66,12 @@ const fetchTaskDay = partialState => dispatch => {
       body: JSON.stringify(payload)
     })
     .then(response => response.json())
-    .then(json => dispatch(receiveTaskDay(taskDay, json)))
+    .then(json => {
+	    console.log('json')
+	    console.log(json)
+	    dispatch(receiveTaskDay(taskDay, json))
+
+    })
   } else {
     cookie.remove('token', { path: '/' })
     cookie.remove('txId', { path: '/' })
@@ -92,6 +98,8 @@ const shouldFetchTaskDay = (state, taskDay) => {
 }
 
 export const fetchTaskDayIfNeeded = taskDay => (dispatch, getState) => {
+	console.log('taskDay-action')
+	console.log(taskDay)
   if (shouldFetchTaskDay(getState(), taskDay)) {
     return dispatch(fetchTaskDay({
       token: getState().userToken.token,

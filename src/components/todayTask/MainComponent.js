@@ -67,6 +67,7 @@ class MainComponent extends Component {
 		};
 	}
 
+
   componentWillMount() {
     if (window.mobilecheck()) {
       contentStyle.margin = '100px'
@@ -87,6 +88,8 @@ class MainComponent extends Component {
       document.getElementById('menu').className = 'grid layout__menu-inner'
     }
   }
+
+
 
   handleResize(event) {
     const windowWidth = window.innerWidth
@@ -156,6 +159,8 @@ class MainComponent extends Component {
       .then(() => fetchChat(PRIVATE_CHAT_ID))
   }
 
+
+
   render() {
     const { taskDay, token } = this.props
     const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName, role } } = taskDay
@@ -170,7 +175,7 @@ class MainComponent extends Component {
           <div className="grid">
             <div className="1/4--desk grid__cell layout__menu">
               <div id="menu" className="grid layout__menu-inner">
-                <Menu fullName={`${firstName} ${lastName}`}/>
+                <Menu fullName={`${firstName} ${lastName}`} />
                 <CalendarList
                     calendar={calendar}
                     dayId={id} role={role}
@@ -406,6 +411,8 @@ class MainComponent extends Component {
 }
 
 const mapStateToProps = state => {
+	console.log('main-component')
+	console.log(state)
   return { todayTask: state.todayTask }
 }
 

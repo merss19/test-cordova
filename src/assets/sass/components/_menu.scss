@@ -3,7 +3,11 @@
     border-radius: $baseRadius;
 
     &--active {
-      background-color: #F1F5F8;
+      background-color: #F1F5F8 ;
+
+      .svg-icon{
+        fill: $c-secondary !important;
+      }
     }
 
     .no-touchevents & {
@@ -22,6 +26,15 @@
     align-items: center;
     text-decoration: none;
     padding: 8px 10px;
+
+    &--active{
+      background-color: #F1F5F8;
+
+      .svg-icon{
+        fill: $c-secondary !important;
+      }
+    }
+
     &:visited {
       color: $c-text;
     }

@@ -5,8 +5,11 @@ import { browserHistory } from 'react-router'
 import {
   selectReports,
   invalidateReports,
-  fetchReportsIfNeeded
+  fetchReportsIfNeeded,
+  fetchTaskDayIfNeeded
 } from '../actions'
+
+import { fetchChat, createWithMessage, PRIVATE_CHAT_ID } from '../actions'
 
 import LoadingView from '../components/componentKit/LoadingView'
 import Menu from '../components/todayTask/Menu'
@@ -15,9 +18,10 @@ import Header from '../stories/Header'
 
 class Reports extends Component {
   componentDidMount() {
-    const { fetchReportsIfNeeded, selectedReports } = this.props
+    const { fetchReportsIfNeeded, selectedReports ,fetchTaskDayIfNeeded, selectedTaskDay} = this.props
 
     fetchReportsIfNeeded(selectedReports)
+	 fetchTaskDayIfNeeded('reactjs')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -26,21 +30,41 @@ class Reports extends Component {
       fetchReportsIfNeeded(selectedReports)
     }
   }
+//<LoadingView title="Ничего не найдено" taskBack={true}/>
 
   render() {
-    const { reports, isFetching } = this.props
-    const isEmpty = !reports || reports.length === 0
+    const { reports, isFetching ,taskDay } = this.props
+
+    const isEmpty = !reports || reports.length === 0 && !taskDay|| !taskDay.data || taskDay.data.length === 0
+
+	let calendar = [],
+	    id ,
+	    role
+
+
+	  if(!isEmpty){
+		  calendar = taskDay.data[0].calendar
+		  id = taskDay.data[0].id
+		  role = taskDay.data[0].user.role
+
+	  }
 
     return (
       <div className={isEmpty ? 'entry__inner' : 'layout'}>
         <Header/>
         {isEmpty
-          ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено" taskBack={true}/>)
+          ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Загружается..."/>)
           : <div className="layout__inner">
               <div className="grid">
                 <div className="1/4--desk grid__cell layout__menu">
                   <div className="grid layout__menu-inner">
                     <Menu/>
+	                  <CalendarList
+		                  calendar={calendar}
+		                  dayId={id} role={role}
+		                  privateChatId={PRIVATE_CHAT_ID}
+	                  />
+
                   </div>
                 </div>
 
@@ -288,7 +312,7 @@ class Reports extends Component {
 
 const mapStateToProps = state => {
 
-  const { selectedReports, recivedReports } = state
+  const { selectedReports, recivedReports, selectedTaskDay, recivedTaskDay } = state
 
   const {
     isFetching,
@@ -297,9 +321,15 @@ const mapStateToProps = state => {
   } = recivedReports[selectedReports] || {
     isFetching: true,
     reports: []
+  },
+  {taskDay} = recivedTaskDay[selectedTaskDay] || {
+	  isFetching: true,
+	  taskDay: {}
   }
 
   return {
+    taskDay,
+    recivedTaskDay,
     selectedReports,
     isFetching,
     reports
@@ -311,7 +341,8 @@ Reports = connect(
   {
     selectReports,
     invalidateReports,
-    fetchReportsIfNeeded
+    fetchReportsIfNeeded,
+    fetchTaskDayIfNeeded
   }
 )(Reports)
 
