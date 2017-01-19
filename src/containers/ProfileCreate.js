@@ -214,6 +214,59 @@ class ProfileCreate extends Component {
             <Modal ref='loadingModal' contentStyle={contentStyle} backdrop={false}>
               <h2>Подождите...</h2>
             </Modal>
+
+            {isReadyToTasks &&
+              <ul className="menu-mob-bottom">
+                <li className="menu-mob-bottom__item">
+                  <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                    () => browserHistory.push('/reports')
+                  }>
+                    <span className="menu-mob-bottom__ico">
+                      <svg className="svg-icon ico-m-book">
+                        <use xlinkHref="#ico-m-book"></use>
+                      </svg>
+                    </span>
+                    <span className="menu-mob-bottom__title">Зачетка</span>
+                  </a>
+                </li>
+                <li className="menu-mob-bottom__item">
+                  <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                    () => browserHistory.push('/food')
+                  }>
+                    <span className="menu-mob-bottom__ico">
+                      <svg className="svg-icon ico-m-food">
+                        <use xlinkHref="#ico-m-food"></use>
+                      </svg>
+                    </span>
+                    <span className="menu-mob-bottom__title">Питание</span>
+                  </a>
+                </li>
+                <li className="menu-mob-bottom__item">
+                  <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                    () => browserHistory.push('/faq')
+                  }>
+                    <span className="menu-mob-bottom__ico">
+                      <svg className="svg-icon ico-m-faq">
+                        <use xlinkHref="#ico-m-faq"></use>
+                      </svg>
+                    </span>
+                    <span className="menu-mob-bottom__title">Вопросы/Ответы</span>
+                  </a>
+                </li>
+                <li className="menu-mob-bottom__item">
+                  <a href="#" className="menu-mob-bottom__item-inner" onClick={
+                    () => browserHistory.push('/photos')
+                  }>
+                    <span className="menu-mob-bottom__ico">
+                      <svg className="svg-icon ico-photo">
+                        <use xlinkHref="#ico-photo"></use>
+                      </svg>
+                    </span>
+                    <span className="menu-mob-bottom__title">Фото</span>
+                  </a>
+                </li>
+              </ul>
+            }
           </div>
         }
       </div>

@@ -16,14 +16,18 @@ const Header = props => (
         : <div className="1/4--portable grid__cell header__burger"/>
       }
 
-      {(!window.mobilecheck() || !props.isProfile) &&
+      <h1 className="2/4--portable 1/2-desk grid__cell header__logo">
+        Ясегодня
+        <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
+      </h1>
+      {/* {(!window.mobilecheck() || !props.isProfile) &&
         <h1 className="2/4--portable 1/2-desk grid__cell header__logo">
           Ясегодня
           <img src="/assets/img/ys_logo.svg" alt="Ясегодня"/>
         </h1>
-      }
+      } */}
 
-      {window.mobilecheck() &&
+      {/* {window.mobilecheck() &&
         props.isReadyToTasks &&
           props.isProfile &&
             <div className="text-center">
@@ -41,7 +45,7 @@ const Header = props => (
                 К заданиям
               </button>
             </div>
-      }
+      } */}
 
       <div className="1/4--portable grid__cell header__right-side"/>
       <div className="1/4--portable grid__cell"/>
