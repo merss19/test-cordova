@@ -30,8 +30,6 @@ export const fetchPendingExams = (status, page = 1, isExam) => (dispatch, getSta
 
   const {token} = getState().userToken
 
-  console.log(isExam)
-
   return fetch(`${api}/user/userDayAdmin-get`, {
     headers: {
       'Accept': 'application/json',
@@ -63,7 +61,7 @@ export const fetchPendingExams = (status, page = 1, isExam) => (dispatch, getSta
         })
         .sort((a, b) => a.updateTs > b.updateTs)
 
-      const pageCount = json.data.length > 0 ? Math.ceil(json.itemsCounter / ITEMS_PER_PAGE) : 0      
+      const pageCount = json.data.length > 0 ? Math.ceil(json.itemsCounter / ITEMS_PER_PAGE) : 0
       dispatch(receivePendingExams(list, pageCount))
     })
     .catch(console.error)

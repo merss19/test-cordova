@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchPendingInsuranceProfiles} from '../actions'
+import ReactPaginate from 'react-paginate'
 
 import UserReportsMenu from '../components/userReports/UserReportsMenu'
 import ProfilesList from '../components/userReports/ProfilesList'
 
 const DEFAULT_PAGE = 1
+const DEFAULT_PAGE_COUNT = 10
 
 class UserReports extends Component {
   componentWillMount() {
@@ -14,6 +16,7 @@ class UserReports extends Component {
     this.state = {
       list: [],
       page: DEFAULT_PAGE,
+      pageCount: DEFAULT_PAGE_COUNT
     }
 
     fetchPendingInsuranceProfiles(DEFAULT_PAGE)
@@ -22,7 +25,8 @@ class UserReports extends Component {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.isFetching && this.props.isFetching) {
       this.setState({
-        list: [...this.state.list, ...nextProps.list]
+        list: [...nextProps.list],
+        pageCount: nextProps.pageCount
       })
     }
   }
@@ -40,6 +44,14 @@ class UserReports extends Component {
     const {list = true} = this.state
     const {isFetching = true} = this.props
 
+    const handlePageClick = data => {
+      const nextPage = data.selected + 1
+
+      fetchPendingInsuranceProfiles(nextPage)
+
+      this.setState({page: nextPage})
+    }
+
     return (
       <div className="layout layout--login">
 
@@ -53,7 +65,7 @@ class UserReports extends Component {
         </div>
 
         <div className="user-reports">
-          
+
           <div className="entry entry--sign-up">
             <div className="entry__inner">
               <div className="entry-info entry-info_top-menu">
@@ -65,10 +77,25 @@ class UserReports extends Component {
               <div className="entry__box">
                 {
                   !isFetching || list.length ? (
-                      <ProfilesList
-                        list={list}
-                        isFetching={isFetching}
-                        onLoadMore={() => this.loadMore()}/>
+                      <div className="pending-profiles">
+                        <ProfilesList
+                          list={list}
+                          isFetching={isFetching}
+                          onLoadMore={() => this.loadMore()}
+                        />
+                        <ReactPaginate previousLabel={"<"}
+                          nextLabel={">"}
+                          breakLabel={<a href="">...</a>}
+                          breakClassName={"break-me"}
+                          pageCount={this.state.pageCount}
+                          marginPagesDisplayed={2}
+                          pageRangeDisplayed={5}
+                          onPageChange={handlePageClick}
+                          containerClassName={"pagination"}
+                          subContainerClassName={"pages pagination"}
+                          activeClassName={"active"}
+                        />
+                      </div>
                     ) : <div className="spinner"></div>
                 }
               </div>
@@ -83,7 +110,12 @@ class UserReports extends Component {
 const mapStateToProps = state => {
   const {pendingProfiles} = state
 
-  return pendingProfiles
+  return {
+    pendingProfiles,
+    isFetching: pendingProfiles.isFetching,
+    list: pendingProfiles.list,
+    pageCount: pendingProfiles.pageCount
+  }
 }
 
 const mapDispatchToProps = {

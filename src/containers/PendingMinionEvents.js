@@ -49,7 +49,6 @@ class PendingEvents extends Component {
     const {list = true} = this.state
 
     const handlePageClick = data => {
-      console.log(data)
       const nextPage = data.selected + 1
 
       fetchPendingExams(currentStatus, nextPage, isExam)

@@ -35,7 +35,8 @@ export const pendingProfiles = (state = {}, action) => {
     case RECEIVE_PENDING_INSURANCE_PROFILES:
       return {
         isFetching: false,
-        list: action.payload
+        list: action.payload,
+        pageCount: action.pageCount
       }
     default:
       return state

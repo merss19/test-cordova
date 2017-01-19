@@ -31,7 +31,7 @@ export default ({list, isFetching, loadMoreButton = true, onLoadMore}) => (
       list.map(item => <ProfileListItem key={item.id} {...item} />)
     }
 
-    {
+    {/* {
       loadMoreButton ? (
           <button
             onClick={!isFetching ? onLoadMore : null}
@@ -39,6 +39,6 @@ export default ({list, isFetching, loadMoreButton = true, onLoadMore}) => (
             {isFetching ? 'Загружается...' : 'Загрузить больше'}
           </button>
         ) : null
-    }
+    } */}
   </div>
 )
