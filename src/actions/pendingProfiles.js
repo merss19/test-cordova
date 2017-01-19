@@ -15,9 +15,10 @@ export const requestPendingProfiles = () => ({
   type: REQUEST_PENDING_PROFILES
 })
 
-export const receivePendingProfiles = payload => ({
+export const receivePendingProfiles = (payload, pageCount) => ({
   type: RECEIVE_PENDING_PROFILES,
-  payload
+  payload,
+  pageCount
 })
 
 export const fetchPendingProfiles = (page = 1) => (dispatch, getState) => {
@@ -36,7 +37,7 @@ export const fetchPendingProfiles = (page = 1) => (dispatch, getState) => {
       data: {take: ITEMS_PER_PAGE, skip: ITEMS_PER_PAGE * (page - 1)}
     })
   })
-    .then(response => {console.log(response.json());return response.json()})
+    .then(response => response.json())
     .then(json => {
       const list = (json.data || [])
         .map(item => {
@@ -56,7 +57,10 @@ export const fetchPendingProfiles = (page = 1) => (dispatch, getState) => {
         })
         .sort((a, b) => a.updateTs > b.updateTs)
 
-      dispatch(receivePendingProfiles(list))
+      const pageCount = json.data.length > 0 ? Math.ceil(json.itemsCounter / ITEMS_PER_PAGE) : 0
+      console.log('GOMU-GOMU-NO PISTOLET!!!')
+      console.log(pageCount)
+      dispatch(receivePendingProfiles(list, pageCount))
     })
     .catch(console.error)
 

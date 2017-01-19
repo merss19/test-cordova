@@ -15,9 +15,10 @@ export const requestPendingInsuranceProfiles = () => ({
   type: REQUEST_PENDING_INSURANCE_PROFILES
 })
 
-export const receivePendingInsuranceProfiles = payload => ({
+export const receivePendingInsuranceProfiles = (payload, pageCount) => ({
   type: RECEIVE_PENDING_INSURANCE_PROFILES,
-  payload
+  payload,
+  pageCount
 })
 
 export const fetchPendingInsuranceProfiles = (page = 1) => (dispatch, getState) => {
@@ -54,7 +55,8 @@ export const fetchPendingInsuranceProfiles = (page = 1) => (dispatch, getState) 
         })
         .sort((a, b) => a.updateTs > b.updateTs)
 
-      dispatch(receivePendingInsuranceProfiles(list))
+      const pageCount = json.data.length > 0 ? Math.ceil(json.itemsCounter / ITEMS_PER_PAGE) : 0
+      dispatch(receivePendingInsuranceProfiles(list, pageCount))
     })
     .catch(console.error)
 
