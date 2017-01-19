@@ -28,7 +28,8 @@ export const pendingEvents = (state = {}, action) => {
     case RECEIVE_PENDING_EXAMS:
       return {
         isFetching: false,
-        list: action.payload
+        list: action.payload,
+        pageCount: action.pageCount
       }
     default:
       return state

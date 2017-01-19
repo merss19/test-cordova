@@ -32,9 +32,13 @@ export const chats = (state = [], action) => {
         isFetching: true
       }
     case RECEIVE_CHATS:
-      return [
-        ...action.payload
-      ]
+      console.log('TRINITY')
+      console.log(action)
+      return {
+        chats: [ ...action.payload ],
+        pageCount: action.pageCount,
+        isFetching: false
+      }
     default:
       return state
   }

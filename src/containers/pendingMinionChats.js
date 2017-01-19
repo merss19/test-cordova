@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import cookie from 'react-cookie'
+import { Field, reduxForm } from 'redux-form'
 import {connect} from 'react-redux'
 import {
   fetchChat,
@@ -9,10 +10,15 @@ import {
   PRIVATE_CHAT_ID
 } from '../actions'
 
+import ReactPaginate from 'react-paginate'
 import Chat from '../containers/Chat'
 
 import ChatGroup from '../components/userReports/ChatGroup'
 import UserReportsMenu from '../components/userReports/UserReportsMenu'
+
+const DEFAULT_PAGE = 1
+const DEFAULT_PAGE_COUNT = 10
+let currentChatType = 2
 
 class MinionChats extends Component {
   constructor(props) {
@@ -26,7 +32,22 @@ class MinionChats extends Component {
   componentWillMount() {
     const {fetchChats} = this.props
 
-    fetchChats()
+    this.state = {
+      list: [],
+      page: DEFAULT_PAGE,
+      pageCount: DEFAULT_PAGE_COUNT
+    }
+
+    fetchChats(currentChatType, DEFAULT_PAGE)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isChatsFetching && this.props.isChatsFetching) {
+      this.setState({
+        list: [...nextProps.list],
+        pageCount: nextProps.pageCount
+      })
+    }
   }
 
   selectChat(type, typeId) {
@@ -37,15 +58,29 @@ class MinionChats extends Component {
 
   render() {
     const {
-      selectedChat
+      selectedChat,
+      list = true
     } = this.state
+
     const {
       chat,
       userId,
-      publicChats,
-      privateChats,
-      isChatsFetching
+      isChatsFetching = true,
+      fetchChats
     } = this.props
+
+    const handlePageClick = data => {
+      const nextPage = data.selected + 1
+
+      fetchChats(currentChatType, nextPage)
+
+      this.setState({page: nextPage})
+    }
+
+    const chatTypes = [
+      { text: 'Публичные', val: 1 },
+      { text: 'Приватные', val: 2 }
+    ]
 
     return (
       <div className="layout layout--login">
@@ -71,19 +106,65 @@ class MinionChats extends Component {
 
               <div className="entry__box">
                 {
-                  !isChatsFetching ? (
+                  !isChatsFetching || list.length ? (
                       <div className="chats-groups">
+                        <ul className="options options--white mtb30" style={{ display: 'inline-block'}}>
+                          {chatTypes.map((val, index) => (
+                            <label key={index} style={{ display: 'inline-block'}}>
+                              <li name="chatTypes" className={ currentChatType === val.val ? "options__item is-active" : "options__item"} id={`chatTypes[${index}]`} onClick={e => {
+                                document.getElementById(`chatTypes[${index}]`).className += ' is-active'
+                                chatTypes.forEach((v, i) => {
+                                  if (index !== i)
+                                    document.getElementById(`chatTypes[${i}]`).className = "options__item"
+                                })
+                              }}>
+                                <Field
+                                  component='input'
+                                  type='radio'
+                                  name='chatTypes'
+                                  style={{visibility: 'hidden', margin: -5}}
+                                  value={val.val}
+                                  onClick={() => {
+                                    currentChatType = val.val
+
+                                    this.state = {
+                                      list: [],
+                                      page: DEFAULT_PAGE
+                                    }
+
+                                    fetchChats(currentChatType, DEFAULT_PAGE)
+                                  }}/>
+                                {val.text}
+                              </li>
+                              <span/>
+                            </label>
+                          ))}
+                        </ul>
+
                         <ChatGroup
-                          title="Приватные чаты"
-                          list={privateChats}
-                          unread={privateChats.reduce((sum, {isAnswered, hasMessages}) => {
+                          title={`${chatTypes[currentChatType-1].text} чаты`}
+                          list={list}
+                          unread={list.reduce((sum, {isAnswered, hasMessages}) => {
                             return isAnswered || !hasMessages ? sum : sum + 1
                           }, 0)}
                           selectedChat={chat.id}
                           onChatSelect={(type, id) => this.selectChat(type, id)}
                         />
 
-                        <ChatGroup
+                        <ReactPaginate previousLabel={"<"}
+                          nextLabel={">"}
+                          breakLabel={<a href="">...</a>}
+                          breakClassName={"break-me"}
+                          pageCount={this.state.pageCount}
+                          marginPagesDisplayed={2}
+                          pageRangeDisplayed={5}
+                          onPageChange={handlePageClick}
+                          containerClassName={"pagination"}
+                          subContainerClassName={"pages pagination"}
+                          activeClassName={"active"}
+                        />
+
+                        {/* <ChatGroup
                           title="Публичные чаты"
                           list={publicChats}
                           unread={publicChats.reduce((sum, {isAnswered, hasMessages}) => {
@@ -91,7 +172,7 @@ class MinionChats extends Component {
                           }, 0)}
                           selectedChat={chat.id}
                           onChatSelect={(type, typeId) => this.selectChat(type, typeId)}
-                        />
+                        /> */}
                       </div>
                     ) : <div className="spinner"></div>
                 }
@@ -107,18 +188,24 @@ class MinionChats extends Component {
   }
 }
 
+MinionChats = reduxForm({
+  form: 'chatsForm'
+})(MinionChats)
+
 const mapStateToProps = state => {
-  const {chat, chats} = state
+  const {chat, chats: { chats, pageCount, isFetching }} = state
   const isChatFetching = chat.isFetching === true
-  const isChatsFetching = chats.isFetching === true
-  const publicChats = isChatsFetching ? [] : chats.filter(({type}) => type === PUBLIC_CHAT_ID)
-  const privateChats = isChatsFetching ? [] : chats.filter(({type}) => type === PRIVATE_CHAT_ID)
+  const isChatsFetching = isFetching//chats.isFetching === true
+  // const publicChats = isChatsFetching ? [] : chats.filter(({type}) => type === PUBLIC_CHAT_ID)
+  // const privateChats = isChatsFetching ? [] : chats.filter(({type}) => type === PRIVATE_CHAT_ID)
 
   return {
+    list: chats,
+    pageCount,
     chat,
     userId: Number(cookie.load('user_id')),
-    publicChats,
-    privateChats,
+    // publicChats,
+    // privateChats,
     isChatFetching,
     isChatsFetching,
   }
@@ -126,7 +213,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   fetchChat,
-  fetchChats: fetchChats(PUBLIC_CHAT_ID, PRIVATE_CHAT_ID),
+  fetchChats,//: fetchChats(PUBLIC_CHAT_ID, PRIVATE_CHAT_ID),
   answerToChat
 }
 

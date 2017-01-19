@@ -70,7 +70,7 @@ class UserReports extends Component {
 
     Promise
       .all([
-        createWithMessage(PROFILE_PHOTO_CHAT_ID, user, this.refs.rejectReason.value),
+        createWithMessage(PROFILE_PHOTO_CHAT_ID, user, this.refs.rejectReason.value, true),
         rejectPhoto(user, program)
       ])
       .then(() => {

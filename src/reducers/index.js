@@ -14,5 +14,7 @@ export { recivedPrograms } from './programs'
 export { foodDescription, foodProgram, selectedFood, recivedFood } from './food'
 export { selectedPhotos, recivedPhotos } from './photos'
 export { selectedPhotosIntro, recivedPhotosIntro } from './photosIntro'
-export { selectedRe, recivedReports } from './reports'
+
+
+export { selectedReports, recivedReports } from './reports'
 

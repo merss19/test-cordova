@@ -65,7 +65,7 @@ class UserReports extends Component {
 
     Promise
       .all([
-        createWithMessage(PROFILE_CHAT_ID, routeParams.userId, this.refs.rejectReason.value),
+        createWithMessage(PROFILE_CHAT_ID, routeParams.userId, this.refs.rejectReason.value, true),
         rejectProfile(routeParams.userId)
       ])
       .then(() => {
