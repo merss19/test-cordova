@@ -52,10 +52,9 @@ class TodayTask extends Component {
   render() {
     const { taskDay, token, isFetching } = this.props
     const isEmpty = !taskDay|| !taskDay.data || taskDay.data.length === 0
-	  console.log('todauTaskkkkkk')
-		console.log(this.props)
+
     return (
-      <div className={isEmpty ? 'entry__inner dfgdfg' : 'layout dfgdfg'}>
+      <div className={isEmpty ? 'entry__inner' : 'layout'}>
         {isEmpty
           ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>

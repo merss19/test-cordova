@@ -7,6 +7,7 @@ import Chat from '../../stories/chat/Chat'
 import TaskIntro from '../todayTask/TaskIntro'
 import cookie from 'react-cookie'
 import ScrollToTop from 'react-scroll-up'
+import { fetchChat, createWithMessage, PRIVATE_CHAT_ID } from '../../actions'
 
 const scrollUpStyle = {
   zIndex: 2000,
@@ -20,9 +21,12 @@ const scrollUpStyle = {
   transitionDelay: '0s'
 }
 
+
 class MainComponent extends Component {
   render() {
-    const { food } = this.props
+    const { food, taskDay } = this.props
+    const { calendar, id, user: { role } } = taskDay
+
     const introJSON = food && food.content ? JSON.parse(food.content) : null
     return (
       <div className="layout">
@@ -32,30 +36,12 @@ class MainComponent extends Component {
             <div className="1/4--desk grid__cell layout__menu">
               <div className="grid layout__menu-inner">
                 <Menu fullName={cookie.load('fullName')}/>
-                {/* <CalendarList calendar={[{
-                    number: '1',
-                    icon: 'ico-done',
-                    status: 'done',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет принят',
-                    day: 'Пн'
-                  }, {
-                    number: '2',
-                    status: 'waiting',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет принимается',
-                    day: 'Вт'
-                  }, {
-                    number: '3',
-                    icon: 'ico-cross',
-                    status: 'missed',
-                    date: '12/12/17',
-                    admin: 'Миньон',
-                    completeText: 'Зачет не сдан',
-                    day: 'Ср'
-                }]}/> */}
+                <CalendarList
+					calendar={calendar}
+					dayId={id} role={role}
+					privateChatId={PRIVATE_CHAT_ID}
+				/>
+
               </div>
             </div>
             <div className="3/4--desk 1/1--pocket grid__cell layout__content">

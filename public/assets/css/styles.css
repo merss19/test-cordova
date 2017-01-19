@@ -2969,6 +2969,8 @@ code {
   border-radius: 5px; }
   .main-nav__item--active {
     background-color: #F1F5F8; }
+    .main-nav__item--active .svg-icon {
+      fill: #1F447B !important; }
   .no-touchevents .main-nav__item:hover {
     background-color: #F1F5F8; }
     .no-touchevents .main-nav__item:hover .svg-icon {
@@ -2982,6 +2984,10 @@ code {
   align-items: center;
   text-decoration: none;
   padding: 8px 10px; }
+  .main-nav__item-inner--active {
+    background-color: #F1F5F8; }
+    .main-nav__item-inner--active .svg-icon {
+      fill: #1F447B !important; }
   .main-nav__item-inner:visited {
     color: #1F447B; }
   .main-nav__item-inner .svg-icon {
@@ -3175,7 +3181,7 @@ code {
       border-color: transparent;
       box-shadow: none; }
   .min-calendar__item.today {
-    z-index: 2;
+    z-index: 13;
     background-color: #70CFFE; }
     .min-calendar__item.today:before {
       z-index: 0;

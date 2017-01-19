@@ -3,7 +3,7 @@ import Calendar from '../../stories/task/Calendar'
 import * as actions from '../../actions'
 import { connect } from 'react-redux'
 import moment from 'moment'
-
+import { browserHistory } from 'react-router'
 
 class CalendarList extends Component {
   componentDidMount() {
@@ -27,6 +27,7 @@ class CalendarList extends Component {
               <Calendar
                 id={field.date === moment().format('YYYY-MM-DD') ? 'today' : 'day'}
                 onClick={() => {
+                browserHistory.push('/task')
                   if (!isTooSoon) {
                     dispatch({ type: 'SELECT_DAY_ID', id: field.dayId })
                     dispatch({ type: 'SELECT_DAY_DATE', date: field.date })

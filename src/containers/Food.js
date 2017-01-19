@@ -5,10 +5,17 @@ import * as actions from '../actions'
 import MainComponent from '../components/food/MainComponent'
 import LoadingView from '../components/componentKit/LoadingView'
 
+//import fetchTaskDayIfNeeded from '../actions/taskDay'
+
+
 class Food extends Component {
   componentDidMount() {
-    const { dispatch, selectedFood } = this.props
+    const { dispatch, selectedFood ,fetchTaskDayIfNeeded, selectedTaskDay} = this.props
     dispatch(actions.fetchFoodProgramIfNeeded(selectedFood))
+
+	  dispatch(actions.fetchTaskDayIfNeeded(selectedFood))
+	  console.log('good-didmount')
+	  console.log(this.props.bufer)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,14 +38,18 @@ class Food extends Component {
   }
 
   render() {
-    const { food, token, isFetching } = this.props
-    const isEmpty = !food || !food[0]
+
+    const { food, token, isFetching ,taskDay} = this.props
+
+
+    const isEmpty = !food || !food[0] && !taskDay|| !taskDay.data || taskDay.data.length === 0
+
     return (
       <div className={isEmpty ? 'entry__inner' : 'layout'}>
         {isEmpty
-          ? (isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
+          ? (!isFetching ? <LoadingView title="Загружается..."/> : <LoadingView title="Ничего не найдено"/>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <MainComponent token={token} food={food[0]} />
+              <MainComponent token={token} food={food[0]} taskDay={taskDay.data[0]}  />
             </div>
         }
       </div>
@@ -47,7 +58,9 @@ class Food extends Component {
 }
 
 const mapStateToProps = state => {
-  const { selectedFood, recivedFood, userToken } = state
+
+  const { selectedFood,selectedTaskDay, recivedTaskDay, recivedFood, userToken } = state
+
 
   const {
     isFetching,
@@ -56,6 +69,10 @@ const mapStateToProps = state => {
   } = recivedFood[selectedFood] || {
     isFetching: true,
     food: {}
+  },
+  {taskDay} = recivedTaskDay[selectedTaskDay] || {
+	  isFetching: true,
+	  taskDay: {}
   }
 
   return {
@@ -63,6 +80,8 @@ const mapStateToProps = state => {
     isFetching,
     lastUpdated,
     food,
+    taskDay,
+    recivedTaskDay,
     token: userToken.token
   }
 }

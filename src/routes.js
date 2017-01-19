@@ -201,7 +201,8 @@ const requireForTest = () => {
     })
     .then(response => response.json())
     .then(json => {
-
+        console.log('reqqqqqqqqqqqqqqqqqqqqqqq')
+      console.log(json)
       const isRegistered = json && json.errorCode === 1 && json.data && json.data[0]
       if (!isRegistered) {
         browserHistory.push('/')
