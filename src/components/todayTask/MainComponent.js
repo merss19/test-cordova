@@ -111,10 +111,9 @@ class MainComponent extends Component {
 
   createTask (data) {
     const { taskDay, token, createWithMessage, fetchChat } = this.props
-    const chatMessage = `Отчёт для тренера:
-                         Комментарий: "${data.report}";
-                         Видео: ${data.video};
-                         Оценка: ${HEALTH_CONDITIONS[data.health]}.`;
+    const chatMessage = data.video && data.video !== 'undefined'
+      ? `Отчёт для тренера: Комментарий: "${data.report}"; Видео: ${data.video}; Оценка: ${HEALTH_CONDITIONS[data.health]}.`;
+      : `Отчёт для тренера: Комментарий: "${data.report}"; Оценка: ${HEALTH_CONDITIONS[data.health]}.`;
 
     return Promise.all([
 
