@@ -89,10 +89,41 @@ class ProfilePay extends Component {
   }
 
   componentDidUpdate() {
-    const { change, emailFriend, phoneFriend, nameFriend } = this.props
+    const { change, emailFriend, phoneFriend, nameFriend, payment } = this.props
     change('emailFriend', emailFriend)
     change('phoneFriend', phoneFriend)
     change('nameFriend', nameFriend)
+    if (payment && payment.data && payment.data.amount === 0) {
+      setInterval(() => {
+        this.refs.loadingModal.show()
+        const payload = {
+          authToken: cookie.load('token'),
+          data: {
+            txId: payment.data.txId
+          }
+        }
+
+        return fetch(`${api}/payment/payment-setpaid-manual`, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(json => {
+          this.refs.loadingModal.hide()
+          if (json.errorCode === 1 && json.data) {
+            if (payment.data.program + '' === '8') {
+              browserHistory.push('/signup/pay/success/friend')
+            } else {
+              browserHistory.push('/profile')
+            }
+          }
+        })
+      }, 3000)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -217,6 +248,36 @@ class ProfilePay extends Component {
       })
     }
 
+    const payManual = () => {
+      this.refs.loadingModal.show()
+      const payload = {
+        authToken: cookie.load('token'),
+        data: {
+          txId: payment.data.txId
+        }
+      }
+
+      return fetch(`${api}/payment/payment-setpaid-manual`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(json => {
+        this.refs.loadingModal.hide()
+        if (json.errorCode === 1 && json.data) {
+          if (payment.data.program + '' === '8') {
+            browserHistory.push('/signup/pay/success/friend')
+          } else {
+            browserHistory.push('/profile')
+          }
+        }
+      })
+    }
+
     return (
       <div className="layout layout--registration">
         {isEmpty
@@ -322,34 +383,7 @@ class ProfilePay extends Component {
                             </div>
                             <h5 className="h1 entry-success__title">Молодец!</h5>
                             <div id="pay-free" className="btn btn--action" onClick={() => {
-                              this.refs.loadingModal.show()
-                              const payload = {
-                                authToken: cookie.load('token'),
-                                data: {
-                                  txId: payment.data.txId
-                                }
-                              }
-
-                              return fetch(`${api}/payment/payment-setpaid-manual`, {
-                                headers: {
-                                  'Accept': 'application/json',
-                                  'Content-Type': 'application/json'
-                                },
-                                method: 'POST',
-                                body: JSON.stringify(payload)
-                              })
-                              .then(response => response.json())
-                              .then(json => {
-                                this.refs.loadingModal.hide()
-                                if (json.errorCode === 1 && json.data) {
-                                  if (payment.data.program + '' === '8') {
-                                    browserHistory.push('/signup/pay/success/friend')
-                                  } else {
-                                    browserHistory.push('/profile')
-                                  }
-                                }
-                              })
-
+                              payManual()
                             }}>
                               Продолжить
                             </div>
