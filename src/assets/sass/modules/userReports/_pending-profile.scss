@@ -73,4 +73,10 @@
     flex-wrap: wrap;
     flex-direction: row;
   }
+
+  &__params{
+    td{
+      padding:5px 10px;
+    }
+  }
 }

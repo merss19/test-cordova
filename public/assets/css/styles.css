@@ -2565,6 +2565,8 @@ code {
     flex-wrap: wrap;
     -ms-flex-direction: row;
     flex-direction: row; }
+  .pending-profile__params td {
+    padding: 5px 10px; }
 
 /* ===========================
    App theme
