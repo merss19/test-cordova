@@ -90,6 +90,9 @@ class UserReports extends Component {
 
   render() {
     const {isConfirmPopupVisible} = this.state
+
+	  console.log('renderrrr')
+	  console.log(this.state)
     const {
       userId,
       isFetching,
@@ -290,27 +293,27 @@ class UserReports extends Component {
 					                        </tr>
 					                        <tr>
 						                        <td>Рост</td>
-						                        <td>{height +' см'}</td>
+						                        <td>{height ? height +' см':'нет данных'}</td>
 					                        </tr>
 					                        <tr>
 						                        <td>Вес</td>
-						                        <td>{weight +' кг'}</td>
+						                        <td>{weight ? weight +' кг':'нет данных'}</td>
 					                        </tr>
 					                        <tr>
 						                        <td>Рост</td>
-						                        <td>{chest +' см'}</td>
+						                        <td>{chest ? chest+' см':'нет данных'}</td>
 					                        </tr>
 					                        <tr>
 						                        <td>Талия</td>
-						                        <td>{waist +' см'}</td>
+						                        <td>{waist ? waist+' см':'нет данных'}</td>
 					                        </tr>
 					                        <tr>
 						                        <td>Бедра</td>
-						                        <td>{hips +' см'}</td>
+						                        <td>{hips ? hips +' см':'нет данных'}</td>
 					                        </tr>
 					                        <tr>
 						                        <td>Обхват бедра</td>
-						                        <td> {thigh +' см'}</td>
+						                        <td> {thigh ? thigh +' см':'нет данных'}</td>
 					                        </tr>
 
 				                        </table>

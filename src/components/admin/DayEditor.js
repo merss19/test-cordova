@@ -40,7 +40,7 @@ class DayEditor extends Component {
 
   render() {
     const { days, token, isFetching, editDay, dayIntro, dayDate,
-      programs, editor, content, programShow, selectedDays, dispatch, dayId } = this.props
+      programs, editor, content, programShow, selectedDays, dispatch, dayId,isVideo } = this.props
     const isEmpty = !programs || !days
     // const id = this.props.params.id
     // let initialValues = {}
@@ -72,6 +72,10 @@ class DayEditor extends Component {
                   content={content}
                   onSubmit={data => {
                     this.refs.loadingModal.show()
+                    data.isVideo = isVideo
+
+                    dispatch({ type: 'ISVIDEO', value: false })
+
 
                     if (data && data.tasks && data.tasks[0]) {
                       data.programTasks = [{}]
@@ -176,8 +180,9 @@ class DayEditor extends Component {
 
 const mapStateToProps = state => {
 
+
   const { selectedPrograms, recivedPrograms, selectedDays, recivedDays,
-    userToken, editDay, dayIntro, dayDate, editor, content, programShow, dayId } = state
+    userToken, editDay, dayIntro, dayDate, editor, content, programShow, dayId,isVideo } = state
   const {
     isFetching,
     days,
@@ -201,6 +206,7 @@ const mapStateToProps = state => {
     editor,
     content,
     dayId,
+    isVideo,
     token: userToken.token
   }
 }

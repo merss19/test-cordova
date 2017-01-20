@@ -31,6 +31,14 @@ export const dayId = (state = '-', action) => {
       return state
   }
 }
+export const isVideo = (state = 'false', action) => {
+  switch (action.type) {
+    case 'ISVIDEO':
+      return action.value
+    default:
+      return state
+  }
+}
 
 export const editDay = (state = {}, action) => {
   switch (action.type) {

@@ -4,7 +4,12 @@ const style = {
   fontSize: '12'
 }
 
-const CheckboxProfile = ({ input, title, checker, onChange, id, meta: { touched, error } }) => (
+const CheckboxProfile = ({ input, title, checker, onChange, id, meta: { touched, error } }) => {
+	console.log('CheckboxProfile')
+	console.log(input)
+	console.log(checker)
+	return (
+
   <li className="checkboxes__item">
     <span className="checkbox">
       <label className="checkbox__label" htmlFor={id}>
@@ -19,6 +24,6 @@ const CheckboxProfile = ({ input, title, checker, onChange, id, meta: { touched,
     </span>
     {touched && error && <span style={style}>{error}</span>}
   </li>
-)
+)}
 
 export default CheckboxProfile

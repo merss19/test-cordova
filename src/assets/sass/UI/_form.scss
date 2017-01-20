@@ -379,11 +379,20 @@
 	z-index: 2147483001;
 	position: relative;
 
+	.backdrop{
+		z-index:1 !important;
+	}
+
 	.caption{
 		background-color: #70CFFE !important;
 		color: #fff;
 		padding: 8px 0;
 		border-top:none !important;
+		z-index: 2 !important;
+	}
+
+	.columns{
+		z-index: 2 !important;
 	}
 
 	.cancel,
