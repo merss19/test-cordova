@@ -111,10 +111,9 @@ class MainComponent extends Component {
 
   createTask (data) {
     const { taskDay, token, createWithMessage, fetchChat } = this.props
-    const chatMessage = `Отчёт для тренера:
-                         Комментарий: "${data.report}";
-                         Видео: ${data.video};
-                         Оценка: ${HEALTH_CONDITIONS[data.health]}.`;
+    const chatMessage = data.video && data.video !== 'undefined'
+      ? `Отчёт для тренера: Комментарий: "${data.report}"; Видео: ${data.video}; Оценка: ${HEALTH_CONDITIONS[data.health]}.`
+      : `Отчёт для тренера: Комментарий: "${data.report}"; Оценка: ${HEALTH_CONDITIONS[data.health]}.`
 
     return Promise.all([
 
@@ -141,8 +140,6 @@ class MainComponent extends Component {
       })
         .then(response => response.json())
         .then(json => {
-          console.log('create-task')
-          console.log(json)
           this.refs.successModal.show()
           this.refs.sendReportModal.hide()
           if (json.isSuccess) {
@@ -188,7 +185,6 @@ class MainComponent extends Component {
               <TaskIntro text={introHTML} json={introJSON} isTasks={!!tasks && !!tasks[0]} scrollToTasks={e => {
                 e.preventDefault()
 
-
                 const nextElement = document.getElementById('tasks')
                 let offset = 0
 
@@ -225,14 +221,13 @@ class MainComponent extends Component {
               }
 
 
-              <div>
-                <h2 className="h1">Чат</h2>
-                <Chat
-                  userId={taskDay.user.id}
-                  isWindow={false}
-                  showAdminPanel={false}
-                  isOpen={false} />
-              </div>
+              <Chat
+                userId={taskDay.user.id}
+                isWindow={false}
+                showAdminPanel={false}
+                isOpen={false}
+                isTaskChat={true}
+              />
 
               <ScrollToTop style={scrollUpStyle} showUnder={160}>
                 <div className="btn-go-back">
@@ -411,8 +406,6 @@ class MainComponent extends Component {
 }
 
 const mapStateToProps = state => {
-	console.log('main-component')
-	console.log(state)
   return { todayTask: state.todayTask }
 }
 

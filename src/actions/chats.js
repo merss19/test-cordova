@@ -57,7 +57,7 @@ const getChatTitle = ({id, name, isPublic, userStarter}) => {
   } else {
     const {firstName, lastName, programName} = userStarter
 
-    title = `[${id}] ${firstName} ${lastName}`
+    title = `${firstName} ${lastName}`//`[${id}] ${firstName} ${lastName}`
 
     if (programName) {
       title += ` / ${programName}`
@@ -105,10 +105,10 @@ export const fetchChats = (type, page = 1) => (dispatch, getState) => {
           }
         })
 
-      flatChats.sort((a, b) => {
-        console.log(a, b);
-        return b.updateTs - a.updateTs
-      })
+      // flatChats.sort((a, b) => {
+      //   console.log(a, b);
+      //   return b.updateTs - a.updateTs
+      // })
 
       const pageCount = chatsArray.data.length > 0 ? Math.ceil(chatsArray.itemsCounter / ITEMS_PER_PAGE) : 0
 

@@ -275,8 +275,7 @@ export default (
       </Route>
       <Route path='userReports'>
         <IndexRoute
-          component={MinionLogin}
-          onEnter={requireMinionAuth} />
+          component={MinionLogin} />
 
         <Route
           path='chats'
