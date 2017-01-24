@@ -234,68 +234,6 @@ class ProfilePay extends Component {
         }
 
         window.PaymoFrame.set(data)
-
-        switch (paymentType) {
-          case 'ya':
-            // paymentForm = (
-            //   <form action="https://money.yandex.ru/eshop.xml" method="POST" style={{ marginTop: '30%' }}>
-            //     <input name="shopId" value="91439" type="hidden"/>
-            //     <input name="scid" value="547467" type="hidden"/>
-            //     <input name="sum" value={10} type="hidden"/>
-            //     {/* <input name="sum" value={payment.data.amount * 100} type="hidden"/> */}
-            //     <input name="customerNumber" value={1} type="hidden"/>
-            //     <input name="orderNumber" value={payment.data.txId} type="hidden"/>
-            //     <input name="paymentType" value="" type="hidden"/>
-            //     {/* <input name="cps_phone" placeholder="+7XXXXXXXXXX"/> */}
-            //     {/* <input name="cps_email" placeholder="Email"/> */}
-            //     {/* <input type="submit" value="Заплатить"/> */}
-            //     <button type="submit" className="btn btn--action" style={{ width: '200px'}}>
-            //       Оплатить
-            //     </button>
-            //   </form>
-            // )
-            break
-          case 'rk':
-            // login = "TODAYME"
-            // name = "tru8DDa5Fi"
-            // summ = 10
-            // invId = 0
-            // currency = 'RUR'
-            // MerchantLogin:OutSum::Пароль#1
-            // hash = md5(`${login}:${summ}::${name}:shp_txid=${payment.data.txId}`)
-
-            // paymentForm = (
-            //   <form action='https://auth.robokassa.ru/Merchant/Index.aspx' method="POST">
-            //    <input type="hidden" name="MrchLogin" value={login}/>
-            //    <input type="hidden" name="OutSum" value={summ}/>
-            //    {/* <input type="hidden" name="InvId" value={invId}/> */}
-            //    <input type="hidden" name="Desc" value="Text description"/>
-            //    <input type="hidden" name="SignatureValue" value={hash}/>
-            //    <input type="hidden" name="shp_txid" value={payment.data.txId}/>
-            //    {/* <input type="hidden" name="IncCurrLabel" value=$in_curr/> */}
-            //    <input type="hidden" name="Culture" value="ru"/>
-            //    {/* <input type="hidden" name="Email" value=$Email/> */}
-            //    {/* <input type="hidden" name="ExpirationDate" value=$ExpirationDate/> */}
-            //    {/* <input type="hidden" name="OutSumCurrency" value={currency}/> */}
-            //    <button type="submit" className="btn btn--action" style={{ width: '200px' }}>
-            //      Оплатить
-            //    </button>
-            //   </form>
-            // )
-            // (<div className='btn btn--action' onClick={() => {
-            //   let r = new Robokassa({login: "TODAYME", password: "tru8DDa5Fi"})
-            //   r.merchantUrl({ id: "invoice number", summ: 10, description: "description of invoice"});
-            // }}>
-            //   Оплатить
-            // </div>)
-            break
-          case 'pm':
-            paymentForm = (<span id="iframe_parent"/>)
-            break
-          default:
-            paymentForm = (<span id="iframe_parent"/>)
-            break
-        }
       }
     }
 
@@ -471,71 +409,77 @@ class ProfilePay extends Component {
                   <div className="entry__box">
                     <div className="entry-form">
                       {amount > 0
-                        ? <div>
-                            {window.mobilecheck() &&
-                              <div className="btn btn--primary" onClick={() => {
-                                this.refs.accModal.show()
-                              }}>
-                                { cookie.load('general') ? 'Изменить программу'
-                                  : program === '8' ? 'Изменить данные друга' : 'Изменить пакет' }
-                              </div>
-                            }
+                        ? paymentType === 'pm'
+                          ? <div>
+                              <span id="iframe_parent"/>
+                              <br/>
+                              <button className="btn btn--action"
+                                style={{ width: '200px' }}
+                                onClick={() => dispatch({ type: 'PAYMENT_TYPE', paymentType: 'ya' })}>
+                                  Выбрать способ оплаты
+                              </button>
+                            </div>
+                          : <div>
+                              {window.mobilecheck() &&
+                                <div className="btn btn--primary" onClick={() => {
+                                  this.refs.accModal.show()
+                                }}>
+                                  { cookie.load('general') ? 'Изменить программу'
+                                    : program === '8' ? 'Изменить данные друга' : 'Изменить пакет' }
+                                </div>
+                              }
 
-                            <div style={{
-                              display: 'table',
-                              position: 'absolute',
-                              height: '100%',
-                              width: '100%',
-                            }}>
                               <div style={{
-                                display: 'table-cell',
-                                verticalAlign: 'middle',
+                                display: 'table',
+                                position: 'absolute',
+                                height: '100%',
+                                width: '100%',
                               }}>
                                 <div style={{
-                                  marginLeft: 'auto',
-                                  marginRight: 'auto',
-                                  width: '300px'
+                                  display: 'table-cell',
+                                  verticalAlign: 'middle',
                                 }}>
-                                  <div style={outerButtonStyle}>
-                                    <form action="https://demomoney.yandex.ru/eshop.xml" method="POST">
-                                      <input name="shopId" value="91439" type="hidden"/>
-                                      <input name="scid" value="547467" type="hidden"/>
-                                      <input name="customerNumber" value={shortid.generate()} type="hidden"/>
-                                      <input name="sum" value="100" type="hidden"/>
-                                      {/* <input name="sum" value={payment.data.amount * 100} type="hidden"/> */}
-                                      <input name="orderNumber" value={payment.data.txId} type="hidden"/>
-                                      <input name="paymentType" value="" type="hidden"/>
-                                      {/* <input name="cps_phone" value="79051432877" type="hidden"/>
-                                      <input name="cps_email" value="vaomamago@gmail.com" type="hidden"/> */}
-                                      <button className="btn btn--primary" style={buttonYaStyle}/>
-                                    </form>
-                                  </div>
-                                  <br/>
-                                  <div style={outerButtonStyle}>
-                                    <form action='https://auth.robokassa.ru/Merchant/Index.aspx' method="POST">
-                                     <input type="hidden" name="MrchLogin" value="todayme"/>
-                                     <input type="hidden" name="OutSum" value={10}/>
-                                     <input type="hidden" name="Desc" value="Text description"/>
-                                     <input type="hidden" name="SignatureValue" value={md5(`todayme:10::YDDV4UN5t5q94gLDDZDE:shp_txid=${payment.data.txId}`)}/>
-                                     <input type="hidden" name="shp_txid" value={payment.data.txId}/>
-                                     <input type="hidden" name="Culture" value="ru"/>
-                                     <input type="hidden" name="IsTest" value={1}/>
-                                     <button type="submit" className="btn btn--primary" style={buttonRkStyle}/>
-                                    </form>
-                                  </div>
-                                  <br/>
-                                  {/* <div className='divider'/> */}
-                                  <div style={outerButtonStyle}>
-                                    <button className="btn btn--primary" style={buttonPmStyle} onClick={() => {
-                                      // dispatch({ type: 'PAYMENT_TYPE', paymentType: 'pm' })
-                                      window.PaymoFrame.set(data)
-                                      this.refs.paymoModal.show()
-                                    }}/>
+                                  <div style={{
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    width: '300px'
+                                  }}>
+                                    <div style={outerButtonStyle}>
+                                      <form action="https://demomoney.yandex.ru/eshop.xml" target="_blank" method="POST">
+                                        <input name="shopId" value="91439" type="hidden"/>
+                                        <input name="scid" value="547467" type="hidden"/>
+                                        <input name="customerNumber" value={shortid.generate()} type="hidden"/>
+                                        <input name="sum" value={amount} type="hidden"/>
+                                        <input name="orderNumber" value={payment.data.txId} type="hidden"/>
+                                        <input name="paymentType" value="" type="hidden"/>
+                                        <button className="btn btn--primary" style={buttonYaStyle}/>
+                                      </form>
+                                    </div>
+                                    <br/>
+                                    <div style={outerButtonStyle}>
+                                      <form action='https://auth.robokassa.ru/Merchant/Index.aspx' target="_blank" method="POST">
+                                       <input type="hidden" name="MrchLogin" value="todayme"/>
+                                       <input type="hidden" name="OutSum" value={10}/>
+                                       <input type="hidden" name="Desc" value="Text description"/>
+                                       <input type="hidden" name="SignatureValue" value={md5(`todayme:10::YDDV4UN5t5q94gLDDZDE:shp_txid=${payment.data.txId}`)}/>
+                                       <input type="hidden" name="shp_txid" value={payment.data.txId}/>
+                                       <input type="hidden" name="Culture" value="ru"/>
+                                       <input type="hidden" name="IsTest" value={1}/>
+                                       <button type="submit" className="btn btn--primary" style={buttonRkStyle}/>
+                                      </form>
+                                    </div>
+                                    <br/>
+                                    <div style={outerButtonStyle}>
+                                      <button className="btn btn--primary" style={buttonPmStyle} onClick={() => {
+                                        dispatch({ type: 'PAYMENT_TYPE', paymentType: 'pm' })
+                                        window.PaymoFrame.set(data)
+                                        // this.refs.paymoModal.show()
+                                      }}/>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
                         : <div className="entry-success">
                             <div className="entry-success__img-wrap">
                               <img src="/assets/img/success.svg" alt=""/>
@@ -550,14 +494,6 @@ class ProfilePay extends Component {
                       }
                     </div>
                   </div>
-
-                  <Modal ref='paymoModal' contentStyle={contentStyle}>
-                    <span id="iframe_parent"/>
-                    <br/>
-                    <button className="btn btn--action" onClick={() => this.refs.paymoModal.hide()}>
-                      Закрыть
-                    </button>
-                  </Modal>
 
                   <Modal ref='accModal' contentStyle={contentStyle}>
                     <h2>{ program === '8' ? 'Введите новые данные о друге' : 'Выберите количество человек' }</h2>
@@ -673,7 +609,6 @@ const mapStateToProps = state => {
   if (selector(state, 'promo'))
     promo = selector(state, 'promo')
 
-  console.log(paymentType)
   return({
     paymentType,
     selectedPayment,
