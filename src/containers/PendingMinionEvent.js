@@ -72,12 +72,18 @@ class UserReports extends Component {
     this.setState({isConfirmPopupVisible: false})
   }
 
-	dateFormat(date){
+	dateFormat(date, bool){
 		console.log(date)
 		let newDate
 
 		if(date){
-			let arr = date.split('-')
+			let arr = date.split('-'),
+				arrTime = date.split('T'),
+				time =  arrTime[1].split(':')
+			if(bool){
+				newDate = arrTime[1].slice(0,8) +','+ ' ' + arr[2].slice(0,2) + '-'+arr[1] + '-' + arr[0]
+				return newDate
+			}
 			newDate = arr[2].slice(0,2) + '-'+arr[1] + '-' + arr[0]
 			return newDate
 		}
@@ -91,7 +97,7 @@ class UserReports extends Component {
   render() {
     const {isConfirmPopupVisible} = this.state
 
-	  console.log('renderrrr')
+	  console.log('renderrrtttttttttttttttttttttttttttttttrrrr')
 	  console.log(this.state)
     const {
       userId,
@@ -105,7 +111,7 @@ class UserReports extends Component {
       createTs,
       userInfo
     } = this.props
-	  console.log(userInfo)
+	  console.log(this.props)
 
 	  const {
 		  firstName,
@@ -132,7 +138,7 @@ class UserReports extends Component {
 
 	  const birthdayFormat = this.dateFormat(birthday),
 	        dateFormat = this.dateFormat(date),
-		  createTsFormat = this.dateFormat(createTs)
+		  createTsFormat = this.dateFormat(createTs,true)
 
 
     const healthCondition = healthConditions[health] || healthConditions.middle

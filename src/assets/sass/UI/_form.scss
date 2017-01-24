@@ -276,6 +276,15 @@
 }
 
 .datepicker-wrapper{
+
+	input{
+		border: 1px solid #E4E7F4;
+		border-radius: 5px;
+		padding: 10px 12px;
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
 	.DayPicker{
 		width: 100%;
 		padding: 0
@@ -347,7 +356,7 @@
 
 	.DayPicker-Day{
 		padding: .9rem;
-		
+
 		&:hover{
 			background: #eee;
 		}
@@ -375,58 +384,23 @@
 	}
 }
 
-.react-ultra-selector{
-	z-index: 2147483001;
-	position: relative;
 
-	.backdrop{
-		z-index:1 !important;
-	}
 
-	.caption{
-		background-color: #70CFFE !important;
-		color: #fff;
-		padding: 8px 0;
-		border-top:none !important;
-		z-index: 2 !important;
-	}
-
-	.columns{
-		z-index: 2 !important;
-	}
-
-	.cancel,
-	.confirm{
-		color: #fff !important;
-		background-color: #70CFFE !important;
-	}
-
-	table{
-		background-color: #fff !important;
-	}
-
-/*	.separator{
-		height:30px !important;
-		top: 48px !important;
-	}
-
-	.columns .elem-level-4{
-		height:30px !important;
-	}*/
+.datepicker-modal{
+	z-index: 2147483001 !important;
 }
+.datepicker.default {
+	background-color: #fff !important;
 
-.react-ultra-selector-static{
-	width: 100%;
-	border: 1px solid #E4E7F4 !important;
-	border-radius: 5px !important;
-	padding: 10px 12px !important;
-	text-align: left;
-	margin-bottom: 20px;
-
-	&:after{
-		display: none;
+	.datepicker-wheel {
+		border-top: 1px solid #70CFFE !important;
+		border-bottom: 1px solid #70CFFE !important;
 	}
-}
 
+	.datepicker-navbar-btn{
+		color: #70CFFE !important;
+	}
+
+}
 
 
