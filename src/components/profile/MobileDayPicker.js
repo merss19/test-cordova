@@ -120,12 +120,15 @@ class MobileDayPicker extends Component {
 
     return (
 	    <div className="datepicker-wrapper">
-		    <input
-			    name={name}
-			    className="select-btn"
-			    onClick={this.handleClick}
-			    value={convertDate(this.state.time, 'DD-MM-YYYY')}
-			    />
+		    <div className="datepicker-wrapper__value">
+			    <div className="datepicker-wrapper__value"
+			         name={name}
+			         className="select-btn"
+			         onClick={this.handleClick}>
+				    {convertDate(this.state.time, 'DD-MM-YYYY')}
+			    </div>
+		    </div>
+
 
 
 

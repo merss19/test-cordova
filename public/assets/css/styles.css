@@ -1356,12 +1356,13 @@ hr {
   .label + .input {
     margin-bottom: 20px; }
 
-.datepicker-wrapper input {
+.datepicker-wrapper__value {
   border: 1px solid #E4E7F4;
   border-radius: 5px;
   padding: 10px 12px;
   width: 100%;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  text-align: left; }
 
 .datepicker-wrapper .DayPicker {
   width: 100%;

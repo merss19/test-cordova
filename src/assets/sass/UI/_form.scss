@@ -277,12 +277,13 @@
 
 .datepicker-wrapper{
 
-	input{
+	&__value{
 		border: 1px solid #E4E7F4;
 		border-radius: 5px;
 		padding: 10px 12px;
 		width: 100%;
 		margin-bottom: 20px;
+		text-align: left;
 	}
 
 	.DayPicker{
