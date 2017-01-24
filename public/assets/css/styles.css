@@ -1356,6 +1356,14 @@ hr {
   .label + .input {
     margin-bottom: 20px; }
 
+.datepicker-wrapper__value {
+  border: 1px solid #E4E7F4;
+  border-radius: 5px;
+  padding: 10px 12px;
+  width: 100%;
+  margin-bottom: 20px;
+  text-align: left; }
+
 .datepicker-wrapper .DayPicker {
   width: 100%;
   padding: 0; }
@@ -1428,38 +1436,16 @@ hr {
   .datepicker-wrapper .DayPicker-NavButton.DayPicker-NavButton--next:after {
     display: none; }
 
-.react-ultra-selector {
-  z-index: 2147483001;
-  position: relative;
-  /*	.separator{
-		height:30px !important;
-		top: 48px !important;
-	}
+.datepicker-modal {
+  z-index: 2147483001 !important; }
 
-	.columns .elem-level-4{
-		height:30px !important;
-	}*/ }
-  .react-ultra-selector .caption {
-    background-color: #70CFFE !important;
-    color: #fff;
-    padding: 8px 0;
-    border-top: none !important; }
-  .react-ultra-selector .cancel,
-  .react-ultra-selector .confirm {
-    color: #fff !important;
-    background-color: #70CFFE !important; }
-  .react-ultra-selector table {
-    background-color: #fff !important; }
-
-.react-ultra-selector-static {
-  width: 100%;
-  border: 1px solid #E4E7F4 !important;
-  border-radius: 5px !important;
-  padding: 10px 12px !important;
-  text-align: left;
-  margin-bottom: 20px; }
-  .react-ultra-selector-static:after {
-    display: none; }
+.datepicker.default {
+  background-color: #fff !important; }
+  .datepicker.default .datepicker-wheel {
+    border-top: 1px solid #70CFFE !important;
+    border-bottom: 1px solid #70CFFE !important; }
+  .datepicker.default .datepicker-navbar-btn {
+    color: #70CFFE !important; }
 
 a.btn {
   text-decoration: none; }
@@ -2565,6 +2551,8 @@ code {
     flex-wrap: wrap;
     -ms-flex-direction: row;
     flex-direction: row; }
+  .pending-profile__params td {
+    padding: 5px 10px; }
 
 /* ===========================
    App theme

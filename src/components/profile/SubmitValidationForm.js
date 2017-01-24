@@ -772,10 +772,10 @@ class SubmitValidationForm extends Component {
             <hr/> */}
 
             {/* <p className="base-parag text-center">Какое у тебя давление?</p>
+             l className="options options--white mtb30">
+             {pressure.map((val, index) => (
 
-            <ul className="options options--white mtb30">
-              {pressure.map((val, index) => (
-                <label key={index}>
+             <u  <label key={index}>
                   <li name="pressure" className="options__item" id={`pressure[${index}]`} onClick={e => {
                     document.getElementById(`pressure[${index}]`).className += ' is-active'
                     pressure.map((v, i) => {

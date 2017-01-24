@@ -9,6 +9,7 @@ import draftToHtml from 'draftjs-to-html'
 import RadioProfile from '../componentKit/RadioProfile'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import InputProfile from '../componentKit/InputProfile'
+import CheckboxProfile from '../componentKit/CheckboxProfile'
 import Calendar from './Calendar'
 import SelectProgram from '../componentKit/SelectProgram'
 import MenuButton from '../../stories/MenuButton'
@@ -118,7 +119,22 @@ const renderPollFields = ({ fields, meta: { error } }) => (
 )
 
 class DayEditorValidationForm extends Component {
-  onEditorChange: Function = (editorContent) => {
+
+
+	constructor(props) {
+		super();
+
+		this.state = {
+			isVideo:false
+		};
+
+	}
+
+
+
+
+
+	onEditorChange: Function = (editorContent) => {
 
     const { dispatch } = this.props
     dispatch({ type: 'CONTENT', content: editorContent })
@@ -145,14 +161,23 @@ class DayEditorValidationForm extends Component {
   }
 
   componentDidMount() {
-    const { change, programs, changeName } = this.props
+    const { change, programs, dispatch, changeName,isVideo } = this.props
     change('programTasks', programs)
+    dispatch({ type: 'ISVIDEO', value: false })
+
 
   }
 
+	onChangeIsVideo(){
+		const {isVideo,dispatch} = this.props
+		dispatch({ type: 'ISVIDEO', value: !isVideo })
+
+	}
+
   render() {
     const { reset, hideCreatePoll, handleSubmit, onSubmit, dispatch, calendar,
-      change, date, programs, programShow, selectedDays, editor, dayId, content } = this.props
+      change, date, programs, programShow, selectedDays, editor, dayId,isVideo, content } = this.props
+
 
     const handleDateChange = date => {
       dispatch({ type: 'CONTENT_RESET' })
@@ -178,6 +203,7 @@ class DayEditorValidationForm extends Component {
                     dispatch({ type: 'EDITOR_RESET' })
                     dispatch({ type: 'DAY_ID', id: '-' })
                     change('programTasks', [])
+                    dispatch({ type: 'ISVIDEO', value: false })
                     dispatch({ type: 'PROGRAM_SHOW', programShow: 1 })
                     dispatch(actions.fetchDaysIfNeeded(selectedDays))
                   }} icon="ico-m-book">
@@ -190,6 +216,7 @@ class DayEditorValidationForm extends Component {
                     dispatch({ type: 'DAY_INTRO_RESET' })
                     dispatch({ type: 'EDITOR_RESET' })
                     dispatch({ type: 'DAY_ID', id: '-' })
+                    dispatch({ type: 'ISVIDEO', value: false })
                     change('programTasks', [])
                     dispatch({ type: 'PROGRAM_SHOW', programShow: 2 })
                     dispatch(actions.fetchDaysIfNeeded(selectedDays))
@@ -203,6 +230,7 @@ class DayEditorValidationForm extends Component {
                     dispatch({ type: 'DAY_INTRO_RESET' })
                     dispatch({ type: 'EDITOR_RESET' })
                     dispatch({ type: 'DAY_ID', id: '-' })
+                    dispatch({ type: 'ISVIDEO', value: false })
                     change('programTasks', [])
                     dispatch({ type: 'PROGRAM_SHOW', programShow: 3 })
                     dispatch(actions.fetchDaysIfNeeded(selectedDays))
@@ -230,12 +258,14 @@ class DayEditorValidationForm extends Component {
             <div className="1/3 grid__cell">
               <ul className="min-calendar sdfsdf">
                 {calendar && calendar.map((field, index) => (
+
                   <li key={index}>
                     <Calendar onClick={() => {
 
                         reset()
-												console.log(field.intro[0].customName)
+
                         dispatch({ type: 'DAY_ID', id: calendar[index].id })
+                        dispatch({ type: 'ISVIDEO', value: calendar[index].isVideo })
 												change('customName', field.intro[0].customName)
                         const intro = calendar[index].intro.find(i => i.program === programShow)
                         dispatch({ type: 'EDITOR', editor: JSON.parse(intro.intro), index: 0 })
@@ -330,7 +360,7 @@ class DayEditorValidationForm extends Component {
             {/* <FieldArray name='programTasks' component={renderPrograms} /> */}
             <br/>
             <div className="grid">
-              <div className="1/2--desk 1/1--pocket grid__cell">
+              <div className="1/2--desk 1/1--pocket grid__cell gggg">
                 <Field name='customName'  placeholder="Название дня" component={InputProfile}/>
               </div>
               <div className="1/2--desk 1/1--pocket grid__cell">
@@ -339,10 +369,14 @@ class DayEditorValidationForm extends Component {
 
 	            <div className="1/2--desk 1/1--pocket grid__cell is-video">
 		            <div className="is-video__box">
-			            <Field name="isVideo" id="isVideo" component="input" type="checkbox"/>
+
 		            </div>
 
-		            <label htmlFor="isVideo" className="is-video__label">Ссылка на видео</label>
+		            <label htmlFor="isVideo" className="is-video__label">
+			            <input id="isVideo" type="checkbox"
+			                   onChange={this.onChangeIsVideo.bind(this)}
+			                   checked={isVideo}/>
+			            Ссылка на видео</label>
 	            </div>
 
             </div>
@@ -410,12 +444,14 @@ DayEditorValidationForm = reduxForm({
 let selector = formValueSelector('dayEditor')
 
 const mapStateToProps = state => {
-  const { selectedDays, selectedPrograms, electedPrograms, recivedPrograms, hidePoll, programShow, dayId } = state
+
+  const { selectedDays, selectedPrograms, electedPrograms, recivedPrograms, hidePoll, programShow, dayId,isVideo } = state
   const { programs } = recivedPrograms[selectedPrograms] || []
   return {
     hideCreatePoll: hidePoll,
     programShow,
     dayId,
+    isVideo,
     programs,
     selectedDays
   }

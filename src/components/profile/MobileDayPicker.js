@@ -2,19 +2,72 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux'
 
-import DatePicker from './DatePicker'
+//import DatePicker from './DatePicker'
+import DatePicker from 'react-mobile-datepicker';
+
+function convertDate(date, formate) {
+	const year = date.getFullYear();
+	let month = date.getMonth() + 1;
+	let day = date.getDate();
+	const hour = date.getHours();
+	const minute = date.getMinutes();
+	const second = date.getSeconds();
+
+	if(month < 10) month = '0' + month
+	if(day < 10) day = '0' + day
+
+	return formate
+		.replace(/Y+/, year)
+		.replace(/M+/, month)
+		.replace(/D+/, day)
+		.replace(/h+/, hour)
+		.replace(/m+/, minute)
+		.replace(/s+/, second);
+}
 
 class MobileDayPicker extends Component {
 
-  constructor(props) {
-    super(props);
-	  this.state = {
-		  date: ''
-	  };
+	state = {
+		time: new Date(),
+		isOpen: false,
+	}
 
-  }
+	handleClick = () => {
+		this.setState({ isOpen: true });
+	}
+
+	handleCancel = () => {
+		this.setState({ isOpen: false });
+	}
+
+	handleSelect = (time) => {
+
+		const { birthday, babyBirthday, babyFeed } = this.props
+		this.setState({ time, isOpen: false });
+
+
+		switch (this.props.input.name) {
+			case 'birthday':
+				this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(time).format('YYYY-MM-DD') })
+				break
+			case 'babyBirthday':
+				this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(time).format('YYYY-MM-DD') })
+				break
+			case 'lastBabyFeedMonth':
+				this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(time).format('YYYY-MM-DD') })
+				break
+			default:
+				this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(time).format('YYYY-MM-DD') })
+		}
+	}
 
   componentDidMount() {
+	  console.log('componentDidMount')
+	 let navs = document.querySelectorAll('.datepicker-navbar-btn')
+	 console.log(navs)
+		  navs[1].innerHTML = 'Отмена'
+		  navs[0].innerHTML = 'Выбрать'
+
 
 	  let value = this.day
 
@@ -22,7 +75,7 @@ class MobileDayPicker extends Component {
 	  value = this.toEuroFormat(value)
 
 	  this.setState({
-		  date:value
+		  time: value,
 	  })
 
   }
@@ -41,27 +94,6 @@ class MobileDayPicker extends Component {
 		const  arr = value.split('-')
 		let data = new Date(parseInt(arr[2]), parseInt(arr[1])-1, parseInt(arr[0]))
 		return data
-	}
-
-	onConfirm(data) {
-
-		this.setState({
-			date:data
-		})
-
-		switch (this.props.input.name) {
-			case 'birthday':
-				this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(data).format('YYYY-MM-DD') })
-				break
-			case 'babyBirthday':
-				this.props.dispatch({ type: 'BABY_BIRTHDAY', babyBirthday: moment(data).format('YYYY-MM-DD') })
-				break
-			case 'lastBabyFeedMonth':
-				this.props.dispatch({ type: 'BABY_FEED', babyFeed: moment(data).format('YYYY-MM-DD') })
-				break
-			default:
-				this.props.dispatch({ type: 'BIRTHDAY', birthday: moment(data).format('YYYY-MM-DD') })
-		}
 	}
 
 	get day(){
@@ -84,13 +116,29 @@ class MobileDayPicker extends Component {
 	}
 
   render() {
+	  const { input, name, placeholder,  birthday, babyBirthday, babyFeed } = this.props
 
     return (
-	    <div>
-		    <DatePicker min ={'01 Jan 1917'}
-		                max ={'01 Jan 2017'}
-		                defaultDate ={this.state.date}
-		                onConfirm ={this.onConfirm.bind(this)}
+	    <div className="datepicker-wrapper">
+		    <div className="datepicker-wrapper__value">
+			    <div className="datepicker-wrapper__value"
+			         name={name}
+			         className="select-btn"
+			         onClick={this.handleClick}>
+				    {convertDate(this.state.time, 'DD-MM-YYYY')}
+			    </div>
+		    </div>
+
+
+
+
+		    <DatePicker
+			    min= {new Date(1922, 0, 1)}
+			    max= {new Date()}
+			    value={this.state.time}
+			    isOpen={this.state.isOpen}
+			    onSelect={this.handleSelect}
+			    onCancel={this.handleCancel}
 		    />
 	    </div>
 

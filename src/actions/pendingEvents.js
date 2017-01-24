@@ -94,7 +94,11 @@ export const fetchPendingExam = (user, day) => (dispatch, getState) => {
     })
   })
     .then(response => response.json())
-    .then(json => dispatch(receivePendingExam(json.data[0])))
+    .then(json => {
+	    console.log('fetchPendingExamssss')
+	    console.log(json)
+	    dispatch(receivePendingExam(json.data[0]))
+    })
     .catch(console.error)
 }
 

@@ -15,10 +15,16 @@ import {
 import Chat from './Chat'
 import UserReportsMenu from '../components/userReports/UserReportsMenu'
 
+const programs = [
+  'Я герой',
+  'Мама может',
+  'Экстренная сушка'
+]
+
 const healthConditions = {
-  bad: 'Ужасно',
-  middle: 'Так себе',
-  good: 'Отлично'
+	bad: 'Ужасно',
+	middle: 'Так себе',
+	good: 'Отлично'
 }
 const youtubePattern = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/
 
@@ -66,8 +72,33 @@ class UserReports extends Component {
     this.setState({isConfirmPopupVisible: false})
   }
 
+	dateFormat(date, bool){
+		console.log(date)
+		let newDate
+
+		if(date){
+			let arr = date.split('-'),
+				arrTime = date.split('T'),
+				time =  arrTime[1].split(':')
+			if(bool){
+				newDate = arrTime[1].slice(0,8) +','+ ' ' + arr[2].slice(0,2) + '-'+arr[1] + '-' + arr[0]
+				return newDate
+			}
+			newDate = arr[2].slice(0,2) + '-'+arr[1] + '-' + arr[0]
+			return newDate
+		}
+
+
+
+		return 'Нет данных'
+
+	}
+
   render() {
     const {isConfirmPopupVisible} = this.state
+
+	  console.log('renderrrtttttttttttttttttttttttttttttttrrrr')
+	  console.log(this.state)
     const {
       userId,
       isFetching,
@@ -77,7 +108,38 @@ class UserReports extends Component {
       video = '',
       report,
       health,
+      createTs,
+      userInfo
     } = this.props
+	  console.log(this.props)
+
+	  const {
+		  firstName,
+		  lastName,
+		  city,
+		  program,
+		  diseases,
+		  birthday,
+		  bodyMeasure
+		  } = userInfo ? userInfo : 'Нет данных'
+
+
+	  const {
+		  hips,
+		  chest,
+		  height,
+		  thigh,
+		  waist,
+		  weight,
+		  date,
+		  } = bodyMeasure ? bodyMeasure : 'Нет данных'
+
+	  const fullName = firstName + ' ' + lastName
+
+	  const birthdayFormat = this.dateFormat(birthday),
+	        dateFormat = this.dateFormat(date),
+		  createTsFormat = this.dateFormat(createTs,true)
+
 
     const healthCondition = healthConditions[health] || healthConditions.middle
 
@@ -173,10 +235,106 @@ class UserReports extends Component {
                             }
                           </div>
 
+	                        <div className="pending-profile__row">
+		                        <h2>Информация о пользователе</h2>
+
+		                        <div className="pending-profile__row">
+			                        <h3 className="pending-profile__row-title">
+				                        Имя
+			                        </h3>
+
+			                        {fullName}
+		                        </div>
+
+		                        <div className="pending-profile__row">
+			                        <h3 className="pending-profile__row-title">
+				                       Программа
+			                        </h3>
+
+			                        {programs[program-1]}
+		                        </div>
+
+		                        <div className="pending-profile__row">
+			                        <h3 className="pending-profile__row-title">
+				                        Город
+			                        </h3>
+
+			                        {city}
+		                        </div>
+
+		                        <div className="pending-profile__row">
+			                        <h3 className="pending-profile__row-title">
+				                        День рождения
+			                        </h3>
+
+			                        {birthdayFormat}
+		                        </div>
+
+		                        <div className="pending-profile__row">
+			                        <h3 className="pending-profile__row-title">
+				                        Травмы
+			                        </h3>
+
+			                        {diseases}
+		                        </div>
+
+		                        <div className="pending-profile__row">
+			                        <h3 className="pending-profile__row-title">
+				                        Дата отправки отчета
+			                        </h3>
+
+			                        {createTsFormat}
+		                        </div>
+
+		                        <div className="pending-profile__row">
+			                        <h3 className="pending-profile__row-title">
+				                        Параметры тела:
+			                        </h3>
+
+			                        <div>
+				                        <table className="pending-profile__params">
+					                        <tr>
+						                        <td>Дата заполнения</td>
+						                        <td> {dateFormat}</td>
+					                        </tr>
+					                        <tr>
+						                        <td>Рост</td>
+						                        <td>{height ? height +' см':'нет данных'}</td>
+					                        </tr>
+					                        <tr>
+						                        <td>Вес</td>
+						                        <td>{weight ? weight +' кг':'нет данных'}</td>
+					                        </tr>
+					                        <tr>
+						                        <td>Рост</td>
+						                        <td>{chest ? chest+' см':'нет данных'}</td>
+					                        </tr>
+					                        <tr>
+						                        <td>Талия</td>
+						                        <td>{waist ? waist+' см':'нет данных'}</td>
+					                        </tr>
+					                        <tr>
+						                        <td>Бедра</td>
+						                        <td>{hips ? hips +' см':'нет данных'}</td>
+					                        </tr>
+					                        <tr>
+						                        <td>Обхват бедра</td>
+						                        <td> {thigh ? thigh +' см':'нет данных'}</td>
+					                        </tr>
+
+				                        </table>
+			                        </div>
+
+
+		                        </div>
+	                        </div>
+
                         </div>
                       </div>
                     )
                 }
+
+
 
                 {
                   isConfirmPopupVisible ? (
@@ -221,6 +379,8 @@ class UserReports extends Component {
 
 const mapStateToProps = state => {
   const {pendingEvent = {}} = state
+	console.log('ssstate-pending')
+	console.log(state)
 
   return pendingEvent
 }

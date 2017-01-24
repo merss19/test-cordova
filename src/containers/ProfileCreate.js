@@ -93,6 +93,8 @@ class ProfileCreate extends Component {
                   ? insurance.insuranceFile : []
               }}
               onSubmit={ data => {
+              console.log('createe')
+              console.log(data)
 
                 let isValidBirthday = true
                 let isValidBabyBirhday = true
