@@ -459,9 +459,9 @@ class ProfilePay extends Component {
                                     <div style={outerButtonStyle}>
                                       <form action='https://auth.robokassa.ru/Merchant/Index.aspx' target="_blank" method="POST">
                                        <input type="hidden" name="MrchLogin" value="todayme"/>
-                                       <input type="hidden" name="OutSum" value={10}/>
+                                       <input type="hidden" name="OutSum" value={amount}/>
                                        <input type="hidden" name="Desc" value="Text description"/>
-                                       <input type="hidden" name="SignatureValue" value={md5(`todayme:10::YDDV4UN5t5q94gLDDZDE:shp_txid=${payment.data.txId}`)}/>
+                                       <input type="hidden" name="SignatureValue" value={md5(`todayme:${amount}::YDDV4UN5t5q94gLDDZDE:shp_txid=${payment.data.txId}`)}/>
                                        <input type="hidden" name="shp_txid" value={payment.data.txId}/>
                                        <input type="hidden" name="Culture" value="ru"/>
                                        <input type="hidden" name="IsTest" value={1}/>
@@ -473,7 +473,6 @@ class ProfilePay extends Component {
                                       <button className="btn btn--primary" style={buttonPmStyle} onClick={() => {
                                         dispatch({ type: 'PAYMENT_TYPE', paymentType: 'pm' })
                                         window.PaymoFrame.set(data)
-                                        // this.refs.paymoModal.show()
                                       }}/>
                                     </div>
                                   </div>
