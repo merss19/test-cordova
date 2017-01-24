@@ -80,7 +80,7 @@ const getRole = role => {
       const isRegistered = !(!json || json.errorCode !== 1 || !json.data || !json.data[0] || json.data[0].role !== role)
 
       if (isRegistered) {
-        cookie.save('user_id', json.data[0].id, { path: '/' }) // id текущего пользователя необходим для чатов
+        cookie.save('user_id', json.data[0].id, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 }) // id текущего пользователя необходим для чатов
 
         if (role === 3 && !json.data[0].paidPackage)
           browserHistory.push('/signup/pay')
@@ -109,12 +109,10 @@ const requirePayAuth = fromPay => {
     })
     .then(response => response.json())
     .then(json => {
-      console.log('BABYYYYYYYYYYYYYYY')
-      console.log(json)
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
         if (json.data[0].paidPackage && json.data[0].program + '' !== '4' && json.data[0].program + '' !== '8') {
-          cookie.save('userProgram', json.data[0].program, { path: '/' })
-          cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
+          cookie.save('userProgram', json.data[0].program, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
+          cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
 
           if (json.data[0].paidState === 2) {
 		        browserHistory.push('/signup/pay/success')
@@ -154,12 +152,10 @@ const requirePayNewSeasonAuth = fromPay => {
     })
     .then(response => response.json())
     .then(json => {
-      console.log('BABYYYYYYYYYYYYYYY')
-      console.log(json)
       if (json && json.errorCode === 1 && json.data && json.data[0]) {
         if (json.data[0].paidPackage && json.data[0].program + '' !== '4' && json.data[0].program + '' !== '8') {
-          cookie.save('userProgram', json.data[0].program, { path: '/' })
-          cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
+          cookie.save('userProgram', json.data[0].program, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
+          cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
 
           if (json.data[0].paidState === 1) {
             browserHistory.push('/season/pay')
@@ -201,8 +197,6 @@ const requireForTest = () => {
     })
     .then(response => response.json())
     .then(json => {
-        console.log('reqqqqqqqqqqqqqqqqqqqqqqq')
-      console.log(json)
       const isRegistered = json && json.errorCode === 1 && json.data && json.data[0]
       if (!isRegistered) {
         browserHistory.push('/')
@@ -210,8 +204,8 @@ const requireForTest = () => {
         if (json.data[0].paidState === 2) {
           browserHistory.push('/signup/pay/success')
         }
-        cookie.save('userProgram', json.data[0].program, { path: '/' })
-        cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/' })
+        cookie.save('userProgram', json.data[0].program, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
+        cookie.save('fullName', json.data[0].firstName + ' ' + json.data[0].lastName, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
       }
     })
   } else {

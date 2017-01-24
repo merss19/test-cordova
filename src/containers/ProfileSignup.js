@@ -38,8 +38,8 @@ class ProfileSignup extends Component {
     const packageType = type
     let program
 
-    cookie.save('share', share, { path: '/' })
-    cookie.save('promoName', promo, { path: '/' })
+    cookie.save('share', share, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
+    cookie.save('promoName', promo, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
 
     switch (programParam) {
       case 'hero':
@@ -59,15 +59,15 @@ class ProfileSignup extends Component {
     }
 
     if (program && packageType) {
-      cookie.save('program', program, { path: '/' })
-      cookie.save('packageType', packageType, { path: '/' })
+      cookie.save('program', program, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
+      cookie.save('packageType', packageType, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
       cookie.remove('general', { path: '/' })
     } else if (program && !packageType) {
-      cookie.save('program', program, { path: '/' })
+      cookie.save('program', program, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
       cookie.remove('packageType', { path: '/' })
       cookie.remove('general', { path: '/' })
     } else {
-      cookie.save('general', true, { path: '/' })
+      cookie.save('general', true, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
       cookie.remove('program', { path: '/' })
       cookie.remove('packageType', { path: '/' })
     }
@@ -163,7 +163,7 @@ class ProfileSignup extends Component {
         isFetching = true
         program = !!program ? program : '5'
         packageType = !!packageType ? packageType : '1'
-        cookie.save('program', program + '', { path: '/' })
+        cookie.save('program', program + '', { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
         signup(program, undefined, packageType, promo, emailFriend, share, phoneFriend, nameFriend)
         this.refs.loadingModal.show()
         return fetch(`${api}/user/user-create`, {
@@ -179,7 +179,7 @@ class ProfileSignup extends Component {
           isFetching = false
           this.refs.loadingModal.hide()
           if (json.data && json.data.authToken) {
-            cookie.save('token', json.data.authToken, { path: '/' })
+            cookie.save('token', json.data.authToken, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
             setToken(json.data.authToken)
             browserHistory.push('/signup/pay')
           } else if (json.errorCode === 129) {
