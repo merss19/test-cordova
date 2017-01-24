@@ -41,8 +41,6 @@ export const chats = (state = [], action) => {
         isFetching: true
       }
     case RECEIVE_CHATS:
-      console.log('TRINITY')
-      console.log(action)
       return {
         chats: [ ...action.payload ],
         pageCount: action.pageCount,

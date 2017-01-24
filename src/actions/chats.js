@@ -223,3 +223,10 @@ export const waitingFromChat = (group) => (dispatch, getState) => {
 
   return chatMessageCreate(authToken, {group, status: 1})
 }
+
+export const answeredChat = (group) => (dispatch, getState) => {
+  const {token} = getState().userToken
+  const authToken = token || cookie.load('token')
+
+  return chatMessageCreate(authToken, {group, status: 2})
+}

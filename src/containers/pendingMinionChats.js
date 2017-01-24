@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import { api } from '../config.js'
 import Modal from 'boron/FadeModal'
 import EmojiPicker from 'emojione-picker'
+import Textarea from 'react-textarea-autosize'
 import {
   fetchChat,
   fetchChats,
@@ -197,11 +198,11 @@ class MinionChats extends Component {
                                 😀
                               </button>
 
-                              <textarea
+                              <Textarea
                                 ref="message"
                                 // onChange={(e) => onMessageChanged(e)}
                                 placeholder="Сообщение всем пользователям"
-                                className="textarea__field chat-form__field"></textarea>
+                                className="textarea__field chat-form__field"></Textarea>
                               <div className="btn-chat"
                                    onClick={() => {
                                      this.refs.loadingModal.show()
@@ -287,7 +288,7 @@ class MinionChats extends Component {
 
         </div>
 
-        <Chat userId={userId} />
+        <Chat userId={userId} isAnswered={chat.isAnswered} />
       </div>
     )
   }
