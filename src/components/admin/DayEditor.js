@@ -16,8 +16,6 @@ let contentStyle = {
 }
 
 class DayEditor extends Component {
-
-
 	componentDidMount() {
     const fbScript = document.createElement("script")
     fbScript.text = "fbq('track', 'PageView');"
@@ -73,6 +71,15 @@ class DayEditor extends Component {
                   onSubmit={data => {
                     this.refs.loadingModal.show()
 
+                    const otherName = 'другое'
+
+                    if (data && data.poll && data.poll.fields
+                      && !data.poll.fields.find(f => f.name === otherName)) {
+                        data.poll.fields.push({ name: otherName })
+                    }
+
+                    console.log(data)
+
                     if (data && data.tasks && data.tasks[0]) {
                       data.programTasks = [{}]
                       data.programTasks[0].customName = data.customName ? data.customName : ''
@@ -125,8 +132,6 @@ class DayEditor extends Component {
                       })
                       .then(response => response.json())
                       .then(json => {
-												console.log('json')
-												console.log(json)
                         this.refs.loadingModal.hide()
                         if (json.errorCode === 1) {
                           this.refs.successPromoModal.show()
@@ -137,7 +142,8 @@ class DayEditor extends Component {
                     } else {
                       this.refs.errorModal.show()
                     }
-                }}/>
+                  }
+                }/>
                 <Modal ref='loadingModal' contentStyle={contentStyle}>
                   <h2>Подождите...</h2>
                 </Modal>

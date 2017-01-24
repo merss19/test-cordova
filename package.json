@@ -27,6 +27,7 @@
     "draftjs-to-html": "^0.4.1",
     "draftjs-utils": "^0.4.0",
     "emojione-picker": "^1.1.0",
+    "md5": "^2.2.1",
     "moment": "^2.17.1",
     "rc-collapse": "^1.6.6",
     "react": "^15.3.2",
@@ -54,6 +55,7 @@
     "redux-thunk": "^2.1.0",
     "resolve-url": "^0.2.1",
     "rollbar": "^0.6.3",
+    "shortid": "^2.2.6",
     "whatwg-fetch": "^1.0.0"
   },
   "scripts": {

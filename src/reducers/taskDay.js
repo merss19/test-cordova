@@ -1,8 +1,27 @@
+
 import {
   SELECT_TASKDAY, INVALIDATE_TASKDAY,
   REQUEST_TASKDAY, RECEIVE_TASKDAY
 } from '../actions'
 import moment from 'moment'
+
+export const selectField = (state = 'reactjs', action) => {
+  switch (action.type) {
+    case 'SELECT_FIELD':
+      return action.selectField
+    default:
+      return state
+  }
+}
+
+export const pollWasSend = (state = [], action) => {
+  switch (action.type) {
+    case 'POLL_WAS_SEND':
+      return [ ...state, action.pollWasSend ]
+    default:
+      return state
+  }
+}
 
 export const selectedTaskDay = (state = 'reactjs', action) => {
   switch (action.type) {
