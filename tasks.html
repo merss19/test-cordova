@@ -1,0 +1,834 @@
+<!DOCTYPE>
+<html class="no-js">
+  <head>
+    <title>Я СЕГОДНЯ — Cпорт как стиль жизни!</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#70cffe">
+    <meta name="apple-mobile-web-app-title" content="Я сегодня">
+    <meta name="application-name" content="Я сегодня">
+    <meta name="theme-color" content="#70cffe">
+  <body>
+
+    <div class="btn-go-back">
+      <svg class="svg-icon ico-arrow-up">
+        <use xlink:href="#ico-arrow-up"></use>
+      </svg>
+    </div>
+
+    <!-- inline svg -->
+    <img id="svg-inject-me" class="injected-svg" src="assets/img/symbol-sprite.svg">
+
+    <div class="layout">
+
+      <div class="header">
+        <div class="grid header__inner">
+          <div class="1/4--portable grid__cell header__burger">
+            <span class="header__ico-burger">
+              <svg class="svg-icon ico-burger">
+                <use xlink:href="#ico-burger"></use>
+              </svg>
+            </span>
+          </div>
+          <h1 class="2/4--portable 1/2-desk grid__cell header__logo">
+            Ясегодня
+            <img src="assets/img/ys_logo.svg" alt="Ясегодня">
+          </h1>
+          <div class="1/4--portable grid__cell header__right-side">
+            <div class="header__banner">
+              <a href="#" class="header__banner-link">
+                <img src="tmp/banner-1.png" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout__inner">
+        <div class="grid">
+          <div class="1/4--desk grid__cell layout__menu">
+            <div class="grid layout__menu-inner">
+              <div class="2/3 grid__cell layout__menu-nav">
+                <ul class="main-nav">
+                  <li class="main-nav__item main-nav__item--active">
+                    <a href="/index.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-m-tasks">
+                        <use xlink:href="#ico-m-tasks"></use>
+                      </svg>
+                      <span class="main-nav__title">Задания</span>
+                    </a>
+                  </li>
+                  <li class="main-nav__item">
+                    <a href="/reports.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-m-book">
+                        <use xlink:href="#ico-m-book"></use>
+                      </svg>
+                      <span class="main-nav__title">Зачетка</span>
+                    </a>
+                  </li>
+                  <li class="main-nav__item">
+                    <a href="/food.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-m-food">
+                        <use xlink:href="#ico-m-food"></use>
+                      </svg>
+                      <span class="main-nav__title">Питание</span>
+                    </a>
+                  </li>
+                  <li class="main-nav__item">
+                    <a href="/faq.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-m-faq">
+                        <use xlink:href="#ico-m-faq"></use>
+                      </svg>
+                      <span class="main-nav__title">ЧАВО</span>
+                    </a>
+                  </li>
+                  <li class="main-nav__item">
+                    <a href="/faq.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-photo">
+                        <use xlink:href="#ico-photo"></use>
+                      </svg>
+                      <span class="main-nav__title">Фото</span>
+                    </a>
+                  </li>
+                </ul>
+                <hr>
+                <div class="profile">
+                  <p class="profile__name">Анна Иванова</p>
+                  <ul class="profile__nav">
+                    <li class="profile__nav-item"><a href="#">Профиль</a></li>
+                    <li class="profile__nav-item"><a href="#">Выход</a></li>
+                  </ul>
+                </div>
+                <hr>
+                <ul class="banner-ls">
+                  <li class="banner-ls__item">
+                    <a href="#">
+                      <div class="banner-ls__img">
+                        <img src="tmp/banner-2.png" alt="">
+                      </div>
+                      <p class="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="1/3--desk grid__cell layout__calendar">
+                <ul class="min-calendar">
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Пн</span>
+                      <span class="min-calendar__date">1</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-done">
+                        <use xlink:href="#ico-done"></use>
+                      </svg>
+                    </div>
+                    <div class="calendar-toolip calendar-toolip--done">
+                      <div class="calendar-toolip__inner">
+                        <p class="calendar-toolip__title">Зачет принят</p>
+                        <p class="calendar-toolip__date">12/12/17 <span>Миньон</span></p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item today">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Вт</span>
+                      <span class="min-calendar__date">2</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-done">
+                        <use xlink:href="#ico-done"></use>
+                      </svg>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Ср</span>
+                      <span class="min-calendar__date">3</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-waiting">
+                        <use xlink:href="#ico-done"></use>
+                      </svg>
+                    </div>
+                    <div class="calendar-toolip calendar-toolip--waiting">
+                      <div class="calendar-toolip__inner">
+                        <p class="calendar-toolip__title">Зачет проверяется</p>
+                        <p class="calendar-toolip__date">12/12/17 <span>Миньон</span></p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Чт</span>
+                      <span class="min-calendar__date">4</span>
+                    </span>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Пт</span>
+                      <span class="min-calendar__date">5</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-done">
+                        <use xlink:href="#ico-done"></use>
+                      </svg>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Сб</span>
+                      <span class="min-calendar__date">6</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-cross">
+                        <use xlink:href="#ico-cross"></use>
+                      </svg>
+                    </div>
+                    <div class="calendar-toolip calendar-toolip--missed">
+                      <div class="calendar-toolip__inner">
+                        <p class="calendar-toolip__title">Зачет не сдан</p>
+                        <p class="calendar-toolip__date">12/12/17 <span>Миньон</span></p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <p class="min-calendar__special-day">Банановый день</p>
+                  </li>
+                  <li class="min-calendar__item is-select">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Пн</span>
+                      <span class="min-calendar__date">8</span>
+                    </span>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Вт</span>
+                      <span class="min-calendar__date">9</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-gift">
+                        <use xlink:href="#ico-gift"></use>
+                      </svg>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Ср</span>
+                      <span class="min-calendar__date">10</span>
+                    </span>
+                  </li>
+                  <li class="min-calendar__item min-calendar__item--finish">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Чт</span>
+                      <span class="min-calendar__date">11</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-finish">
+                        <use xlink:href="#ico-finish"></use>
+                      </svg>
+                      <p class="finish-day-title">Финал</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="3/4--desk 1/1--pocket grid__cell layout__content">
+
+            <ul class="notify">
+              <li class="notify__item notify--success">
+                <span class="notify__close">
+                  <svg class="svg-icon ico-close">
+                    <use xlink:href="#ico-close"></use>
+                  </svg>
+                </span>
+                <h4 class="notify__title">Выбор программы</h4>
+                <p class="notify__desc">Пожалуйста, перейдите <a href="#">в личный кабинет</a> для выбора программы!</p>
+              </li>
+
+              <li class="notify__item notify--alert">
+                <span class="notify__close">
+                  <svg class="svg-icon ico-close">
+                    <use xlink:href="#ico-close"></use>
+                  </svg>
+                </span>
+                <h4 class="notify__title">Подтвердите ваш Email</h4>
+                <p class="notify__desc">Меняться к лучшему! Сейчас мы еще раз повторим основные идеи, которые мы с тобой будем <a href="#">преследовать</a> на всем протяжении проекта.</p>
+              </li>
+            </ul>
+
+            <div class="stage-box stage-box--big-padding">
+
+              <h2 class="h1 main-message">Сегодня долгожданный первый понедельник первого месяца Нового Года! А это значит, что нам пора начинать меняться. Меняться к лучшему!!! Сейчас мы еще раз повторим основные идеи, которые мы с тобой будем преследовать на всем протяжении проекта.</h2>
+
+              <hr>
+
+              <ul class="num-list">
+                <li class="num-list__item">
+                  <span class="num-list__number">1</span>
+                  <h6 class="num-list__title">Привычки</h6>
+                  <p class="num-list__description">Чтобы измениться физически (да-да кубики пресса, подтянутая попка, вон отсюда лишние килограммы и наоборот, велкам нелишние) надо прежде всего изменить свои привычки. Про изменение вредных привычек мы с тобой очень серьезно, мать-перемать, поговорим позже (не сегодня, расслабься пока). Сейчас поговорим о приобретении полезных привычек. Они помогут тебе и в ходе проекта и за его рамками. И вообще важно,  чтобы они оставались с тобой в преть навсегда.</p>
+                </li>
+                <li class="num-list__item">
+                  <span class="num-list__number">2</span>
+                  <h6 class="num-list__title">Питание</h6>
+                  <p class="num-list__description">Чтобы измениться физически важно питание.</p>
+                </li>
+                <li class="num-list__item">
+                  <span class="num-list__number">3</span>
+                  <h6 class="num-list__title">Меняемся физически</h6>
+                  <p class="num-list__description">Чтобы измениться физически, важно меняться физически. Ага: "как перестать бояться и прыгнуть с парашютом? перестать бояться и прыгнуть с паращютом. Т.е. конечно нужно уделять внимание физической подготовке.</p>
+                </li>
+              </ul>
+
+              <p class="base-parag">Все вышеперечисленное на самом деле не сложно, важно только следовать правилу номер 1 - поменять привычки.</p>
+
+              <hr>
+
+              <p class="base-parag">Итак, какие полезные привычки мы должны приобрести за время проекта? Начнем с двух главных.</p>
+
+              <ul class="text-list">
+                <li class="text-list__item">
+                  <span class="text-list__number">А</span>
+                  <p class="text-list__description">Конечно же это следовать расписанию. Ничего не откладывать, делать задуманное целиком и во время. Но ведь так лень, так хочется еще немного поваляться в кровати, так интересно посмотреть еще одну серию полюбившегося сериала. Знакомо?</p>
+                </li>
+                <li class="text-list__item">
+                  <span class="text-list__number">Б</span>
+                  <p class="text-list__description">Не ныть по дороге. Это мы имеем в виду вот что: делаешь ты по нашему заданию круговую тренировку и вот где-то в первой трети ее у тебя начинает покалывать в боку, кажется, что силы уже иссякли до той степени, что с тобой начинает разговаривать посуда и "чайник сказал утюгу: "я дальше идти не могу". В общем весь фарш и самое главное, что ты прекрасно понимаешь, что еще даже не середина и избавление от этих мучений кажется бесконечно далеким. Знакомо?</p>
+                </li>
+              </ul>
+
+              <p class="base-parag">Конечно знакомо. Это все знакомо и тебе и твоим бабушкам и прадедушкам и Федору Михалычу Достоевскому (царствие ему небесное) и вообще всем поколениям рода человеческого.</p>
+
+              <p class="base-parag">Но все не так грустно. Вообще т.е. не грустно. Дело в том, что сама природа подумала о нас и в процессе эволюции наш организм приобрел возможность вырабатывать два важных гормона, помогающих бороться с нытьем и разгильдяйством, а именно:</p>
+
+              <ul class="text-list">
+                <li class="text-list__item">
+                  <p class="text-list__description"><strong>Дофамин</strong> - этот гормон является одним из химических факторов внутреннего подкрепления (ФВП) и служит важной частью «системы вознаграждения» мозга, поскольку вызывает чувство удовольствия (или удовлетворения), чем влияет на процессы мотивации. Дофамин естественным образом вырабатывается в больших количествах во время положительного, по субъективному представлению человека, опыта — к примеру, секса, приёма вкусной пищи, приятных телесных ощущений. Но самое важное в нашем случае, что Дофамин вырабатывается также и от ощущения сделанного дела, выполненных планов. Так эволюция стимулировала наших предков к созданию iPhone 7, а то так бы кирпичами и звонили.</p>
+                </li>
+                <li class="text-list__item">
+                  <p class="text-list__description"><strong>Эндорфин</strong> - гормон, который в том числе вызывает удовольствие и даже эйфорию. Он вырабатывается, например, в процессе физических тренировок. Тебе кажется, что вы больше уже не можешь выполнять тренировку, но тут у тебя открывается эндорфиновое окно и тебе снова в кайф.</p>
+                </li>
+              </ul>
+
+              <p class="base-parag">Так что не ноем и следуем планам!!!</p>
+
+              <p class="base-parag">Для того, чтобы тебе помочь, мы каждый день мы будем присылать задания. Ты проснулся, а оно уже на почте - ждет. Выполнять их <strong>ОБЯЗАТЕЛЬНО</strong>.</p>
+
+              <p class="base-parag">Задания будут в основном физическими. Однако, будут попадаться и другие. Кроме того мы будем присылать рекомендации по питанию от нашего диетолога. Рекомендациям касательно рецептов следовать не обязательно, но важно соблюдать пропорции белков жиров и углеводов (б/ж/у).</p>
+
+              <p class="base-parag">Очень важно следить за количеством каллорий. Обрати внимание - в целом наш проект направлен на похудение. Однако, если у тебя другая задача (например, худеть ты вовсе не хочешь, ты и так стройняшка, а просто хочешь начать вместе с нами вести здоровый образ жизни) то для тебя мы также придумали количество каллорий и б/ж/у.</p>
+
+              <div class="attention-box">
+                <p>Каждый день ты должен присылать отчет! Как он выглядит ты увидишь ниже. Каждую неделю в субботу тебя ждет экзамен на вылет. Его ты будешь снимать на видео. Если субботнего экзаменационного отчета до 23 часов вечера (по московскому времени) не будет, то с проекта ты вылетишь. Извини, но отчет важен!</p>
+              </div>
+
+              <p class="base-parag">На сегодня с нравоучениями все. Переходим... не, пока не к водным процедурам. К упражнениям.</p>
+
+            </div>
+
+            <div class="stage-box stage-box--big-padding">
+
+              <h2 class="h1">Задание на первый день</h2>
+
+              <ul class="task">
+                <li class="task__item task__item--complete">
+                  <div class="task__header">
+                    <div class="task__title">
+                      <span class="task__number">
+                        <span>1</span>
+                      </span>
+                      <span class="task__name">Круговая тренировка 3 упражнения 4 круга отдых между подходами 55 сек</span>
+                    </div>
+                    <div class="btn-taks">
+                      <span class="checkbox">
+                        <label class="checkbox__label" for="task[1]">
+                          <span class="checkbox__title">Готово!</span>
+                          <input class="checkbox__field checkbox__field--btn-taks" id="task[1]" type="checkbox" checked>
+                          <span class="checkbox__ph">
+                            <svg class="svg-icon ico-tick">
+                              <use xlink:href="#ico-tick"></use>
+                            </svg>
+                          </span>
+                        </label>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="task-description">
+                    <h3 class="h3">Как правильно выполнять</h3>
+                    <p class="sub-title sub-title--line">Как правильно выполнять показано на видео. Правильная техника важна - следи за собой :)</p>
+                    <p class="base-parag text-center">Отжимания под углом 45 градусов 10 раз, приседания руки за головой 15 раз, выпады на месте 10 раз</p>
+                    <ul class="num-list">
+                      <li class="num-list__item">
+                        <span class="num-list__number">1</span>
+                        <p class="num-list__description"><a href="#" class="video-pupup">Отжимания под углом 45 градусов</a></p>
+                      </li>
+                      <li class="num-list__item">
+                        <span class="num-list__number">2</span>
+                        <p class="num-list__description"><a href="#" class="video-pupup">Приседания руки за головой</a></p>
+                      </li>
+                      <li class="num-list__item">
+                        <span class="num-list__number">3</span>
+                        <p class="num-list__description"><a href="#" class="video-pupup">Выпады на месте</a></p>
+                      </li>
+                    </ul>
+
+                    <p class="base-parag">Круговая тренировка означает, что ты делаешь десять раз отжимания, затем без перерыва пятнадцать приседаний и сразу без перерыва выпады на месте.</p>
+                    <p class="base-parag">Затем ты делаешь перерыв около минуты и потом снова повторяешь эти три упражнения.</p>
+
+                    <p class="base-parag">Все, теперь в душ!</p>
+
+                    <hr>
+
+                    <h3 class="h3">Pекомендации по питанию</h3>
+
+                    <div class="grid">
+                      <div class="1/1--pocket 1/2--lap 1/2--desk grid__cell">
+                        <table class="base-table">
+                          <tr>
+                            <td>Белки</td>
+                            <td class="base-table__cell-center">40 гр.</td>
+                          </tr>
+                          <tr>
+                            <td>Жиры</td>
+                            <td class="base-table__cell-center">40 гр.</td>
+                          </tr>
+                          <tr>
+                            <td>Углеводы</td>
+                            <td class="base-table__cell-center">10 гр.</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="1/1--pocket 1/2--lap 1/2--desk grid__cell">
+                        <p class="base-parag"><strong>Как примерно эти граммы выглядят:</strong></p>
+                        <ul class="base-list">
+                          <li class="base-list__item">Завтрак - гречка</li>
+                          <li class="base-list__item">Перекус - салат мимоза со вчера оставшийся</li>
+                          <li class="base-list__item">Обед - суп гороховый</li>
+                          <li class="base-list__item">Полдник - отварная грудка</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <p class="base-parag">Ужин отдай врагу (у кого нет врагов поясняем - вообще ничего на ужин не готовьте, а лягте пораньше спать!:)</p>
+
+                    <p class="base-parag">Советы от паталогоанатома, не вздумай им следовать, слабак!</p>
+
+                    <p class="base-parag">Ты сегодня ничего не сделал и не собираешься? Тогда, мой любимый ленивец, вот тебе моя отговорка:</p>
+
+                    <p class="base-parag">Сегодня всего лишь второе января. Еще так много всего вредного, но вкусного недоедено и ведь жаль это выбрасывать (и выливать тоже жаль). А по телевизору Эрнст Константинович заготовил столько всего интересного, пропустить это было бы преступлением! Для тебя ведь старался! Лежи в кроватке весь день, но не забывай почаще возвращаться к холодильнику. А лучше побольше оливье (или что там у тебя припасено) положи поближе к себе - так удобнее и сохраннее. И передавай от меня привет своей печени - мы уже очень скоро встретимся.</p>
+
+                    <p class="base-parag">Искренне твой, Анастас Кудимыч! Поцелуйчики, обнимашечки!!!</p>
+
+                    <div class="text-center">
+                      <div class="btn btn--secondary">Выполнил! Давай следующее!</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="task__item">
+                  <div class="task__header">
+                    <div class="task__title">
+                      <span class="task__number">
+                        <span>2</span>
+                      </span>
+                      <span class="task__name">Второе задание</span>
+                    </div>
+                    <div class="btn-taks">
+                      <span class="checkbox">
+                        <label class="checkbox__label" for="task[2]">
+                          <span class="checkbox__title">Выполнил</span>
+                          <input class="checkbox__field checkbox__field--btn-taks" id="task[2]" type="checkbox">
+                          <span class="checkbox__ph">
+                            <svg class="svg-icon ico-tick">
+                              <use xlink:href="#ico-tick"></use>
+                            </svg>
+                          </span>
+                        </label>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="task-description">
+                    <h3 class="h3">Как правильно выполнять</h3>
+                    <p class="sub-title sub-title--line">Правильное выполнение продемонстрировано на видео. Правильная техника очень важна - следи за собой :)</p>
+                    <p class="base-parag text-center">Выполнять каждое утро упражнение по 4 раза, отдых между подходами 55 секунд</p>
+                    <ul class="num-list">
+                      <li class="num-list__item">
+                        <span class="num-list__number">1</span>
+                        <p class="num-list__description"><a href="#">Встаньте прямо, ноги чуть шире плеч.</a></p>
+                      </li>
+                      <li class="num-list__item">
+                        <span class="num-list__number">2</span>
+                        <p class="num-list__description">Опустите плечи и отведите их назад. Округлённая спина вам тут не нужна — в противном случае вы перегрузите поясницу. На протяжении всего упражнения важно сохранять прямую осанку.</p>
+                      </li>
+                      <li class="num-list__item">
+                        <span class="num-list__number">3</span>
+                        <p class="num-list__description">У рук может быть несколько положений. Первое — они вытянуты вперёд, ладони направлены вниз. Второе — согнуты в локтях и прижаты к туловищу, большие пальцы «смотрят» вверх. Третье — сложены за голову, локти в стороны. Четвёртое — в замке перед собой. Пятое — ладони лежат на талии.</p>
+                      </li>
+                    </ul>
+                    <div class="text-center">
+                      <div class="btn btn--secondary">Выполнил! Давай следующее!</div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div class="tasks-results">
+                <h2 class="h1 tasks-results__title">Подведем итоги?</h2>
+                <p class="tasks-results__desc">Молодец! На сегодня программа выполнена! Это конечно не максимум того, что мы могли бы сделать всметсе, но у нас еще есть немного времени впереди</p>
+                <div class="text-center">
+                  <div class="btn btn--primary js-fill-report-1">Заполнить отчет!</div>
+                </div>
+
+              </div>
+
+              <hr>
+
+              <div class="share-box">
+                <h2 class="h1 share-box__title">Делись результатами</h2>
+                <ul class="btn-social">
+                  <li class="btn-social__item btn-social__item--vk">
+                    <svg class="svg-icon ico-vk">
+                      <use xlink:href="#vk"></use>
+                    </svg>
+                    <span class="btn-social__title">Вконтакте</span>
+                  </li>
+                  <li class="btn-social__item btn-social__item--odnoklassniki">
+                    <svg class="svg-icon ico-odnoklassniki">
+                      <use xlink:href="#odnoklassniki"></use>
+                    </svg>
+                    <span class="btn-social__title">Одноклассники</span>
+                  </li>
+                  <li class="btn-social__item btn-social__item--fb">
+                    <svg class="svg-icon ico-fb">
+                      <use xlink:href="#fb"></use>
+                    </svg>
+                    <span class="btn-social__title">facebook</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="question-form">
+              <h4 class="h1 question-form__title">Какую фирму спортивной обуви ты предпочитаешь?</h4>
+              <ul class="options options--black mb60">
+                <li class="options__item">NIKE</li>
+                <li class="options__item">Adidas</li>
+                <li class="options__item">Reebok</li>
+                <li class="options__item">ASICS</li>
+                <li class="options__item is-active">другая</li>
+              </ul>
+              <div class="question-form__own-version">
+                <div class="input input--box input--btn">
+                  <input type="text" class="input__field">
+                  <div class="btn btn--secondary disabled">Отправить</div>
+                </div>
+              </div>
+            </div>
+
+            <h2 class="h1">Чаты</h2>
+
+            <div class="chat">
+
+              <ul class="chat__tabs">
+                <li class="chat__tab">
+                  <span class="chat__tab-title">Общий</span>
+                  <span class="chat__tab-msg">(2)</span>
+                </li>
+                <li class="chat__tab chat__tab--active">
+                  <span class="chat__tab-title">С тренером</span>
+                  <span class="chat__tab-msg"></span>
+                </li>
+              </ul>
+
+              <div class="chat-info">
+                <div class="chat-info__inner">
+                  <div class="chat-info__ava">
+                    <img src="tmp/ava-small.png" alt="">
+                    <span class="chat-info__ava-status"></span>
+                  </div>
+                  <div class="chat-info__user">
+                    <p class="chat-info__user-name">Олег Алексеев <span>тренер 1 категории</span></p>
+                    <p class="chat-info__user-status">В сети</p>
+                  </div>
+                </div>
+              </div>
+
+              <ul class="chat-content">
+
+                <li class="chat-msg chat-msg--someone">
+                  <div class="chat-msg__ava">
+                    <img src="assets/img/png/ava-ph-small.png" alt="">
+                  </div>
+                  <div class="chat-msg__content">
+                    <p class="chat-msg__name">Олег Алексеев</p>
+                    <div class="chat-msg__text">Скажите, Вы читали правила по выполнению данного упражнения?</div>
+                  </div>
+                </li>
+
+                <li class="chat-msg chat-msg--you">
+                  <div class="chat-msg__content">
+                    <div class="chat-msg__text">Да, я прочла все, но не поняла как правильно расположить локти?</div>
+                  </div>
+                  <div class="chat-msg__ava">
+                    <img src="tmp/ava-you.png" alt="">
+                  </div>
+                </li>
+
+                <li class="chat-content__date"><span>1 Октября, 2016</span></li>
+
+                <li class="chat-msg chat-msg--you">
+                  <div class="chat-msg__content">
+                    <div class="chat-msg__text">Добрый день, Олег! Я не уверена, что выполняла сегодня правильно 2 задание</div>
+                  </div>
+                  <div class="chat-msg__ava">
+                    <img src="tmp/ava-you.png" alt="">
+                  </div>
+                </li>
+
+                <li class="chat-msg chat-msg--someone">
+                  <div class="chat-msg__ava">
+                    <img src="tmp/ava-t-big.png" alt="">
+                  </div>
+                  <div class="chat-msg__content">
+                    <p class="chat-msg__name">Олег Алексеев</p>
+                    <div class="chat-msg__text">Добрый день, Анна! Давайте попробуем разобраться. Скажите, Вы читали правила по выполнению данного упражнения?</div>
+                  </div>
+                </li>
+
+              </ul>
+
+              <div class="chat-form">
+                <div class="chat-form__inner">
+                  <textarea class="textarea__field chat-form__field"></textarea>
+                  <div class="btn-chat">
+                    <div class="btn-chat__title">Отправить</div>
+                    <div class="btn-chat__ico">
+                      <svg class="svg-icon ico-arrow-up">
+                        <use xlink:href="#ico-arrow-up"></use>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="stage-box text-center">
+              <div class="loader loader--main"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Menus -->
+
+      <ul class="menu-mob-bottom">
+        <li class="menu-mob-bottom__item menu-mob-bottom__item--active">
+          <a href="#" class="menu-mob-bottom__item-inner">
+            <span class="menu-mob-bottom__ico">
+              <svg class="svg-icon ico-m-tasks">
+                <use xlink:href="#ico-m-tasks"></use>
+              </svg>
+            </span>
+            <span class="menu-mob-bottom__title">Задания</span>
+          </a>
+        </li>
+        <li class="menu-mob-bottom__item">
+          <a href="#" class="menu-mob-bottom__item-inner">
+            <span class="menu-mob-bottom__ico">
+              <svg class="svg-icon ico-m-book">
+                <use xlink:href="#ico-m-book"></use>
+              </svg>
+            </span>
+            <span class="menu-mob-bottom__title">Зачетка</span>
+          </a>
+        </li>
+        <li class="menu-mob-bottom__item">
+          <a href="#" class="menu-mob-bottom__item-inner">
+            <span class="menu-mob-bottom__ico">
+              <svg class="svg-icon ico-m-food">
+                <use xlink:href="#ico-m-food"></use>
+              </svg>
+            </span>
+            <span class="menu-mob-bottom__title">Питание</span>
+          </a>
+        </li>
+        <li class="menu-mob-bottom__item">
+          <a href="#" class="menu-mob-bottom__item-inner">
+            <span class="menu-mob-bottom__ico">
+              <svg class="svg-icon ico-m-faq">
+                <use xlink:href="#ico-m-faq"></use>
+              </svg>
+            </span>
+            <span class="menu-mob-bottom__title">ЧАВО</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="menu-mob-left">
+        <div class="menu-mob-left__inner">
+          <div class="menu-mob-left__ico-close">
+            <svg class="svg-icon ico-close">
+              <use xlink:href="#ico-close"></use>
+            </svg>
+          </div>
+          <div class="menu-mob-left__logo">
+            <svg class="svg-icon ys_logo_web">
+              <use xlink:href="#ys_logo_web"></use>
+            </svg>
+          </div>
+          <ul class="main-nav">
+            <li class="main-nav__item main-nav__item--active">
+              <a href="#" class="main-nav__item-inner">
+                <svg class="svg-icon ico-m-tasks">
+                  <use xlink:href="#ico-m-tasks"></use>
+                </svg>
+                <span class="main-nav__title">Задания</span>
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <a href="#" class="main-nav__item-inner">
+                <svg class="svg-icon ico-m-book">
+                  <use xlink:href="#ico-m-book"></use>
+                </svg>
+                <span class="main-nav__title">Зачетка</span>
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <a href="#" class="main-nav__item-inner">
+                <svg class="svg-icon ico-m-food">
+                  <use xlink:href="#ico-m-food"></use>
+                </svg>
+                <span class="main-nav__title">Питание</span>
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <a href="#" class="main-nav__item-inner">
+                <svg class="svg-icon ico-m-faq">
+                  <use xlink:href="#ico-m-faq"></use>
+                </svg>
+                <span class="main-nav__title">ЧАВО</span>
+              </a>
+            </li>
+          </ul>
+          <hr>
+          <div class="profile">
+            <a href="#">
+              <p class="profile__name">Анна Иванова</p>
+              <p class="profile__sub-text">Профиль</p>
+            </a>
+          </div>
+          <hr>
+          <ul class="banner-ls banner-ls--menu-mob-left">
+            <li class="banner-ls__item">
+              <a href="#">
+                <div class="banner-ls__img">
+                  <img src="tmp/banner-2.png" alt="">
+                </div>
+                <p class="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
+              </a>
+            </li>
+            <li class="banner-ls__item">
+              <a href="#">
+                <div class="banner-ls__img">
+                  <img src="tmp/banner-1.png" alt="">
+                </div>
+              </a>
+            </li>
+          </ul>
+          <hr>
+          <div class="btn btn--action">Выйти из кабинета</div>
+        </div>
+      </div>
+
+      <!-- Popups -->
+
+      <div id="fill-report-1">
+        <div class="fill-report">
+          <h3 class="h1">Отчет миньону</h3>
+          <hr>
+          <p class="sub-title">Напиши сообщение миньону о том, что тренировка отработана! Если ты и правда все сделал :)</p>
+          <div class="input input--box fill-report--input-info">
+            <input class="input__field" type="text" placeholder="Выполнено, сделал, справился...">
+          </div>
+          <p class="text-center">Как ты себя чувствовал во время выполнения заданий?</p>
+          <ul class="your-condition">
+            <li class="your-condition__item your-condition__item--active">
+              <span class="your-condition__ico">
+                <svg class="svg-icon ico-your-condition-1">
+                  <use xlink:href="#ico-your-condition-1"></use>
+                </svg>
+              </span>
+              <p class="your-condition__title">отлично</p>
+            </li>
+            <li class="your-condition__item">
+              <span class="your-condition__ico">
+                <svg class="svg-icon ico-your-condition-2">
+                  <use xlink:href="#ico-your-condition-2"></use>
+                </svg>
+              </span>
+              <p class="your-condition__title">так себе</p>
+            </li>
+            <li class="your-condition__item">
+              <span class="your-condition__ico">
+                <svg class="svg-icon ico-your-condition-3">
+                  <use xlink:href="#ico-your-condition-3"></use>
+                </svg>
+              </span>
+              <p class="your-condition__title">не очень</p>
+            </li>
+          </ul>
+
+          <p class="text-center mb30">Прикрепите файл или вставьте ссылку с видео выполнения заданий</p>
+
+          <div class="fill-report__video-report">
+            <div class="input input--box input--btn">
+              <input type="text" class="input__field" placeholder="http://youtube.com">
+              <div class="btn btn--secondary">Прикрепить файл</div>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="text-center">
+            <div class="btn btn--primary js-fill-report-2">Отправить отчет</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="fill-report-2">
+        <div class="base-popup__msg">
+          <h3 class="h1">Отчет миньону отправлен успешно!</h3>
+          <hr>
+          <div class="base-popup__msg-content">
+            <p class="base-parag">Молодец! Так держать! Нам нравится твой подход к тренировкам. Не сдавайся, и ты скоро ты увидишь ошеломляющий  результат.</p>
+          </div>
+          <div class="btn btn--primary js-fill-report-3">Зачетна книжка</div>
+        </div>
+      </div>
+
+      <div id="fill-report-3">
+        <div class="base-popup__msg">
+          <h3 class="h1">Это твоя зачетная книжка.</h3>
+          <hr>
+          <div class="base-popup__msg-content">
+            <p class="base-parag">Здесь ты будешь сдавать тренерам “проверяющим” отчеты о своих выполненных заданиях. Они тебе будут задавать наводящие вопросы, для того, чтобы проверить тебя. Мы ведь обещали, что спуску не дадим! Пиши отчет по каждому выполненному заданию и двигайся вперед к финальным задачам! Удачи!</p>
+          </div>
+          <div class="btn btn--primary">Отлилчно!</div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="assets/js/libs.js"></script>
+    <script src="assets/js/main.js"></script>
+
+  </body>
+</html>

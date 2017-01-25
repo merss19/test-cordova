@@ -1,0 +1,487 @@
+<!DOCTYPE>
+<html class="no-js">
+  <head>
+    <title> iToday </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0">
+    <link rel="stylesheet" href="assets/css/styles.css">
+  <body>
+
+    <!-- inline svg -->
+    <img id="svg-inject-me" class="injected-svg" src="assets/img/symbol-sprite.svg">
+
+    <div class="layout">
+
+      <div class="header">
+        <div class="grid header__inner">
+          <div class="1/4--portable grid__cell header__burger">
+            <span class="header__ico-burger">
+              <svg class="svg-icon ico-burger">
+                <use xlink:href="#ico-burger"></use>
+              </svg>
+            </span>
+          </div>
+          <h1 class="2/4--portable 1/2-desk grid__cell header__logo">
+            Ясегодня
+            <img src="assets/img/ys_logo.svg" alt="Ясегодня">
+          </h1>
+          <div class="1/4--portable grid__cell header__right-side">
+            <div class="header__banner">
+              <a href="#" class="header__banner-link">
+                <img src="tmp/banner-1.png" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout__inner">
+        <div class="grid">
+          <div class="1/4--desk grid__cell layout__menu">
+            <div class="grid layout__menu-inner">
+              <div class="2/3 grid__cell">
+                <ul class="main-nav">
+                  <li class="main-nav__item">
+                    <a href="/index.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-m-tasks">
+                        <use xlink:href="#ico-m-tasks"></use>
+                      </svg>
+                      <span class="main-nav__title">Задания</span>
+                    </a>
+                  </li>
+                  <li class="main-nav__item">
+                    <a href="/reports.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-m-book">
+                        <use xlink:href="#ico-m-book"></use>
+                      </svg>
+                      <span class="main-nav__title">Зачетка</span>
+                    </a>
+                  </li>
+                  <li class="main-nav__item main-nav__item--active">
+                    <a href="/food.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-m-food">
+                        <use xlink:href="#ico-m-food"></use>
+                      </svg>
+                      <span class="main-nav__title">Питание</span>
+                    </a>
+                  </li>
+                  <li class="main-nav__item">
+                    <a href="/faq.html" class="main-nav__item-inner">
+                      <svg class="svg-icon ico-m-faq">
+                        <use xlink:href="#ico-m-faq"></use>
+                      </svg>
+                      <span class="main-nav__title">ЧАВО</span>
+                    </a>
+                  </li>
+                </ul>
+                <hr>
+                <div class="profile">
+                  <p class="profile__name">Анна Иванова</p>
+                  <ul class="profile__nav">
+                    <li class="profile__nav-item"><a href="#">Профиль</a></li>
+                    <li class="profile__nav-item"><a href="#">Выход</a></li>
+                  </ul>
+                </div>
+                <hr>
+                <ul class="banner-ls">
+                  <li class="banner-ls__item">
+                    <a href="#">
+                      <div class="banner-ls__img">
+                        <img src="tmp/banner-2.png" alt="">
+                      </div>
+                      <p class="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="1/3 grid__cell">
+                <ul class="min-calendar">
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Пн</span>
+                      <span class="min-calendar__date">1</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-done">
+                        <use xlink:href="#ico-done"></use>
+                      </svg>
+                    </div>
+                    <div class="calendar-toolip calendar-toolip--done">
+                      <div class="calendar-toolip__inner">
+                        <p class="calendar-toolip__title">Зачет принят</p>
+                        <p class="calendar-toolip__date">12/12/17 <span>Миньон</span></p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item today">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Вт</span>
+                      <span class="min-calendar__date">2</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-done">
+                        <use xlink:href="#ico-done"></use>
+                      </svg>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Ср</span>
+                      <span class="min-calendar__date">3</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-done">
+                        <use xlink:href="#ico-done"></use>
+                      </svg>
+                    </div>
+                    <div class="calendar-toolip calendar-toolip--waiting">
+                      <div class="calendar-toolip__inner">
+                        <p class="calendar-toolip__title">Зачет проверяется</p>
+                        <p class="calendar-toolip__date">12/12/17 <span>Миньон</span></p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Чт</span>
+                      <span class="min-calendar__date">4</span>
+                    </span>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Пт</span>
+                      <span class="min-calendar__date">5</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-done">
+                        <use xlink:href="#ico-done"></use>
+                      </svg>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Сб</span>
+                      <span class="min-calendar__date">6</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-cross">
+                        <use xlink:href="#ico-cross"></use>
+                      </svg>
+                    </div>
+                    <div class="calendar-toolip calendar-toolip--missed">
+                      <div class="calendar-toolip__inner">
+                        <p class="calendar-toolip__title">Зачет не сдан</p>
+                        <p class="calendar-toolip__date">12/12/17 <span>Миньон</span></p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <p class="min-calendar__special-day">Банановый день</p>
+                  </li>
+                  <li class="min-calendar__item is-select">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Пн</span>
+                      <span class="min-calendar__date">8</span>
+                    </span>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Вт</span>
+                      <span class="min-calendar__date">9</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-gift">
+                        <use xlink:href="#ico-gift"></use>
+                      </svg>
+                    </div>
+                  </li>
+                  <li class="min-calendar__item">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Ср</span>
+                      <span class="min-calendar__date">10</span>
+                    </span>
+                  </li>
+                  <li class="min-calendar__item min-calendar__item--finish">
+                    <span class="min-calendar__date-wrap">
+                      <span class="min-calendar__day">Чт</span>
+                      <span class="min-calendar__date">11</span>
+                    </span>
+                    <div class="min-calendar__info">
+                      <svg class="svg-icon ico-finish">
+                        <use xlink:href="#ico-finish"></use>
+                      </svg>
+                      <p class="finish-day-title">Финал</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="3/4--desk 1/1--pocket grid__cell layout__content">
+
+            <div class="stage-box stage-box--small-padding">
+              
+              <h2 class="h1">Питание</h2>
+
+              <div class="tabs">
+                <ul class="tabs__nav">
+                  <li class="tabs__nav-item tabs__nav-item--active">Меню</li>
+                  <li class="tabs__nav-item">Партнеры</li>
+                  <li class="tabs__nav-item">Таблица</li>
+                </ul>
+                <div class="tabs__content">
+                  <h4 class="h2 text-left">Соте из морепродуктов и овощей</h4>
+                  <div class="grid">
+                    <div class="1/1--pocket 1/2--lap 1/2--desk grid__cell">
+                      <div class="img-wrap">
+                        <img src="tmp/food-pic.png" alt="">
+                      </div>
+                    </div>
+                    <div class="1/1--pocket 1/2--lap 1/2--desk grid__cell">
+                      <table class="base-table">
+                        <tr>
+                          <th>Продукты</th>
+                          <th>Калорийность</th> 
+                        </tr>
+                        <tr>
+                          <td>Морская капуста</td>
+                          <td class="base-table__cell-center">5</td> 
+                        </tr>
+                        <tr>
+                          <td>Салат латук</td>
+                          <td class="base-table__cell-center">12</td> 
+                        </tr>
+                        <tr>
+                          <td>Зелень (петрушка, укроп)</td>
+                          <td class="base-table__cell-center">13</td> 
+                        </tr>
+                      </table>
+                      <h6 class="h3 text-left">Как готовить</h6>
+                      <p>Продукты промыть, почистить овощи. Лук нарезать ... <a href="#">дальше</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <h2 class="h1">Чаты</h2>
+            
+            <div class="chat">
+              
+              <ul class="chat__tabs">
+                <li class="chat__tab">
+                  <span class="chat__tab-title">Общий</span>
+                  <span class="chat__tab-msg">(2)</span>
+                </li>
+                <li class="chat__tab chat__tab--active">
+                  <span class="chat__tab-title">С тренером</span>
+                  <span class="chat__tab-msg"></span>
+                </li>
+              </ul>
+              
+              <div class="chat-info">
+                <div class="chat-info__inner">
+                  <div class="chat-info__ava">
+                    <img src="tmp/ava-small.png" alt="">
+                    <span class="chat-info__ava-status"></span>
+                  </div>
+                  <div class="chat-info__user">
+                    <p class="chat-info__user-name">Олег Алексеев <span>тренер 1 категории</span></p>
+                    <p class="chat-info__user-status">В сети</p>
+                  </div>
+                </div>
+              </div>
+
+              <ul class="chat-content">
+                
+                <li class="chat-msg chat-msg--someone">
+                  <div class="chat-msg__ava">
+                    <img src="assets/img/png/user-placeholder.png" alt="">
+                  </div>
+                  <div class="chat-msg__content">
+                    <p class="chat-msg__name">Олег Алексеев</p>
+                    <div class="chat-msg__text">Скажите, Вы читали правила по выполнению данного упражнения?</div>
+                  </div>
+                </li>
+                
+                <li class="chat-msg chat-msg--you">
+                  <div class="chat-msg__content">
+                    <div class="chat-msg__text">Да, я прочла все, но не поняла как правильно расположить локти?</div>
+                  </div>
+                  <div class="chat-msg__ava">
+                    <img src="tmp/ava-you.png" alt="">
+                  </div>
+                </li>
+
+                <li class="chat-content__date"><span>1 Октября, 2016</span></li>
+
+                <li class="chat-msg chat-msg--you">
+                  <div class="chat-msg__content">
+                    <div class="chat-msg__text">Добрый день, Олег! Я не уверена, что выполняла сегодня правильно 2 задание</div>
+                  </div>
+                  <div class="chat-msg__ava">
+                    <img src="tmp/ava-you.png" alt="">
+                  </div>
+                </li>
+
+                <li class="chat-msg chat-msg--someone">
+                  <div class="chat-msg__ava">
+                    <img src="tmp/ava-t-big.png" alt="">
+                  </div>
+                  <div class="chat-msg__content">
+                    <p class="chat-msg__name">Олег Алексеев</p>
+                    <div class="chat-msg__text">Добрый день, Анна! Давайте попробуем разобраться. Скажите, Вы читали правила по выполнению данного упражнения?</div>
+                  </div>
+                </li>
+
+              </ul>
+
+              <div class="chat-form">
+                <div class="chat-form__inner">
+                  <textarea class="textarea__field chat-form__field"></textarea>
+                  <div class="btn-chat">
+                    <div class="btn-chat__title">Отправить</div>
+                    <div class="btn-chat__ico">
+                      <svg class="svg-icon ico-arrow-up">
+                        <use xlink:href="#ico-arrow-up"></use>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Menus -->
+
+      <ul class="menu-mob-bottom">
+        <li class="menu-mob-bottom__item menu-mob-bottom__item--active">
+          <a href="#" class="menu-mob-bottom__item-inner">
+            <span class="menu-mob-bottom__ico">
+              <svg class="svg-icon ico-m-tasks">
+                <use xlink:href="#ico-m-tasks"></use>
+              </svg>
+            </span>
+            <span class="menu-mob-bottom__title">Задания</span>
+          </a>
+        </li>
+        <li class="menu-mob-bottom__item">
+          <a href="#" class="menu-mob-bottom__item-inner">
+            <span class="menu-mob-bottom__ico">
+              <svg class="svg-icon ico-m-book">
+                <use xlink:href="#ico-m-book"></use>
+              </svg>
+            </span>
+            <span class="menu-mob-bottom__title">Зачетка</span>
+          </a>
+        </li>
+        <li class="menu-mob-bottom__item">
+          <a href="#" class="menu-mob-bottom__item-inner">
+            <span class="menu-mob-bottom__ico">
+              <svg class="svg-icon ico-m-food">
+                <use xlink:href="#ico-m-food"></use>
+              </svg>
+            </span>
+            <span class="menu-mob-bottom__title">Питание</span>
+          </a>
+        </li>
+        <li class="menu-mob-bottom__item">
+          <a href="#" class="menu-mob-bottom__item-inner">
+            <span class="menu-mob-bottom__ico">
+              <svg class="svg-icon ico-m-faq">
+                <use xlink:href="#ico-m-faq"></use>
+              </svg>
+            </span>
+            <span class="menu-mob-bottom__title">ЧАВО</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="menu-mob-left">
+        <div class="menu-mob-left__inner">
+          <div class="menu-mob-left__ico-close">
+            <svg class="svg-icon ico-close">
+              <use xlink:href="#ico-close"></use>
+            </svg>
+          </div>
+          <div class="menu-mob-left__logo">
+            <svg class="svg-icon ys_logo_web">
+              <use xlink:href="#ys_logo_web"></use>
+            </svg>
+          </div>
+          <ul class="main-nav">
+            <li class="main-nav__item">
+              <a href="#" class="main-nav__item-inner">
+                <svg class="svg-icon ico-m-tasks">
+                  <use xlink:href="#ico-m-tasks"></use>
+                </svg>
+                <span class="main-nav__title">Задания</span>
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <a href="#" class="main-nav__item-inner">
+                <svg class="svg-icon ico-m-book">
+                  <use xlink:href="#ico-m-book"></use>
+                </svg>
+                <span class="main-nav__title">Зачетка</span>
+              </a>
+            </li>
+            <li class="main-nav__item main-nav__item--active">
+              <a href="#" class="main-nav__item-inner">
+                <svg class="svg-icon ico-m-food">
+                  <use xlink:href="#ico-m-food"></use>
+                </svg>
+                <span class="main-nav__title">Питание</span>
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <a href="#" class="main-nav__item-inner">
+                <svg class="svg-icon ico-m-faq">
+                  <use xlink:href="#ico-m-faq"></use>
+                </svg>
+                <span class="main-nav__title">ЧАВО</span>
+              </a>
+            </li>
+          </ul>
+          <hr>
+          <div class="profile">
+            <a href="#">
+              <p class="profile__name">Анна Иванова</p>
+              <p class="profile__sub-text">Профиль</p>
+            </a>
+          </div>
+          <hr>
+          <ul class="banner-ls banner-ls--menu-mob-left">
+            <li class="banner-ls__item">
+              <a href="#">
+                <div class="banner-ls__img">
+                  <img src="tmp/banner-2.png" alt="">
+                </div>
+                <p class="banner-ls__desc">В твой выходной день только сегодня TezTour дарит -10% на тур</p>
+              </a>
+            </li>
+            <li class="banner-ls__item">
+              <a href="#">
+                <div class="banner-ls__img">
+                  <img src="tmp/banner-1.png" alt="">
+                </div>
+              </a>
+            </li>
+          </ul>
+          <hr>
+          <div class="btn btn--action">Выйти из кабинета</div>
+        </div>
+      </div>
+
+    </div>
+    
+    <script src="assets/js/libs.js"></script>
+    <script src="assets/js/main.js"></script>
+
+  </body>
+</html>

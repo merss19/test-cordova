@@ -1,0 +1,98 @@
+/*custom styles*/
+
+.entry__inner {
+  height: 100%;
+  position: relative;
+  text-align: center;
+  margin: 0 auto; }
+
+#root {
+  height: 100%;
+}
+
+.low {
+  margin: 7px;
+}
+
+div {
+  outline: 0
+}
+
+button {
+  outline: 0
+}
+
+#pay-free {
+  width: 300px;
+}
+
+#payment-entry {
+  height: 780px;
+}
+
+.divider {
+  width: 5px;
+  height: auto;
+  display:inline-block;
+}
+
+#carrotquest-messenger-collapsed-img-cont {
+    padding-bottom: 50px;
+}
+
+/*react-paginate*/
+
+.pagination ul {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.pagination li {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.pagination .break a {
+    cursor: default;
+}
+
+/*react-draft-wysiwyg styles*/
+
+.home-root {
+  width: 100%;
+  display: flex;
+  font-family: Roboto;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.label {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.home-list {
+  margin-top: 20px;
+}
+.home-listItem {
+  margin-bottom: 10px;
+}
+.home-wrapper {
+  margin-top: 10px;
+  width: 100%;
+  display: block;
+  height: 100%;
+}
+.home-editor {
+  border: 1px solid #F1F1F1;
+  padding: 5px;
+  border-radius: 2px;
+  height: 80%;
+}
+.home-toolbar {
+  width: 100%;
+}

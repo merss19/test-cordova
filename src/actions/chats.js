@@ -147,6 +147,12 @@ export const fetchChat = (type, typeId = null, silent = false) => (dispatch, get
 
   return commentGetInfo(token || cookie.load('token'), data)
     .then((chats) => {
+      console.log('chatssssssssssss')
+	    console.log(chats.data)
+	    console.log(chats.data[0])
+	    console.log(data.comments)
+      console.log(getState().chat.comments)
+
       if (chats.data[0]) {
         if (!silent) {
           clearTimeout(updateInstance)

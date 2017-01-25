@@ -1,7 +1,8 @@
 import React from 'react'
 
 export default ({list = [], onChatSelect, selectedChat}) => {
-
+	console.log('chatlisttttttt')
+	console.log(list)
   return (
     <div className="chats-list">
       {
