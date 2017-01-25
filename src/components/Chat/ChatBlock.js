@@ -59,6 +59,8 @@ export default class ChatBlock extends Component {
       onMessageChanged,
       onMessageSend,
     } = this.props
+
+
     const {
       showEmojiPopup
     } = this.state

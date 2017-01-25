@@ -115,6 +115,8 @@ export class Chat extends Component {
       showAdminPanel = true
     } = this.props
 
+
+
     const chat = <ChatBlock
       // Data
       userId={userId}

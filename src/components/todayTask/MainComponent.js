@@ -110,6 +110,8 @@ class MainComponent extends Component {
   // }
 
   createTask (data) {
+	  console.log('data')
+    console.log(data)
     const { taskDay, token, createWithMessage, fetchChat } = this.props
     const chatMessage = data.video && data.video !== 'undefined'
       ? `Отчёт для тренера: Комментарий: "${data.report}"; Видео: ${data.video}; Оценка: ${HEALTH_CONDITIONS[data.health]}.`
@@ -225,7 +227,7 @@ class MainComponent extends Component {
                 userId={taskDay.user.id}
                 isWindow={false}
                 showAdminPanel={false}
-                isOpen={false}
+                isOpen={true}
                 isTaskChat={true}
               />
 

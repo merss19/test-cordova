@@ -259,7 +259,7 @@ class InsuranceValidationForm extends Component {
           </div>
         </Modal>
         <Modal ref='successModal' contentStyle={contentStyle}>
-          <h2>Данные отправлены! В течение суток на почту придет письмо с подтверждением одобрения страхования. Убедительно просим указывать реальные данные</h2>
+          <h2>Данные отправлены! В случае выявления ошибок мы свяжемся с вами дополнительно.</h2>
           <br/>
           <div className="btn btn--action" onClick={e => this.refs.successModal.hide()}>
             Продолжить

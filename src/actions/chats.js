@@ -72,6 +72,7 @@ const getChatTitle = ({id, name, isPublic, userStarter}) => {
 }
 
 export const fetchChats = (type, page = 1) => (dispatch, getState) => {
+
   dispatch(requestChats())
 
   const {userToken} = getState()
