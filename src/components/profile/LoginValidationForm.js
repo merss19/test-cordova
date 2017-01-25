@@ -38,22 +38,22 @@ class LoginValidationForm extends Component {
 
     const loginVk = () => {
       if (packageType)
-        cookie.save('packageType', packageType, { path: '/' })
+        cookie.save('packageType', packageType, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
       if (program)
-        cookie.save('program', program, { path: '/' })
+        cookie.save('program', program, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
       if (promo)
-        cookie.save('promoName', promo, { path: '/' })
+        cookie.save('promoName', promo, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
 
       window.location = `https://oauth.vk.com/authorize?client_id=5750682&scope=offline&redirect_uri=${host}/social/vk&display=page&response_type=code`
     }
 
     const loginOk = () => {
       if (packageType)
-        cookie.save('packageType', packageType, { path: '/' })
+        cookie.save('packageType', packageType, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
       if (program)
-        cookie.save('program', program, { path: '/' })
+        cookie.save('program', program, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
       if (promo)
-        cookie.save('promoName', promo, { path: '/' })
+        cookie.save('promoName', promo, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
 
       const url = `https://connect.ok.ru/oauth/authorize?client_id=1248995328&scope=VALUABLE_ACCESS,LONG_ACCESS_TOKEN,PHOTO_CONTENT,GET_EMAIL&response_type=code&redirect_uri=${host}/social/ok`
       window.open(url, "Odnoklassniki", "width=700,height=400")
@@ -89,7 +89,7 @@ class LoginValidationForm extends Component {
           .then(response => response.json())
           .then(json => {
             if (json.errorCode === 1 && json.data && json.data.authToken) {
-              cookie.save('token', json.data.authToken, { path: '/' })
+              cookie.save('token', json.data.authToken, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
               self.props.setToken(json.data.authToken)
               browserHistory.push('/signup/pay')
             } else {

@@ -266,7 +266,7 @@ class DayEditorValidationForm extends Component {
 
                         dispatch({ type: 'DAY_ID', id: calendar[index].id })
                         dispatch({ type: 'ISVIDEO', value: calendar[index].isVideo })
-												 change('customName', field.intro[0].customName)
+												change('customName', field.intro[0].customName)
                         const intro = calendar[index].intro.find(i => i.program === programShow)
                         dispatch({ type: 'EDITOR', editor: JSON.parse(intro.intro), index: 0 })
                         const programTask = calendar[index].programTasks.find(p => p.program === programShow)
@@ -278,6 +278,14 @@ class DayEditorValidationForm extends Component {
                           ? programTask.tasks
                           : []
                         )
+
+                        if (calendar[index].poll && calendar[index].poll.description) {
+                          dispatch({ type: 'HIDE_POLL', hideCreatePoll: true })
+                          change('poll.description', calendar[index].poll.description)
+                          change('poll.fields', calendar[index].poll.fields)
+                        } else {
+                          dispatch({ type: 'HIDE_POLL', hideCreatePoll: false })
+                        }
                       }}
                       onTrashClick={() => {
                         this.refs[`deleteModal${index}`].show()
@@ -417,8 +425,8 @@ class DayEditorValidationForm extends Component {
             {hideCreatePoll &&
               <div>
                 <br/>
-                <Field name='description' placeholder="Описание опроса" component={InputProfile} />
-                <FieldArray name='pollFields' component={renderPollFields} />
+                <Field name='poll.description' placeholder="Описание опроса" component={InputProfile} />
+                <FieldArray name='poll.fields' component={renderPollFields} />
               </div>
             }
           </div>

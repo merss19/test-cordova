@@ -64,7 +64,7 @@ class LoginSocial extends Component {
         this.refs.loadingModal.hide()
 
         if (json.errorCode === 1 && json.data && json.data.authToken) {
-          cookie.save('token', json.data.authToken, { path: '/' })
+          cookie.save('token', json.data.authToken, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
           setToken(json.data.authToken)
           browserHistory.push('/signup/pay')
         } else {
@@ -118,7 +118,7 @@ class LoginSocial extends Component {
           .then(response => response.json())
           .then(json => {
             if (json.data && json.data.authToken) {
-              cookie.save('token', json.data.authToken, { path: '/' })
+              cookie.save('token', json.data.authToken, { path: '/', maxAge: 60 * 60 * 24 * 365 * 10 })
               setToken(json.data.authToken)
 
               const payload = {

@@ -89,8 +89,6 @@ class MainComponent extends Component {
     }
   }
 
-
-
   handleResize(event) {
     const windowWidth = window.innerWidth
     if (windowWidth < 1210 && windowWidth > 1024) {
@@ -161,8 +159,8 @@ class MainComponent extends Component {
 
 
   render() {
-    const { taskDay, token } = this.props
-    const { intro, tasks, poll, chat, calendar, id, user: { firstName, lastName, role } } = taskDay
+    const { taskDay, token, pollWasSend } = this.props
+    const { intro, tasks, poll, chat, calendar, id, isPollVoted, user: { firstName, lastName, role } } = taskDay
     const introJSON = intro && intro[0] && intro[0].intro ? JSON.parse(intro[0].intro) : null
     const introHTML = intro && intro[0] && intro[0].introHTML ? intro[0].introHTML : ''
 
@@ -218,10 +216,9 @@ class MainComponent extends Component {
               </Modal>
 
 
-              {poll && poll.description &&
-                <Poll poll={poll} />
+              {poll && poll.description && !isPollVoted && !pollWasSend.find(p => p === id) &&
+                <Poll poll={poll} id={id} />
               }
-
 
               <Chat
                 userId={taskDay.user.id}
@@ -408,7 +405,7 @@ class MainComponent extends Component {
 }
 
 const mapStateToProps = state => {
-  return { todayTask: state.todayTask }
+  return { todayTask: state.todayTask, pollWasSend: state.pollWasSend }
 }
 
 MainComponent= connect(

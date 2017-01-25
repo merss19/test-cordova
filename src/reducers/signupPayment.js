@@ -12,6 +12,15 @@ export const selectedPayment = (state = 'reactjs', action) => {
   }
 }
 
+export const paymentType = (state = 'ya', action) => {
+  switch (action.type) {
+    case 'PAYMENT_TYPE':
+      return action.paymentType
+    default:
+      return state
+  }
+}
+
 const payment = (state = {
   isFetching: false,
   didInvalidate: false,

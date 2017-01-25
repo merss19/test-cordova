@@ -1,11 +1,11 @@
 export { isBabyFeeding, sportsPast, injuries, isReadyToTasks, injuriesHidden, birthday, babyBirthday, babyFeed, profile, bodyParams, selectedProfile, recivedProfile } from './profile'
 export { menuMobLeft } from './menuMobLeft'
 export { userToken } from './userToken'
-export { selectedDayId, selectedDayDate, selectedTaskDay, recivedTaskDay } from './taskDay'
-export { selectedPayment, recivedPayment } from './signupPayment'
+export { pollWasSend, selectField, selectedDayId, selectedDayDate, selectedTaskDay, recivedTaskDay } from './taskDay'
+export { paymentType, selectedPayment, recivedPayment } from './signupPayment'
 export { timer } from './timer'
 export { insuranceDocs } from './insurance'
-export { chat, chats } from './chats'
+export { showGlobalMessage, chat, chats } from './chats'
 export { pendingEvent, pendingEvents } from './pendingEvents'
 export { pendingPhoto, pendingPhotos } from './pendingPhotos'
 export { pendingProfile, pendingProfiles } from './userReports'
@@ -17,4 +17,3 @@ export { selectedPhotosIntro, recivedPhotosIntro } from './photosIntro'
 
 
 export { selectedReports, recivedReports } from './reports'
-

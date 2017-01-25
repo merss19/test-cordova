@@ -106,11 +106,6 @@ export const fetchChats = (type, page = 1) => (dispatch, getState) => {
           }
         })
 
-      // flatChats.sort((a, b) => {
-      //   console.log(a, b);
-      //   return b.updateTs - a.updateTs
-      // })
-
       const pageCount = chatsArray.data.length > 0 ? Math.ceil(chatsArray.itemsCounter / ITEMS_PER_PAGE) : 0
 
       dispatch(receiveChats(flatChats, pageCount))
@@ -228,4 +223,11 @@ export const waitingFromChat = (group) => (dispatch, getState) => {
   const authToken = token || cookie.load('token')
 
   return chatMessageCreate(authToken, {group, status: 1})
+}
+
+export const answeredChat = (group) => (dispatch, getState) => {
+  const {token} = getState().userToken
+  const authToken = token || cookie.load('token')
+
+  return chatMessageCreate(authToken, {group, status: 2})
 }

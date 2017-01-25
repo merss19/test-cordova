@@ -3,6 +3,15 @@ import {
   REQUEST_CHATS, RECEIVE_CHATS,
 } from '../actions'
 
+export const showGlobalMessage = (state = false, action) => {
+  switch (action.type) {
+    case 'SHOW_GLOBAL_MESSAGE':
+      return action.showGlobalMessage
+    default:
+      return state
+  }
+}
+
 export const chat = (state = {isOpen: false}, action) => {
   switch (action.type) {
     case REQUEST_CHAT:
@@ -32,8 +41,6 @@ export const chats = (state = [], action) => {
         isFetching: true
       }
     case RECEIVE_CHATS:
-      console.log('TRINITY')
-      console.log(action)
       return {
         chats: [ ...action.payload ],
         pageCount: action.pageCount,

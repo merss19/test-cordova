@@ -111,11 +111,7 @@ class ProfileCreate extends Component {
                   if (babyFeed)
                     data.lastBabyFeedMonth = babyFeed
                 } else {
-                  console.log('check')
-                  console.log(data)
                   data.birthday = moment(data.birthday).format('YYYY-MM-DD')
-                  console.log(data.birthday)
-                  console.log(moment(data.birthday, 'YYYY-MM-DD', true).isValid())
                   isValidBirthday = moment(data.birthday, 'YYYY-MM-DD', true).isValid()
 
                   data.birthday = birthday
@@ -127,8 +123,6 @@ class ProfileCreate extends Component {
                     data.lastBabyFeedMonth = babyFeed
 
                   if (data.program === 2) {
-                    console.log(data.babyBirthday)
-                    console.log(data.lastBabyFeedMonth)
                     data.babyBirthday = moment(data.babyBirthday).format('YYYY-MM-DD')
                     data.lastBabyFeedMonth = moment(data.lastBabyFeedMonth).format('YYYY-MM-DD')
                     isValidBabyBirhday = moment(data.babyBirthday, 'YYYY-MM-DD', true).isValid()
@@ -158,8 +152,6 @@ class ProfileCreate extends Component {
                   })
                   .then(response => response.json())
                   .then(user => {
-                    console.log('userrrrrrrrrrrrrrrrrrrrrrr')
-              console.log(user)
                     this.refs.loadingModal.hide()
                     if (!user.data) {
                       throw new SubmissionError({ _error: 'Что-то пошло не так, попробуйте снова.' })

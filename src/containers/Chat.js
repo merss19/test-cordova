@@ -9,6 +9,7 @@ import {
   closeChat,
   addToChat,
   answerToChat,
+  answeredChat,
   waitingFromChat,
 } from '../actions'
 
@@ -46,6 +47,12 @@ export class Chat extends Component {
     if (onWaiting) {
       onWaiting(id, promise)
     }
+  }
+
+  answered() {
+    const { id, answeredChat, type, typeId } = this.props
+
+    answeredChat(id).then(() => fetchChat(type, typeId))
   }
 
   sendMessage(text) {
@@ -112,7 +119,8 @@ export class Chat extends Component {
       userId,
       isWindow = true,
       isFetching,
-      showAdminPanel = true
+      showAdminPanel = true,
+      isAnswered
     } = this.props
 
 
@@ -163,6 +171,13 @@ export class Chat extends Component {
                       className="chat__admin-panel-button btn btn--action">
                       {isForwarding ? 'Отмена' : 'Переадресовать'}
                     </button>
+                    {!isAnswered &&
+                      <button
+                        onClick={() => this.answered()}
+                        className="minion-chat__button-forward btn btn--primary">
+                        Чат отвечен
+                      </button>
+                    }
                   </div>
                 ) : null
             }
@@ -181,6 +196,7 @@ const mapDispatchToProps = {
   closeChat,
   addToChat,
   answerToChat,
+  answeredChat,
   waitingFromChat
 }
 

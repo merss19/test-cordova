@@ -13,10 +13,48 @@ import { promoVisit } from '../actions/promo/promoWatch'
 import InputProfile from '../components/componentKit/InputProfile'
 import InputProfilePhone from '../components/componentKit/InputProfilePhone'
 import SelectProgram from '../components/componentKit/SelectProgram'
+import crypto from 'crypto'
+import md5 from 'md5'
+import shortid from 'shortid'
 
 let contentStyle = {
   borderRadius: '18px',
   padding: '30px'
+}
+
+const buttonYaStyle = {
+  width: '140px',
+  height: '50px',
+  background: 'url("/assets/img/png/logo_yandex_kassa.png") no-repeat scroll 0 0 transparent',
+  backgroundSize: '100%',
+  color: '#000000',
+  border: '1px',
+  // display: 'inline'
+}
+
+const buttonRkStyle = {
+  width: '160px',
+  height: '50px',
+  background: 'url("/assets/img/png/logo-robokassa.png") no-repeat scroll 0 10px transparent',
+  backgroundSize: '100%',
+  color: '#000000',
+  border: '1px',
+}
+
+const outerButtonStyle = {
+    border: '1px solid rgb(215, 222, 232)',
+    width: '200px',
+    height: '50px',
+    borderRadius: '5px',
+    margin: 'auto',
+}
+const buttonPmStyle = {
+  width: '130px',
+  height: '50px',
+  background: 'url("/assets/img/png/paymo-logo.png") no-repeat scroll 0 0 transparent',
+  backgroundSize: '100%',
+  color: '#000000',
+  border: '1px',
 }
 
 class ProfilePay extends Component {
@@ -136,9 +174,12 @@ class ProfilePay extends Component {
   }
 
   render() {
-    const { payment, isFetching } = this.props
+    const { payment, isFetching, paymentType } = this.props
     let programName
     let packageName
+    let paymentForm
+    let data
+
     let { dispatch, program, packageType, amount, emailFriend, promo, share, receivePayment, phoneFriend, nameFriend } = this.props
 
     const isEmpty = payment === undefined || payment.data === undefined
@@ -178,7 +219,7 @@ class ProfilePay extends Component {
       }
 
       if (amount > 0) {
-        const data = {
+        data = {
           parent_id: "iframe_parent",
           api_key: "57d156d0-dacf-464d-bcd3-c7f01b0c1a35",
           tx_id: payment.data.txId,
@@ -368,17 +409,76 @@ class ProfilePay extends Component {
                   <div className="entry__box">
                     <div className="entry-form">
                       {amount > 0
-                        ? <div>
-                            {window.mobilecheck() &&
-                              <button className="btn btn--primary" onClick={() => {
-                                this.refs.accModal.show()
-                              }}>
-                                { cookie.load('general') ? 'Изменить программу'
-                                  : program === '8' ? 'Изменить данные друга' : 'Изменить пакет' }
+                        ? paymentType === 'pm'
+                          ? <div>
+                              <span id="iframe_parent"/>
+                              <br/>
+                              <button className="btn btn--action"
+                                style={{ width: '200px' }}
+                                onClick={() => dispatch({ type: 'PAYMENT_TYPE', paymentType: 'ya' })}>
+                                  Выбрать способ оплаты
                               </button>
-                            }
-                            <span id="iframe_parent"/>
-                          </div>
+                            </div>
+                          : <div>
+                              {window.mobilecheck() &&
+                                <div className="btn btn--primary" onClick={() => {
+                                  this.refs.accModal.show()
+                                }}>
+                                  { cookie.load('general') ? 'Изменить программу'
+                                    : program === '8' ? 'Изменить данные друга' : 'Изменить пакет' }
+                                </div>
+                              }
+
+                              <div style={{
+                                display: 'table',
+                                position: 'absolute',
+                                height: '100%',
+                                width: '100%',
+                              }}>
+                                <div style={{
+                                  display: 'table-cell',
+                                  verticalAlign: 'middle',
+                                }}>
+                                  <div style={{
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    width: '300px'
+                                  }}>
+                                    <div style={outerButtonStyle}>
+                                      <form action="https://demomoney.yandex.ru/eshop.xml" target="_blank" method="POST">
+                                        <input name="shopId" value="91439" type="hidden"/>
+                                        <input name="scid" value="547467" type="hidden"/>
+                                        <input name="customerNumber" value={shortid.generate()} type="hidden"/>
+                                        <input name="sum" value={amount} type="hidden"/>
+                                        <input name="orderNumber" value={payment.data.txId} type="hidden"/>
+                                        <input name="paymentType" value="" type="hidden"/>
+                                        <button className="btn btn--primary" style={buttonYaStyle}/>
+                                      </form>
+                                    </div>
+                                    <br/>
+                                    <div style={outerButtonStyle}>
+                                      <form action='https://auth.robokassa.ru/Merchant/Index.aspx' target="_blank" method="POST">
+                                       <input type="hidden" name="MrchLogin" value="todayme"/>
+                                       <input type="hidden" name="OutSum" value={amount}/>
+                                       <input type="hidden" name="Desc" value="Text description"/>
+                                       <input type="hidden" name="SignatureValue" value={md5(`todayme:${amount}::YDDV4UN5t5q94gLDDZDE:shp_txid=${payment.data.txId}`)}/>
+                                       <input type="hidden" name="shp_txid" value={payment.data.txId}/>
+                                       <input type="hidden" name="Culture" value="ru"/>
+                                       <input type="hidden" name="IsTest" value={1}/>
+                                       <button type="submit" className="btn btn--primary" style={buttonRkStyle}/>
+                                      </form>
+                                    </div>
+                                    <br/>
+                                    <div style={outerButtonStyle}>
+                                      <button className="btn btn--primary" style={buttonPmStyle} onClick={() => {
+                                        dispatch({ type: 'PAYMENT_TYPE', paymentType: 'pm' })
+                                        window.PaymoFrame.set(data)
+                                      }}/>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                         : <div className="entry-success">
                             <div className="entry-success__img-wrap">
                               <img src="/assets/img/success.svg" alt=""/>
@@ -473,7 +573,7 @@ ProfilePay = reduxForm({
 let selector = formValueSelector('payCreateValidation')
 
 const mapStateToProps = state => {
-  const { selectedPayment, recivedPayment, userToken, profile } = state
+  const { selectedPayment, recivedPayment, userToken, profile, paymentType } = state
   let { program, amount, packageType, promo, emailFriend, phoneFriend, nameFriend, share } = profile
   const initialPhoneFriend = phoneFriend
   const initialEmailFriend = emailFriend
@@ -509,6 +609,7 @@ const mapStateToProps = state => {
     promo = selector(state, 'promo')
 
   return({
+    paymentType,
     selectedPayment,
     isFetching,
     lastUpdated,

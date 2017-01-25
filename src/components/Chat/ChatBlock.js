@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import EmojiPicker from 'emojione-picker'
+import Textarea from 'react-textarea-autosize'
 
 const findSurrogatePair = (point) => {
   const offset = point - 0x10000
@@ -38,6 +39,18 @@ export default class ChatBlock extends Component {
   appendEmoji(unicode) {
     this.refs.message.value += this.getEmoji(unicode)
   }
+
+  // componentDidMount() {
+  //   this.refs.message.each(function () {
+  //     this.refs.message.style = {
+  //       height: this.refs.message.scrollHeight + 'px',
+  //       overflowY: 'hidden'
+  //     }
+  //   }).on('input', function () {
+  //     this.refs.message.style.height = 'auto'
+  //     this.refs.message.style.height = this.refs.message.scrollHeight + 'px'
+  //   })
+  // }
 
   render() {
     const {
@@ -111,11 +124,11 @@ export default class ChatBlock extends Component {
               😀
             </button>
 
-            <textarea
+            <Textarea
               ref="message"
               onChange={(e) => onMessageChanged(e)}
               placeholder={placeholderText}
-              className="textarea__field chat-form__field"></textarea>
+              className="textarea__field chat-form__field"></Textarea>
             <div className="btn-chat"
                  onClick={() => {
                    onMessageSend(this.refs.message.value)
